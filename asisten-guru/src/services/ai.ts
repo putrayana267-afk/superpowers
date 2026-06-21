@@ -79,3 +79,95 @@ export async function generate(
   }
   return text;
 }
+
+/**
+ * Versi streaming: memanggil `/api/generate` dengan flag stream, lalu memanggil
+ * `onToken` untuk setiap potongan teks yang masuk. Mengembalikan teks lengkap.
+ * Melempar GenerateError dengan pesan ramah bila gagal.
+ */
+export async function generateStream(
+  toolId: string,
+  inputs: ToolInputs,
+  onToken: (chunk: string) => void,
+): Promise<string> {
+  let response: Response;
+  try {
+    response = await fetch('/api/generate', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ toolId, inputs, stream: true }),
+    });
+  } catch {
+    throw new GenerateError(FRIENDLY_NETWORK);
+  }
+
+  if (response.status === 429) {
+    throw new GenerateError(FRIENDLY_RATE);
+  }
+
+  // Error sebelum streaming dimulai dikirim sebagai JSON biasa.
+  if (!response.ok) {
+    let serverMessage = '';
+    try {
+      const data = (await response.json()) as GenerateResponse;
+      if (data.error) serverMessage = data.error;
+    } catch {
+      // abaikan
+    }
+    throw new GenerateError(serverMessage || FRIENDLY_SERVER);
+  }
+
+  if (!response.body) {
+    throw new GenerateError(FRIENDLY_SERVER);
+  }
+
+  const reader = response.body.getReader();
+  const decoder = new TextDecoder();
+  let buffer = '';
+  let full = '';
+
+  for (;;) {
+    let chunk: ReadableStreamReadResult<Uint8Array>;
+    try {
+      chunk = await reader.read();
+    } catch {
+      throw new GenerateError(FRIENDLY_NETWORK);
+    }
+    if (chunk.done) break;
+
+    buffer += decoder.decode(chunk.value, { stream: true });
+    const events = buffer.split('\n\n');
+    buffer = events.pop() ?? '';
+
+    for (const evt of events) {
+      for (const line of evt.split('\n')) {
+        const trimmed = line.trim();
+        if (!trimmed.startsWith('data:')) continue;
+        const dataStr = trimmed.slice(5).trim();
+        if (!dataStr || dataStr === '[DONE]') continue;
+
+        let payload: GenerateResponse;
+        try {
+          payload = JSON.parse(dataStr) as GenerateResponse;
+        } catch {
+          continue;
+        }
+        if (payload.error) {
+          throw new GenerateError(payload.error);
+        }
+        if (typeof payload.text === 'string' && payload.text.length > 0) {
+          full += payload.text;
+          onToken(payload.text);
+        }
+      }
+    }
+  }
+
+  full = full.trim();
+  if (!full) {
+    throw new GenerateError(
+      'Hasil kosong diterima. Coba sesuaikan input lalu buat ulang.',
+    );
+  }
+  return full;
+}

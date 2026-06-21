@@ -23,6 +23,8 @@ interface ResultPanelProps {
   result: string;
   error: string;
   isFavorite: boolean;
+  /** True saat teks masih mengalir (streaming) — toolbar disembunyikan. */
+  streaming: boolean;
   onCopy: () => void;
   onDownloadTxt: () => void;
   onDownloadDoc: () => void;
@@ -37,6 +39,7 @@ export function ResultPanel({
   result,
   error,
   isFavorite,
+  streaming,
   onCopy,
   onDownloadTxt,
   onDownloadDoc,
@@ -111,6 +114,20 @@ export function ResultPanel({
             transition={{ duration: 0.3 }}
             className="flex h-full flex-col"
           >
+            {streaming ? (
+              <div
+                className="mb-4 inline-flex w-fit items-center gap-2 rounded-full bg-emerald-deep/10 px-3 py-1.5 text-xs font-semibold text-emerald-deep"
+                role="status"
+                aria-live="polite"
+              >
+                <span className="flex gap-1">
+                  <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-primary" />
+                  <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-primary [animation-delay:150ms]" />
+                  <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-primary [animation-delay:300ms]" />
+                </span>
+                Sedang menulis…
+              </div>
+            ) : (
             <div className="mb-4 flex flex-wrap items-center gap-2">
               <Button
                 variant="primary"
@@ -162,9 +179,13 @@ export function ResultPanel({
                 {isFavorite ? 'Favorit' : 'Simpan'}
               </Button>
             </div>
+            )}
 
             <div className="prose-result max-w-none flex-1 overflow-y-auto">
               <ReactMarkdown remarkPlugins={[remarkGfm]}>{result}</ReactMarkdown>
+              {streaming && (
+                <span className="ml-0.5 inline-block h-4 w-2 animate-pulse rounded-sm bg-emerald-primary align-text-bottom" />
+              )}
             </div>
           </motion.div>
         )}

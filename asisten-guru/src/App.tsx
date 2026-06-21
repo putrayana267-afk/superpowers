@@ -1,9 +1,16 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import {
+  lazy,
+  Suspense,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { X } from 'lucide-react';
 import { TOOLS, getToolById } from './features/tools/registry';
 import type { HistoryEntry, Tool, ToolInputs } from './features/tools/types';
-import { generate, GenerateError } from './services/ai';
+import { generateStream, GenerateError } from './services/ai';
 import {
   createId,
   loadHistory,
@@ -14,11 +21,16 @@ import { downloadDoc, downloadTxt } from './lib/download';
 import { Header } from './components/Header';
 import { Sidebar } from './components/Sidebar';
 import { ToolForm } from './components/ToolForm';
-import { ResultPanel } from './components/ResultPanel';
 import type { ResultStatus } from './components/ResultPanel';
 import { HistoryDrawer } from './components/HistoryDrawer';
 import { GlassCard } from './components/GlassCard';
+import { ResultSkeleton } from './components/Skeleton';
 import { useToast } from './components/Toast';
+
+// react-markdown (pemberat utama) hanya dimuat saat panel hasil dibutuhkan.
+const ResultPanel = lazy(() =>
+  import('./components/ResultPanel').then((m) => ({ default: m.ResultPanel })),
+);
 
 /** Bangun nilai input awal sebuah alat dari skema field-nya. */
 function buildDefaults(tool: Tool): ToolInputs {
@@ -54,6 +66,7 @@ export default function App() {
   const [status, setStatus] = useState<ResultStatus>('idle');
   const [result, setResult] = useState('');
   const [error, setError] = useState('');
+  const [streaming, setStreaming] = useState(false);
   const [currentEntryId, setCurrentEntryId] = useState<string | null>(null);
 
   const [history, setHistory] = useState<HistoryEntry[]>([]);
@@ -100,8 +113,27 @@ export default function App() {
   const runGenerate = useCallback(async () => {
     setStatus('loading');
     setError('');
+    setResult('');
+    setStreaming(false);
+    setCurrentEntryId(null);
+
+    let acc = '';
+    let started = false;
     try {
-      const text = await generate(activeTool.id, inputs);
+      const text = await generateStream(activeTool.id, inputs, (chunk) => {
+        acc += chunk;
+        if (!started) {
+          started = true;
+          setStatus('done');
+          setStreaming(true);
+        }
+        setResult(acc);
+      });
+
+      setResult(text);
+      setStatus('done');
+      setStreaming(false);
+
       const entry: HistoryEntry = {
         id: createId(),
         toolId: activeTool.id,
@@ -111,11 +143,10 @@ export default function App() {
         createdAt: Date.now(),
         favorite: false,
       };
-      setResult(text);
-      setStatus('done');
       setCurrentEntryId(entry.id);
       setHistory((prev) => [entry, ...prev]);
     } catch (err) {
+      setStreaming(false);
       const message =
         err instanceof GenerateError
           ? err.message
@@ -158,6 +189,7 @@ export default function App() {
     setInputsByTool((prev) => ({ ...prev, [entry.toolId]: { ...entry.inputs } }));
     setResult(entry.result);
     setStatus('done');
+    setStreaming(false);
     setCurrentEntryId(entry.id);
     setHistoryOpen(false);
     setNavOpen(false);
@@ -228,19 +260,22 @@ export default function App() {
             </GlassCard>
 
             <GlassCard className="min-h-[420px]" animate>
-              <ResultPanel
-                tool={activeTool}
-                status={status}
-                result={result}
-                error={error}
-                isFavorite={isFavorite}
-                onCopy={handleCopy}
-                onDownloadTxt={handleDownloadTxt}
-                onDownloadDoc={handleDownloadDoc}
-                onRegenerate={runGenerate}
-                onToggleFavorite={handleToggleFavoriteCurrent}
-                onRetry={runGenerate}
-              />
+              <Suspense fallback={<ResultSkeleton />}>
+                <ResultPanel
+                  tool={activeTool}
+                  status={status}
+                  result={result}
+                  error={error}
+                  isFavorite={isFavorite}
+                  streaming={streaming}
+                  onCopy={handleCopy}
+                  onDownloadTxt={handleDownloadTxt}
+                  onDownloadDoc={handleDownloadDoc}
+                  onRegenerate={runGenerate}
+                  onToggleFavorite={handleToggleFavoriteCurrent}
+                  onRetry={runGenerate}
+                />
+              </Suspense>
             </GlassCard>
           </div>
         </main>

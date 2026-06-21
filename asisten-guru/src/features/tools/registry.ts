@@ -7,6 +7,7 @@ import {
   MessageSquareHeart,
   Lightbulb,
   Send,
+  LayoutGrid,
 } from 'lucide-react';
 import type { Tool } from './types';
 
@@ -101,6 +102,44 @@ export const TOOLS: Tool[] = [
       },
     ],
     ctaLabel: 'Buat Soal',
+  },
+  {
+    id: 'kisi-kisi',
+    title: 'Kisi-kisi Soal',
+    description: 'Susun tabel kisi-kisi lengkap dengan indikator & level kognitif.',
+    icon: LayoutGrid,
+    category: 'Asesmen',
+    fields: [
+      { id: 'mapel', label: 'Mata pelajaran', type: 'text', required: true, placeholder: 'mis. IPS' },
+      { id: 'kelas', label: 'Kelas', type: 'select', required: true, options: KELAS_OPTIONS, defaultValue: 'Kelas 8' },
+      { id: 'materi', label: 'Materi / cakupan', type: 'textarea', required: true, placeholder: 'mis. Interaksi sosial, Lembaga sosial', rows: 3 },
+      {
+        id: 'jumlah',
+        label: 'Jumlah soal',
+        type: 'select',
+        required: true,
+        options: [
+          { label: '5 soal', value: '5' },
+          { label: '10 soal', value: '10' },
+          { label: '15 soal', value: '15' },
+          { label: '20 soal', value: '20' },
+        ],
+        defaultValue: '10',
+      },
+      {
+        id: 'bentuk',
+        label: 'Bentuk soal',
+        type: 'select',
+        required: true,
+        options: [
+          { label: 'Pilihan Ganda', value: 'Pilihan Ganda' },
+          { label: 'Esai', value: 'Esai' },
+          { label: 'Campuran', value: 'Campuran' },
+        ],
+        defaultValue: 'Pilihan Ganda',
+      },
+    ],
+    ctaLabel: 'Buat Kisi-kisi',
   },
   {
     id: 'lkpd',

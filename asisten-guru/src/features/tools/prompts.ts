@@ -168,6 +168,23 @@ const builders: Record<string, Builder> = {
       'untuk surat sertakan pembuka dan penutup formal.\n' +
       '- Gunakan nada yang diminta.',
   }),
+
+  'kisi-kisi': (i) => ({
+    context: contextLines([
+      ['Mata pelajaran', val(i, 'mapel')],
+      ['Kelas', val(i, 'kelas')],
+      ['Materi/cakupan', val(i, 'materi')],
+      ['Jumlah soal', val(i, 'jumlah')],
+      ['Bentuk soal', val(i, 'bentuk')],
+    ]),
+    instruction:
+      'Buat KISI-KISI SOAL dalam bentuk tabel Markdown. Aturan:\n' +
+      '- Kolom tabel: No, Tujuan Pembelajaran/Kompetensi, Materi, Indikator Soal, ' +
+      'Level Kognitif (C1–C6), Bentuk Soal, Nomor Soal.\n' +
+      '- Jumlah baris sesuai jumlah soal yang diminta dan gunakan bentuk soal yang dipilih.\n' +
+      '- Indikator soal harus operasional dan dapat diukur.\n' +
+      '- Setelah tabel, beri ringkasan singkat **Sebaran Level Kognitif** (berapa soal per level).',
+  }),
 };
 
 /** Daftar toolId yang valid (dipakai untuk validasi di server). */

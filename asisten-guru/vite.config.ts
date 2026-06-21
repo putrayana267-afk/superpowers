@@ -8,6 +8,18 @@ const apiProxy = process.env.VITE_DEV_API_PROXY;
 
 export default defineConfig({
   plugins: [react()],
+  build: {
+    rollupOptions: {
+      output: {
+        // Pisahkan vendor agar caching lebih baik & bundle awal lebih ringan.
+        manualChunks: {
+          'react-vendor': ['react', 'react-dom'],
+          motion: ['framer-motion'],
+          markdown: ['react-markdown', 'remark-gfm'],
+        },
+      },
+    },
+  },
   server: apiProxy
     ? {
         proxy: {

@@ -22,6 +22,8 @@ interface ApiResponse {
   status(code: number): ApiResponse;
   json(data: unknown): void;
   setHeader(name: string, value: string): void;
+  write(chunk: string): void;
+  end(): void;
 }
 
 const ANTHROPIC_URL = 'https://api.anthropic.com/v1/messages';
@@ -31,6 +33,12 @@ const MAX_TOKENS = 2000;
 interface RequestBody {
   toolId?: unknown;
   inputs?: unknown;
+  stream?: unknown;
+}
+
+interface SseDelta {
+  type?: string;
+  delta?: { type?: string; text?: string };
 }
 
 interface AnthropicTextBlock {
@@ -102,6 +110,8 @@ export default async function handler(
     return;
   }
 
+  const wantStream = body.stream === true;
+
   // Timeout sisi server agar fungsi tidak menggantung.
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 55_000);
@@ -118,6 +128,7 @@ export default async function handler(
       body: JSON.stringify({
         model,
         max_tokens: MAX_TOKENS,
+        stream: wantStream,
         system: systemPrompt,
         messages: [{ role: 'user', content: userPrompt }],
       }),
@@ -151,6 +162,72 @@ export default async function handler(
     res.status(502).json({
       error: 'Terjadi kendala saat membuat hasil. Silakan coba lagi.',
     });
+    return;
+  }
+
+  // --- Mode streaming (SSE): teruskan delta teks ke client secara bertahap. ---
+  if (wantStream) {
+    if (!anthropicRes.body) {
+      res.status(502).json({ error: 'Respons dari layanan AI tidak valid.' });
+      return;
+    }
+
+    res.setHeader('content-type', 'text/event-stream; charset=utf-8');
+    res.setHeader('cache-control', 'no-cache, no-transform');
+    res.setHeader('connection', 'keep-alive');
+    res.status(200);
+
+    const reader = anthropicRes.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = '';
+    let sentAny = false;
+
+    try {
+      for (;;) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buffer += decoder.decode(value, { stream: true });
+
+        // Event SSE dipisah baris kosong ("\n\n").
+        const events = buffer.split('\n\n');
+        buffer = events.pop() ?? '';
+        for (const evt of events) {
+          for (const line of evt.split('\n')) {
+            const trimmed = line.trim();
+            if (!trimmed.startsWith('data:')) continue;
+            const dataStr = trimmed.slice(5).trim();
+            if (!dataStr || dataStr === '[DONE]') continue;
+
+            let parsed: SseDelta;
+            try {
+              parsed = JSON.parse(dataStr) as SseDelta;
+            } catch {
+              continue;
+            }
+            if (
+              parsed.type === 'content_block_delta' &&
+              parsed.delta?.type === 'text_delta' &&
+              typeof parsed.delta.text === 'string'
+            ) {
+              sentAny = true;
+              res.write(`data: ${JSON.stringify({ text: parsed.delta.text })}\n\n`);
+            }
+          }
+        }
+      }
+    } catch {
+      res.write(
+        `data: ${JSON.stringify({ error: 'Koneksi terputus saat membuat hasil. Coba lagi.' })}\n\n`,
+      );
+    }
+
+    if (!sentAny) {
+      res.write(
+        `data: ${JSON.stringify({ error: 'Hasil kosong diterima dari layanan AI. Coba buat ulang.' })}\n\n`,
+      );
+    }
+    res.write('data: [DONE]\n\n');
+    res.end();
     return;
   }
 
