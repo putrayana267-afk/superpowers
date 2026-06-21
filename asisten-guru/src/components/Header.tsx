@@ -1,0 +1,56 @@
+import { GraduationCap, History, Menu } from 'lucide-react';
+import { Button } from './Button';
+
+interface HeaderProps {
+  onOpenMenu: () => void;
+  onOpenHistory: () => void;
+  historyCount: number;
+}
+
+export function Header({ onOpenMenu, onOpenHistory, historyCount }: HeaderProps) {
+  return (
+    <header className="sticky top-0 z-30 border-b border-white/30 bg-white/40 backdrop-blur-xl">
+      <div className="mx-auto flex h-16 max-w-7xl items-center gap-3 px-4 sm:px-6">
+        <button
+          type="button"
+          onClick={onOpenMenu}
+          aria-label="Buka daftar alat"
+          className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/60 text-emerald-deep hover:bg-white/90 lg:hidden"
+        >
+          <Menu className="h-5 w-5" />
+        </button>
+
+        <div className="flex items-center gap-2.5">
+          <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-deep text-white gold-edge">
+            <GraduationCap className="h-5 w-5" />
+          </span>
+          <div className="leading-tight">
+            <p className="font-display text-base font-extrabold text-emerald-deep">
+              Asisten Mengajar
+            </p>
+            <p className="hidden text-xs text-ink/50 sm:block">
+              Bantuan AI untuk guru Indonesia
+            </p>
+          </div>
+        </div>
+
+        <div className="ml-auto">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={onOpenHistory}
+            icon={<History className="h-4 w-4" />}
+            aria-label="Buka riwayat"
+          >
+            <span className="hidden sm:inline">Riwayat</span>
+            {historyCount > 0 && (
+              <span className="ml-1 inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-gold px-1.5 text-xs font-bold text-ink">
+                {historyCount}
+              </span>
+            )}
+          </Button>
+        </div>
+      </div>
+    </header>
+  );
+}
