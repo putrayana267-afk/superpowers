@@ -220,7 +220,7 @@ interface ApiResponse {
   setHeader(name: string, value: string): void;
 }
 
-const GEMINI_MODEL = process.env.GEMINI_MODEL || 'gemini-2.0-flash';
+const GEMINI_MODEL = process.env.GEMINI_MODEL || 'gemini-2.5-flash';
 const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`;
 const MAX_OUTPUT_TOKENS = 2000;
 
@@ -300,26 +300,38 @@ export default async function handler(
     return;
   }
 
-  // Timeout sisi server agar fungsi tidak menggantung.
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 55_000);
+  // Satu kali pemanggilan Gemini dengan timeout sisi server.
+  const requestBody = JSON.stringify({
+    contents: [{ role: 'user', parts: [{ text: userPrompt }] }],
+    systemInstruction: { parts: [{ text: systemPrompt }] },
+    generationConfig: { maxOutputTokens: MAX_OUTPUT_TOKENS },
+  });
+
+  const key: string = apiKey;
+  async function callGemini(): Promise<Response> {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 55_000);
+    try {
+      return await fetch(`${GEMINI_URL}?key=${encodeURIComponent(key)}`, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: requestBody,
+        signal: controller.signal,
+      });
+    } finally {
+      clearTimeout(timeout);
+    }
+  }
 
   let geminiRes: Response;
   try {
-    geminiRes = await fetch(`${GEMINI_URL}?key=${encodeURIComponent(apiKey)}`, {
-      method: 'POST',
-      headers: {
-        'content-type': 'application/json',
-      },
-      body: JSON.stringify({
-        contents: [{ role: 'user', parts: [{ text: userPrompt }] }],
-        systemInstruction: { parts: [{ text: systemPrompt }] },
-        generationConfig: { maxOutputTokens: MAX_OUTPUT_TOKENS },
-      }),
-      signal: controller.signal,
-    });
+    geminiRes = await callGemini();
+    // Retry sederhana: bila kena 429, tunggu 2 detik lalu coba ulang 1x.
+    if (geminiRes.status === 429) {
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      geminiRes = await callGemini();
+    }
   } catch (err) {
-    clearTimeout(timeout);
     if (err instanceof Error && err.name === 'AbortError') {
       res.status(504).json({
         error: 'Pembuatan hasil memakan waktu terlalu lama. Coba lagi.',
@@ -330,13 +342,11 @@ export default async function handler(
       error: 'Gagal menghubungi layanan AI. Periksa koneksi lalu coba lagi.',
     });
     return;
-  } finally {
-    clearTimeout(timeout);
   }
 
   if (geminiRes.status === 429) {
     res.status(429).json({
-      error: 'Permintaan sedang ramai. Mohon tunggu lalu coba lagi.',
+      error: 'Batas pemakaian gratis Gemini tercapai, coba lagi sebentar.',
     });
     return;
   }
