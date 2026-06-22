@@ -1,13 +1,20 @@
-import { GraduationCap, History, Menu } from 'lucide-react';
+import { GraduationCap, History, Menu, Sparkles } from 'lucide-react';
 import { Button } from './Button';
 
 interface HeaderProps {
   onOpenMenu: () => void;
   onOpenHistory: () => void;
   historyCount: number;
+  /** Buka landing showcase (opsional). */
+  onOpenShowcase?: () => void;
 }
 
-export function Header({ onOpenMenu, onOpenHistory, historyCount }: HeaderProps) {
+export function Header({
+  onOpenMenu,
+  onOpenHistory,
+  historyCount,
+  onOpenShowcase,
+}: HeaderProps) {
   return (
     <header className="sticky top-0 z-30 border-b border-white/30 bg-white/40 backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-7xl items-center gap-3 px-4 sm:px-6">
@@ -34,7 +41,18 @@ export function Header({ onOpenMenu, onOpenHistory, historyCount }: HeaderProps)
           </div>
         </div>
 
-        <div className="ml-auto">
+        <div className="ml-auto flex items-center gap-2">
+          {onOpenShowcase && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={onOpenShowcase}
+              icon={<Sparkles className="h-4 w-4" />}
+              aria-label="Buka showcase"
+            >
+              <span className="hidden sm:inline">Showcase</span>
+            </Button>
+          )}
           <Button
             variant="ghost"
             size="sm"

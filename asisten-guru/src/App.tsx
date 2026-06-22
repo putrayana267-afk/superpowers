@@ -30,6 +30,11 @@ import { useToast } from './components/Toast';
 
 type View = 'tools' | 'perpustakaan';
 
+interface AppProps {
+  /** Buka kembali landing showcase (opsional, dari Root). */
+  onOpenShowcase?: () => void;
+}
+
 // react-markdown (pemberat utama) hanya dimuat saat panel hasil dibutuhkan.
 const ResultPanel = lazy(() =>
   import('./components/ResultPanel').then((m) => ({ default: m.ResultPanel })),
@@ -64,7 +69,7 @@ function buildAllDefaults(): Record<string, ToolInputs> {
   return map;
 }
 
-export default function App() {
+export default function App({ onOpenShowcase }: AppProps) {
   const { toast } = useToast();
 
   const [activeId, setActiveId] = useState<string>(TOOLS[0].id);
@@ -229,6 +234,7 @@ export default function App() {
         onOpenMenu={() => setNavOpen(true)}
         onOpenHistory={() => setHistoryOpen(true)}
         historyCount={history.length}
+        onOpenShowcase={onOpenShowcase}
       />
 
       <div className="mx-auto flex max-w-7xl gap-6 px-4 py-6 sm:px-6">

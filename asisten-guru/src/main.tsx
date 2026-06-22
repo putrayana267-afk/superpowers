@@ -1,4 +1,4 @@
-import { StrictMode, Suspense, lazy } from 'react';
+import { StrictMode, Suspense, lazy, useCallback, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App';
 import { ToastProvider } from './components/Toast';
@@ -9,26 +9,71 @@ const PremiumHero = lazy(() =>
   import('./components/PremiumHero').then((m) => ({ default: m.PremiumHero })),
 );
 
+const LANDING_SEEN_KEY = 'asisten-guru:landing-seen';
+
+/**
+ * Root: tampilkan landing PremiumHero saat kunjungan pertama (atau saat URL
+ * berisi #showcase), lalu aplikasi. Pilihan "sudah masuk" diingat di localStorage
+ * sehingga landing tidak muncul lagi; tombol Showcase di Header membukanya lagi.
+ */
+function Root() {
+  const [showLanding, setShowLanding] = useState(() => {
+    const forced = window.location.hash === '#showcase';
+    let seen = false;
+    try {
+      seen = localStorage.getItem(LANDING_SEEN_KEY) === '1';
+    } catch {
+      seen = false;
+    }
+    return forced || !seen;
+  });
+
+  const enterApp = useCallback(() => {
+    try {
+      localStorage.setItem(LANDING_SEEN_KEY, '1');
+    } catch {
+      // abaikan kegagalan storage
+    }
+    if (window.location.hash === '#showcase') {
+      history.replaceState(
+        null,
+        '',
+        window.location.pathname + window.location.search,
+      );
+    }
+    setShowLanding(false);
+    window.scrollTo(0, 0);
+  }, []);
+
+  const openShowcase = useCallback(() => {
+    setShowLanding(true);
+    window.scrollTo(0, 0);
+  }, []);
+
+  if (showLanding) {
+    return (
+      <Suspense
+        fallback={<div className="min-h-screen bg-[#0F1115]" aria-hidden />}
+      >
+        <PremiumHero onEnter={enterApp} />
+      </Suspense>
+    );
+  }
+
+  return (
+    <ToastProvider>
+      <App onOpenShowcase={openShowcase} />
+    </ToastProvider>
+  );
+}
+
 const container = document.getElementById('root');
 if (!container) {
   throw new Error('Elemen #root tidak ditemukan di index.html');
 }
 
-// Landing showcase opsional: buka dengan #showcase pada URL. Default tetap aplikasi.
-const showLanding = window.location.hash === '#showcase';
-
 createRoot(container).render(
   <StrictMode>
-    {showLanding ? (
-      <Suspense
-        fallback={<div className="min-h-screen bg-[#0F1115]" aria-hidden />}
-      >
-        <PremiumHero />
-      </Suspense>
-    ) : (
-      <ToastProvider>
-        <App />
-      </ToastProvider>
-    )}
+    <Root />
   </StrictMode>,
 );
