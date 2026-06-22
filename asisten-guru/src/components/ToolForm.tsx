@@ -12,7 +12,7 @@ import { cn } from '../lib/cn';
 import { controlBase, controlError } from './controlStyles';
 
 /** Kunci input yang dikelola oleh field bertipe 'kurikulum'. */
-const KURIKULUM_KEYS = ['jenjang', 'mapel', 'kelas'] as const;
+const KURIKULUM_KEYS = ['jenjang', 'kelompok', 'mapel', 'pokok'] as const;
 
 interface ToolFormProps {
   tool: Tool;
@@ -78,14 +78,16 @@ export function ToolForm({
               key={field.id}
               value={{
                 jenjang: inputs.jenjang ?? '',
+                kelompok: inputs.kelompok ?? '',
                 mapel: inputs.mapel ?? '',
-                kelas: inputs.kelas ?? '',
+                pokok: inputs.pokok ?? '',
               }}
               onChange={(key, val) => onChange(key, val)}
               errors={{
                 jenjang: errors.jenjang,
+                kelompok: errors.kelompok,
                 mapel: errors.mapel,
-                kelas: errors.kelas,
+                pokok: errors.pokok,
               }}
             />
           );
@@ -133,6 +135,19 @@ export function ToolForm({
                 aria-required={field.required}
                 aria-describedby={describedBy}
                 onChange={(e) => onChange(field.id, e.target.value)}
+              />
+            ) : field.type === 'number' ? (
+              <input
+                id={field.id}
+                type="number"
+                min={1}
+                value={value}
+                placeholder={field.placeholder}
+                aria-required={field.required}
+                aria-invalid={Boolean(error)}
+                aria-describedby={describedBy}
+                onChange={(e) => onChange(field.id, e.target.value)}
+                className={cn(controlBase, error && controlError)}
               />
             ) : (
               <input

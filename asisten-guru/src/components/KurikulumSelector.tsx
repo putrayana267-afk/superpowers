@@ -1,6 +1,10 @@
 import { useState } from 'react';
 import { ChevronDown, GraduationCap } from 'lucide-react';
-import { JENJANG_NAMES, findJenjang } from '../data/kurikulum';
+import {
+  JENJANG_NAMES,
+  KELOMPOK_NAMES,
+  getMapelGroups,
+} from '../data/kurikulum';
 import type { MapelGroup } from '../data/kurikulum';
 import { Field } from './Field';
 import { cn } from '../lib/cn';
@@ -11,8 +15,9 @@ const OTHER = '__lainnya__';
 
 export interface KurikulumValue {
   jenjang: string;
+  kelompok: string;
   mapel: string;
-  kelas: string;
+  pokok: string;
 }
 
 type LevelKey = keyof KurikulumValue;
@@ -121,26 +126,23 @@ function LevelSelect({
 }
 
 /**
- * Pemilih kurikulum bertingkat: Jenjang → Mata Pelajaran → Kelas/Fase.
- * Menulis ke tiga kunci input: jenjang, mapel, kelas.
+ * Pemilih kurikulum bertingkat:
+ * Jenjang → Kelompok Kurikulum → Mata Pelajaran/Rumpun Kitab → Pokok Pembahasan.
+ * Menulis ke empat kunci input: jenjang, kelompok, mapel, pokok.
  */
 export function KurikulumSelector({
   value,
   onChange,
   errors,
 }: KurikulumSelectorProps) {
-  const jenjang = findJenjang(value.jenjang);
-  const jenjangChosen = value.jenjang !== '';
-
   const jenjangGroups: MapelGroup[] = [
     { label: 'Jenjang', mapel: JENJANG_NAMES },
   ];
-  const mapelGroups: MapelGroup[] = jenjang
-    ? jenjang.mapelGroups
-    : [{ label: 'Mata Pelajaran', mapel: [] }];
-  const kelasGroups: MapelGroup[] = jenjang
-    ? [{ label: jenjang.kelasLabel, mapel: jenjang.kelas }]
-    : [{ label: 'Kelas', mapel: [] }];
+  const kelompokGroups: MapelGroup[] = [
+    { label: 'Kelompok', mapel: KELOMPOK_NAMES },
+  ];
+  const mapelGroups = getMapelGroups(value.jenjang, value.kelompok);
+  const mapelSiap = mapelGroups.length > 0;
 
   return (
     <div className="rounded-2xl border border-white/40 bg-white/30 p-4 gold-edge">
@@ -148,44 +150,64 @@ export function KurikulumSelector({
         <GraduationCap className="h-4 w-4" />
         Kurikulum
       </div>
+
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <LevelSelect
           id="jenjang"
-          label="Jenjang"
+          label="Jenjang Pendidikan"
           value={value.jenjang}
           groups={jenjangGroups}
           error={errors?.jenjang}
           manualPlaceholder="mis. PAUD/TK"
           onChange={(v) => {
             onChange('jenjang', v);
-            // Reset pilihan turunan saat jenjang berubah.
-            onChange('mapel', '');
-            onChange('kelas', '');
+            onChange('mapel', ''); // mapel umum/madrasah ikut jenjang
           }}
         />
-        {/* key di-reset saat jenjang berubah agar mode manual ikut bersih. */}
         <LevelSelect
-          key={`mapel-${value.jenjang}`}
+          id="kelompok"
+          label="Kelompok Kurikulum"
+          value={value.kelompok}
+          groups={kelompokGroups}
+          error={errors?.kelompok}
+          manualPlaceholder="mis. SLB/Inklusi"
+          onChange={(v) => {
+            onChange('kelompok', v);
+            onChange('mapel', ''); // daftar mapel ikut kelompok
+          }}
+        />
+        <LevelSelect
+          // remount saat jenjang/kelompok berubah agar mode manual ikut bersih
+          key={`mapel-${value.jenjang}-${value.kelompok}`}
           id="mapel"
-          label="Mata Pelajaran"
+          label="Mata Pelajaran / Rumpun Kitab"
           value={value.mapel}
           groups={mapelGroups}
           error={errors?.mapel}
-          disabled={!jenjangChosen}
+          disabled={!mapelSiap}
           manualPlaceholder="mis. nama mata pelajaran"
           onChange={(v) => onChange('mapel', v)}
         />
-        <LevelSelect
-          key={`kelas-${value.jenjang}`}
-          id="kelas"
-          label={jenjang ? jenjang.kelasLabel : 'Kelas / Fase'}
-          value={value.kelas}
-          groups={kelasGroups}
-          error={errors?.kelas}
-          disabled={!jenjangChosen}
-          manualPlaceholder="mis. kelas/tingkat"
-          onChange={(v) => onChange('kelas', v)}
-        />
+      </div>
+
+      <div className="mt-4">
+        <Field
+          id="pokok"
+          label="Pokok Pembahasan (Materi/Kitab)"
+          required
+          error={errors?.pokok}
+        >
+          <input
+            id="pokok"
+            type="text"
+            value={value.pokok}
+            placeholder="cth. Bab Kalam & Kalimat (Matan Al-Jurumiyah)"
+            aria-invalid={Boolean(errors?.pokok)}
+            aria-describedby={errors?.pokok ? 'pokok-error' : undefined}
+            onChange={(e) => onChange('pokok', e.target.value)}
+            className={cn(controlBase, errors?.pokok && controlError)}
+          />
+        </Field>
       </div>
     </div>
   );

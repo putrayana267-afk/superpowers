@@ -3,6 +3,7 @@ import type { LucideIcon } from 'lucide-react';
 /** Tipe kolom input yang didukung oleh ToolForm. */
 export type FieldType =
   | 'text'
+  | 'number'
   | 'textarea'
   | 'select'
   | 'toggle'

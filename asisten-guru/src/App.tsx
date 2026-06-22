@@ -37,10 +37,11 @@ function buildDefaults(tool: Tool): ToolInputs {
   const obj: ToolInputs = {};
   for (const field of tool.fields) {
     if (field.type === 'kurikulum') {
-      // Field kurikulum mengelola tiga kunci turunan.
+      // Field kurikulum mengelola empat kunci turunan.
       obj.jenjang = '';
+      obj.kelompok = '';
       obj.mapel = '';
-      obj.kelas = '';
+      obj.pokok = '';
     } else if (field.type === 'select') {
       obj[field.id] = field.defaultValue ?? field.options?.[0]?.value ?? '';
     } else if (field.type === 'toggle') {

@@ -21,10 +21,6 @@ const BASE_SYSTEM_PROMPT =
   'Gunakan format Markdown yang rapi (judul, daftar, tabel bila perlu). ' +
   'Jangan menambahkan basa-basi pembuka atau penutup di luar materi yang diminta.';
 
-function isOn(value: string | undefined): boolean {
-  return value === 'true' || value === 'on' || value === '1';
-}
-
 function val(inputs: ToolInputs, key: string): string {
   return (inputs[key] ?? '').trim();
 }
@@ -38,123 +34,126 @@ function contextLines(pairs: Array<[string, string]>): string {
 
 type Builder = (inputs: ToolInputs) => { instruction: string; context: string };
 
+/** Baris konteks kurikulum yang dipakai semua alat. */
+function kurikulumContext(i: ToolInputs): Array<[string, string]> {
+  return [
+    ['Jenjang pendidikan', val(i, 'jenjang')],
+    ['Kelompok kurikulum', val(i, 'kelompok')],
+    ['Mata pelajaran/Rumpun kitab', val(i, 'mapel')],
+    ['Pokok pembahasan (materi/kitab)', val(i, 'pokok')],
+  ];
+}
+
 const builders: Record<string, Builder> = {
   'modul-ajar': (i) => ({
     context: contextLines([
-      ['Jenjang', val(i, 'jenjang')],
-      ['Mata pelajaran', val(i, 'mapel')],
-      ['Kelas/Fase', val(i, 'kelas')],
-      ['Topik', val(i, 'topik')],
+      ...kurikulumContext(i),
       ['Alokasi waktu', val(i, 'waktu')],
-      ['Catatan tambahan', val(i, 'catatan')],
+      ['Profil Pelajar Pancasila yang ditekankan', val(i, 'profil')],
     ]),
     instruction:
-      'Buat MODUL AJAR Kurikulum Merdeka yang lengkap dan siap pakai. Sertakan bagian berurutan:\n' +
+      'Buat MODUL AJAR Kurikulum Merdeka yang lengkap dan siap pakai untuk pokok pembahasan di atas. Sertakan bagian berurutan:\n' +
       '1. **Tujuan Pembelajaran** (poin-poin yang terukur).\n' +
-      '2. **Profil Pelajar Pancasila** (dimensi yang relevan beserta alasan singkat).\n' +
+      '2. **Profil Pelajar Pancasila** (tonjolkan dimensi yang ditekankan beserta alasan singkat).\n' +
       '3. **Media & Alat** yang dibutuhkan.\n' +
       '4. **Kegiatan Pembelajaran** dengan sub-bagian Pendahuluan, Inti, dan Penutup; ' +
       'cantumkan estimasi menit pada tiap sub-bagian agar total sesuai alokasi waktu.\n' +
-      '5. **Asesmen** (jenis asesmen) disertai contoh instrumen/pertanyaan nyata.' +
-      (isOn(val(i, 'islami'))
-        ? '\nIntegrasikan nilai-nilai Islami secara wajar dan relevan pada tujuan dan kegiatan, tanpa memaksakan.'
-        : ''),
+      '5. **Asesmen** (jenis asesmen) disertai contoh instrumen/pertanyaan nyata.\n' +
+      'Sesuaikan kedalaman materi dengan jenjang dan kelompok kurikulum yang dipilih ' +
+      '(untuk Kekhasan Pesantren, gunakan pendekatan kitab kuning/dirasah islamiyah).',
   }),
 
-  'bank-soal': (i) => ({
-    context: contextLines([
-      ['Jenjang', val(i, 'jenjang')],
-      ['Mata pelajaran', val(i, 'mapel')],
-      ['Kelas', val(i, 'kelas')],
-      ['Topik', val(i, 'topik')],
-      ['Jenis soal', val(i, 'jenis')],
-      ['Jumlah soal', val(i, 'jumlah')],
-      ['Tingkat kesulitan', val(i, 'kesulitan')],
-    ]),
-    instruction:
-      'Buat BANK SOAL sesuai parameter di atas. Aturan:\n' +
-      '- Tulis soal bernomor urut.\n' +
-      '- Untuk soal Pilihan Ganda: sediakan 4 opsi (A, B, C, D) dengan tepat satu jawaban benar.\n' +
-      '- Setelah seluruh soal, buat bagian terpisah dengan judul **KUNCI JAWABAN**.\n' +
-      '- Untuk soal Esai/Isian/HOTS: pada kunci jawaban sertakan poin-poin penilaian atau jawaban acuan.\n' +
-      '- Pastikan tingkat kesulitan konsisten dengan yang diminta (HOTS = analisis/evaluasi/mencipta).',
-  }),
+  'bank-soal': (i) => {
+    const jumlah = val(i, 'jumlah') || '5';
+    return {
+      context: contextLines([
+        ...kurikulumContext(i),
+        ['Jumlah soal', jumlah],
+        ['Tingkat kesulitan kognitif', val(i, 'kesulitan')],
+      ]),
+      instruction:
+        `Hasilkan TEPAT ${jumlah} butir soal LENGKAP (pertanyaan + pilihan A-E + kunci jawaban + pembahasan). ` +
+        `Jangan berhenti sebelum SEMUA ${jumlah} soal selesai. Jangan menyingkat.\n\n` +
+        'Format tiap butir soal:\n' +
+        '- Nomor urut dan pertanyaan yang jelas.\n' +
+        '- 5 pilihan jawaban berlabel A, B, C, D, E (tepat satu yang benar).\n' +
+        '- **Kunci Jawaban**: tulis hurufnya.\n' +
+        '- **Pembahasan**: penjelasan ringkas mengapa jawaban itu benar.\n' +
+        'Sesuaikan dengan tingkat kesulitan kognitif yang diminta (C1–C2 mudah, C3–C4 sedang, C5–C6 sulit) ' +
+        'serta jenjang, mata pelajaran, dan pokok pembahasan di atas.',
+    };
+  },
 
   lkpd: (i) => ({
     context: contextLines([
-      ['Jenjang', val(i, 'jenjang')],
-      ['Mata pelajaran', val(i, 'mapel')],
-      ['Kelas', val(i, 'kelas')],
-      ['Topik', val(i, 'topik')],
-      ['Tujuan', val(i, 'tujuan')],
-      ['Jenis aktivitas', val(i, 'aktivitas')],
+      ...kurikulumContext(i),
+      ['Metode pembelajaran', val(i, 'metode')],
+      ['Petunjuk singkat kegiatan', val(i, 'petunjuk')],
     ]),
     instruction:
-      'Buat LKPD (Lembar Kerja Peserta Didik) lengkap dengan struktur:\n' +
+      'Buat LKPD (Lembar Kerja Peserta Didik) lengkap, selaras dengan metode pembelajaran dan petunjuk singkat di atas, dengan struktur:\n' +
       '1. **Judul LKPD**.\n' +
       '2. **Tujuan**.\n' +
       '3. **Alat & Bahan**.\n' +
       '4. **Petunjuk Pengerjaan**.\n' +
-      '5. **Langkah Kegiatan** (berurutan dan jelas).\n' +
+      '5. **Langkah Kegiatan** (berurutan dan jelas, mencerminkan metode pembelajaran).\n' +
       '6. **Pertanyaan Refleksi**.\n' +
       '7. **Kolom Jawaban** (sediakan ruang/garis kosong yang ditandai untuk diisi siswa).',
   }),
 
-  rubrik: (i) => ({
-    context: contextLines([
-      ['Tugas/kegiatan dinilai', val(i, 'tugas')],
-      ['Jenjang', val(i, 'jenjang')],
-      ['Mata pelajaran', val(i, 'mapel')],
-      ['Kelas', val(i, 'kelas')],
-      ['Aspek yang dinilai', val(i, 'aspek')],
-      ['Skala', val(i, 'skala')],
-    ]),
-    instruction:
-      'Buat RUBRIK PENILAIAN dalam bentuk tabel Markdown. Aturan:\n' +
-      '- Baris = kriteria/aspek penilaian; kolom = level pencapaian sesuai skala.\n' +
-      '- Setiap sel berisi deskriptor yang jelas dan dapat diamati.\n' +
-      '- Setelah tabel, jelaskan **Cara Menghitung Nilai Akhir** beserta contoh perhitungan.',
-  }),
+  rubrik: (i) => {
+    const levelRaw = val(i, 'level') || '4 Level';
+    const levelNum = levelRaw.match(/\d+/)?.[0] ?? '4';
+    return {
+      context: contextLines([
+        ...kurikulumContext(i),
+        ['Tugas/proyek yang dinilai', val(i, 'tugas')],
+        ['Fokus kriteria', val(i, 'fokus')],
+        ['Jumlah level skor', levelRaw],
+      ]),
+      instruction:
+        'Buat RUBRIK PENILAIAN dalam bentuk tabel Markdown. Aturan:\n' +
+        `- Gunakan tepat ${levelNum} level pencapaian sebagai kolom skor.\n` +
+        '- Baris = kriteria penilaian (turunkan dari fokus kriteria di atas).\n' +
+        '- Setiap sel berisi deskriptor yang jelas dan dapat diamati.\n' +
+        '- Setelah tabel, jelaskan **Cara Menghitung Nilai Akhir** beserta contoh perhitungan.',
+    };
+  },
 
   sederhana: (i) => ({
     context: contextLines([
-      ['Untuk kelas', val(i, 'kelas')],
-      ['Gaya penyajian', val(i, 'gaya')],
-      ['Materi asli', val(i, 'materi')],
+      ...kurikulumContext(i),
+      ['Gaya bahasa/tone', val(i, 'gaya')],
     ]),
     instruction:
-      'Sederhanakan materi di atas agar mudah dipahami siswa pada kelas yang dituju, ' +
-      'menggunakan gaya penyajian yang diminta. Jaga keakuratan konsep. ' +
+      'Jelaskan ulang POKOK PEMBAHASAN di atas agar mudah dipahami siswa pada jenjang yang dituju, ' +
+      'menggunakan gaya bahasa/tone yang diminta. Jaga keakuratan konsep. ' +
       'Akhiri dengan bagian berjudul **INTI YANG HARUS DIINGAT** berisi tepat 3 poin paling penting.',
   }),
 
   rapor: (i) => ({
     context: contextLines([
+      ...kurikulumContext(i),
       ['Nama siswa', val(i, 'nama')],
-      ['Aspek/mapel', val(i, 'aspek')],
-      ['Catatan tentang siswa', val(i, 'catatan')],
-      ['Nada', val(i, 'nada')],
+      ['Capaian terbaik', val(i, 'capaian')],
+      ['Aspek perlu ditingkatkan', val(i, 'peningkatan')],
     ]),
     instruction:
       'Buat 3 ALTERNATIF komentar rapor / deskripsi capaian. Aturan tiap alternatif:\n' +
       '- Panjang 2–3 kalimat.\n' +
-      '- Sebutkan kekuatan siswa terlebih dahulu, lalu area pengembangan secara positif dan membangun.\n' +
-      '- Gunakan nada yang diminta dan hindari kalimat yang menjatuhkan.\n' +
-      '- Bila nama siswa kosong, gunakan frasa netral seperti "Ananda".' +
-      (isOn(val(i, 'islami'))
-        ? '\nSelipkan nuansa Islami yang santun bila relevan.'
-        : ''),
+      '- Sebutkan capaian terbaik terlebih dahulu, lalu aspek yang perlu ditingkatkan secara positif dan membangun.\n' +
+      '- Kaitkan dengan mata pelajaran/pokok pembahasan bila relevan.\n' +
+      '- Bila nama siswa kosong, gunakan frasa netral seperti "Ananda".',
   }),
 
   'ide-kegiatan': (i) => ({
     context: contextLines([
-      ['Mapel/tema', val(i, 'tema')],
-      ['Kelas', val(i, 'kelas')],
-      ['Tujuan', val(i, 'tujuan')],
+      ...kurikulumContext(i),
       ['Jenis kegiatan', val(i, 'jenis')],
     ]),
     instruction:
-      'Buat tepat 4 IDE KEGIATAN. Untuk setiap ide tuliskan:\n' +
+      'Buat tepat 4 IDE KEGIATAN bertipe sesuai jenis kegiatan yang dipilih, relevan dengan pokok pembahasan di atas. ' +
+      'Untuk setiap ide tuliskan:\n' +
       '- **Nama kegiatan**.\n' +
       '- **Durasi** perkiraan.\n' +
       '- **Alat/Bahan** (utamakan yang murah dan mudah didapat).\n' +
@@ -164,25 +163,23 @@ const builders: Record<string, Builder> = {
 
   'komunikasi-ortu': (i) => ({
     context: contextLines([
+      ...kurikulumContext(i),
+      ['Nama murid', val(i, 'nama')],
       ['Tujuan pesan', val(i, 'tujuan')],
-      ['Konteks singkat', val(i, 'konteks')],
-      ['Kanal', val(i, 'kanal')],
-      ['Nada', val(i, 'nada')],
+      ['Saluran', val(i, 'saluran')],
+      ['Catatan spesifik', val(i, 'catatan')],
     ]),
     instruction:
-      'Buat draf pesan komunikasi kepada orang tua yang siap kirim. Aturan:\n' +
+      'Buat draf pesan komunikasi kepada orang tua/wali yang siap kirim. Aturan:\n' +
       '- Sopan, jelas, ringkas, dan langsung pada tujuan.\n' +
-      '- Sesuaikan dengan kanal: untuk WhatsApp gunakan gaya pesan singkat; ' +
-      'untuk surat sertakan pembuka dan penutup formal.\n' +
-      '- Gunakan nada yang diminta.',
+      '- Sesuaikan dengan saluran: untuk WhatsApp gunakan gaya pesan singkat dan hangat; ' +
+      'untuk Email sertakan baris subjek, salam pembuka, isi, dan penutup formal.\n' +
+      '- Sebut nama murid dan kaitkan dengan catatan spesifik di atas.',
   }),
 
   'kisi-kisi': (i) => ({
     context: contextLines([
-      ['Jenjang', val(i, 'jenjang')],
-      ['Mata pelajaran', val(i, 'mapel')],
-      ['Kelas', val(i, 'kelas')],
-      ['Materi/cakupan', val(i, 'materi')],
+      ...kurikulumContext(i),
       ['Jumlah soal', val(i, 'jumlah')],
       ['Bentuk soal', val(i, 'bentuk')],
     ]),
@@ -228,7 +225,7 @@ interface ApiResponse {
 
 const GEMINI_MODEL = process.env.GEMINI_MODEL || 'gemini-2.5-flash';
 const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`;
-const MAX_OUTPUT_TOKENS = 2000;
+const MAX_OUTPUT_TOKENS = 8192;
 
 interface RequestBody {
   toolId?: unknown;
@@ -377,6 +374,14 @@ export default async function handler(
   if (data.promptFeedback?.blockReason) {
     res.status(502).json({
       error: 'Permintaan tidak dapat diproses. Coba ubah input lalu ulangi.',
+    });
+    return;
+  }
+
+  // Output terpotong karena mencapai batas token.
+  if (data.candidates?.[0]?.finishReason === 'MAX_TOKENS') {
+    res.status(502).json({
+      error: 'Output terpotong, kurangi jumlah soal atau coba lagi.',
     });
     return;
   }
