@@ -10,7 +10,7 @@ import {
   buildSystemPrompt,
   buildUserPrompt,
   VALID_TOOL_IDS,
-} from '../src/features/tools/prompts';
+} from './_prompts';
 
 // Tipe minimal agar tidak bergantung pada paket @vercel/node.
 interface ApiRequest {

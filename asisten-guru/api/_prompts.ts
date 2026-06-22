@@ -1,12 +1,15 @@
 /**
- * Builder prompt — modul ini SENGAJA bebas dari import React/lucide sehingga
- * dapat diimpor oleh serverless function (`api/generate.ts`) maupun frontend.
+ * Builder prompt untuk serverless function.
+ *
+ * Modul ini SENGAJA berada di dalam folder `api/` dan tidak mengimpor apa pun
+ * dari `src/`, sehingga selalu ikut ter-bundle oleh @vercel/node. (Mengimpor
+ * file .ts dari luar folder api tidak dijamin ikut ter-bundle Vercel.)
  *
  * Alur: server menerima { toolId, inputs }, lalu memanggil buildSystemPrompt()
  * dan buildUserPrompt(toolId, inputs) untuk menyusun pesan ke Anthropic API.
  */
 
-import type { ToolInputs } from './types';
+type ToolInputs = Record<string, string>;
 
 /** System prompt dasar yang dipakai semua alat. */
 export const BASE_SYSTEM_PROMPT =

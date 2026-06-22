@@ -100,10 +100,11 @@ npm run preview   # pratinjau hasil build
 ```
 asisten-guru/
 ├─ api/
-│  └─ generate.ts            # proxy ke Anthropic API (API key dari env)
+│  ├─ generate.ts            # proxy ke Anthropic API (API key dari env)
+│  └─ _prompts.ts            # system prompt + builder prompt per alat
 ├─ src/
 │  ├─ components/            # UI reusable (GlassCard, Button, ToolForm, ...)
-│  ├─ features/tools/        # types.ts, registry.ts (daftar alat), prompts.ts
+│  ├─ features/tools/        # types.ts, registry.ts (daftar alat)
 │  ├─ services/ai.ts         # generate(toolId, inputs) -> POST /api/generate
 │  ├─ lib/                   # cn, clipboard, download, storage
 │  ├─ App.tsx
@@ -121,4 +122,5 @@ asisten-guru/
 ```
 
 Menambah alat baru cukup menambahkan satu entri di `src/features/tools/registry.ts`
-(skema field + metadata) dan satu builder prompt di `src/features/tools/prompts.ts`.
+(skema field + metadata) dan satu builder prompt di `api/_prompts.ts` (builder
+prompt diletakkan di dalam folder `api/` agar selalu ikut ter-bundle Vercel).
