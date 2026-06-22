@@ -93,7 +93,21 @@ export const TOOLS: Tool[] = [
     category: 'Perencanaan',
     fields: [
       KURIKULUM_FIELD,
-      { id: 'waktu', label: 'Alokasi Waktu', type: 'text', required: true, placeholder: 'mis. 2 x 40 menit' },
+      {
+        id: 'waktu',
+        label: 'Alokasi Waktu',
+        type: 'text',
+        required: true,
+        placeholder: 'mis. 2 × 40 menit',
+        autoWaktu: true,
+        suggest: {
+          label: 'Sarankan',
+          mode: 'replace',
+          instruction:
+            "Sarankan satu alokasi waktu pembelajaran yang wajar untuk konteks di atas. " +
+            "Jawab singkat dalam format seperti '2 × 40 menit' atau '3 JP'. Hanya jawabannya, tanpa penjelasan.",
+        },
+      },
       { id: 'profil', label: 'Profil Pelajar Pancasila', type: 'select', required: true, options: PROFIL_OPTIONS, defaultValue: PROFIL_OPTIONS[4].value },
     ],
     ctaLabel: 'Buat Modul Ajar',
@@ -133,7 +147,21 @@ export const TOOLS: Tool[] = [
     fields: [
       KURIKULUM_FIELD,
       { id: 'metode', label: 'Metode Pembelajaran', type: 'select', required: true, options: METODE_OPTIONS, defaultValue: 'Diskusi Kelompok' },
-      { id: 'petunjuk', label: 'Petunjuk Singkat Kegiatan', type: 'textarea', required: true, placeholder: 'mis. siswa berkelompok merangkai rangkaian listrik sederhana', rows: 3 },
+      {
+        id: 'petunjuk',
+        label: 'Petunjuk Singkat Kegiatan',
+        type: 'textarea',
+        required: true,
+        placeholder: 'mis. siswa berkelompok merangkai rangkaian listrik sederhana',
+        rows: 3,
+        suggest: {
+          label: '✨ Buat otomatis',
+          mode: 'replace',
+          instruction:
+            'Susun petunjuk singkat kegiatan LKPD (2-4 kalimat) berdasarkan mata pelajaran, ' +
+            'pokok pembahasan, dan metode pembelajaran di atas. Praktis dan langsung diterapkan. Hanya petunjuknya.',
+        },
+      },
     ],
     ctaLabel: 'Buat LKPD',
   },
@@ -145,8 +173,35 @@ export const TOOLS: Tool[] = [
     category: 'Asesmen',
     fields: [
       KURIKULUM_FIELD,
-      { id: 'tugas', label: 'Tugas/Proyek yang Dinilai', type: 'text', required: true, placeholder: 'mis. Presentasi Kelompok' },
-      { id: 'fokus', label: 'Fokus Kriteria', type: 'textarea', required: true, placeholder: 'mis. isi, penyampaian, kerja sama', rows: 2 },
+      {
+        id: 'tugas',
+        label: 'Tugas/Proyek yang Dinilai',
+        type: 'text',
+        required: true,
+        placeholder: 'mis. Presentasi Kelompok',
+        suggest: {
+          label: '✨ Sarankan',
+          mode: 'replace',
+          instruction:
+            'Usulkan SATU judul tugas/proyek yang relevan untuk dinilai sesuai konteks di atas. ' +
+            'Jawab singkat dalam satu baris, hanya judul tugasnya.',
+        },
+      },
+      {
+        id: 'fokus',
+        label: 'Fokus Kriteria',
+        type: 'textarea',
+        required: true,
+        placeholder: 'mis. isi, penyampaian, kerja sama',
+        rows: 2,
+        suggest: {
+          label: '✨ Sarankan',
+          mode: 'replace',
+          instruction:
+            'Usulkan poin-poin fokus kriteria penilaian (3-5 poin) untuk tugas dan konteks di atas. ' +
+            'Jawab sebagai daftar singkat, satu poin per baris.',
+        },
+      },
       { id: 'level', label: 'Jumlah Level Skor', type: 'select', required: true, options: LEVEL_SKOR_OPTIONS, defaultValue: '4 Level' },
     ],
     ctaLabel: 'Buat Rubrik',

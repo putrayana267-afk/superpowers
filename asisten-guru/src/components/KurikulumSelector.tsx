@@ -7,8 +7,15 @@ import {
 } from '../data/kurikulum';
 import type { MapelGroup } from '../data/kurikulum';
 import { Field } from './Field';
+import { FieldSuggest } from './FieldSuggest';
 import { cn } from '../lib/cn';
 import { controlBase, controlError } from './controlStyles';
+
+const POKOK_INSTRUCTION =
+  'Berikan 6-8 topik/bab pembelajaran yang RELEVAN dan runtut untuk konteks di atas ' +
+  '(jenjang, kelompok kurikulum, mata pelajaran). Untuk Kekhasan Pesantren, sebutkan ' +
+  'bab/kitab yang lazim dipelajari. Jawab HANYA daftar, satu topik per baris, tanpa nomor, ' +
+  'tanpa penjelasan tambahan.';
 
 /** Nilai sentinel untuk opsi "Lainnya (ketik manual)". */
 const OTHER = '__lainnya__';
@@ -206,6 +213,19 @@ export function KurikulumSelector({
             aria-describedby={errors?.pokok ? 'pokok-error' : undefined}
             onChange={(e) => onChange('pokok', e.target.value)}
             className={cn(controlBase, errors?.pokok && controlError)}
+          />
+          <FieldSuggest
+            label="✨ Sarankan Pokok Pembahasan"
+            instruction={POKOK_INSTRUCTION}
+            mode="list"
+            disabled={!value.jenjang || !value.mapel}
+            disabledHint="Pilih jenjang dan mata pelajaran dulu"
+            context={{
+              Jenjang: value.jenjang,
+              'Kelompok Kurikulum': value.kelompok,
+              'Mata Pelajaran': value.mapel,
+            }}
+            onFill={(v) => onChange('pokok', v)}
           />
         </Field>
       </div>

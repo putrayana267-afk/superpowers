@@ -15,6 +15,16 @@ export interface FieldOption {
   value: string;
 }
 
+/** Konfigurasi tombol "Isi otomatis" berbasis AI pada sebuah field. */
+export interface SuggestConfig {
+  /** Teks tombol, mis. "✨ Sarankan". */
+  label: string;
+  /** 'replace' mengisi langsung; 'list' menampilkan pilihan yang bisa diklik. */
+  mode: 'replace' | 'list';
+  /** Instruksi inti untuk Gemini (konteks ditambahkan otomatis). */
+  instruction: string;
+}
+
 /** Definisi satu kolom input dari sebuah alat. */
 export interface ToolField {
   /** Kunci yang dipakai pada objek inputs. */
@@ -31,6 +41,10 @@ export interface ToolField {
   defaultValue?: string;
   /** Untuk textarea: jumlah baris awal. */
   rows?: number;
+  /** Tombol isi-otomatis AI untuk field ini (opsional). */
+  suggest?: SuggestConfig;
+  /** Isi default alokasi waktu otomatis menyesuaikan jenjang. */
+  autoWaktu?: boolean;
 }
 
 /** Definisi lengkap sebuah alat. */

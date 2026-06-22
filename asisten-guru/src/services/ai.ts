@@ -79,3 +79,61 @@ export async function generate(
   }
   return text;
 }
+
+/**
+ * Saran cepat (isi otomatis) untuk satu field: kirim instruksi + konteks ke
+ * `/api/suggest`, kembalikan teks pendek. Melempar GenerateError yang ramah.
+ */
+export async function suggest(
+  instruction: string,
+  context: Record<string, string>,
+): Promise<string> {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 35_000);
+
+  let response: Response;
+  try {
+    response = await fetch('/api/suggest', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ instruction, context }),
+      signal: controller.signal,
+    });
+  } catch (err) {
+    clearTimeout(timeout);
+    if (err instanceof DOMException && err.name === 'AbortError') {
+      throw new GenerateError(FRIENDLY_TIMEOUT);
+    }
+    throw new GenerateError(FRIENDLY_NETWORK);
+  } finally {
+    clearTimeout(timeout);
+  }
+
+  if (response.status === 429) {
+    throw new GenerateError('Batas Gemini tercapai, coba sebentar lagi.');
+  }
+
+  if (!response.ok) {
+    let serverMessage = '';
+    try {
+      const data = (await response.json()) as GenerateResponse;
+      if (data.error) serverMessage = data.error;
+    } catch {
+      // abaikan
+    }
+    throw new GenerateError(serverMessage || FRIENDLY_SERVER);
+  }
+
+  let data: GenerateResponse;
+  try {
+    data = (await response.json()) as GenerateResponse;
+  } catch {
+    throw new GenerateError(FRIENDLY_SERVER);
+  }
+
+  const text = (data.text ?? '').trim();
+  if (!text) {
+    throw new GenerateError('Saran kosong. Coba lagi.');
+  }
+  return text;
+}

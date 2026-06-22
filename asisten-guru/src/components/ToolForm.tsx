@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { FormEvent } from 'react';
 import { Wand2, Loader2 } from 'lucide-react';
 import type { Tool, ToolInputs } from '../features/tools/types';
@@ -8,11 +8,23 @@ import { TextArea } from './TextArea';
 import { Toggle } from './Toggle';
 import { Button } from './Button';
 import { KurikulumSelector } from './KurikulumSelector';
+import { FieldSuggest } from './FieldSuggest';
 import { cn } from '../lib/cn';
 import { controlBase, controlError } from './controlStyles';
+import { buildSuggestContext } from '../lib/suggestContext';
 
 /** Kunci input yang dikelola oleh field bertipe 'kurikulum'. */
 const KURIKULUM_KEYS = ['jenjang', 'kelompok', 'mapel', 'pokok'] as const;
+
+/** Default alokasi waktu menyesuaikan jenjang. */
+function defaultAlokasiWaktu(jenjang: string): string {
+  if (jenjang.startsWith('SD')) return '2 × 35 menit';
+  if (jenjang.startsWith('SMP')) return '2 × 40 menit';
+  if (jenjang.startsWith('SMA') || jenjang.startsWith('SMK')) {
+    return '2 × 45 menit';
+  }
+  return '';
+}
 
 interface ToolFormProps {
   tool: Tool;
@@ -30,6 +42,19 @@ export function ToolForm({
   loading,
 }: ToolFormProps) {
   const [errors, setErrors] = useState<Record<string, string>>({});
+
+  // Isi default alokasi waktu otomatis saat jenjang dipilih (bila masih kosong).
+  const jenjang = inputs.jenjang ?? '';
+  useEffect(() => {
+    const waktuField = tool.fields.find((f) => f.autoWaktu);
+    if (!waktuField) return;
+    if (jenjang && !(inputs[waktuField.id] ?? '').trim()) {
+      const def = defaultAlokasiWaktu(jenjang);
+      if (def) onChange(waktuField.id, def);
+    }
+    // Hanya bereaksi terhadap perubahan jenjang & alat aktif.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [jenjang, tool.id]);
 
   function validate(): boolean {
     const next: Record<string, string> = {};
@@ -160,6 +185,16 @@ export function ToolForm({
                 aria-describedby={describedBy}
                 onChange={(e) => onChange(field.id, e.target.value)}
                 className={cn(controlBase, error && controlError)}
+              />
+            )}
+
+            {field.suggest && (
+              <FieldSuggest
+                label={field.suggest.label}
+                instruction={field.suggest.instruction}
+                mode={field.suggest.mode}
+                context={buildSuggestContext(tool, inputs, field.id)}
+                onFill={(v) => onChange(field.id, v)}
               />
             )}
           </Field>
