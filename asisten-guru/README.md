@@ -37,11 +37,11 @@ Prasyarat: **Node.js 18+**.
 # 1. Pasang dependency
 npm install
 
-# 2. Salin contoh env, lalu isi kunci API Anthropic Anda
+# 2. Salin contoh env, lalu isi kunci API Google Gemini Anda
 cp .env.example .env
 # buka .env dan isi:
-#   ANTHROPIC_API_KEY=sk-ant-...
-#   ANTHROPIC_MODEL=claude-sonnet-4-6   (opsional)
+#   GEMINI_API_KEY=...            (dari https://aistudio.google.com/app/apikey)
+#   GEMINI_MODEL=gemini-2.0-flash (opsional)
 ```
 
 Karena aplikasi memerlukan fungsi `/api/generate`, cara termudah menjalankannya
@@ -81,18 +81,17 @@ npm run preview   # pratinjau hasil build
 1. Push repositori ini ke GitHub.
 2. Di [vercel.com](https://vercel.com), **Import Project** dari repo tersebut.
 3. Pada **Settings → Environment Variables**, tambahkan:
-   - `ANTHROPIC_API_KEY` = kunci API Anthropic Anda.
-   - (opsional) `ANTHROPIC_MODEL` = `claude-sonnet-4-6` atau
-     `claude-haiku-4-5-20251001` untuk hemat biaya.
+   - `GEMINI_API_KEY` = kunci API Google Gemini Anda.
+   - (opsional) `GEMINI_MODEL` = `gemini-2.0-flash` (default).
 4. Vercel otomatis mendeteksi konfigurasi (`vercel.json`), membangun frontend,
    dan men-deploy fungsi `api/generate.ts`.
 
 ## Catatan keamanan
 
-- `ANTHROPIC_API_KEY` **hanya** dibaca di `api/generate.ts` (sisi server). Kunci
+- `GEMINI_API_KEY` **hanya** dibaca di `api/generate.ts` (sisi server). Kunci
   ini tidak pernah dikirim ke browser dan tidak boleh diberi awalan `VITE_`.
 - Frontend hanya memanggil `/api/generate` dengan `{ toolId, inputs }`; seluruh
-  pemanggilan ke Anthropic terjadi di server.
+  pemanggilan ke Gemini terjadi di server.
 - `.env` sudah masuk `.gitignore` — jangan pernah meng-commit kunci asli.
 
 ## Struktur proyek
@@ -100,7 +99,7 @@ npm run preview   # pratinjau hasil build
 ```
 asisten-guru/
 ├─ api/
-│  └─ generate.ts            # proxy ke Anthropic API + builder prompt (inline)
+│  └─ generate.ts            # proxy ke Google Gemini API + builder prompt (inline)
 ├─ src/
 │  ├─ components/            # UI reusable (GlassCard, Button, ToolForm, ...)
 │  ├─ features/tools/        # types.ts, registry.ts (daftar alat)

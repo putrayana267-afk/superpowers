@@ -10,7 +10,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { X } from 'lucide-react';
 import { TOOLS, getToolById } from './features/tools/registry';
 import type { HistoryEntry, Tool, ToolInputs } from './features/tools/types';
-import { generateStream, GenerateError } from './services/ai';
+import { generate, GenerateError } from './services/ai';
 import {
   createId,
   loadHistory,
@@ -117,18 +117,8 @@ export default function App() {
     setStreaming(false);
     setCurrentEntryId(null);
 
-    let acc = '';
-    let started = false;
     try {
-      const text = await generateStream(activeTool.id, inputs, (chunk) => {
-        acc += chunk;
-        if (!started) {
-          started = true;
-          setStatus('done');
-          setStreaming(true);
-        }
-        setResult(acc);
-      });
+      const text = await generate(activeTool.id, inputs);
 
       setResult(text);
       setStatus('done');
