@@ -25,7 +25,10 @@ import type { ResultStatus } from './components/ResultPanel';
 import { HistoryDrawer } from './components/HistoryDrawer';
 import { GlassCard } from './components/GlassCard';
 import { ResultSkeleton } from './components/Skeleton';
+import { Perpustakaan, PerpustakaanIcon } from './components/Perpustakaan';
 import { useToast } from './components/Toast';
+
+type View = 'tools' | 'perpustakaan';
 
 // react-markdown (pemberat utama) hanya dimuat saat panel hasil dibutuhkan.
 const ResultPanel = lazy(() =>
@@ -78,6 +81,7 @@ export default function App() {
   const [history, setHistory] = useState<HistoryEntry[]>([]);
   const [navOpen, setNavOpen] = useState(false);
   const [historyOpen, setHistoryOpen] = useState(false);
+  const [view, setView] = useState<View>('tools');
 
   const activeTool = getToolById(activeId) ?? TOOLS[0];
   const inputs = inputsByTool[activeId];
@@ -98,6 +102,7 @@ export default function App() {
   }, [currentEntryId, history]);
 
   const handleSelectTool = useCallback((id: string) => {
+    setView('tools');
     setActiveId(id);
     setStatus('idle');
     setResult('');
@@ -180,7 +185,13 @@ export default function App() {
     );
   }, [currentEntryId]);
 
+  const handleSelectLibrary = useCallback(() => {
+    setView('perpustakaan');
+    setNavOpen(false);
+  }, []);
+
   const handleOpenEntry = useCallback((entry: HistoryEntry) => {
+    setView('tools');
     setActiveId(entry.toolId);
     setInputsByTool((prev) => ({ ...prev, [entry.toolId]: { ...entry.inputs } }));
     setResult(entry.result);
@@ -224,56 +235,86 @@ export default function App() {
         {/* Sidebar desktop */}
         <aside className="hidden w-64 flex-shrink-0 lg:block">
           <div className="sticky top-24">
-            <Sidebar activeId={activeId} onSelect={handleSelectTool} />
+            <Sidebar
+              activeId={activeId}
+              onSelect={handleSelectTool}
+              libraryActive={view === 'perpustakaan'}
+              onSelectLibrary={handleSelectLibrary}
+            />
           </div>
         </aside>
 
         {/* Area kerja */}
         <main className="min-w-0 flex-1">
-          <div className="mb-5">
-            <div className="flex items-center gap-3">
-              <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-deep text-white gold-edge">
-                <ActiveIcon className="h-5 w-5" />
-              </span>
-              <div>
-                <h1 className="font-display text-xl font-extrabold text-emerald-deep sm:text-2xl">
-                  {activeTool.title}
-                </h1>
-                <p className="text-sm text-ink/60">{activeTool.description}</p>
+          {view === 'perpustakaan' ? (
+            <>
+              <div className="mb-5">
+                <div className="flex items-center gap-3">
+                  <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-deep text-white gold-edge">
+                    <PerpustakaanIcon className="h-5 w-5" />
+                  </span>
+                  <div>
+                    <h1 className="font-display text-xl font-extrabold text-emerald-deep sm:text-2xl">
+                      Perpustakaan
+                    </h1>
+                    <p className="text-sm text-ink/60">
+                      Tautan referensi resmi buku & kitab. Dibuka di tab baru.
+                    </p>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
+              <Perpustakaan />
+            </>
+          ) : (
+            <>
+              <div className="mb-5">
+                <div className="flex items-center gap-3">
+                  <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-deep text-white gold-edge">
+                    <ActiveIcon className="h-5 w-5" />
+                  </span>
+                  <div>
+                    <h1 className="font-display text-xl font-extrabold text-emerald-deep sm:text-2xl">
+                      {activeTool.title}
+                    </h1>
+                    <p className="text-sm text-ink/60">
+                      {activeTool.description}
+                    </p>
+                  </div>
+                </div>
+              </div>
 
-          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-            <GlassCard className="h-fit" gold animate>
-              <ToolForm
-                tool={activeTool}
-                inputs={inputs}
-                onChange={handleChange}
-                onSubmit={runGenerate}
-                loading={status === 'loading'}
-              />
-            </GlassCard>
+              <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+                <GlassCard className="h-fit" gold animate>
+                  <ToolForm
+                    tool={activeTool}
+                    inputs={inputs}
+                    onChange={handleChange}
+                    onSubmit={runGenerate}
+                    loading={status === 'loading'}
+                  />
+                </GlassCard>
 
-            <GlassCard className="min-h-[420px]" animate>
-              <Suspense fallback={<ResultSkeleton />}>
-                <ResultPanel
-                  tool={activeTool}
-                  status={status}
-                  result={result}
-                  error={error}
-                  isFavorite={isFavorite}
-                  streaming={streaming}
-                  onCopy={handleCopy}
-                  onDownloadTxt={handleDownloadTxt}
-                  onDownloadDoc={handleDownloadDoc}
-                  onRegenerate={runGenerate}
-                  onToggleFavorite={handleToggleFavoriteCurrent}
-                  onRetry={runGenerate}
-                />
-              </Suspense>
-            </GlassCard>
-          </div>
+                <GlassCard className="min-h-[420px]" animate>
+                  <Suspense fallback={<ResultSkeleton />}>
+                    <ResultPanel
+                      tool={activeTool}
+                      status={status}
+                      result={result}
+                      error={error}
+                      isFavorite={isFavorite}
+                      streaming={streaming}
+                      onCopy={handleCopy}
+                      onDownloadTxt={handleDownloadTxt}
+                      onDownloadDoc={handleDownloadDoc}
+                      onRegenerate={runGenerate}
+                      onToggleFavorite={handleToggleFavoriteCurrent}
+                      onRetry={runGenerate}
+                    />
+                  </Suspense>
+                </GlassCard>
+              </div>
+            </>
+          )}
         </main>
       </div>
 
@@ -312,7 +353,12 @@ export default function App() {
                 </button>
               </div>
               <div className="flex-1 overflow-y-auto p-4">
-                <Sidebar activeId={activeId} onSelect={handleSelectTool} />
+                <Sidebar
+                  activeId={activeId}
+                  onSelect={handleSelectTool}
+                  libraryActive={view === 'perpustakaan'}
+                  onSelectLibrary={handleSelectLibrary}
+                />
               </div>
             </motion.div>
           </div>

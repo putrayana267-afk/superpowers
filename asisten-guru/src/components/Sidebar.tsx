@@ -1,19 +1,62 @@
 import { motion, useReducedMotion } from 'framer-motion';
+import { Library } from 'lucide-react';
 import { TOOLS, getCategories } from '../features/tools/registry';
 import { cn } from '../lib/cn';
 
 interface SidebarProps {
   activeId: string;
   onSelect: (id: string) => void;
+  libraryActive: boolean;
+  onSelectLibrary: () => void;
 }
 
 /** Daftar navigasi alat, dikelompokkan per kategori. */
-export function Sidebar({ activeId, onSelect }: SidebarProps) {
+export function Sidebar({
+  activeId,
+  onSelect,
+  libraryActive,
+  onSelectLibrary,
+}: SidebarProps) {
   const reduce = useReducedMotion();
   const categories = getCategories();
 
   return (
-    <nav aria-label="Daftar alat" className="flex flex-col gap-5">
+    <nav aria-label="Navigasi" className="flex flex-col gap-5">
+      <div>
+        <h2 className="mb-2 px-2 text-xs font-semibold uppercase tracking-wider text-emerald-deep/60">
+          Referensi
+        </h2>
+        <button
+          type="button"
+          onClick={onSelectLibrary}
+          aria-current={libraryActive ? 'page' : undefined}
+          className={cn(
+            'group relative flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm transition-colors',
+            libraryActive
+              ? 'bg-white/80 font-semibold text-emerald-deep shadow-glass'
+              : 'text-ink/70 hover:bg-white/50 hover:text-emerald-deep',
+          )}
+        >
+          {libraryActive && (
+            <motion.span
+              layoutId={reduce ? undefined : 'sidebar-active'}
+              className="absolute left-0 top-1/2 h-6 w-1 -translate-y-1/2 rounded-r-full bg-gold"
+            />
+          )}
+          <span
+            className={cn(
+              'flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg transition-colors',
+              libraryActive
+                ? 'bg-emerald-deep text-white'
+                : 'bg-emerald-soft text-emerald-deep group-hover:bg-emerald-deep/10',
+            )}
+          >
+            <Library className="h-4 w-4" />
+          </span>
+          <span className="truncate">Perpustakaan</span>
+        </button>
+      </div>
+
       {categories.map((category) => (
         <div key={category}>
           <h2 className="mb-2 px-2 text-xs font-semibold uppercase tracking-wider text-emerald-deep/60">
@@ -22,7 +65,7 @@ export function Sidebar({ activeId, onSelect }: SidebarProps) {
           <ul className="flex flex-col gap-1">
             {TOOLS.filter((t) => t.category === category).map((tool) => {
               const Icon = tool.icon;
-              const active = tool.id === activeId;
+              const active = !libraryActive && tool.id === activeId;
               return (
                 <li key={tool.id}>
                   <button
