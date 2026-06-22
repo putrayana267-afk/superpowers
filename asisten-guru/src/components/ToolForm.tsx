@@ -7,8 +7,12 @@ import { Select } from './Select';
 import { TextArea } from './TextArea';
 import { Toggle } from './Toggle';
 import { Button } from './Button';
+import { KurikulumSelector } from './KurikulumSelector';
 import { cn } from '../lib/cn';
 import { controlBase, controlError } from './controlStyles';
+
+/** Kunci input yang dikelola oleh field bertipe 'kurikulum'. */
+const KURIKULUM_KEYS = ['jenjang', 'mapel', 'kelas'] as const;
 
 interface ToolFormProps {
   tool: Tool;
@@ -30,6 +34,14 @@ export function ToolForm({
   function validate(): boolean {
     const next: Record<string, string> = {};
     for (const field of tool.fields) {
+      if (field.type === 'kurikulum') {
+        for (const key of KURIKULUM_KEYS) {
+          if (!(inputs[key] ?? '').trim()) {
+            next[key] = 'Wajib dipilih.';
+          }
+        }
+        continue;
+      }
       if (field.required && field.type !== 'toggle') {
         const value = (inputs[field.id] ?? '').trim();
         if (!value) {
@@ -59,6 +71,25 @@ export function ToolForm({
           : field.hint
             ? `${field.id}-hint`
             : undefined;
+
+        if (field.type === 'kurikulum') {
+          return (
+            <KurikulumSelector
+              key={field.id}
+              value={{
+                jenjang: inputs.jenjang ?? '',
+                mapel: inputs.mapel ?? '',
+                kelas: inputs.kelas ?? '',
+              }}
+              onChange={(key, val) => onChange(key, val)}
+              errors={{
+                jenjang: errors.jenjang,
+                mapel: errors.mapel,
+                kelas: errors.kelas,
+              }}
+            />
+          );
+        }
 
         if (field.type === 'toggle') {
           return (

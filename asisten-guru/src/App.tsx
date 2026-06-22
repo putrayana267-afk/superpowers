@@ -36,7 +36,12 @@ const ResultPanel = lazy(() =>
 function buildDefaults(tool: Tool): ToolInputs {
   const obj: ToolInputs = {};
   for (const field of tool.fields) {
-    if (field.type === 'select') {
+    if (field.type === 'kurikulum') {
+      // Field kurikulum mengelola tiga kunci turunan.
+      obj.jenjang = '';
+      obj.mapel = '';
+      obj.kelas = '';
+    } else if (field.type === 'select') {
       obj[field.id] = field.defaultValue ?? field.options?.[0]?.value ?? '';
     } else if (field.type === 'toggle') {
       obj[field.id] = field.defaultValue ?? 'false';

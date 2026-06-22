@@ -1,7 +1,12 @@
 import type { LucideIcon } from 'lucide-react';
 
 /** Tipe kolom input yang didukung oleh ToolForm. */
-export type FieldType = 'text' | 'textarea' | 'select' | 'toggle';
+export type FieldType =
+  | 'text'
+  | 'textarea'
+  | 'select'
+  | 'toggle'
+  | 'kurikulum';
 
 /** Opsi untuk kolom bertipe select. */
 export interface FieldOption {

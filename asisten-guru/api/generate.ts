@@ -41,6 +41,7 @@ type Builder = (inputs: ToolInputs) => { instruction: string; context: string };
 const builders: Record<string, Builder> = {
   'modul-ajar': (i) => ({
     context: contextLines([
+      ['Jenjang', val(i, 'jenjang')],
       ['Mata pelajaran', val(i, 'mapel')],
       ['Kelas/Fase', val(i, 'kelas')],
       ['Topik', val(i, 'topik')],
@@ -62,6 +63,7 @@ const builders: Record<string, Builder> = {
 
   'bank-soal': (i) => ({
     context: contextLines([
+      ['Jenjang', val(i, 'jenjang')],
       ['Mata pelajaran', val(i, 'mapel')],
       ['Kelas', val(i, 'kelas')],
       ['Topik', val(i, 'topik')],
@@ -80,6 +82,7 @@ const builders: Record<string, Builder> = {
 
   lkpd: (i) => ({
     context: contextLines([
+      ['Jenjang', val(i, 'jenjang')],
       ['Mata pelajaran', val(i, 'mapel')],
       ['Kelas', val(i, 'kelas')],
       ['Topik', val(i, 'topik')],
@@ -100,6 +103,8 @@ const builders: Record<string, Builder> = {
   rubrik: (i) => ({
     context: contextLines([
       ['Tugas/kegiatan dinilai', val(i, 'tugas')],
+      ['Jenjang', val(i, 'jenjang')],
+      ['Mata pelajaran', val(i, 'mapel')],
       ['Kelas', val(i, 'kelas')],
       ['Aspek yang dinilai', val(i, 'aspek')],
       ['Skala', val(i, 'skala')],
@@ -174,6 +179,7 @@ const builders: Record<string, Builder> = {
 
   'kisi-kisi': (i) => ({
     context: contextLines([
+      ['Jenjang', val(i, 'jenjang')],
       ['Mata pelajaran', val(i, 'mapel')],
       ['Kelas', val(i, 'kelas')],
       ['Materi/cakupan', val(i, 'materi')],

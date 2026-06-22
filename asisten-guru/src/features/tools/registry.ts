@@ -9,7 +9,7 @@ import {
   Send,
   LayoutGrid,
 } from 'lucide-react';
-import type { Tool } from './types';
+import type { Tool, ToolField } from './types';
 
 const KELAS_OPTIONS = [
   { label: 'Kelas 1', value: 'Kelas 1' },
@@ -26,14 +26,13 @@ const KELAS_OPTIONS = [
   { label: 'Kelas 12', value: 'Kelas 12' },
 ];
 
-const KELAS_FASE_OPTIONS = [
-  { label: 'Fase A (Kelas 1–2)', value: 'Fase A (Kelas 1–2)' },
-  { label: 'Fase B (Kelas 3–4)', value: 'Fase B (Kelas 3–4)' },
-  { label: 'Fase C (Kelas 5–6)', value: 'Fase C (Kelas 5–6)' },
-  { label: 'Fase D (Kelas 7–9)', value: 'Fase D (Kelas 7–9)' },
-  { label: 'Fase E (Kelas 10)', value: 'Fase E (Kelas 10)' },
-  { label: 'Fase F (Kelas 11–12)', value: 'Fase F (Kelas 11–12)' },
-];
+/** Field pemilih kurikulum bertingkat (Jenjang → Mapel → Kelas/Fase). */
+const KURIKULUM_FIELD: ToolField = {
+  id: 'kurikulum',
+  label: 'Kurikulum',
+  type: 'kurikulum',
+  required: true,
+};
 
 export const TOOLS: Tool[] = [
   {
@@ -43,8 +42,7 @@ export const TOOLS: Tool[] = [
     icon: BookOpen,
     category: 'Perencanaan',
     fields: [
-      { id: 'mapel', label: 'Mata pelajaran', type: 'text', required: true, placeholder: 'mis. IPA' },
-      { id: 'kelas', label: 'Kelas / Fase', type: 'select', required: true, options: KELAS_FASE_OPTIONS, defaultValue: KELAS_FASE_OPTIONS[3].value },
+      KURIKULUM_FIELD,
       { id: 'topik', label: 'Topik', type: 'text', required: true, placeholder: 'mis. Sistem Pencernaan Manusia' },
       { id: 'waktu', label: 'Alokasi waktu', type: 'text', required: true, placeholder: 'mis. 2 x 40 menit' },
       { id: 'catatan', label: 'Catatan tambahan', type: 'textarea', placeholder: 'mis. kelas inklusif, fokus pada praktik', rows: 3 },
@@ -59,8 +57,7 @@ export const TOOLS: Tool[] = [
     icon: ListChecks,
     category: 'Asesmen',
     fields: [
-      { id: 'mapel', label: 'Mata pelajaran', type: 'text', required: true, placeholder: 'mis. Matematika' },
-      { id: 'kelas', label: 'Kelas', type: 'select', required: true, options: KELAS_OPTIONS, defaultValue: 'Kelas 7' },
+      KURIKULUM_FIELD,
       { id: 'topik', label: 'Topik', type: 'text', required: true, placeholder: 'mis. Bilangan Bulat' },
       {
         id: 'jenis',
@@ -110,8 +107,7 @@ export const TOOLS: Tool[] = [
     icon: LayoutGrid,
     category: 'Asesmen',
     fields: [
-      { id: 'mapel', label: 'Mata pelajaran', type: 'text', required: true, placeholder: 'mis. IPS' },
-      { id: 'kelas', label: 'Kelas', type: 'select', required: true, options: KELAS_OPTIONS, defaultValue: 'Kelas 8' },
+      KURIKULUM_FIELD,
       { id: 'materi', label: 'Materi / cakupan', type: 'textarea', required: true, placeholder: 'mis. Interaksi sosial, Lembaga sosial', rows: 3 },
       {
         id: 'jumlah',
@@ -148,8 +144,7 @@ export const TOOLS: Tool[] = [
     icon: ClipboardList,
     category: 'Perencanaan',
     fields: [
-      { id: 'mapel', label: 'Mata pelajaran', type: 'text', required: true, placeholder: 'mis. IPA' },
-      { id: 'kelas', label: 'Kelas', type: 'select', required: true, options: KELAS_OPTIONS, defaultValue: 'Kelas 5' },
+      KURIKULUM_FIELD,
       { id: 'topik', label: 'Topik', type: 'text', required: true, placeholder: 'mis. Rangkaian Listrik Sederhana' },
       { id: 'tujuan', label: 'Tujuan', type: 'textarea', required: true, placeholder: 'mis. siswa dapat merangkai lampu seri & paralel', rows: 2 },
       {
@@ -175,7 +170,7 @@ export const TOOLS: Tool[] = [
     category: 'Asesmen',
     fields: [
       { id: 'tugas', label: 'Tugas/kegiatan yang dinilai', type: 'text', required: true, placeholder: 'mis. Presentasi Kelompok' },
-      { id: 'kelas', label: 'Kelas', type: 'select', required: true, options: KELAS_OPTIONS, defaultValue: 'Kelas 8' },
+      KURIKULUM_FIELD,
       { id: 'aspek', label: 'Aspek yang ingin dinilai', type: 'textarea', required: true, placeholder: 'mis. isi, penyampaian, kerja sama', rows: 2 },
       { id: 'skala', label: 'Skala penilaian', type: 'text', required: true, placeholder: 'mis. 1–4', defaultValue: '1–4' },
     ],
