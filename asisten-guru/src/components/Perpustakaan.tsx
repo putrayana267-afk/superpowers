@@ -2,10 +2,12 @@ import { useMemo, useState } from 'react';
 import {
   Search,
   ExternalLink,
-  ScrollText,
   Library,
   BookMarked,
   Building2,
+  ClipboardCheck,
+  Images,
+  Lock,
   Inbox,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
@@ -24,6 +26,8 @@ interface ResourceLink {
   url: string;
   desc?: string;
   alt?: { label: string; url: string };
+  /** Tampilkan label "perlu akun" bila sumber butuh login. */
+  needsAccount?: boolean;
 }
 
 interface KitabRumpun {
@@ -46,8 +50,8 @@ const SYAMILAH_URL = 'https://shamela.ws';
 const SECTIONS: Section[] = [
   {
     id: 'umum',
-    title: 'Buku Umum / Nasional',
-    subtitle: 'Kemendikbud',
+    title: 'Buku Teks, Modul Ajar & Perangkat',
+    subtitle: 'Umum / Kemendikbud',
     icon: Building2,
     links: [
       {
@@ -62,13 +66,19 @@ const SECTIONS: Section[] = [
       {
         name: 'Platform Merdeka Mengajar (PMM)',
         url: 'https://guru.kemdikbud.go.id',
-        desc: 'Platform resmi untuk guru: perangkat ajar, pelatihan, dan komunitas.',
+        desc: 'Perangkat ajar, modul ajar, dan video pembelajaran untuk guru.',
+        needsAccount: true,
+      },
+      {
+        name: 'Rumah Belajar',
+        url: 'https://belajar.kemdikbud.go.id',
+        desc: 'Bahan ajar, sumber belajar, dan bank soal dari Kemendikbud.',
       },
     ],
   },
   {
     id: 'madrasah',
-    title: 'Buku Madrasah',
+    title: 'Madrasah & Pesantren',
     subtitle: 'Kemenag',
     icon: BookMarked,
     links: [
@@ -76,21 +86,24 @@ const SECTIONS: Section[] = [
         name: 'SIKURMA – Sistem Kurikulum Madrasah',
         url: 'https://sikurma.kemenag.go.id',
         desc:
-          "Buku Al-Qur'an Hadis, Akidah Akhlak, Fikih, SKI, Bahasa Arab untuk " +
-          'MI/MTs/MA + MA Peminatan Keagamaan.',
+          'Buku PAI & Bahasa Arab MI/MTs/MA + MA Peminatan Keagamaan ' +
+          "(Al-Qur'an Hadis, Akidah Akhlak, Fikih, SKI, Bahasa Arab).",
       },
-    ],
-  },
-  {
-    id: 'pesantren',
-    title: 'Kitab Kuning / Pesantren',
-    subtitle: 'Dirasah Islamiyah',
-    icon: ScrollText,
-    links: [
+      {
+        name: 'e-Learning Madrasah',
+        url: 'https://elearning.kemenag.go.id',
+        desc: 'LMS madrasah: RPP, CBT, dan Guru Berbagi.',
+        needsAccount: true,
+      },
+      {
+        name: 'Pendis Kemenag',
+        url: 'https://pendis.kemenag.go.id',
+        desc: 'Informasi & regulasi pendidikan Islam (termasuk KMA).',
+      },
       {
         name: 'Maktabah Syamilah Online',
         url: SYAMILAH_URL,
-        desc: 'Ribuan kitab klasik berbahasa Arab, bisa dibaca online.',
+        desc: 'Ribuan kitab kuning klasik berbahasa Arab, bisa dibaca online.',
         alt: { label: 'Alternatif', url: 'https://ketabonline.com' },
       },
     ],
@@ -112,6 +125,73 @@ const SECTIONS: Section[] = [
         kitab: ["Arba'in Nawawiyah", 'Bulughul Maram', 'Riyadhus Shalihin'],
       },
       { rumpun: 'Tafsir', kitab: ['Tafsir Jalalain', 'Tafsir Ibnu Katsir'] },
+    ],
+  },
+  {
+    id: 'asesmen',
+    title: 'Bank Soal & Asesmen',
+    subtitle: 'AKM / ANBK / Ujian',
+    icon: ClipboardCheck,
+    links: [
+      {
+        name: 'Pusmendik – Pusat Asesmen Pendidikan',
+        url: 'https://pusmendik.kemdikbud.go.id',
+        desc: 'Pusat informasi asesmen nasional dan perangkatnya.',
+      },
+      {
+        name: 'Asesmenpedia',
+        url: 'https://pusmendik.kemdikbud.go.id/asesmenpedia',
+        desc: 'Bank soal/butir asesmen dari Pusmendik.',
+      },
+      {
+        name: 'Simulasi / Contoh AKM',
+        url: 'https://pusmendik.kemdikbud.go.id/an/simulasi/akm',
+        desc: 'Simulasi dan contoh soal AKM yang terbuka untuk publik.',
+      },
+      {
+        name: 'ANBK',
+        url: 'https://anbk.kemdikbud.go.id',
+        desc: 'Portal Asesmen Nasional Berbasis Komputer.',
+      },
+      {
+        name: 'Rumah Belajar – Bank Soal',
+        url: 'https://belajar.kemdikbud.go.id',
+        desc: 'Kumpulan bank soal di portal Rumah Belajar.',
+      },
+    ],
+  },
+  {
+    id: 'media',
+    title: 'Media Belajar Gratis & Legal',
+    subtitle: 'Gambar, Video, PPT',
+    icon: Images,
+    links: [
+      {
+        name: 'Wikimedia Commons',
+        url: 'https://commons.wikimedia.org',
+        desc: 'Gambar & media bebas/Creative Commons.',
+      },
+      {
+        name: 'Pexels',
+        url: 'https://pexels.com',
+        desc: 'Foto & video gratis untuk dipakai bebas.',
+      },
+      {
+        name: 'Unsplash',
+        url: 'https://unsplash.com',
+        desc: 'Foto gratis berkualitas tinggi.',
+      },
+      {
+        name: 'Pixabay',
+        url: 'https://pixabay.com',
+        desc: 'Gambar, ilustrasi, dan vektor gratis.',
+      },
+      {
+        name: 'Canva for Education',
+        url: 'https://www.canva.com/education',
+        desc: 'Template & PPT gratis untuk guru.',
+        needsAccount: true,
+      },
     ],
   },
 ];
@@ -207,7 +287,17 @@ export function Perpustakaan() {
                   >
                     <div className="flex flex-wrap items-start justify-between gap-3">
                       <div className="min-w-0">
-                        <p className="font-semibold text-ink/90">{link.name}</p>
+                        <div className="flex flex-wrap items-center gap-2">
+                          <p className="font-semibold text-ink/90">
+                            {link.name}
+                          </p>
+                          {link.needsAccount && (
+                            <span className="inline-flex items-center gap-1 rounded-full border border-gold/40 bg-gold/10 px-2 py-0.5 text-[10px] font-semibold text-gold-deep">
+                              <Lock className="h-3 w-3" />
+                              perlu akun
+                            </span>
+                          )}
+                        </div>
                         {link.desc && (
                           <p className="mt-1 text-sm text-ink/60">{link.desc}</p>
                         )}
