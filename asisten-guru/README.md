@@ -37,11 +37,10 @@ Prasyarat: **Node.js 18+**.
 # 1. Pasang dependency
 npm install
 
-# 2. Salin contoh env, lalu isi kunci API Google Gemini Anda
+# 2. Salin contoh env, lalu isi kunci API Anthropic Claude Anda
 cp .env.example .env
 # buka .env dan isi:
-#   GEMINI_API_KEY=...            (dari https://aistudio.google.com/app/apikey)
-#   GEMINI_MODEL=gemini-2.0-flash (opsional)
+#   ANTHROPIC_API_KEY=...   (dari https://platform.claude.com)
 ```
 
 Karena aplikasi memerlukan fungsi `/api/generate`, cara termudah menjalankannya
@@ -81,17 +80,16 @@ npm run preview   # pratinjau hasil build
 1. Push repositori ini ke GitHub.
 2. Di [vercel.com](https://vercel.com), **Import Project** dari repo tersebut.
 3. Pada **Settings → Environment Variables**, tambahkan:
-   - `GEMINI_API_KEY` = kunci API Google Gemini Anda.
-   - (opsional) `GEMINI_MODEL` = `gemini-2.0-flash` (default).
+   - `ANTHROPIC_API_KEY` = kunci API Anthropic Claude Anda.
 4. Vercel otomatis mendeteksi konfigurasi (`vercel.json`), membangun frontend,
    dan men-deploy fungsi `api/generate.ts`.
 
 ## Catatan keamanan
 
-- `GEMINI_API_KEY` **hanya** dibaca di `api/generate.ts` (sisi server). Kunci
+- `ANTHROPIC_API_KEY` **hanya** dibaca di `api/generate.ts` (sisi server). Kunci
   ini tidak pernah dikirim ke browser dan tidak boleh diberi awalan `VITE_`.
 - Frontend hanya memanggil `/api/generate` dengan `{ toolId, inputs }`; seluruh
-  pemanggilan ke Gemini terjadi di server.
+  pemanggilan ke Claude terjadi di server.
 - `.env` sudah masuk `.gitignore` — jangan pernah meng-commit kunci asli.
 
 ## Struktur proyek
@@ -99,7 +97,7 @@ npm run preview   # pratinjau hasil build
 ```
 asisten-guru/
 ├─ api/
-│  └─ generate.ts            # proxy ke Google Gemini API + builder prompt (inline)
+│  └─ generate.ts            # proxy ke Anthropic Claude API + builder prompt (inline)
 ├─ src/
 │  ├─ components/            # UI reusable (GlassCard, Button, ToolForm, ...)
 │  ├─ features/tools/        # types.ts, registry.ts (daftar alat)

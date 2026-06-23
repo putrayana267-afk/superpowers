@@ -7,8 +7,7 @@ const FRIENDLY_NETWORK =
   'Gagal membuat hasil. Periksa koneksi internet Anda lalu coba lagi.';
 const FRIENDLY_TIMEOUT =
   'Pembuatan hasil memakan waktu terlalu lama. Coba lagi sebentar.';
-const FRIENDLY_RATE =
-  'Permintaan sedang ramai. Mohon tunggu beberapa saat lalu coba lagi.';
+const FRIENDLY_RATE = 'Terlalu banyak permintaan, coba sebentar lagi.';
 const FRIENDLY_SERVER =
   'Terjadi kendala di server. Silakan coba lagi beberapa saat lagi.';
 
@@ -110,7 +109,7 @@ export async function suggest(
   }
 
   if (response.status === 429) {
-    throw new GenerateError('Batas Gemini tercapai, coba sebentar lagi.');
+    throw new GenerateError('Terlalu banyak permintaan, coba sebentar lagi.');
   }
 
   if (!response.ok) {

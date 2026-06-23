@@ -21,7 +21,7 @@ export interface SuggestConfig {
   label: string;
   /** 'replace' mengisi langsung; 'list' menampilkan pilihan yang bisa diklik. */
   mode: 'replace' | 'list';
-  /** Instruksi inti untuk Gemini (konteks ditambahkan otomatis). */
+  /** Instruksi inti untuk model AI (konteks ditambahkan otomatis). */
   instruction: string;
 }
 
