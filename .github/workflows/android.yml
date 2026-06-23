@@ -1,0 +1,65 @@
+name: Build Android APK (asisten-guru)
+
+# Build APK debug di cloud (tanpa komputer lokal):
+# - jalankan manual lewat tab Actions (workflow_dispatch), atau
+# - push tag diawali 'v' (mis. v1.0.0) untuk sekaligus membuat Release.
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write # diperlukan agar bisa membuat GitHub Release
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: asisten-guru
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: asisten-guru/package-lock.json
+
+      - name: Setup Java (JDK 21)
+        uses: actions/setup-java@v4
+        with:
+          distribution: zulu
+          java-version: 21
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build web assets
+        run: npm run build
+
+      - name: Capacitor sync (Android)
+        run: npx cap sync android
+
+      - name: Build debug APK
+        working-directory: asisten-guru/android
+        run: |
+          chmod +x ./gradlew
+          ./gradlew assembleDebug --stacktrace
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: asisten-guru-debug-apk
+          path: asisten-guru/android/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
+
+      - name: Attach APK to Release (only on tag)
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: asisten-guru/android/app/build/outputs/apk/debug/app-debug.apk
