@@ -181,6 +181,17 @@ export function ResultPanel({
             </div>
             )}
 
+            <div className="mb-3 flex items-start gap-2 rounded-xl border border-amber-300/50 bg-amber-50/70 px-3 py-2 text-xs leading-relaxed text-amber-800 backdrop-blur">
+              <span aria-hidden className="mt-px">
+                ⚠️
+              </span>
+              <p>
+                Dibuat oleh AI sebagai draft. Mohon periksa &amp; sesuaikan
+                sebelum dipakai — terutama kunci jawaban, dalil/teks Arab, dan
+                kesesuaian kurikulum.
+              </p>
+            </div>
+
             <div className="prose-result max-w-none flex-1 overflow-y-auto">
               <ReactMarkdown remarkPlugins={[remarkGfm]}>{result}</ReactMarkdown>
               {streaming && (
