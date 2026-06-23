@@ -1,7 +1,104 @@
+import { Capacitor } from '@capacitor/core';
 import type { ToolInputs } from '../features/tools/types';
+import { getSetting } from '../lib/db';
+import {
+  buildSystemPrompt,
+  buildUserPrompt,
+  buildSuggestPrompt,
+  SUGGEST_SYSTEM_PROMPT,
+} from '../features/tools/promptBuilder';
 
 /** Pesan error ramah berbahasa Indonesia untuk ditampilkan ke guru. */
 export class GenerateError extends Error {}
+
+/** Dilempar saat API key BYOK belum diisi (native) — UI mengarahkan ke Pengaturan. */
+export class MissingApiKeyError extends GenerateError {}
+
+/** Model yang dipakai sama dengan serverless (web). */
+const GEMINI_MODEL = 'gemini-2.5-flash';
+const SETTING_API_KEY = 'gemini_api_key';
+
+interface GeminiResponse {
+  candidates?: Array<{ content?: { parts?: Array<{ text?: string }> } }>;
+}
+
+/**
+ * Panggil Gemini LANGSUNG dari app (native/BYOK). CapacitorHttp mem-bypass CORS,
+ * jadi cukup pakai fetch biasa. Key dibaca dari SQLite settings.
+ */
+async function geminiDirect(
+  systemPrompt: string,
+  userPrompt: string,
+  maxOutputTokens: number,
+): Promise<string> {
+  const apiKey = (await getSetting(SETTING_API_KEY))?.trim();
+  if (!apiKey) {
+    throw new MissingApiKeyError(
+      'Tempelkan Gemini API key Anda di Pengaturan untuk mulai membuat materi.',
+    );
+  }
+
+  const url =
+    `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}` +
+    `:generateContent?key=${encodeURIComponent(apiKey)}`;
+
+  let response: Response;
+  try {
+    response = await fetch(url, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({
+        contents: [{ role: 'user', parts: [{ text: userPrompt }] }],
+        systemInstruction: { parts: [{ text: systemPrompt }] },
+        generationConfig: { maxOutputTokens },
+      }),
+    });
+  } catch {
+    throw new GenerateError(FRIENDLY_NETWORK);
+  }
+
+  if (response.status === 429) {
+    throw new GenerateError(
+      'Kuota harian Gemini habis. Coba lagi besok atau pakai API key lain di Pengaturan.',
+    );
+  }
+  if (!response.ok) {
+    let body = '';
+    try {
+      body = await response.text();
+    } catch {
+      // abaikan
+    }
+    console.error('Gemini direct error', response.status, body.slice(0, 300));
+    if (
+      response.status === 400 ||
+      response.status === 401 ||
+      response.status === 403
+    ) {
+      throw new GenerateError(
+        'API key Gemini bermasalah. Periksa kembali di Pengaturan.',
+      );
+    }
+    throw new GenerateError(FRIENDLY_SERVER);
+  }
+
+  let data: GeminiResponse;
+  try {
+    data = (await response.json()) as GeminiResponse;
+  } catch {
+    throw new GenerateError(FRIENDLY_SERVER);
+  }
+  const text = (data.candidates?.[0]?.content?.parts ?? [])
+    .map((p) => p.text ?? '')
+    .join('')
+    .trim();
+  if (!text) {
+    throw new GenerateError(
+      'Hasil kosong diterima. Coba sesuaikan input lalu buat ulang.',
+    );
+  }
+  return text;
+}
 
 const FRIENDLY_NETWORK =
   'Gagal membuat hasil. Periksa koneksi internet Anda lalu coba lagi.';
@@ -26,6 +123,11 @@ export async function generate(
   toolId: string,
   inputs: ToolInputs,
 ): Promise<string> {
+  // Native (BYOK): panggil Gemini langsung memakai key pengguna.
+  if (Capacitor.isNativePlatform()) {
+    return geminiDirect(buildSystemPrompt(), buildUserPrompt(toolId, inputs), 8192);
+  }
+
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), TIMEOUT_MS);
 
@@ -87,6 +189,15 @@ export async function suggest(
   instruction: string,
   context: Record<string, string>,
 ): Promise<string> {
+  // Native (BYOK): panggil Gemini langsung memakai key pengguna.
+  if (Capacitor.isNativePlatform()) {
+    return geminiDirect(
+      SUGGEST_SYSTEM_PROMPT,
+      buildSuggestPrompt(instruction, context),
+      1024,
+    );
+  }
+
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 35_000);
 

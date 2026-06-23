@@ -1,4 +1,4 @@
-import { GraduationCap, History, Menu, Sparkles } from 'lucide-react';
+import { GraduationCap, History, Menu, Sparkles, Settings } from 'lucide-react';
 import { Button } from './Button';
 
 interface HeaderProps {
@@ -7,6 +7,8 @@ interface HeaderProps {
   historyCount: number;
   /** Buka landing showcase (opsional). */
   onOpenShowcase?: () => void;
+  /** Buka halaman Pengaturan (opsional). */
+  onOpenSettings?: () => void;
 }
 
 export function Header({
@@ -14,6 +16,7 @@ export function Header({
   onOpenHistory,
   historyCount,
   onOpenShowcase,
+  onOpenSettings,
 }: HeaderProps) {
   return (
     <header className="sticky top-0 z-30 border-b border-white/30 bg-white/40 backdrop-blur-xl">
@@ -67,6 +70,17 @@ export function Header({
               </span>
             )}
           </Button>
+          {onOpenSettings && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={onOpenSettings}
+              icon={<Settings className="h-4 w-4" />}
+              aria-label="Buka pengaturan"
+            >
+              <span className="hidden sm:inline">Pengaturan</span>
+            </Button>
+          )}
         </div>
       </div>
     </header>

@@ -10,7 +10,8 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { X } from 'lucide-react';
 import { TOOLS, getToolById } from './features/tools/registry';
 import type { HistoryEntry, Tool, ToolInputs } from './features/tools/types';
-import { generate, GenerateError } from './services/ai';
+import { generate, GenerateError, MissingApiKeyError } from './services/ai';
+import { saveGeneration } from './lib/db';
 import {
   createId,
   loadHistory,
@@ -26,9 +27,10 @@ import { HistoryDrawer } from './components/HistoryDrawer';
 import { GlassCard } from './components/GlassCard';
 import { ResultSkeleton } from './components/Skeleton';
 import { Perpustakaan, PerpustakaanIcon } from './components/Perpustakaan';
+import { Settings, SettingsIcon } from './components/Settings';
 import { useToast } from './components/Toast';
 
-type View = 'tools' | 'perpustakaan';
+type View = 'tools' | 'perpustakaan' | 'settings';
 
 interface AppProps {
   /** Buka kembali landing showcase (opsional, dari Root). */
@@ -151,8 +153,26 @@ export default function App({ onOpenShowcase }: AppProps) {
       };
       setCurrentEntryId(entry.id);
       setHistory((prev) => [entry, ...prev]);
+
+      // Simpan SETIAP hasil sukses ke SQLite (lokal/offline).
+      void saveGeneration({
+        tool: activeTool.id,
+        title: activeTool.title,
+        subject: inputs.mapel ?? '',
+        grade: inputs.jenjang ?? '',
+        inputJson: JSON.stringify(inputs),
+        outputText: text,
+        createdAt: entry.createdAt,
+      }).catch((e) => console.error('Gagal menyimpan ke SQLite:', e));
     } catch (err) {
       setStreaming(false);
+      // Key BYOK belum diisi (native) → arahkan ke Pengaturan.
+      if (err instanceof MissingApiKeyError) {
+        setStatus('idle');
+        setView('settings');
+        toast(err.message, 'info');
+        return;
+      }
       const message =
         err instanceof GenerateError
           ? err.message
@@ -162,6 +182,11 @@ export default function App({ onOpenShowcase }: AppProps) {
       toast(message, 'error');
     }
   }, [activeTool, inputs, toast]);
+
+  const handleOpenSettings = useCallback(() => {
+    setView('settings');
+    setNavOpen(false);
+  }, []);
 
   const handleCopy = useCallback(async () => {
     const ok = await copyToClipboard(result);
@@ -235,6 +260,7 @@ export default function App({ onOpenShowcase }: AppProps) {
         onOpenHistory={() => setHistoryOpen(true)}
         historyCount={history.length}
         onOpenShowcase={onOpenShowcase}
+        onOpenSettings={handleOpenSettings}
       />
 
       <div className="mx-auto flex max-w-7xl gap-6 px-4 py-6 sm:px-6">
@@ -252,7 +278,26 @@ export default function App({ onOpenShowcase }: AppProps) {
 
         {/* Area kerja */}
         <main className="min-w-0 flex-1">
-          {view === 'perpustakaan' ? (
+          {view === 'settings' ? (
+            <>
+              <div className="mb-5">
+                <div className="flex items-center gap-3">
+                  <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-deep text-white gold-edge">
+                    <SettingsIcon className="h-5 w-5" />
+                  </span>
+                  <div>
+                    <h1 className="font-display text-xl font-extrabold text-emerald-deep sm:text-2xl">
+                      Pengaturan
+                    </h1>
+                    <p className="text-sm text-ink/60">
+                      Kelola Gemini API key Anda (tersimpan di perangkat).
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <Settings />
+            </>
+          ) : view === 'perpustakaan' ? (
             <>
               <div className="mb-5">
                 <div className="flex items-center gap-3">
