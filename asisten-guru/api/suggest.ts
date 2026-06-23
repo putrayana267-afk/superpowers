@@ -60,12 +60,12 @@ function buildPrompt(instruction: string, context: Record<string, string>): stri
   return `${ctxBlock}${instruction}`;
 }
 
-// ---- Auto-retry untuk error sementara dari Gemini ------------------------
+// ---- Multi-key + auto-retry untuk error sementara dari Gemini ------------
 
 const MAX_ATTEMPTS = 4;
 const PER_ATTEMPT_TIMEOUT_MS = 30_000;
-/** Status yang layak diulang otomatis (error sementara). */
-const RETRYABLE_STATUS = new Set([500, 503, 429]);
+/** Status yang diulang pada KEY YANG SAMA (error sementara di sisi server). */
+const SAME_KEY_RETRYABLE = new Set([500, 503]);
 
 function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -86,21 +86,43 @@ function parseRetryAfter(value: string | null): number | null {
   return null;
 }
 
-/** Penanda semua percobaan gagal di level jaringan/timeout. */
+/** Penanda semua percobaan pada satu key gagal di level jaringan/timeout. */
 class GeminiNetworkError extends Error {}
 
 /**
- * Panggil Gemini dengan auto-retry untuk error sementara (503/429/500 + gagal
- * jaringan/timeout). Mengembalikan Response terakhir (2xx, error non-retryable,
- * atau percobaan terakhir). Melempar GeminiNetworkError bila semua percobaan
- * gagal di level jaringan. `label` hanya untuk log; URL TIDAK di-log karena
- * memuat API key.
+ * Kumpulkan daftar API key Gemini dari env (GEMINI_API_KEY_1..3 + GEMINI_API_KEY
+ * lama sebagai fallback). Abaikan yang kosong, buang duplikat. Nilai key TIDAK
+ * pernah di-log atau dikirim ke client.
  */
-async function fetchGeminiWithRetry(
-  url: string,
+function collectGeminiKeys(): string[] {
+  const candidates = [
+    process.env.GEMINI_API_KEY_1,
+    process.env.GEMINI_API_KEY_2,
+    process.env.GEMINI_API_KEY_3,
+    process.env.GEMINI_API_KEY,
+  ];
+  const keys: string[] = [];
+  for (const c of candidates) {
+    const v = (c ?? '').trim();
+    if (v && !keys.includes(v)) keys.push(v);
+  }
+  return keys;
+}
+
+/**
+ * Panggil Gemini memakai SATU key, dengan retry backoff untuk error sementara
+ * (503/500 + gagal jaringan/timeout) pada key yang sama. 429/403/400/401 TIDAK
+ * di-retry di sini (ditangani failover antar-key). Mengembalikan Response
+ * terakhir; melempar GeminiNetworkError bila semua percobaan gagal di jaringan.
+ * `keyIndex` (1-based) hanya untuk log — isi key tidak pernah di-log.
+ */
+async function fetchGeminiSingleKey(
+  key: string,
   requestBody: string,
   label: string,
+  keyIndex: number,
 ): Promise<Response> {
+  const url = `${GEMINI_URL}?key=${encodeURIComponent(key)}`;
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), PER_ATTEMPT_TIMEOUT_MS);
@@ -117,7 +139,7 @@ async function fetchGeminiWithRetry(
       clearTimeout(timeout);
       const reason = err instanceof Error ? `${err.name}: ${err.message}` : String(err);
       console.error(
-        `[${label}] gagal jaringan/timeout (percobaan ${attempt}/${MAX_ATTEMPTS}): ${reason}`,
+        `[${label}] key #${keyIndex} gagal jaringan/timeout (percobaan ${attempt}/${MAX_ATTEMPTS}): ${reason}`,
       );
       if (attempt < MAX_ATTEMPTS) {
         await sleep(backoffMs(attempt));
@@ -127,10 +149,10 @@ async function fetchGeminiWithRetry(
     }
     clearTimeout(timeout);
 
-    if (RETRYABLE_STATUS.has(response.status) && attempt < MAX_ATTEMPTS) {
+    if (SAME_KEY_RETRYABLE.has(response.status) && attempt < MAX_ATTEMPTS) {
       const peek = await response.text().catch(() => '');
       console.error(
-        `[${label}] status ${response.status} (percobaan ${attempt}/${MAX_ATTEMPTS}): ${peek.slice(0, 300)}`,
+        `[${label}] key #${keyIndex} status ${response.status} (percobaan ${attempt}/${MAX_ATTEMPTS}): ${peek.slice(0, 300)}`,
       );
       const wait =
         parseRetryAfter(response.headers.get('retry-after')) ?? backoffMs(attempt);
@@ -143,12 +165,34 @@ async function fetchGeminiWithRetry(
   throw new GeminiNetworkError('habis percobaan');
 }
 
+type FailureKind = 'limit' | 'config' | 'temporary';
+
+/** Klasifikasikan kegagalan sebuah key untuk menentukan pesan akhir + failover. */
+function classifyFailure(status: number, body: string): FailureKind {
+  const lower = body.toLowerCase();
+  if (status === 429) return 'limit';
+  if (status === 403) {
+    const quota =
+      lower.includes('quota') ||
+      lower.includes('limit') ||
+      lower.includes('exhausted') ||
+      lower.includes('resource_exhausted');
+    return quota ? 'limit' : 'config';
+  }
+  if (status === 400 || status === 401) return 'config';
+  return 'temporary'; // 503/500/lainnya
+}
+
+type MultiKeyResult =
+  | { ok: true; response: Response }
+  | { ok: false; status: number; error: string };
+
 /** Petakan status error Gemini → { status untuk client, pesan jelas }. */
 function mapGeminiError(
   status: number,
   fallbackNoun: string,
 ): { status: number; error: string } {
-  if (status === 503) {
+  if (status === 503 || status === 500) {
     return {
       status: 503,
       error: 'Server AI sedang ramai. Mohon tunggu sebentar lalu coba lagi.',
@@ -163,16 +207,80 @@ function mapGeminiError(
   if (status === 400 || status === 401 || status === 403) {
     return { status: 502, error: 'Konfigurasi AI bermasalah. Hubungi pengelola.' };
   }
-  if (status === 500) {
-    return {
-      status: 503,
-      error: 'Server AI sedang ramai. Mohon tunggu sebentar lalu coba lagi.',
-    };
-  }
   return {
     status: 502,
     error: `Terjadi kendala saat membuat ${fallbackNoun}. Silakan coba lagi.`,
   };
+}
+
+/**
+ * Coba beberapa key secara berurutan (failover). Sukses (2xx) langsung
+ * dikembalikan. Bila satu key kena 429/403-quota/400/401/503-500, lanjut ke key
+ * berikutnya. Bila SEMUA key gagal, kembalikan pesan jelas sesuai kategori.
+ */
+async function fetchGeminiMultiKey(
+  keys: string[],
+  requestBody: string,
+  label: string,
+  fallbackNoun: string,
+): Promise<MultiKeyResult> {
+  const categories = new Set<FailureKind>();
+  let lastStatus = 0;
+  let lastBody = '';
+
+  for (let i = 0; i < keys.length; i++) {
+    const keyIndex = i + 1;
+    let response: Response;
+    try {
+      response = await fetchGeminiSingleKey(keys[i], requestBody, label, keyIndex);
+    } catch {
+      categories.add('temporary');
+      console.error(`[${label}] key #${keyIndex} gagal jaringan; coba key berikutnya`);
+      continue;
+    }
+
+    if (response.ok) return { ok: true, response };
+
+    const bodyText = await response.text().catch(() => '');
+    lastStatus = response.status;
+    lastBody = bodyText;
+    const kind = classifyFailure(response.status, bodyText);
+    categories.add(kind);
+    console.error(
+      `[${label}] key #${keyIndex} gagal (status ${response.status}, ${kind}); coba key berikutnya`,
+    );
+  }
+
+  console.error(`[${label}] semua ${keys.length} key Gemini gagal`, {
+    categories: [...categories],
+    lastStatus,
+    lastBodyPreview: lastBody.slice(0, 300),
+  });
+
+  const list = [...categories];
+  if (list.length === 1 && list[0] === 'limit') {
+    return {
+      ok: false,
+      status: 429,
+      error: 'Semua kuota AI sedang penuh. Coba lagi beberapa saat.',
+    };
+  }
+  if (list.length === 1 && list[0] === 'config') {
+    return {
+      ok: false,
+      status: 502,
+      error: 'Konfigurasi AI bermasalah. Hubungi pengelola.',
+    };
+  }
+  if (list.length >= 1 && list.every((c) => c === 'temporary')) {
+    return {
+      ok: false,
+      status: 503,
+      error: 'Server AI sedang ramai. Mohon tunggu sebentar lalu coba lagi.',
+    };
+  }
+  const mapped = mapGeminiError(lastStatus, fallbackNoun);
+  return { ok: false, status: mapped.status, error: mapped.error };
 }
 
 export default async function handler(
@@ -184,8 +292,8 @@ export default async function handler(
     return;
   }
 
-  const apiKey = process.env.GEMINI_API_KEY;
-  if (!apiKey) {
+  const apiKeys = collectGeminiKeys();
+  if (apiKeys.length === 0) {
     res.status(500).json({
       error: 'Server belum dikonfigurasi. Hubungi pengelola aplikasi.',
     });
@@ -218,25 +326,18 @@ export default async function handler(
     systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
     generationConfig: { maxOutputTokens: MAX_OUTPUT_TOKENS },
   });
-  const url = `${GEMINI_URL}?key=${encodeURIComponent(apiKey)}`;
 
-  let geminiRes: Response;
-  try {
-    geminiRes = await fetchGeminiWithRetry(url, requestBody, 'suggest');
-  } catch {
-    res.status(503).json({
-      error: 'Gagal menghubungi layanan AI. Periksa koneksi lalu coba lagi.',
-    });
+  const result = await fetchGeminiMultiKey(
+    apiKeys,
+    requestBody,
+    'suggest',
+    'saran',
+  );
+  if (!result.ok) {
+    res.status(result.status).json({ error: result.error });
     return;
   }
-
-  if (!geminiRes.ok) {
-    const rawBody = await geminiRes.text().catch(() => '');
-    console.error('Gemini error final', geminiRes.status, rawBody.slice(0, 1000));
-    const mapped = mapGeminiError(geminiRes.status, 'saran');
-    res.status(mapped.status).json({ error: mapped.error });
-    return;
-  }
+  const geminiRes = result.response;
 
   let data: GeminiResponse;
   try {
