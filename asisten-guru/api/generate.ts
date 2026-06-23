@@ -252,6 +252,124 @@ function isStringRecord(value: unknown): value is Record<string, string> {
   );
 }
 
+// ---- Auto-retry untuk error sementara dari Gemini ------------------------
+
+const MAX_ATTEMPTS = 4;
+const PER_ATTEMPT_TIMEOUT_MS = 30_000;
+/** Status yang layak diulang otomatis (error sementara). */
+const RETRYABLE_STATUS = new Set([500, 503, 429]);
+
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+/** Backoff eksponensial ~1s, 2s, 4s + jitter acak 0–300ms. */
+function backoffMs(attempt: number): number {
+  return 1000 * 2 ** (attempt - 1) + Math.floor(Math.random() * 300);
+}
+
+/** Parse Retry-After (detik atau HTTP-date) → ms, dibatasi maksimal 10 detik. */
+function parseRetryAfter(value: string | null): number | null {
+  if (!value) return null;
+  const secs = Number(value);
+  if (Number.isFinite(secs)) return Math.min(Math.max(secs, 0) * 1000, 10_000);
+  const date = Date.parse(value);
+  if (!Number.isNaN(date)) return Math.max(0, Math.min(date - Date.now(), 10_000));
+  return null;
+}
+
+/** Penanda semua percobaan gagal di level jaringan/timeout. */
+class GeminiNetworkError extends Error {}
+
+/**
+ * Panggil Gemini dengan auto-retry untuk error sementara (503/429/500 + gagal
+ * jaringan/timeout). Mengembalikan Response terakhir (2xx, error non-retryable,
+ * atau percobaan terakhir). Melempar GeminiNetworkError bila semua percobaan
+ * gagal di level jaringan. `label` hanya untuk log; URL TIDAK di-log karena
+ * memuat API key.
+ */
+async function fetchGeminiWithRetry(
+  url: string,
+  requestBody: string,
+  label: string,
+): Promise<Response> {
+  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), PER_ATTEMPT_TIMEOUT_MS);
+
+    let response: Response;
+    try {
+      response = await fetch(url, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: requestBody,
+        signal: controller.signal,
+      });
+    } catch (err) {
+      clearTimeout(timeout);
+      const reason = err instanceof Error ? `${err.name}: ${err.message}` : String(err);
+      console.error(
+        `[${label}] gagal jaringan/timeout (percobaan ${attempt}/${MAX_ATTEMPTS}): ${reason}`,
+      );
+      if (attempt < MAX_ATTEMPTS) {
+        await sleep(backoffMs(attempt));
+        continue;
+      }
+      throw new GeminiNetworkError(reason);
+    }
+    clearTimeout(timeout);
+
+    // 400/401/403 dan status non-retryable lain → langsung kembalikan (retry
+    // tidak menolong). Status sementara → ulangi bila masih ada jatah.
+    if (RETRYABLE_STATUS.has(response.status) && attempt < MAX_ATTEMPTS) {
+      const peek = await response.text().catch(() => '');
+      console.error(
+        `[${label}] status ${response.status} (percobaan ${attempt}/${MAX_ATTEMPTS}): ${peek.slice(0, 300)}`,
+      );
+      const wait =
+        parseRetryAfter(response.headers.get('retry-after')) ?? backoffMs(attempt);
+      await sleep(wait);
+      continue;
+    }
+
+    return response;
+  }
+  // Tidak tercapai (loop selalu return/throw); untuk kepuasan tipe.
+  throw new GeminiNetworkError('habis percobaan');
+}
+
+/** Petakan status error Gemini → { status untuk client, pesan jelas }. */
+function mapGeminiError(
+  status: number,
+  fallbackNoun: string,
+): { status: number; error: string } {
+  if (status === 503) {
+    return {
+      status: 503,
+      error: 'Server AI sedang ramai. Mohon tunggu sebentar lalu coba lagi.',
+    };
+  }
+  if (status === 429) {
+    return {
+      status: 429,
+      error: 'Batas pemakaian sementara tercapai. Coba lagi beberapa saat.',
+    };
+  }
+  if (status === 400 || status === 401 || status === 403) {
+    return { status: 502, error: 'Konfigurasi AI bermasalah. Hubungi pengelola.' };
+  }
+  if (status === 500) {
+    return {
+      status: 503,
+      error: 'Server AI sedang ramai. Mohon tunggu sebentar lalu coba lagi.',
+    };
+  }
+  return {
+    status: 502,
+    error: `Terjadi kendala saat membuat ${fallbackNoun}. Silakan coba lagi.`,
+  };
+}
+
 export default async function handler(
   req: ApiRequest,
   res: ApiResponse,
@@ -303,63 +421,29 @@ export default async function handler(
     return;
   }
 
-  // Pemanggilan Gemini (non-streaming) dengan timeout sisi server.
+  // Pemanggilan Gemini (non-streaming) dengan auto-retry error sementara.
   const requestBody = JSON.stringify({
     contents: [{ role: 'user', parts: [{ text: userPrompt }] }],
     systemInstruction: { parts: [{ text: systemPrompt }] },
     generationConfig: { maxOutputTokens: MAX_OUTPUT_TOKENS },
   });
-
-  const key: string = apiKey;
-  async function callGemini(): Promise<Response> {
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 55_000);
-    try {
-      return await fetch(`${GEMINI_URL}?key=${encodeURIComponent(key)}`, {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: requestBody,
-        signal: controller.signal,
-      });
-    } finally {
-      clearTimeout(timeout);
-    }
-  }
+  const url = `${GEMINI_URL}?key=${encodeURIComponent(apiKey)}`;
 
   let geminiRes: Response;
   try {
-    geminiRes = await callGemini();
-    // Retry sederhana: bila kena 429, tunggu 2 detik lalu coba ulang 1x.
-    if (geminiRes.status === 429) {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      geminiRes = await callGemini();
-    }
-  } catch (err) {
-    if (err instanceof Error && err.name === 'AbortError') {
-      res.status(504).json({
-        error: 'Pembuatan hasil memakan waktu terlalu lama. Coba lagi.',
-      });
-      return;
-    }
-    res.status(502).json({
+    geminiRes = await fetchGeminiWithRetry(url, requestBody, 'generate');
+  } catch {
+    res.status(503).json({
       error: 'Gagal menghubungi layanan AI. Periksa koneksi lalu coba lagi.',
-    });
-    return;
-  }
-
-  if (geminiRes.status === 429) {
-    res.status(429).json({
-      error: 'Terlalu banyak permintaan, coba sebentar lagi.',
     });
     return;
   }
 
   if (!geminiRes.ok) {
     const rawBody = await geminiRes.text().catch(() => '');
-    console.error('Gemini error', geminiRes.status, rawBody);
-    res.status(502).json({
-      error: 'Terjadi kendala saat membuat hasil. Silakan coba lagi.',
-    });
+    console.error('Gemini error final', geminiRes.status, rawBody.slice(0, 1000));
+    const mapped = mapGeminiError(geminiRes.status, 'hasil');
+    res.status(mapped.status).json({ error: mapped.error });
     return;
   }
 
