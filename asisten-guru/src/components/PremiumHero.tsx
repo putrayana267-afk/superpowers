@@ -20,10 +20,14 @@ import {
 } from 'lucide-react';
 
 /**
- * PremiumHero — komponen landing mandiri (dark, glassmorphic emerald) dengan
- * "orbital glide" 3D + parallax kursor. Berdiri sendiri: TIDAK menyentuh logika
- * alat/Gemini. Hanya menganimasikan transform & opacity (GPU) demi 60fps, dan
- * menghormati prefers-reduced-motion.
+ * PremiumHero — landing mandiri (dark, glassmorphic emerald) dengan panggung 3D
+ * "orbital glide" + parallax kursor.
+ *
+ * Catatan desain: dashboard 3D adalah VISUAL DEKORATIF (pointer-events: none)
+ * yang menganimasikan dirinya sendiri (toggle & dropdown auto-loop), sehingga
+ * tidak ada bug hit-test/stacking saat ditekan. Kontrol yang benar-benar bisa
+ * diklik (CTA) berada DI LUAR container transform 3D. Hanya transform & opacity
+ * yang dianimasikan demi 60fps; menghormati prefers-reduced-motion.
  */
 
 interface PremiumHeroProps {
@@ -111,7 +115,7 @@ function CountUp({
   );
 }
 
-// ---- KPI card ------------------------------------------------------------
+// ---- KPI card (dekoratif) ------------------------------------------------
 
 function KpiCard({
   icon,
@@ -128,18 +132,15 @@ function KpiCard({
   depth: number;
   accent: string;
 }) {
-  const reduce = useReducedMotion();
   return (
     <motion.div
       variants={widgetItem}
       style={{ z: depth, transformStyle: 'preserve-3d' }}
-      whileHover={reduce ? undefined : { y: -6, z: depth + 24 }}
-      transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-      className="group relative rounded-2xl border border-white/10 bg-white/[0.04] p-4 backdrop-blur-xl"
+      className="relative rounded-2xl border border-white/10 bg-white/[0.04] p-4 backdrop-blur-xl"
     >
       <div
-        className="pointer-events-none absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-        style={{ boxShadow: `0 0 28px ${accent}55, inset 0 0 18px ${accent}22` }}
+        className="pointer-events-none absolute inset-0 rounded-2xl"
+        style={{ boxShadow: `inset 0 0 18px ${accent}1f` }}
       />
       <div className="mb-3 flex items-center gap-2">
         <span
@@ -164,7 +165,6 @@ function KpiCard({
 
 function LineChart({ depth }: { depth: number }) {
   const reduce = useReducedMotion();
-  // Garis halus (path tetap, koordinat viewBox 0..320 x 0..120).
   const line =
     'M0,96 C28,86 44,62 72,60 C100,58 116,84 144,80 C172,76 188,40 216,36 C244,32 262,52 288,44 C304,39 312,28 320,24';
   const area = `${line} L320,120 L0,120 Z`;
@@ -176,9 +176,7 @@ function LineChart({ depth }: { depth: number }) {
       className="relative rounded-2xl border border-white/10 bg-white/[0.04] p-4 backdrop-blur-xl"
     >
       <div className="mb-2 flex items-center justify-between">
-        <span className="text-sm font-semibold text-white/80">
-          Pertumbuhan
-        </span>
+        <span className="text-sm font-semibold text-white/80">Pertumbuhan</span>
         <span className="text-xs font-medium text-emerald-300">+24,8%</span>
       </div>
       <svg
@@ -257,47 +255,70 @@ function BarChart({ depth }: { depth: number }) {
   );
 }
 
-// ---- Toggle micro-interaction --------------------------------------------
+// ---- Toggle dekoratif (auto-loop on↔off) ---------------------------------
 
-function ToggleDemo() {
+function DecorToggle() {
+  const reduce = useReducedMotion();
   const [on, setOn] = useState(true);
+
+  useEffect(() => {
+    if (reduce) return;
+    const id = window.setInterval(() => setOn((v) => !v), 2200);
+    return () => window.clearInterval(id);
+  }, [reduce]);
+
   return (
-    <button
-      type="button"
-      onClick={() => setOn((v) => !v)}
-      aria-pressed={on}
-      aria-label="Mode realtime"
-      className="relative h-6 w-11 flex-shrink-0 rounded-full transition-colors"
-      style={{ background: on ? EMERALD : 'rgba(255,255,255,0.15)' }}
+    <div
+      className="relative h-6 w-11 flex-shrink-0 overflow-hidden rounded-full bg-white/15"
+      aria-hidden
     >
-      <motion.span
-        className="absolute top-0.5 h-5 w-5 rounded-full bg-white shadow"
-        animate={{ x: on ? 22 : 2 }}
-        transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+      <motion.div
+        className="absolute inset-0 rounded-full"
+        style={{ background: EMERALD }}
+        animate={{ opacity: on ? 1 : 0 }}
+        transition={{ duration: 0.3 }}
       />
-    </button>
+      <motion.span
+        className="absolute left-0 top-0.5 h-5 w-5 rounded-full bg-white shadow"
+        animate={{ x: on ? 22 : 2 }}
+        transition={{ type: 'spring', stiffness: 400, damping: 28 }}
+      />
+    </div>
   );
 }
 
-// ---- Dropdown cascade micro-interaction ----------------------------------
+// ---- Dropdown dekoratif (auto-loop buka/tutup, cascading) ----------------
 
-function DropdownDemo() {
-  const [open, setOpen] = useState(false);
+function DecorDropdown() {
+  const reduce = useReducedMotion();
   const items = ['Hari ini', '7 hari', '30 hari'];
-  const [sel, setSel] = useState('7 hari');
+  const [open, setOpen] = useState(false);
+  const [sel, setSel] = useState(1);
+
+  useEffect(() => {
+    if (reduce) return;
+    const id = window.setInterval(() => {
+      setOpen((o) => {
+        if (o) setSel((s) => (s + 1) % items.length);
+        return !o;
+      });
+    }, 2600);
+    return () => window.clearInterval(id);
+    // items konstan; sengaja hanya bergantung pada reduce
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [reduce]);
 
   return (
-    <div className="relative">
-      <button
-        type="button"
-        onClick={() => setOpen((v) => !v)}
-        className="flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/[0.05] px-3 py-1.5 text-xs font-medium text-white/70 backdrop-blur"
-      >
-        {sel}
-        <motion.span animate={{ rotate: open ? 180 : 0 }}>
+    <div className="relative" aria-hidden>
+      <div className="flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/[0.05] px-3 py-1.5 text-xs font-medium text-white/70 backdrop-blur">
+        {items[sel]}
+        <motion.span
+          animate={{ rotate: open ? 180 : 0 }}
+          transition={{ duration: 0.25 }}
+        >
           <ChevronDown className="h-3.5 w-3.5" />
         </motion.span>
-      </button>
+      </div>
       <AnimatePresence>
         {open && (
           <motion.ul
@@ -305,28 +326,20 @@ function DropdownDemo() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -6 }}
             transition={{ duration: 0.18 }}
-            className="absolute right-0 z-20 mt-2 w-32 overflow-hidden rounded-xl border border-white/10 bg-[#161a20]/90 p-1 backdrop-blur-xl"
+            // translateZ tinggi + zIndex agar SELALU di atas kartu lain
+            style={{ z: 90, zIndex: 50 }}
+            className="absolute right-0 mt-2 w-32 overflow-hidden rounded-xl border border-white/10 bg-[#11151b] p-1 shadow-[0_18px_40px_rgba(0,0,0,0.55)]"
           >
             {items.map((it, idx) => (
               <motion.li
                 key={it}
                 initial={{ opacity: 0, x: -8 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: idx * 0.05 }}
+                transition={{ delay: idx * 0.06 }}
+                className="flex items-center justify-between rounded-lg px-2.5 py-1.5 text-xs text-white/70"
               >
-                <button
-                  type="button"
-                  onClick={() => {
-                    setSel(it);
-                    setOpen(false);
-                  }}
-                  className="flex w-full items-center justify-between rounded-lg px-2.5 py-1.5 text-xs text-white/70 hover:bg-white/10"
-                >
-                  {it}
-                  {sel === it && (
-                    <Check className="h-3.5 w-3.5 text-emerald-400" />
-                  )}
-                </button>
+                {it}
+                {idx === sel && <Check className="h-3.5 w-3.5 text-emerald-400" />}
               </motion.li>
             ))}
           </motion.ul>
@@ -336,33 +349,162 @@ function DropdownDemo() {
   );
 }
 
-// ---- Main component ------------------------------------------------------
+// ---- Panggung 3D dekoratif (pointer-events: none) ------------------------
 
-export function PremiumHero({ onEnter }: PremiumHeroProps) {
+function Stage() {
   const reduce = useReducedMotion();
 
-  // Parallax kursor → tilt halus (dipakai pada lapisan luar panggung).
+  // Parallax kursor hanya untuk perangkat berpointer (mouse), bukan sentuh.
+  const [pointerFine, setPointerFine] = useState(false);
+  useEffect(() => {
+    if (typeof window.matchMedia !== 'function') return;
+    const mq = window.matchMedia('(hover: hover) and (pointer: fine)');
+    const apply = () => setPointerFine(mq.matches);
+    apply();
+    mq.addEventListener?.('change', apply);
+    return () => mq.removeEventListener?.('change', apply);
+  }, []);
+
+  const parallaxOn = pointerFine && !reduce;
+
   const mx = useMotionValue(0);
   const my = useMotionValue(0);
-  const rotY = useSpring(useTransform(mx, [-0.5, 0.5], [-12, 12]), {
+  const rotY = useSpring(useTransform(mx, [-0.5, 0.5], [-10, 10]), {
     stiffness: 150,
     damping: 18,
   });
-  const rotX = useSpring(useTransform(my, [-0.5, 0.5], [10, -10]), {
+  const rotX = useSpring(useTransform(my, [-0.5, 0.5], [8, -8]), {
     stiffness: 150,
     damping: 18,
   });
 
   function handleMove(e: React.MouseEvent<HTMLDivElement>) {
-    if (reduce) return;
-    const rect = e.currentTarget.getBoundingClientRect();
-    mx.set((e.clientX - rect.left) / rect.width - 0.5);
-    my.set((e.clientY - rect.top) / rect.height - 0.5);
+    if (!parallaxOn) return;
+    mx.set(e.clientX / window.innerWidth - 0.5);
+    my.set(e.clientY / window.innerHeight - 0.5);
   }
   function handleLeave() {
     mx.set(0);
     my.set(0);
   }
+
+  return (
+    // Lapisan parallax menangkap gerak mouse (punya pointer-events),
+    // tetapi seluruh mockup di dalamnya dekoratif (pointer-events: none).
+    <div
+      className="relative"
+      style={{ perspective: 1200 }}
+      onMouseMove={handleMove}
+      onMouseLeave={handleLeave}
+    >
+      <motion.div
+        className="pointer-events-none"
+        style={{
+          rotateX: parallaxOn ? rotX : 0,
+          rotateY: parallaxOn ? rotY : 0,
+          transformStyle: 'preserve-3d',
+        }}
+      >
+        {/* Orbital glide: oscillate loop */}
+        <motion.div
+          style={{ transformStyle: 'preserve-3d' }}
+          animate={
+            reduce ? undefined : { rotateY: [-8, 8, -8], rotateX: [-4, 4, -4] }
+          }
+          transition={{ duration: 16, ease: 'easeInOut', repeat: Infinity }}
+        >
+          {/* Bayangan ambient di bawah panel */}
+          <div
+            className="pointer-events-none absolute -inset-4 rounded-[2rem] blur-2xl"
+            style={{
+              background:
+                'radial-gradient(60% 60% at 50% 60%, rgba(16,185,129,0.25), transparent 70%)',
+              transform: 'translateZ(-60px)',
+            }}
+          />
+
+          {/* Panel dashboard */}
+          <motion.div
+            variants={stageStagger}
+            initial={reduce ? false : 'hidden'}
+            animate="show"
+            style={{ transformStyle: 'preserve-3d' }}
+            className="relative rounded-[1.6rem] border border-white/10 bg-white/[0.03] p-5 shadow-2xl backdrop-blur-2xl"
+          >
+            {/* Header mockup — z paling tinggi agar dropdown-nya di atas kartu */}
+            <motion.div
+              variants={widgetItem}
+              style={{ z: 60, transformStyle: 'preserve-3d', zIndex: 40 }}
+              className="relative mb-4 flex items-center justify-between"
+            >
+              <div className="flex items-center gap-2">
+                <span
+                  className="flex h-7 w-7 items-center justify-center rounded-lg text-[#0F1115]"
+                  style={{
+                    background: `linear-gradient(135deg, ${EMERALD}, ${CYAN})`,
+                  }}
+                >
+                  <Sparkles className="h-4 w-4" />
+                </span>
+                <span className="text-sm font-semibold text-white/80">
+                  Ikhtisar
+                </span>
+              </div>
+              <div className="flex items-center gap-3">
+                <DecorToggle />
+                <DecorDropdown />
+              </div>
+            </motion.div>
+
+            {/* KPI cards (depth lebih rendah dari header/dropdown) */}
+            <div className="mb-4 grid grid-cols-3 gap-3">
+              <KpiCard
+                icon={<Users className="h-4 w-4" />}
+                label="Pengguna"
+                trend="+12,4%"
+                depth={16}
+                accent={EMERALD}
+              >
+                <CountUp to={18240} />
+              </KpiCard>
+              <KpiCard
+                icon={<Wallet className="h-4 w-4" />}
+                label="Pendapatan"
+                trend="+8,9%"
+                depth={24}
+                accent={CYAN}
+              >
+                <CountUp to={92.4} decimals={1} prefix="Rp" suffix="jt" />
+              </KpiCard>
+              <KpiCard
+                icon={<TrendingUp className="h-4 w-4" />}
+                label="Konversi"
+                trend="+3,2%"
+                depth={16}
+                accent={EMERALD}
+              >
+                <CountUp to={6.8} decimals={1} suffix="%" />
+              </KpiCard>
+            </div>
+
+            {/* Charts */}
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+              <div className="sm:col-span-2">
+                <LineChart depth={20} />
+              </div>
+              <BarChart depth={20} />
+            </div>
+          </motion.div>
+        </motion.div>
+      </motion.div>
+    </div>
+  );
+}
+
+// ---- Main component ------------------------------------------------------
+
+export function PremiumHero({ onEnter }: PremiumHeroProps) {
+  const reduce = useReducedMotion();
 
   const enter =
     onEnter ??
@@ -394,12 +536,12 @@ export function PremiumHero({ onEnter }: PremiumHeroProps) {
       />
 
       <div className="relative mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 px-6 py-16 lg:grid-cols-2 lg:py-24">
-        {/* Teks + CTA */}
+        {/* Teks + CTA — kontrol asli, DI LUAR transform 3D, pointer-events normal */}
         <motion.div
           variants={textStagger}
           initial={reduce ? false : 'hidden'}
           animate="show"
-          className="max-w-xl"
+          className="relative z-10 max-w-xl"
         >
           <motion.div
             variants={textItem}
@@ -449,6 +591,7 @@ export function PremiumHero({ onEnter }: PremiumHeroProps) {
             </motion.button>
             <motion.button
               type="button"
+              onClick={enter}
               whileHover={reduce ? undefined : { y: -2 }}
               whileTap={reduce ? undefined : { scale: 0.97 }}
               className="inline-flex items-center gap-2 rounded-xl border border-white/15 bg-white/[0.04] px-5 py-3 text-sm font-semibold text-white/80 backdrop-blur hover:bg-white/[0.08]"
@@ -458,119 +601,8 @@ export function PremiumHero({ onEnter }: PremiumHeroProps) {
           </motion.div>
         </motion.div>
 
-        {/* Panggung 3D */}
-        <div
-          className="relative"
-          style={{ perspective: 1200 }}
-          onMouseMove={handleMove}
-          onMouseLeave={handleLeave}
-        >
-          <motion.div
-            style={{
-              rotateX: reduce ? 0 : rotX,
-              rotateY: reduce ? 0 : rotY,
-              transformStyle: 'preserve-3d',
-            }}
-          >
-            {/* Orbital glide: oscillate loop */}
-            <motion.div
-              style={{ transformStyle: 'preserve-3d' }}
-              animate={
-                reduce
-                  ? undefined
-                  : { rotateY: [-8, 8, -8], rotateX: [-4, 4, -4] }
-              }
-              transition={{
-                duration: 16,
-                ease: 'easeInOut',
-                repeat: Infinity,
-              }}
-            >
-              {/* Bayangan ambient di bawah panel */}
-              <div
-                className="pointer-events-none absolute -inset-4 rounded-[2rem] blur-2xl"
-                style={{
-                  background:
-                    'radial-gradient(60% 60% at 50% 60%, rgba(16,185,129,0.25), transparent 70%)',
-                  transform: 'translateZ(-60px)',
-                }}
-              />
-
-              {/* Panel dashboard */}
-              <motion.div
-                variants={stageStagger}
-                initial={reduce ? false : 'hidden'}
-                animate="show"
-                style={{ transformStyle: 'preserve-3d' }}
-                className="relative rounded-[1.6rem] border border-white/10 bg-white/[0.03] p-5 shadow-2xl backdrop-blur-2xl"
-              >
-                {/* Header mockup */}
-                <motion.div
-                  variants={widgetItem}
-                  style={{ z: 20, transformStyle: 'preserve-3d' }}
-                  className="mb-4 flex items-center justify-between"
-                >
-                  <div className="flex items-center gap-2">
-                    <span
-                      className="flex h-7 w-7 items-center justify-center rounded-lg text-[#0F1115]"
-                      style={{
-                        background: `linear-gradient(135deg, ${EMERALD}, ${CYAN})`,
-                      }}
-                    >
-                      <Sparkles className="h-4 w-4" />
-                    </span>
-                    <span className="text-sm font-semibold text-white/80">
-                      Ikhtisar
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <ToggleDemo />
-                    <DropdownDemo />
-                  </div>
-                </motion.div>
-
-                {/* KPI cards */}
-                <div className="mb-4 grid grid-cols-3 gap-3">
-                  <KpiCard
-                    icon={<Users className="h-4 w-4" />}
-                    label="Pengguna"
-                    trend="+12,4%"
-                    depth={36}
-                    accent={EMERALD}
-                  >
-                    <CountUp to={18240} />
-                  </KpiCard>
-                  <KpiCard
-                    icon={<Wallet className="h-4 w-4" />}
-                    label="Pendapatan"
-                    trend="+8,9%"
-                    depth={52}
-                    accent={CYAN}
-                  >
-                    <CountUp to={92.4} decimals={1} prefix="Rp" suffix="jt" />
-                  </KpiCard>
-                  <KpiCard
-                    icon={<TrendingUp className="h-4 w-4" />}
-                    label="Konversi"
-                    trend="+3,2%"
-                    depth={36}
-                    accent={EMERALD}
-                  >
-                    <CountUp to={6.8} decimals={1} suffix="%" />
-                  </KpiCard>
-                </div>
-
-                {/* Charts */}
-                <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-                  <div className="sm:col-span-2">
-                    <LineChart depth={44} />
-                  </div>
-                  <BarChart depth={44} />
-                </div>
-              </motion.div>
-            </motion.div>
-          </motion.div>
-        </div>
+        {/* Panggung 3D dekoratif */}
+        <Stage />
       </div>
     </div>
   );
