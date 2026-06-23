@@ -136,25 +136,30 @@ function KpiCard({
     <motion.div
       variants={widgetItem}
       style={{ z: depth, transformStyle: 'preserve-3d' }}
-      className="relative rounded-2xl border border-white/10 bg-white/[0.04] p-4 backdrop-blur-xl"
+      className="relative min-w-0 rounded-2xl border border-white/10 bg-white/[0.04] p-2.5 backdrop-blur-xl sm:p-4"
     >
       <div
         className="pointer-events-none absolute inset-0 rounded-2xl"
         style={{ boxShadow: `inset 0 0 18px ${accent}1f` }}
       />
-      <div className="mb-3 flex items-center gap-2">
+      <div className="mb-2 flex min-w-0 items-center gap-1.5 sm:mb-3 sm:gap-2">
         <span
-          className="flex h-8 w-8 items-center justify-center rounded-lg"
+          className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-lg sm:h-8 sm:w-8"
           style={{ background: `${accent}1f`, color: accent }}
         >
           {icon}
         </span>
-        <span className="text-xs font-medium text-white/50">{label}</span>
+        <span className="min-w-0 truncate text-[11px] font-medium text-white/50 sm:text-xs">
+          {label}
+        </span>
       </div>
-      <div className="font-display text-2xl font-bold tracking-tight text-white">
+      <div className="font-display text-[clamp(0.95rem,4.2vw,1.875rem)] font-bold tabular-nums tracking-tight text-white">
         {children}
       </div>
-      <div className="mt-1 text-xs font-medium" style={{ color: accent }}>
+      <div
+        className="mt-1 truncate text-[11px] font-medium tabular-nums sm:text-xs"
+        style={{ color: accent }}
+      >
         {trend}
       </div>
     </motion.div>
@@ -429,7 +434,7 @@ function Stage() {
             initial={reduce ? false : 'hidden'}
             animate="show"
             style={{ transformStyle: 'preserve-3d' }}
-            className="relative rounded-[1.6rem] border border-white/10 bg-white/[0.03] p-5 shadow-2xl backdrop-blur-2xl"
+            className="relative rounded-[1.6rem] border border-white/10 bg-white/[0.03] p-3 shadow-2xl backdrop-blur-2xl sm:p-5"
           >
             {/* Header mockup — z paling tinggi agar dropdown-nya di atas kartu */}
             <motion.div
@@ -457,7 +462,7 @@ function Stage() {
             </motion.div>
 
             {/* KPI cards (depth lebih rendah dari header/dropdown) */}
-            <div className="mb-4 grid grid-cols-3 gap-3">
+            <div className="mb-4 grid grid-cols-3 gap-2 sm:gap-3">
               <KpiCard
                 icon={<Users className="h-4 w-4" />}
                 label="Pengguna"
@@ -514,7 +519,7 @@ export function PremiumHero({ onEnter }: PremiumHeroProps) {
     });
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-[#0F1115] text-white">
+    <div className="relative min-h-screen overflow-x-hidden bg-[#0F1115] text-white">
       {/* Glow latar emerald + aksen cyan */}
       <div
         className="pointer-events-none absolute inset-0"
@@ -535,7 +540,7 @@ export function PremiumHero({ onEnter }: PremiumHeroProps) {
         }}
       />
 
-      <div className="relative mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 px-6 py-16 lg:grid-cols-2 lg:py-24">
+      <div className="relative mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 px-5 pb-16 pt-[calc(env(safe-area-inset-top)_+_3.5rem)] sm:px-6 lg:grid-cols-2 lg:pb-24 lg:pt-[calc(env(safe-area-inset-top)_+_6rem)]">
         {/* Teks + CTA — kontrol asli, DI LUAR transform 3D, pointer-events normal */}
         <motion.div
           variants={textStagger}
