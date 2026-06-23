@@ -2,6 +2,7 @@ import { StrictMode, Suspense, lazy, useCallback, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App';
 import { ToastProvider } from './components/Toast';
+import { initDb } from './lib/db';
 import './index.css';
 
 // Hero hanya dimuat saat dibutuhkan agar tidak membebani bundel aplikasi utama.
@@ -72,8 +73,19 @@ if (!container) {
   throw new Error('Elemen #root tidak ditemukan di index.html');
 }
 
-createRoot(container).render(
-  <StrictMode>
-    <Root />
-  </StrictMode>,
-);
+// Inisialisasi SQLite SEBELUM render, lalu render. Kegagalan DB tidak boleh
+// membuat aplikasi blank — cukup catat dan tetap render (jalur lama jalan).
+async function bootstrap(): Promise<void> {
+  try {
+    await initDb();
+  } catch (err) {
+    console.error('Gagal inisialisasi database lokal:', err);
+  }
+  createRoot(container as HTMLElement).render(
+    <StrictMode>
+      <Root />
+    </StrictMode>,
+  );
+}
+
+void bootstrap();

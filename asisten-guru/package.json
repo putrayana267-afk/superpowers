@@ -10,14 +10,17 @@
     "lint": "tsc --noEmit"
   },
   "dependencies": {
+    "@capacitor-community/sqlite": "^7.0.3",
     "@capacitor/android": "^7.6.7",
     "@capacitor/core": "^7.6.7",
     "framer-motion": "^11.3.19",
+    "jeep-sqlite": "^2.8.0",
     "lucide-react": "^0.418.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-markdown": "^9.0.1",
-    "remark-gfm": "^4.0.0"
+    "remark-gfm": "^4.0.0",
+    "sql.js": "^1.14.1"
   },
   "devDependencies": {
     "@capacitor/cli": "^7.6.7",
