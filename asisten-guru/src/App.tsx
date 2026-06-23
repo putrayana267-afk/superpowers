@@ -28,9 +28,11 @@ import { GlassCard } from './components/GlassCard';
 import { ResultSkeleton } from './components/Skeleton';
 import { Perpustakaan, PerpustakaanIcon } from './components/Perpustakaan';
 import { Settings, SettingsIcon } from './components/Settings';
+import { Tersimpan, TersimpanIcon } from './components/Tersimpan';
+import type { GenerationRow } from './lib/db';
 import { useToast } from './components/Toast';
 
-type View = 'tools' | 'perpustakaan' | 'settings';
+type View = 'tools' | 'perpustakaan' | 'settings' | 'tersimpan';
 
 interface AppProps {
   /** Buka kembali landing showcase (opsional, dari Root). */
@@ -188,6 +190,29 @@ export default function App({ onOpenShowcase }: AppProps) {
     setNavOpen(false);
   }, []);
 
+  const handleSelectSaved = useCallback(() => {
+    setView('tersimpan');
+    setNavOpen(false);
+  }, []);
+
+  const handleOpenSaved = useCallback((row: GenerationRow) => {
+    let parsed: ToolInputs = {};
+    try {
+      parsed = JSON.parse(row.input_json) as ToolInputs;
+    } catch {
+      parsed = {};
+    }
+    setView('tools');
+    setActiveId(row.tool);
+    if (Object.keys(parsed).length > 0) {
+      setInputsByTool((prev) => ({ ...prev, [row.tool]: parsed }));
+    }
+    setResult(row.output_text);
+    setStatus('done');
+    setStreaming(false);
+    setCurrentEntryId(null);
+  }, []);
+
   const handleCopy = useCallback(async () => {
     const ok = await copyToClipboard(result);
     toast(
@@ -272,6 +297,8 @@ export default function App({ onOpenShowcase }: AppProps) {
               onSelect={handleSelectTool}
               libraryActive={view === 'perpustakaan'}
               onSelectLibrary={handleSelectLibrary}
+              savedActive={view === 'tersimpan'}
+              onSelectSaved={handleSelectSaved}
             />
           </div>
         </aside>
@@ -296,6 +323,26 @@ export default function App({ onOpenShowcase }: AppProps) {
                 </div>
               </div>
               <Settings />
+            </>
+          ) : view === 'tersimpan' ? (
+            <>
+              <div className="mb-5">
+                <div className="flex items-center gap-3">
+                  <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-deep text-white gold-edge">
+                    <TersimpanIcon className="h-5 w-5" />
+                  </span>
+                  <div>
+                    <h1 className="font-display text-xl font-extrabold text-emerald-deep sm:text-2xl">
+                      Tersimpan
+                    </h1>
+                    <p className="text-sm text-ink/60">
+                      Semua hasil tersimpan di perangkat — bisa dibuka kembali
+                      walau offline.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <Tersimpan onOpen={handleOpenSaved} />
             </>
           ) : view === 'perpustakaan' ? (
             <>
@@ -409,6 +456,8 @@ export default function App({ onOpenShowcase }: AppProps) {
                   onSelect={handleSelectTool}
                   libraryActive={view === 'perpustakaan'}
                   onSelectLibrary={handleSelectLibrary}
+                  savedActive={view === 'tersimpan'}
+                  onSelectSaved={handleSelectSaved}
                 />
               </div>
             </motion.div>
