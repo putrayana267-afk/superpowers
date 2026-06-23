@@ -8,6 +8,8 @@ const apiProxy = process.env.VITE_DEV_API_PROXY;
 
 export default defineConfig({
   plugins: [react()],
+  // base relatif WAJIB agar aset termuat di dalam APK (file:// / capacitor://).
+  base: './',
   build: {
     rollupOptions: {
       output: {

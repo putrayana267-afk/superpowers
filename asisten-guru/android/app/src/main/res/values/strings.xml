@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Asisten Guru</string>
+    <string name="title_activity_main">Asisten Guru</string>
+    <string name="package_name">com.sdmutu.asistenguru</string>
+    <string name="custom_url_scheme">com.sdmutu.asistenguru</string>
+</resources>
