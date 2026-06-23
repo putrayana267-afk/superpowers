@@ -1,7 +1,7 @@
 /**
- * Serverless proxy ke Anthropic Claude API.
+ * Serverless proxy ke Google Gemini API.
  *
- * KEAMANAN: ANTHROPIC_API_KEY hanya dibaca di sini (sisi server) dari environment
+ * KEAMANAN: GEMINI_API_KEY hanya dibaca di sini (sisi server) dari environment
  * variable dan TIDAK PERNAH dikirim ke frontend. Frontend hanya memanggil
  * endpoint ini dengan { toolId, inputs }.
  */
@@ -223,23 +223,25 @@ interface ApiResponse {
   setHeader(name: string, value: string): void;
 }
 
-const ANTHROPIC_URL = 'https://api.anthropic.com/v1/messages';
-const ANTHROPIC_MODEL = 'claude-sonnet-4-6';
-const MAX_TOKENS = 8192;
+const GEMINI_MODEL = 'gemini-2.5-flash';
+const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`;
+const MAX_OUTPUT_TOKENS = 8192;
 
 interface RequestBody {
   toolId?: unknown;
   inputs?: unknown;
 }
 
-interface AnthropicTextBlock {
-  type: string;
+interface GeminiPart {
   text?: string;
 }
 
-interface AnthropicResponse {
-  content?: AnthropicTextBlock[];
-  stop_reason?: string;
+interface GeminiResponse {
+  candidates?: Array<{
+    content?: { parts?: GeminiPart[] };
+    finishReason?: string;
+  }>;
+  promptFeedback?: { blockReason?: string };
   error?: { message?: string };
 }
 
@@ -248,18 +250,6 @@ function isStringRecord(value: unknown): value is Record<string, string> {
   return Object.values(value as Record<string, unknown>).every(
     (v) => typeof v === 'string',
   );
-}
-
-/** Petakan error dari Anthropic menjadi pesan ramah untuk client. */
-function friendlyAnthropicError(status: number, rawBody: string): string {
-  const lower = rawBody.toLowerCase();
-  if (lower.includes('credit balance') || lower.includes('insufficient')) {
-    return 'Saldo API Anthropic tidak mencukupi — isi saldo di platform.claude.com.';
-  }
-  if (status === 429 || lower.includes('rate_limit')) {
-    return 'Terlalu banyak permintaan, coba sebentar lagi.';
-  }
-  return 'Terjadi kendala saat membuat hasil. Silakan coba lagi.';
 }
 
 export default async function handler(
@@ -271,7 +261,7 @@ export default async function handler(
     return;
   }
 
-  const apiKey = process.env.ANTHROPIC_API_KEY;
+  const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
     res.status(500).json({
       error: 'Server belum dikonfigurasi. Hubungi pengelola aplikasi.',
@@ -313,27 +303,37 @@ export default async function handler(
     return;
   }
 
-  // Pemanggilan Anthropic (non-streaming) dengan timeout sisi server.
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 55_000);
+  // Pemanggilan Gemini (non-streaming) dengan timeout sisi server.
+  const requestBody = JSON.stringify({
+    contents: [{ role: 'user', parts: [{ text: userPrompt }] }],
+    systemInstruction: { parts: [{ text: systemPrompt }] },
+    generationConfig: { maxOutputTokens: MAX_OUTPUT_TOKENS },
+  });
 
-  let anthropicRes: Response;
+  const key: string = apiKey;
+  async function callGemini(): Promise<Response> {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 55_000);
+    try {
+      return await fetch(`${GEMINI_URL}?key=${encodeURIComponent(key)}`, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: requestBody,
+        signal: controller.signal,
+      });
+    } finally {
+      clearTimeout(timeout);
+    }
+  }
+
+  let geminiRes: Response;
   try {
-    anthropicRes = await fetch(ANTHROPIC_URL, {
-      method: 'POST',
-      headers: {
-        'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01',
-        'content-type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: ANTHROPIC_MODEL,
-        max_tokens: MAX_TOKENS,
-        system: systemPrompt,
-        messages: [{ role: 'user', content: userPrompt }],
-      }),
-      signal: controller.signal,
-    });
+    geminiRes = await callGemini();
+    // Retry sederhana: bila kena 429, tunggu 2 detik lalu coba ulang 1x.
+    if (geminiRes.status === 429) {
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      geminiRes = await callGemini();
+    }
   } catch (err) {
     if (err instanceof Error && err.name === 'AbortError') {
       res.status(504).json({
@@ -345,39 +345,50 @@ export default async function handler(
       error: 'Gagal menghubungi layanan AI. Periksa koneksi lalu coba lagi.',
     });
     return;
-  } finally {
-    clearTimeout(timeout);
   }
 
-  if (!anthropicRes.ok) {
-    const rawBody = await anthropicRes.text().catch(() => '');
-    console.error('Anthropic error', anthropicRes.status, rawBody);
-    const status = anthropicRes.status === 429 ? 429 : 502;
-    res
-      .status(status)
-      .json({ error: friendlyAnthropicError(anthropicRes.status, rawBody) });
+  if (geminiRes.status === 429) {
+    res.status(429).json({
+      error: 'Terlalu banyak permintaan, coba sebentar lagi.',
+    });
     return;
   }
 
-  let data: AnthropicResponse;
+  if (!geminiRes.ok) {
+    const rawBody = await geminiRes.text().catch(() => '');
+    console.error('Gemini error', geminiRes.status, rawBody);
+    res.status(502).json({
+      error: 'Terjadi kendala saat membuat hasil. Silakan coba lagi.',
+    });
+    return;
+  }
+
+  let data: GeminiResponse;
   try {
-    data = (await anthropicRes.json()) as AnthropicResponse;
+    data = (await geminiRes.json()) as GeminiResponse;
   } catch {
     res.status(502).json({ error: 'Respons dari layanan AI tidak valid.' });
     return;
   }
 
+  // Bila prompt diblokir oleh filter keamanan Gemini.
+  if (data.promptFeedback?.blockReason) {
+    res.status(502).json({
+      error: 'Permintaan tidak dapat diproses. Coba ubah input lalu ulangi.',
+    });
+    return;
+  }
+
   // Output terpotong karena mencapai batas token.
-  if (data.stop_reason === 'max_tokens') {
+  if (data.candidates?.[0]?.finishReason === 'MAX_TOKENS') {
     res.status(502).json({
       error: 'Output terpotong, kurangi jumlah soal atau coba lagi.',
     });
     return;
   }
 
-  const text = (data.content ?? [])
-    .filter((block) => block.type === 'text' && typeof block.text === 'string')
-    .map((block) => block.text)
+  const text = (data.candidates?.[0]?.content?.parts ?? [])
+    .map((part) => part.text ?? '')
     .join('')
     .trim();
 
