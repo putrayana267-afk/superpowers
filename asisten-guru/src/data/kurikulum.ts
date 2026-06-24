@@ -31,22 +31,22 @@ const norm = (s: string | undefined | null): string =>
 // JENIS TEKS yang tersurat di CP (Kepka BSKAP 046/H/KR/2025). BUKAN daftar bab
 // resmi per kelas → status 'draft' sampai diverifikasi ke ATP/buku teks.
 const BIND_FASE_A_TOPIK: Topik[] = [
-  // A. Tema (lintas elemen)
-  { id: "bind-a-diriku", label: "Diriku / perkenalan diri" },
+  // A. Tema (konteks wajib di CP)
+  { id: "bind-a-diriku", label: "Diriku (perkenalan diri)" },
   { id: "bind-a-keluarga", label: "Keluargaku" },
-  { id: "bind-a-lingkungan", label: "Lingkungan sekitar" },
   { id: "bind-a-kesehatan", label: "Kesehatan & kebersihan diri" },
-  // B. Jenis teks (tersurat di CP Fase A)
-  { id: "bind-b-deskripsi", label: "Teks deskripsi sederhana" },
-  { id: "bind-b-rekon", label: "Teks rekon / pengalaman diri" },
-  { id: "bind-b-narasi", label: "Narasi imajinatif (cerita) & menceritakan kembali" },
+  { id: "bind-a-lingkungan", label: "Lingkungan sekitar" },
+  // B. Keterampilan dasar (fondasi literasi)
+  { id: "bind-c-fonemik", label: "Kesadaran fonemik (bunyi huruf)" },
+  { id: "bind-c-membaca", label: "Membaca permulaan (kata-kata sederhana)" },
+  { id: "bind-c-menulis", label: "Menulis permulaan (memegang alat tulis, tulisan tangan)" },
+  // C. Jenis teks sederhana (dari ATP referensi Kemendikdasmen)
+  { id: "bind-b-deskripsi", label: "Teks deskripsi" },
+  { id: "bind-b-rekon", label: "Teks rekon (pengalaman diri)" },
+  { id: "bind-b-narasi", label: "Teks narasi" },
   { id: "bind-b-puisi", label: "Puisi anak" },
-  { id: "bind-b-prosedur", label: "Teks prosedur sederhana (kegiatan sehari-hari)" },
-  { id: "bind-b-eksposisi", label: "Teks eksposisi sederhana" },
-  // C. Keterampilan dasar
-  { id: "bind-c-fonemik", label: "Mengenal huruf & bunyi (kesadaran fonemik)" },
-  { id: "bind-c-membaca", label: "Membaca permulaan kata sederhana" },
-  { id: "bind-c-menulis", label: "Menulis permulaan (cara memegang alat tulis, menebalkan, tulisan tangan)" },
+  { id: "bind-b-prosedur", label: "Teks prosedur" },
+  { id: "bind-b-eksposisi", label: "Teks eksposisi" },
 ];
 
 // Topik DRAFT Matematika Fase A (Kelas 1 & 2) — 4 elemen CP: Bilangan, Aljabar,
