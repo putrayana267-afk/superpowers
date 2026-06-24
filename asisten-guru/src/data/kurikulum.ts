@@ -58,19 +58,18 @@ const MTK_FASE_A_TOPIK: Topik[] = [
   { id: "mtk-bil-bandingurut", label: "Membandingkan & mengurutkan bilangan" },
   { id: "mtk-bil-kompdekomp", label: "Komposisi & dekomposisi bilangan" },
   { id: "mtk-bil-tambahkurang20", label: "Penjumlahan & pengurangan sampai 20 (benda konkret)" },
-  { id: "mtk-bil-pecahan", label: "Pecahan sederhana: setengah & seperempat" },
+  { id: "mtk-bil-pecahan", label: "Pecahan sederhana (setengah & seperempat)" },
   // B. Aljabar
-  { id: "mtk-alj-samadengan", label: 'Makna simbol "=" dalam kalimat matematika' },
-  { id: "mtk-alj-pola", label: "Pola bukan bilangan (gambar, warna, bunyi)" },
+  { id: "mtk-alj-pola", label: "Pola bilangan & pola gambar/objek" },
+  { id: "mtk-alj-nilaibelumdiketahui", label: "Mencari nilai yang belum diketahui dalam kalimat matematika" },
   // C. Pengukuran
-  { id: "mtk-ukur-panjangberat", label: "Membandingkan panjang & berat secara langsung" },
-  { id: "mtk-ukur-durasi", label: "Membandingkan durasi waktu" },
-  { id: "mtk-ukur-takbaku", label: "Mengukur dengan satuan tidak baku" },
+  { id: "mtk-ukur-panjangberat", label: "Mengukur panjang & berat (satuan baku: cm, m, g, kg)" },
+  { id: "mtk-ukur-luasvolume", label: "Mengestimasi luas & volume (satuan tidak baku & baku)" },
   // D. Geometri
-  { id: "mtk-geo-bangundatar", label: "Mengenal bangun datar (segitiga, segiempat, segi banyak, lingkaran)" },
-  { id: "mtk-geo-bangunruang", label: "Mengenal bangun ruang (balok, kubus, kerucut, bola)" },
+  { id: "mtk-geo-bangundatar", label: "Mengenal bangun datar (segitiga, segiempat, segibanyak, lingkaran)" },
+  { id: "mtk-geo-bangunruang", label: "Mengenal bangun ruang (balok, kubus)" },
   { id: "mtk-geo-kompdekomp", label: "Komposisi & dekomposisi bangun datar" },
-  { id: "mtk-geo-posisi", label: "Posisi benda (kanan, kiri, depan, belakang, atas, bawah)" },
+  { id: "mtk-geo-posisi", label: "Posisi benda (kanan/kiri/depan/belakang/atas/bawah)" },
 ];
 
 export const KURIKULUM: KurikulumEntry[] = [
