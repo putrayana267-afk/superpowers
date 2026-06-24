@@ -49,6 +49,30 @@ const BIND_FASE_A_TOPIK: Topik[] = [
   { id: "bind-c-menulis", label: "Menulis permulaan (cara memegang alat tulis, menebalkan, tulisan tangan)" },
 ];
 
+// Topik DRAFT Matematika Fase A (Kelas 1 & 2) — 4 elemen CP: Bilangan, Aljabar,
+// Pengukuran, Geometri (Analisis Data & Peluang BELUM ada di Fase A). Diturunkan
+// dari CP (Kepka BSKAP 046/H/KR/2025) → status 'draft' sampai diverifikasi ke ATP.
+const MTK_FASE_A_TOPIK: Topik[] = [
+  // A. Bilangan
+  { id: "mtk-bil-cacah100", label: "Bilangan cacah sampai 100 (membaca, menulis, nilai tempat)" },
+  { id: "mtk-bil-bandingurut", label: "Membandingkan & mengurutkan bilangan" },
+  { id: "mtk-bil-kompdekomp", label: "Komposisi & dekomposisi bilangan" },
+  { id: "mtk-bil-tambahkurang20", label: "Penjumlahan & pengurangan sampai 20 (benda konkret)" },
+  { id: "mtk-bil-pecahan", label: "Pecahan sederhana: setengah & seperempat" },
+  // B. Aljabar
+  { id: "mtk-alj-samadengan", label: 'Makna simbol "=" dalam kalimat matematika' },
+  { id: "mtk-alj-pola", label: "Pola bukan bilangan (gambar, warna, bunyi)" },
+  // C. Pengukuran
+  { id: "mtk-ukur-panjangberat", label: "Membandingkan panjang & berat secara langsung" },
+  { id: "mtk-ukur-durasi", label: "Membandingkan durasi waktu" },
+  { id: "mtk-ukur-takbaku", label: "Mengukur dengan satuan tidak baku" },
+  // D. Geometri
+  { id: "mtk-geo-bangundatar", label: "Mengenal bangun datar (segitiga, segiempat, segi banyak, lingkaran)" },
+  { id: "mtk-geo-bangunruang", label: "Mengenal bangun ruang (balok, kubus, kerucut, bola)" },
+  { id: "mtk-geo-kompdekomp", label: "Komposisi & dekomposisi bangun datar" },
+  { id: "mtk-geo-posisi", label: "Posisi benda (kanan, kiri, depan, belakang, atas, bawah)" },
+];
+
 export const KURIKULUM: KurikulumEntry[] = [
   // -------------------------------------------------------------------------
   // PESANTREN — NAHWU (Matan Al-Jurumiyah). Sesuai contoh gambar pengguna.
@@ -165,6 +189,30 @@ export const KURIKULUM: KurikulumEntry[] = [
     status: "draft",
     sumber: "CP Bahasa Indonesia Fase A — Kepka BSKAP No. 046/H/KR/2025 (+ referensi ATP Kemendikdasmen)",
     topik: BIND_FASE_A_TOPIK,
+  },
+
+  // -------------------------------------------------------------------------
+  // NASIONAL — SD/MI Matematika, FASE A (Kelas 1 & 2). Status: DRAFT.
+  // Sumber: Kepka BSKAP No. 046/H/KR/2025 — CP Matematika Fase A.
+  // 4 elemen: Bilangan, Aljabar, Pengukuran, Geometri.
+  // -------------------------------------------------------------------------
+  {
+    jenjang: "SD/MI",
+    kelompok: "Umum/Nasional (Kemendikbud)",
+    mapel: "Matematika",
+    kelas: "1",
+    status: "draft",
+    sumber: "CP Matematika Fase A — Kepka BSKAP No. 046/H/KR/2025",
+    topik: MTK_FASE_A_TOPIK,
+  },
+  {
+    jenjang: "SD/MI",
+    kelompok: "Umum/Nasional (Kemendikbud)",
+    mapel: "Matematika",
+    kelas: "2",
+    status: "draft",
+    sumber: "CP Matematika Fase A — Kepka BSKAP No. 046/H/KR/2025",
+    topik: MTK_FASE_A_TOPIK,
   },
 ];
 
