@@ -38,15 +38,15 @@ const BIND_FASE_A_TOPIK: Topik[] = [
   { id: "bind-a-kesehatan", label: "Kesehatan & kebersihan diri" },
   // B. Jenis teks (tersurat di CP Fase A)
   { id: "bind-b-deskripsi", label: "Teks deskripsi sederhana" },
-  { id: "bind-b-rekon", label: "Teks rekon / pengalaman pribadi" },
+  { id: "bind-b-rekon", label: "Teks rekon / pengalaman diri" },
   { id: "bind-b-narasi", label: "Narasi imajinatif (cerita) & menceritakan kembali" },
   { id: "bind-b-puisi", label: "Puisi anak" },
   { id: "bind-b-prosedur", label: "Teks prosedur sederhana (kegiatan sehari-hari)" },
   { id: "bind-b-eksposisi", label: "Teks eksposisi sederhana" },
   // C. Keterampilan dasar
   { id: "bind-c-fonemik", label: "Mengenal huruf & bunyi (kesadaran fonemik)" },
-  { id: "bind-c-membaca", label: "Membaca kata & kalimat sederhana" },
-  { id: "bind-c-menulis", label: "Menulis permulaan (menebalkan, menyalin, menulis tangan)" },
+  { id: "bind-c-membaca", label: "Membaca permulaan kata sederhana" },
+  { id: "bind-c-menulis", label: "Menulis permulaan (cara memegang alat tulis, menebalkan, tulisan tangan)" },
 ];
 
 export const KURIKULUM: KurikulumEntry[] = [
@@ -154,7 +154,7 @@ export const KURIKULUM: KurikulumEntry[] = [
     mapel: "Bahasa Indonesia",
     kelas: "1",
     status: "draft",
-    sumber: "Kepka BSKAP No. 046/H/KR/2025 — CP Bahasa Indonesia Fase A",
+    sumber: "CP Bahasa Indonesia Fase A — Kepka BSKAP No. 046/H/KR/2025 (+ referensi ATP Kemendikdasmen)",
     topik: BIND_FASE_A_TOPIK,
   },
   {
@@ -163,7 +163,7 @@ export const KURIKULUM: KurikulumEntry[] = [
     mapel: "Bahasa Indonesia",
     kelas: "2",
     status: "draft",
-    sumber: "Kepka BSKAP No. 046/H/KR/2025 — CP Bahasa Indonesia Fase A",
+    sumber: "CP Bahasa Indonesia Fase A — Kepka BSKAP No. 046/H/KR/2025 (+ referensi ATP Kemendikdasmen)",
     topik: BIND_FASE_A_TOPIK,
   },
 ];
