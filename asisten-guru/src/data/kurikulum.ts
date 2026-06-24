@@ -72,6 +72,26 @@ const MTK_FASE_A_TOPIK: Topik[] = [
   { id: "mtk-geo-posisi", label: "Posisi benda (kanan/kiri/depan/belakang/atas/bawah)" },
 ];
 
+// Topik DRAFT Pendidikan Pancasila Fase A (Kelas 1 & 2) — 4 elemen CP: Pancasila,
+// UUD NRI 1945, Bhinneka Tunggal Ika, NKRI. Diturunkan dari CP (Kepka BSKAP
+// 046/H/KR/2025) → status 'draft' sampai diverifikasi ke ATP/buku teks.
+const PPKN_FASE_A_TOPIK: Topik[] = [
+  // A. Pancasila
+  { id: "ppkn-pcs-benderalagu", label: "Bendera negara & lagu kebangsaan Indonesia" },
+  { id: "ppkn-pcs-garuda", label: "Lambang negara Garuda Pancasila" },
+  { id: "ppkn-pcs-simbolsila", label: "Simbol & bunyi sila-sila Pancasila" },
+  { id: "ppkn-pcs-nilaikeluarga", label: "Menerapkan nilai Pancasila di lingkungan keluarga" },
+  // B. UUD NRI 1945
+  { id: "ppkn-uud-aturankeluarga", label: "Mengenal aturan di lingkungan keluarga" },
+  { id: "ppkn-uud-patuhcerita", label: "Mematuhi & menceritakan aturan keluarga" },
+  // C. Bhinneka Tunggal Ika
+  { id: "ppkn-bti-semboyan", label: "Semboyan Bhinneka Tunggal Ika" },
+  { id: "ppkn-bti-identitas", label: "Menghargai identitas diri (jenis kelamin, hobi, bahasa, agama)" },
+  // D. NKRI
+  { id: "ppkn-nkri-rumahsekolah", label: "Lingkungan rumah & sekolah sebagai bagian NKRI" },
+  { id: "ppkn-nkri-kerjasama", label: "Bekerja sama menjaga lingkungan dalam keberagaman" },
+];
+
 export const KURIKULUM: KurikulumEntry[] = [
   // -------------------------------------------------------------------------
   // PESANTREN — NAHWU (Matan Al-Jurumiyah). Sesuai contoh gambar pengguna.
@@ -212,6 +232,30 @@ export const KURIKULUM: KurikulumEntry[] = [
     status: "verified",
     sumber: "CP Matematika Fase A — Kepka BSKAP No. 046/H/KR/2025",
     topik: MTK_FASE_A_TOPIK,
+  },
+
+  // -------------------------------------------------------------------------
+  // NASIONAL — SD/MI Pendidikan Pancasila, FASE A (Kelas 1 & 2). Status: DRAFT.
+  // Sumber: Kepka BSKAP No. 046/H/KR/2025 — CP Pendidikan Pancasila Fase A.
+  // 4 elemen: Pancasila, UUD NRI 1945, Bhinneka Tunggal Ika, NKRI.
+  // -------------------------------------------------------------------------
+  {
+    jenjang: "SD/MI",
+    kelompok: "Umum/Nasional (Kemendikbud)",
+    mapel: "Pendidikan Pancasila",
+    kelas: "1",
+    status: "draft",
+    sumber: "CP Pendidikan Pancasila Fase A — Kepka BSKAP No. 046/H/KR/2025",
+    topik: PPKN_FASE_A_TOPIK,
+  },
+  {
+    jenjang: "SD/MI",
+    kelompok: "Umum/Nasional (Kemendikbud)",
+    mapel: "Pendidikan Pancasila",
+    kelas: "2",
+    status: "draft",
+    sumber: "CP Pendidikan Pancasila Fase A — Kepka BSKAP No. 046/H/KR/2025",
+    topik: PPKN_FASE_A_TOPIK,
   },
 ];
 
