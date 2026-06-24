@@ -277,6 +277,10 @@ function PokokField({
         />
       </div>
 
+      <p className="mt-1 text-xs text-emerald-deep/60">
+        Topik otomatis dari kurikulum — atau pilih “Tulis Kustom”.
+      </p>
+
       {showCustom && (
         <input
           type="text"

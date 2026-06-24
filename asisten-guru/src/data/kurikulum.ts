@@ -121,11 +121,43 @@ export const KURIKULUM: KurikulumEntry[] = [
   },
 ];
 
+// -----------------------------------------------------------------------------
+// ALIAS / KANONIKALISASI
+// Nilai opsi <select> di app TIDAK selalu sama persis dengan label di data ini
+// (mis. app: "Kekhasan Pesantren (Kitab Kuning/Dirasah Islamiyah)" & "Nahwu";
+// data: "Kekhasan Pesantren (Kitab Kuning)" & "Nahwu (Gramatika - Rumpun Alat)").
+// Maka cocokkan via kategori kanonik, bukan string mentah. (Data topik TETAP.)
+// -----------------------------------------------------------------------------
+
+/** Kategori kelompok kanonik dari nilai app maupun data. */
+function canonKelompok(s: string): string {
+  const n = norm(s);
+  if (n.includes("pesantren") || n.includes("kitab kuning")) return "pesantren";
+  if (n.includes("madrasah")) return "madrasah";
+  if (n.includes("nasional") || n.includes("kemendikbud") || n.includes("umum"))
+    return "umum";
+  return n;
+}
+
+/** Rumpun mapel kanonik (toleran variasi ejaan Nahwu/Shorof/Fiqih/Tauhid, dll). */
+function canonMapel(s: string): string {
+  const n = norm(s);
+  if (n.includes("nahwu")) return "nahwu";
+  if (n.includes("shorof") || n.includes("sharaf") || n.includes("saraf"))
+    return "shorof";
+  if (n.includes("fiqih") || n.includes("fikih")) return "fiqih";
+  if (n.includes("tauhid") || n.includes("aqidah") || n.includes("akidah"))
+    return "tauhid";
+  // Mapel nasional dicocokkan apa adanya (sudah seragam antara app & data).
+  return n;
+}
+
 /**
  * Ambil daftar topik untuk kombinasi terpilih.
- * - Cocokkan jenjang + kelompok + mapel (toleran spasi/kapital).
+ * - Cocokkan kelompok & mapel via kategori kanonik (tahan beda label/ejaan).
+ * - Kelompok Pesantren/Kitab Kuning: kitab bersifat lintas-jenjang → jenjang
+ *   DIABAIKAN. Untuk kelompok lain (nasional/madrasah) jenjang harus cocok.
  * - Jika entri punya `kelas`, cocokkan juga dengan kelas terpilih.
- * - Jika entri tidak punya `kelas` (kitab pesantren), kelas diabaikan.
  * - Gabungkan & dedup; kembalikan [] jika tak ada → pemanggil HARUS fallback.
  */
 export function getTopik(
@@ -135,14 +167,16 @@ export function getTopik(
   kelas?: string
 ): Topik[] {
   const j = norm(jenjang);
-  const k = norm(kelompok);
-  const m = norm(mapel);
+  const ck = canonKelompok(kelompok);
+  const cm = canonMapel(mapel);
   const kl = norm(kelas);
+  const pesantren = ck === "pesantren";
 
   const cocok = KURIKULUM.filter((e) => {
-    if (norm(e.jenjang) !== j) return false;
-    if (norm(e.kelompok) !== k) return false;
-    if (norm(e.mapel) !== m) return false;
+    if (canonKelompok(e.kelompok) !== ck) return false;
+    if (canonMapel(e.mapel) !== cm) return false;
+    // Pesantren/kitab kuning lintas jenjang → abaikan jenjang.
+    if (!pesantren && norm(e.jenjang) !== j) return false;
     if (e.kelas != null && e.kelas !== "") return norm(e.kelas) === kl;
     return true;
   });
