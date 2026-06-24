@@ -92,6 +92,23 @@ const PPKN_FASE_A_TOPIK: Topik[] = [
   { id: "ppkn-nkri-kerjasama", label: "Bekerja sama menjaga lingkungan dalam keberagaman" },
 ];
 
+// Topik DRAFT PJOK Fase A (Kelas 1 & 2) — diturunkan dari CP (Kepka BSKAP
+// 046/H/KR/2025). Elemen: keterampilan gerak (lokomotor/non-lokomotor/
+// manipulatif), aktivitas senam/berirama/air, kebugaran, & pola hidup sehat.
+const PJOK_FASE_A_TOPIK: Topik[] = [
+  // A. Keterampilan gerak
+  { id: "pjok-gerak-lokomotor", label: "Pola gerak dasar lokomotor (jalan, lari, lompat)" },
+  { id: "pjok-gerak-nonlokomotor", label: "Pola gerak dasar non-lokomotor (memutar, mengayun, menekuk)" },
+  { id: "pjok-gerak-manipulatif", label: "Pola gerak dasar manipulatif (melempar, menangkap, menendang)" },
+  // B. Aktivitas
+  { id: "pjok-akt-senam", label: "Aktivitas senam sederhana" },
+  { id: "pjok-akt-berirama", label: "Aktivitas gerak berirama" },
+  { id: "pjok-akt-air", label: "Aktivitas permainan & olahraga air (kondisional)" },
+  // C. Kebugaran & pola hidup sehat
+  { id: "pjok-sehat-kebugaran", label: "Kebugaran jasmani terkait kesehatan" },
+  { id: "pjok-sehat-polahidup", label: "Pola hidup sehat & bersih" },
+];
+
 export const KURIKULUM: KurikulumEntry[] = [
   // -------------------------------------------------------------------------
   // PESANTREN — NAHWU (Matan Al-Jurumiyah). Sesuai contoh gambar pengguna.
@@ -256,6 +273,29 @@ export const KURIKULUM: KurikulumEntry[] = [
     status: "draft",
     sumber: "CP Pendidikan Pancasila Fase A — Kepka BSKAP No. 046/H/KR/2025",
     topik: PPKN_FASE_A_TOPIK,
+  },
+
+  // -------------------------------------------------------------------------
+  // NASIONAL — SD/MI PJOK, FASE A (Kelas 1 & 2). Status: DRAFT.
+  // Sumber: Kepka BSKAP No. 046/H/KR/2025 — CP PJOK Fase A.
+  // -------------------------------------------------------------------------
+  {
+    jenjang: "SD/MI",
+    kelompok: "Umum/Nasional (Kemendikbud)",
+    mapel: "PJOK",
+    kelas: "1",
+    status: "draft",
+    sumber: "CP PJOK Fase A — Kepka BSKAP No. 046/H/KR/2025",
+    topik: PJOK_FASE_A_TOPIK,
+  },
+  {
+    jenjang: "SD/MI",
+    kelompok: "Umum/Nasional (Kemendikbud)",
+    mapel: "PJOK",
+    kelas: "2",
+    status: "draft",
+    sumber: "CP PJOK Fase A — Kepka BSKAP No. 046/H/KR/2025",
+    topik: PJOK_FASE_A_TOPIK,
   },
 ];
 
