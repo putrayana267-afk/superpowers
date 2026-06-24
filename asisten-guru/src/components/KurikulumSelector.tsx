@@ -8,8 +8,8 @@ import {
   getKelasOptions,
 } from '../data/struktur';
 import type { MapelGroup } from '../data/struktur';
-import { getTopik } from '../data/kurikulum';
-import type { Topik } from '../data/kurikulum';
+import { getTopik, getEntri } from '../data/kurikulum';
+import type { Topik, StatusData } from '../data/kurikulum';
 import { Field } from './Field';
 import { FieldSuggest } from './FieldSuggest';
 import { cn } from '../lib/cn';
@@ -194,17 +194,22 @@ function KelasSelect({
 function PokokField({
   value,
   topik,
+  status,
+  sumber,
   onChange,
   error,
 }: {
   value: string;
   topik: Topik[];
+  status: StatusData | null;
+  sumber?: string;
   onChange: (value: string) => void;
   error?: string;
 }) {
   const labels = topik.map((t) => t.label);
   const isKnown = labels.includes(value);
-  const [customChosen, setCustomChosen] = useState(value !== '' && !isKnown);
+  // Mode manual sebagai sumber kebenaran tunggal (nilai tidak hilang saat ganti).
+  const [manual, setManual] = useState(value !== '' && !isKnown);
 
   // FALLBACK: tidak ada data topik → input teks bebas (perilaku lama).
   if (topik.length === 0) {
@@ -229,8 +234,10 @@ function PokokField({
     );
   }
 
-  const showCustom = customChosen || (value !== '' && !isKnown);
-  const selectValue = showCustom ? POKOK_CUSTOM : value;
+  const isDraft = status === 'draft';
+  const isContoh = status === 'contoh';
+  const showBadge = isDraft || isContoh;
+  const selectValue = isKnown ? value : '';
 
   return (
     <Field
@@ -239,57 +246,83 @@ function PokokField({
       required
       error={error}
     >
-      <div className="relative">
-        <select
-          id="pokok"
-          value={selectValue}
-          aria-invalid={Boolean(error)}
-          aria-describedby={error ? 'pokok-error' : undefined}
-          onChange={(e) => {
-            const v = e.target.value;
-            if (v === POKOK_CUSTOM) {
-              setCustomChosen(true);
-              onChange('');
-            } else {
-              setCustomChosen(false);
-              onChange(v);
-            }
-          }}
-          className={cn(
-            controlBase,
-            'cursor-pointer appearance-none pr-10',
-            error && controlError,
-          )}
-        >
-          <option value="" disabled>
-            — pilih pokok pembahasan —
-          </option>
-          {topik.map((t) => (
-            <option key={t.id} value={t.label}>
-              {t.label}
-            </option>
-          ))}
-          <option value={POKOK_CUSTOM}>✏️ Tulis Kustom Pembahasan…</option>
-        </select>
-        <ChevronDown
-          aria-hidden
-          className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-emerald-deep/70"
-        />
-      </div>
+      {showBadge && (
+        <div className="flex min-w-0 flex-wrap items-center gap-2">
+          <span className="inline-flex items-center rounded-md border border-amber-300/70 bg-amber-50 px-1.5 py-0.5 text-[11px] font-semibold text-amber-800">
+            ⚠ {isContoh ? 'Contoh' : 'Draft'}
+          </span>
+          <span className="min-w-0 text-xs text-amber-700">
+            {isContoh
+              ? 'Contoh — bukan data resmi.'
+              : 'Data belum diverifikasi, mohon dicek.'}
+          </span>
+        </div>
+      )}
 
-      <p className="mt-1 text-xs text-emerald-deep/60">
-        Topik otomatis dari kurikulum — atau pilih “Tulis Kustom”.
-      </p>
+      {manual ? (
+        <>
+          <input
+            type="text"
+            value={value}
+            placeholder="Tulis pokok pembahasan sendiri…"
+            aria-label="Pokok pembahasan kustom"
+            onChange={(e) => onChange(e.target.value)}
+            className={cn(controlBase, error && controlError)}
+          />
+          <button
+            type="button"
+            onClick={() => setManual(false)}
+            className="mt-1 w-fit text-xs font-medium text-emerald-deep hover:underline"
+          >
+            ← pilih dari daftar
+          </button>
+        </>
+      ) : (
+        <>
+          <div className="relative">
+            <select
+              id="pokok"
+              value={selectValue}
+              aria-invalid={Boolean(error)}
+              aria-describedby={error ? 'pokok-error' : undefined}
+              onChange={(e) => {
+                const v = e.target.value;
+                if (v === POKOK_CUSTOM) {
+                  setManual(true); // tetap simpan value lama agar bisa diedit
+                } else {
+                  onChange(v);
+                }
+              }}
+              className={cn(
+                controlBase,
+                'cursor-pointer appearance-none pr-10',
+                error && controlError,
+              )}
+            >
+              <option value="" disabled>
+                — pilih pokok pembahasan —
+              </option>
+              {topik.map((t) => (
+                <option key={t.id} value={t.label}>
+                  {t.label}
+                </option>
+              ))}
+              <option value={POKOK_CUSTOM}>✏️ Ketik manual / lainnya…</option>
+            </select>
+            <ChevronDown
+              aria-hidden
+              className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-emerald-deep/70"
+            />
+          </div>
 
-      {showCustom && (
-        <input
-          type="text"
-          value={value}
-          placeholder="Tulis pokok pembahasan sendiri…"
-          aria-label="Pokok pembahasan kustom"
-          onChange={(e) => onChange(e.target.value)}
-          className={cn(controlBase, 'mt-2', error && controlError)}
-        />
+          <p className="mt-1 text-xs text-emerald-deep/60">
+            Topik otomatis dari kurikulum — atau pilih “Ketik manual”.
+          </p>
+        </>
+      )}
+
+      {status === 'verified' && sumber && (
+        <p className="mt-1 text-xs text-ink/45">Sumber: {sumber}</p>
       )}
     </Field>
   );
@@ -325,6 +358,7 @@ export function KurikulumSelector({
     value.mapel,
     value.kelas,
   );
+  const entri = getEntri(value.jenjang, value.kelompok, value.mapel);
 
   return (
     <div className="rounded-2xl border border-white/40 bg-white/30 p-4 gold-edge">
@@ -397,6 +431,8 @@ export function KurikulumSelector({
           key={`pokok-${value.jenjang}-${value.kelompok}-${value.mapel}-${value.kelas}`}
           value={value.pokok}
           topik={topik}
+          status={entri?.status ?? null}
+          sumber={entri?.sumber}
           onChange={(v) => onChange('pokok', v)}
           error={errors?.pokok}
         />
