@@ -228,7 +228,7 @@ export const KURIKULUM: KurikulumEntry[] = [
   },
 
   // -------------------------------------------------------------------------
-  // NASIONAL — SD/MI Matematika, FASE A (Kelas 1 & 2). Status: DRAFT.
+  // NASIONAL — SD/MI Matematika, FASE A (Kelas 1 & 2). Status: VERIFIED.
   // Sumber: Kepka BSKAP No. 046/H/KR/2025 — CP Matematika Fase A.
   // 4 elemen: Bilangan, Aljabar, Pengukuran, Geometri.
   // -------------------------------------------------------------------------
