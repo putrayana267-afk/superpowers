@@ -10,6 +10,16 @@
       content="Asisten mengajar berbasis AI untuk guru di Indonesia — siapkan modul ajar, soal, LKPD, dan lainnya sesuai Kurikulum Merdeka."
     />
     <title>Asisten Mengajar untuk Guru</title>
+    <!-- Konsol mobile (eruda) untuk debug di HP. Dimuat lebih dulu via CDN agar
+         tetap menangkap error walau bundle app crash saat load. -->
+    <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
+    <script>
+      try {
+        eruda.init();
+      } catch (e) {
+        /* abaikan bila CDN gagal dimuat */
+      }
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
