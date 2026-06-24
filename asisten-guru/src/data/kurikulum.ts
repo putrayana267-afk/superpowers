@@ -72,6 +72,34 @@ const MTK_FASE_A_TOPIK: Topik[] = [
   { id: "mtk-geo-posisi", label: "Posisi benda (kanan/kiri/depan/belakang/atas/bawah)" },
 ];
 
+// Topik DRAFT Matematika Fase B (Kelas 3 & 4) — diturunkan PERSIS dari CP (Kepka
+// BSKAP 046/H/KR/2025, Ruang GTK). 5 elemen: Bilangan, Aljabar, Pengukuran,
+// Geometri, Analisis Data dan Peluang. Semua topik = CP-inti (tanpa turunan ATP).
+const MTK_FASE_B_TOPIK: Topik[] = [
+  // A. Bilangan
+  { id: "mtkb-bil-cacah10rb", label: "Bilangan cacah sampai 10.000 (membaca, menulis, nilai tempat)" },
+  { id: "mtkb-bil-bandingurut", label: "Membandingkan & mengurutkan bilangan cacah sampai 10.000" },
+  { id: "mtkb-bil-kompdekomp", label: "Komposisi & dekomposisi bilangan cacah sampai 10.000" },
+  { id: "mtkb-bil-uang", label: "Menyelesaikan masalah uang (ribuan sebagai satuan)" },
+  { id: "mtkb-bil-tambahkurang1rb", label: "Penjumlahan & pengurangan bilangan cacah sampai 1.000" },
+  { id: "mtkb-bil-kalibagi100", label: "Perkalian & pembagian bilangan cacah sampai 100 (benda konkret, gambar, simbol)" },
+  { id: "mtkb-bil-kelipatanfaktor", label: "Menyelesaikan masalah kelipatan & faktor" },
+  { id: "mtkb-bil-bandingpecahan", label: "Membandingkan & mengurutkan pecahan (pembilang satu / penyebut sama)" },
+  { id: "mtkb-bil-pecahansenilai", label: "Mengenali pecahan senilai (gambar & simbol)" },
+  { id: "mtkb-bil-desimal", label: "Bilangan desimal persepuluhan & perseratusan (hubungan dengan persen)" },
+  // B. Aljabar
+  { id: "mtkb-alj-nilaibelumdiketahui", label: "Mengisi nilai yang belum diketahui dalam kalimat matematika (penjumlahan & pengurangan sampai 100)" },
+  { id: "mtkb-alj-pola", label: "Mengidentifikasi, meniru, & mengembangkan pola gambar/objek dan pola bilangan membesar/mengecil (sampai 100)" },
+  // C. Pengukuran
+  { id: "mtkb-ukur-panjangberat", label: "Mengukur panjang & berat (satuan baku) serta hubungan antar-satuan panjang (cm, m)" },
+  { id: "mtkb-ukur-luasvolume", label: "Mengukur & mengestimasi luas & volume (satuan tidak baku & baku)" },
+  // D. Geometri
+  { id: "mtkb-geo-ciribangundatar", label: "Mendeskripsikan ciri bangun datar (segiempat, segitiga, segi banyak)" },
+  { id: "mtkb-geo-kompdekomp", label: "Komposisi & dekomposisi bangun datar (lebih dari satu cara)" },
+  // E. Analisis Data dan Peluang
+  { id: "mtkb-dat-sajianalisis", label: "Menyajikan, menganalisis & menginterpretasi data (tabel, diagram gambar, piktogram, diagram batang skala satu satuan)" },
+];
+
 // Topik DRAFT Pendidikan Pancasila Fase A (Kelas 1 & 2) — 4 elemen CP: Pancasila,
 // UUD NRI 1945, Bhinneka Tunggal Ika, NKRI. Diturunkan dari CP (Kepka BSKAP
 // 046/H/KR/2025) → status 'draft' sampai diverifikasi ke ATP/buku teks.
@@ -249,6 +277,31 @@ export const KURIKULUM: KurikulumEntry[] = [
     status: "verified",
     sumber: "CP Matematika Fase A — Kepka BSKAP No. 046/H/KR/2025",
     topik: MTK_FASE_A_TOPIK,
+  },
+
+  // -------------------------------------------------------------------------
+  // NASIONAL — SD/MI Matematika, FASE B (Kelas 3 & 4). Status: DRAFT.
+  // Sumber: Kepka BSKAP No. 046/H/KR/2025 — CP Matematika Fase B (Ruang GTK).
+  // 5 elemen: Bilangan, Aljabar, Pengukuran, Geometri, Analisis Data & Peluang.
+  // Satu set topik (MTK_FASE_B_TOPIK) melayani kelas 3 & 4 — pola sama Fase A.
+  // -------------------------------------------------------------------------
+  {
+    jenjang: "SD/MI",
+    kelompok: "Umum/Nasional (Kemendikbud)",
+    mapel: "Matematika",
+    kelas: "3",
+    status: "draft",
+    sumber: "CP Matematika Fase B — Kepka BSKAP No. 046/H/KR/2025",
+    topik: MTK_FASE_B_TOPIK,
+  },
+  {
+    jenjang: "SD/MI",
+    kelompok: "Umum/Nasional (Kemendikbud)",
+    mapel: "Matematika",
+    kelas: "4",
+    status: "draft",
+    sumber: "CP Matematika Fase B — Kepka BSKAP No. 046/H/KR/2025",
+    topik: MTK_FASE_B_TOPIK,
   },
 
   // -------------------------------------------------------------------------
