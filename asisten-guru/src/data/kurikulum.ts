@@ -27,6 +27,28 @@ export interface KurikulumEntry {
 const norm = (s: string | undefined | null): string =>
   (s ?? "").trim().toLowerCase().replace(/\s+/g, " ");
 
+// Topik DRAFT Bahasa Indonesia Fase A (Kelas 1 & 2) — diturunkan dari TEMA &
+// JENIS TEKS yang tersurat di CP (Kepka BSKAP 046/H/KR/2025). BUKAN daftar bab
+// resmi per kelas → status 'draft' sampai diverifikasi ke ATP/buku teks.
+const BIND_FASE_A_TOPIK: Topik[] = [
+  // A. Tema (lintas elemen)
+  { id: "bind-a-diriku", label: "Diriku / perkenalan diri" },
+  { id: "bind-a-keluarga", label: "Keluargaku" },
+  { id: "bind-a-lingkungan", label: "Lingkungan sekitar" },
+  { id: "bind-a-kesehatan", label: "Kesehatan & kebersihan diri" },
+  // B. Jenis teks (tersurat di CP Fase A)
+  { id: "bind-b-deskripsi", label: "Teks deskripsi sederhana" },
+  { id: "bind-b-rekon", label: "Teks rekon / pengalaman pribadi" },
+  { id: "bind-b-narasi", label: "Narasi imajinatif (cerita) & menceritakan kembali" },
+  { id: "bind-b-puisi", label: "Puisi anak" },
+  { id: "bind-b-prosedur", label: "Teks prosedur sederhana (kegiatan sehari-hari)" },
+  { id: "bind-b-eksposisi", label: "Teks eksposisi sederhana" },
+  // C. Keterampilan dasar
+  { id: "bind-c-fonemik", label: "Mengenal huruf & bunyi (kesadaran fonemik)" },
+  { id: "bind-c-membaca", label: "Membaca kata & kalimat sederhana" },
+  { id: "bind-c-menulis", label: "Menulis permulaan (menebalkan, menyalin, menulis tangan)" },
+];
+
 export const KURIKULUM: KurikulumEntry[] = [
   // -------------------------------------------------------------------------
   // PESANTREN — NAHWU (Matan Al-Jurumiyah). Sesuai contoh gambar pengguna.
@@ -121,18 +143,28 @@ export const KURIKULUM: KurikulumEntry[] = [
   // dari CP/ATP resmi per fase-kelas. Yang belum diisi akan fallback ke input
   // teks — AMAN. JANGAN menambah topik dari kira-kira.
   // =========================================================================
+  // -------------------------------------------------------------------------
+  // NASIONAL — SD/MI Bahasa Indonesia, FASE A (Kelas 1 & 2). Status: DRAFT.
+  // Sumber: Kepka BSKAP No. 046/H/KR/2025 — CP Bahasa Indonesia Fase A.
+  // (Menggantikan entri [CONTOH] lama untuk slot yang sama.)
+  // -------------------------------------------------------------------------
   {
     jenjang: "SD/MI",
     kelompok: "Umum/Nasional (Kemendikbud)",
     mapel: "Bahasa Indonesia",
-    kelas: "1", // CONTOH — verifikasi dengan ATP Fase A sekolah Anda
-    status: "contoh",
-    sumber: "[CONTOH]",
-    topik: [
-      { id: "bi1-huruf",     label: "[CONTOH] Mengenal Bunyi & Bentuk Huruf" },
-      { id: "bi1-suku-kata", label: "[CONTOH] Membaca Suku Kata & Kata Sederhana" },
-      { id: "bi1-benda",     label: "[CONTOH] Mengenal Nama Benda di Sekitar" },
-    ],
+    kelas: "1",
+    status: "draft",
+    sumber: "Kepka BSKAP No. 046/H/KR/2025 — CP Bahasa Indonesia Fase A",
+    topik: BIND_FASE_A_TOPIK,
+  },
+  {
+    jenjang: "SD/MI",
+    kelompok: "Umum/Nasional (Kemendikbud)",
+    mapel: "Bahasa Indonesia",
+    kelas: "2",
+    status: "draft",
+    sumber: "Kepka BSKAP No. 046/H/KR/2025 — CP Bahasa Indonesia Fase A",
+    topik: BIND_FASE_A_TOPIK,
   },
 ];
 
