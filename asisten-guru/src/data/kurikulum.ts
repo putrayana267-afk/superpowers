@@ -417,15 +417,19 @@ function cariEntri(
 }
 
 /**
- * Ambil SATU entri kurikulum untuk kombinasi (jenjang/kelompok/mapel), tanpa
- * memandang kelas. Berguna untuk membaca status/sumber data. null bila tak ada.
+ * Ambil SATU entri kurikulum untuk kombinasi (jenjang/kelompok/mapel).
+ * `kelas` OPSIONAL: bila diberikan & jalur sensitif-kelas (national), entri yang
+ * dikembalikan adalah yang cocok fase/kelasnya (badge status/sumber jadi akurat
+ * untuk mapel multi-fase). Tanpa `kelas` → perilaku lama (kelas diabaikan).
+ * Pesantren (entri tanpa `kelas`) tetap lolos apa pun nilai `kelas`. null bila tak ada.
  */
 export function getEntri(
   jenjang: string,
   kelompok: string,
-  mapel: string
+  mapel: string,
+  kelas?: string
 ): KurikulumEntry | null {
-  return cariEntri(jenjang, kelompok, mapel)[0] ?? null;
+  return cariEntri(jenjang, kelompok, mapel, kelas)[0] ?? null;
 }
 
 /**

@@ -358,7 +358,12 @@ export function KurikulumSelector({
     value.mapel,
     value.kelas,
   );
-  const entri = getEntri(value.jenjang, value.kelompok, value.mapel);
+  const entri = getEntri(
+    value.jenjang,
+    value.kelompok,
+    value.mapel,
+    value.kelas,
+  );
 
   return (
     <div className="rounded-2xl border border-white/40 bg-white/30 p-4 gold-edge">
