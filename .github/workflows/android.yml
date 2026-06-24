@@ -39,8 +39,10 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build web assets
+      - name: Build web assets (relative base for APK)
         run: npm run build
+        env:
+          CAPACITOR_BUILD: '1'
 
       - name: Capacitor sync (Android)
         run: npx cap sync android

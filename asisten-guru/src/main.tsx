@@ -1,4 +1,13 @@
-import { StrictMode, Suspense, lazy, useCallback, useState } from 'react';
+import {
+  Component,
+  StrictMode,
+  Suspense,
+  lazy,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
+import type { ErrorInfo, ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App';
 import { ToastProvider } from './components/Toast';
@@ -12,12 +21,62 @@ const PremiumHero = lazy(() =>
 
 const LANDING_SEEN_KEY = 'asisten-guru:landing-seen';
 
+/** Error boundary root: tampilkan pesan, bukan layar kosong, bila app crash. */
+class ErrorBoundary extends Component<
+  { children: ReactNode },
+  { error: Error | null }
+> {
+  override state: { error: Error | null } = { error: null };
+
+  static getDerivedStateFromError(error: Error) {
+    return { error };
+  }
+
+  override componentDidCatch(error: Error, info: ErrorInfo) {
+    console.error('Aplikasi mengalami error:', error, info);
+  }
+
+  override render() {
+    if (this.state.error) {
+      return (
+        <div className="flex min-h-screen flex-col items-center justify-center gap-3 bg-emerald-soft p-6 text-center">
+          <h1 className="font-display text-xl font-bold text-emerald-deep">
+            Terjadi kendala saat memuat aplikasi
+          </h1>
+          <p className="max-w-md text-sm text-ink/70">
+            Coba muat ulang halaman. Jika tetap terjadi, bersihkan cache lalu
+            buka kembali.
+          </p>
+          <pre className="max-w-md overflow-auto rounded-lg bg-white/60 p-3 text-left text-xs text-ink/60">
+            {String(this.state.error?.message ?? this.state.error)}
+          </pre>
+          <button
+            type="button"
+            onClick={() => window.location.reload()}
+            className="rounded-xl bg-emerald-deep px-5 py-2.5 text-sm font-semibold text-white"
+          >
+            Muat ulang
+          </button>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
+
 /**
  * Root: tampilkan landing PremiumHero saat kunjungan pertama (atau saat URL
  * berisi #showcase), lalu aplikasi. Pilihan "sudah masuk" diingat di localStorage
  * sehingga landing tidak muncul lagi; tombol Showcase di Header membukanya lagi.
  */
 function Root() {
+  // Inisialisasi DB di belakang layar — TIDAK memblokir render. Aman bila gagal.
+  useEffect(() => {
+    initDb().catch((err) =>
+      console.error('Gagal inisialisasi database lokal:', err),
+    );
+  }, []);
+
   const [showLanding, setShowLanding] = useState(() => {
     const forced = window.location.hash === '#showcase';
     let seen = false;
@@ -73,19 +132,12 @@ if (!container) {
   throw new Error('Elemen #root tidak ditemukan di index.html');
 }
 
-// Inisialisasi SQLite SEBELUM render, lalu render. Kegagalan DB tidak boleh
-// membuat aplikasi blank — cukup catat dan tetap render (jalur lama jalan).
-async function bootstrap(): Promise<void> {
-  try {
-    await initDb();
-  } catch (err) {
-    console.error('Gagal inisialisasi database lokal:', err);
-  }
-  createRoot(container as HTMLElement).render(
-    <StrictMode>
+// Render DULU (tidak menunggu DB) agar app selalu mount, termasuk di web.
+createRoot(container).render(
+  <StrictMode>
+    <ErrorBoundary>
       <Root />
-    </StrictMode>,
-  );
-}
+    </ErrorBoundary>
+  </StrictMode>,
+);
 
-void bootstrap();

@@ -1,12 +1,13 @@
 /**
  * Lapisan penyimpanan SQLite lokal/offline (Capacitor Community SQLite).
  *
- * - Native (Android): SQLite asli lewat plugin.
- * - Web: jeep-sqlite + sql.js (wasm di /assets/sql-wasm.wasm), tersimpan di
- *   IndexedDB lewat saveToStore.
+ * PENTING (web): SQLite native HANYA dijalankan di platform native
+ * (Capacitor.isNativePlatform()). Di web semua operasi adalah no-op yang aman
+ * (mengembalikan default kosong) sehingga TIDAK pernah memblokir/menggantung
+ * render — versi web tetap memakai serverless + Riwayat localStorage lama.
  *
- * Dipakai untuk menyimpan SEMUA hasil generate dan setelan (mis. API key BYOK).
- * TIDAK memakai localStorage untuk data inti.
+ * Dipakai untuk menyimpan SEMUA hasil generate dan setelan (mis. API key BYOK)
+ * di aplikasi Android. TIDAK memakai localStorage untuk data inti native.
  */
 
 import { Capacitor } from '@capacitor/core';
@@ -15,6 +16,9 @@ import type { SQLiteDBConnection } from '@capacitor-community/sqlite';
 
 const DB_NAME = 'asisten_guru';
 const DB_VERSION = 1;
+
+/** SQLite asli hanya tersedia di platform native. */
+const NATIVE = Capacitor.isNativePlatform();
 
 const sqlite = new SQLiteConnection(CapacitorSQLite);
 let db: SQLiteDBConnection | null = null;
@@ -30,24 +34,6 @@ export interface GenerationRow {
   input_json: string;
   output_text: string;
   created_at: number;
-}
-
-function isWeb(): boolean {
-  return Capacitor.getPlatform() === 'web';
-}
-
-/** Untuk target web: daftarkan custom element jeep-sqlite + initWebStore. */
-async function setupWebStore(): Promise<void> {
-  if (!customElements.get('jeep-sqlite')) {
-    const loader = await import('jeep-sqlite/loader');
-    loader.defineCustomElements(window);
-  }
-  if (!document.querySelector('jeep-sqlite')) {
-    const el = document.createElement('jeep-sqlite');
-    document.body.appendChild(el);
-  }
-  await customElements.whenDefined('jeep-sqlite');
-  await sqlite.initWebStore();
 }
 
 /** Buat tabel sekali; pakai PRAGMA user_version untuk migrasi ke depan. */
@@ -81,14 +67,14 @@ async function migrate(conn: SQLiteDBConnection): Promise<void> {
   await conn.execute(`PRAGMA user_version = ${DB_VERSION};`);
 }
 
-/** Inisialisasi koneksi DB (idempoten). Panggil sekali di entry point. */
+/**
+ * Inisialisasi koneksi DB (idempoten). Di web langsung resolve (no-op).
+ * Semua error ditangkap pemanggil; tidak boleh memblokir render.
+ */
 export function initDb(): Promise<void> {
+  if (!NATIVE) return Promise.resolve();
   if (initPromise) return initPromise;
   initPromise = (async () => {
-    if (isWeb()) {
-      await setupWebStore();
-    }
-
     const isConn = (await sqlite.isConnection(DB_NAME, false)).result;
     db = isConn
       ? await sqlite.retrieveConnection(DB_NAME, false)
@@ -102,7 +88,6 @@ export function initDb(): Promise<void> {
 
     await db.open();
     await migrate(db);
-    if (isWeb()) await sqlite.saveToStore(DB_NAME);
   })();
   return initPromise;
 }
@@ -111,11 +96,6 @@ async function getDb(): Promise<SQLiteDBConnection> {
   if (!db) await initDb();
   if (!db) throw new Error('Database belum siap.');
   return db;
-}
-
-/** Persist ke IndexedDB pada web setelah operasi tulis. */
-async function persistWeb(): Promise<void> {
-  if (isWeb()) await sqlite.saveToStore(DB_NAME);
 }
 
 export interface SaveGenerationInput {
@@ -128,10 +108,11 @@ export interface SaveGenerationInput {
   createdAt?: number;
 }
 
-/** Simpan satu hasil generate. Mengembalikan id baris. */
+/** Simpan satu hasil generate. Mengembalikan id baris (0 di web). */
 export async function saveGeneration(
   input: SaveGenerationInput,
 ): Promise<number> {
+  if (!NATIVE) return 0;
   const conn = await getDb();
   const createdAt = input.createdAt ?? Date.now();
   const res = await conn.run(
@@ -148,12 +129,12 @@ export async function saveGeneration(
       createdAt,
     ],
   );
-  await persistWeb();
   return res.changes?.lastId ?? 0;
 }
 
 /** Daftar hasil tersimpan, terbaru dulu. Opsional difilter per alat. */
 export async function listGenerations(tool?: string): Promise<GenerationRow[]> {
+  if (!NATIVE) return [];
   const conn = await getDb();
   const res = tool
     ? await conn.query(
@@ -166,6 +147,7 @@ export async function listGenerations(tool?: string): Promise<GenerationRow[]> {
 
 /** Ambil satu hasil berdasarkan id. */
 export async function getGeneration(id: number): Promise<GenerationRow | null> {
+  if (!NATIVE) return null;
   const conn = await getDb();
   const res = await conn.query(`SELECT * FROM generations WHERE id = ?;`, [id]);
   const rows = (res.values ?? []) as GenerationRow[];
@@ -174,26 +156,32 @@ export async function getGeneration(id: number): Promise<GenerationRow | null> {
 
 /** Hapus satu hasil. */
 export async function deleteGeneration(id: number): Promise<void> {
+  if (!NATIVE) return;
   const conn = await getDb();
   await conn.run(`DELETE FROM generations WHERE id = ?;`, [id]);
-  await persistWeb();
 }
 
-/** Ambil nilai setelan (mis. 'gemini_api_key'). */
+/** Ambil nilai setelan (mis. 'gemini_api_key'). null di web. */
 export async function getSetting(key: string): Promise<string | null> {
+  if (!NATIVE) return null;
   const conn = await getDb();
   const res = await conn.query(`SELECT value FROM settings WHERE key = ?;`, [key]);
   const rows = (res.values ?? []) as Array<{ value: string }>;
   return rows[0]?.value ?? null;
 }
 
-/** Simpan/ubah nilai setelan. */
+/** Simpan/ubah nilai setelan. No-op di web. */
 export async function setSetting(key: string, value: string): Promise<void> {
+  if (!NATIVE) return;
   const conn = await getDb();
   await conn.run(
     `INSERT INTO settings (key, value) VALUES (?, ?)
      ON CONFLICT(key) DO UPDATE SET value = excluded.value;`,
     [key, value],
   );
-  await persistWeb();
+}
+
+/** True bila penyimpanan SQLite aktif (native). Untuk UI kondisional. */
+export function isStorageAvailable(): boolean {
+  return NATIVE;
 }

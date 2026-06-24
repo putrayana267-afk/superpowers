@@ -8,8 +8,9 @@ const apiProxy = process.env.VITE_DEV_API_PROXY;
 
 export default defineConfig({
   plugins: [react()],
-  // base relatif WAJIB agar aset termuat di dalam APK (file:// / capacitor://).
-  base: './',
+  // base '/' untuk web/Vercel (default benar di root). base './' (relatif) HANYA
+  // untuk build APK Capacitor — di-set lewat env CAPACITOR_BUILD=1 saat cap build.
+  base: process.env.CAPACITOR_BUILD ? './' : '/',
   build: {
     rollupOptions: {
       output: {
