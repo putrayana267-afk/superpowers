@@ -10,11 +10,16 @@ export interface Topik {
   label: string;
 }
 
+/** Status keandalan data sebuah entri kurikulum. */
+export type StatusData = 'verified' | 'draft' | 'contoh' | 'kosong';
+
 export interface KurikulumEntry {
   jenjang: string;   // "SD/MI" | "SMP/MTs" | "SMA/MA" | "Pesantren"
   kelompok: string;  // "Umum/Nasional (Kemendikbud)" | "Kekhasan Pesantren (Kitab Kuning)"
   mapel: string;
   kelas?: string;    // "1".."12" utk nasional; kosong = lintas kelas (mis. kitab pesantren)
+  status: StatusData; // WAJIB: keandalan data
+  sumber?: string;    // rujukan (kitab/dokumen) bila ada
   topik: Topik[];
 }
 
@@ -30,6 +35,8 @@ export const KURIKULUM: KurikulumEntry[] = [
     jenjang: "Pesantren",
     kelompok: "Kekhasan Pesantren (Kitab Kuning)",
     mapel: "Nahwu (Gramatika - Rumpun Alat)",
+    status: "verified",
+    sumber: "Matan Al-Jurumiyah",
     topik: [
       { id: "nh-kalam",     label: "Bab Kalam (Pengertian Kalam & Pembagian Kalimat: Isim, Fi'il, Harf)" },
       { id: "nh-irab",      label: "Bab I'rab (Rafa', Nashab, Khafadh/Jar, Jazm)" },
@@ -53,6 +60,8 @@ export const KURIKULUM: KurikulumEntry[] = [
     jenjang: "Pesantren",
     kelompok: "Kekhasan Pesantren (Kitab Kuning)",
     mapel: "Shorof (Morfologi - Rumpun Alat)",
+    status: "verified",
+    sumber: "Al-Amtsilah at-Tashrifiyah",
     topik: [
       { id: "sh-pengertian", label: "Pengertian Tashrif (Istilahi & Lughawi)" },
       { id: "sh-tsulatsi",   label: "Fi'il Tsulatsi Mujarrad (Wazan Fa'ala-Yaf'ulu, dst.)" },
@@ -71,6 +80,8 @@ export const KURIKULUM: KurikulumEntry[] = [
     jenjang: "Pesantren",
     kelompok: "Kekhasan Pesantren (Kitab Kuning)",
     mapel: "Fiqih (Kitab Safinatun Naja)",
+    status: "verified",
+    sumber: "Kitab Safinatun Naja",
     topik: [
       { id: "fq-rukun",        label: "Rukun Islam dan Rukun Iman" },
       { id: "fq-thaharah",     label: "Thaharah (Bersuci) & Macam-macam Air" },
@@ -91,6 +102,8 @@ export const KURIKULUM: KurikulumEntry[] = [
     jenjang: "Pesantren",
     kelompok: "Kekhasan Pesantren (Kitab Kuning)",
     mapel: "Tauhid / Aqidah (Kitab Aqidatul Awam)",
+    status: "verified",
+    sumber: "Kitab Aqidatul Awam",
     topik: [
       { id: "tw-wajib",     label: "20 Sifat Wajib bagi Allah" },
       { id: "tw-mustahil",  label: "20 Sifat Mustahil bagi Allah" },
@@ -113,6 +126,8 @@ export const KURIKULUM: KurikulumEntry[] = [
     kelompok: "Umum/Nasional (Kemendikbud)",
     mapel: "Bahasa Indonesia",
     kelas: "1", // CONTOH — verifikasi dengan ATP Fase A sekolah Anda
+    status: "contoh",
+    sumber: "[CONTOH]",
     topik: [
       { id: "bi1-huruf",     label: "[CONTOH] Mengenal Bunyi & Bentuk Huruf" },
       { id: "bi1-suku-kata", label: "[CONTOH] Membaca Suku Kata & Kata Sederhana" },
@@ -153,12 +168,53 @@ function canonMapel(s: string): string {
 }
 
 /**
- * Ambil daftar topik untuk kombinasi terpilih.
+ * Inti pencocokan: kembalikan SEMUA entri yang cocok untuk kombinasi.
  * - Cocokkan kelompok & mapel via kategori kanonik (tahan beda label/ejaan).
- * - Kelompok Pesantren/Kitab Kuning: kitab bersifat lintas-jenjang → jenjang
- *   DIABAIKAN. Untuk kelompok lain (nasional/madrasah) jenjang harus cocok.
- * - Jika entri punya `kelas`, cocokkan juga dengan kelas terpilih.
- * - Gabungkan & dedup; kembalikan [] jika tak ada → pemanggil HARUS fallback.
+ * - Kelompok Pesantren/Kitab Kuning: kitab lintas-jenjang → jenjang DIABAIKAN.
+ *   Untuk kelompok lain (nasional/madrasah) jenjang harus cocok.
+ * - `kelas` opsional: bila diberikan, entri ber-`kelas` harus cocok kelasnya;
+ *   bila tak diberikan (undefined), filter kelas dilewati.
+ */
+function cariEntri(
+  jenjang: string,
+  kelompok: string,
+  mapel: string,
+  kelas?: string
+): KurikulumEntry[] {
+  const j = norm(jenjang);
+  const ck = canonKelompok(kelompok);
+  const cm = canonMapel(mapel);
+  const kl = norm(kelas);
+  const pesantren = ck === "pesantren";
+
+  return KURIKULUM.filter((e) => {
+    if (canonKelompok(e.kelompok) !== ck) return false;
+    if (canonMapel(e.mapel) !== cm) return false;
+    // Pesantren/kitab kuning lintas jenjang → abaikan jenjang.
+    if (!pesantren && norm(e.jenjang) !== j) return false;
+    // Filter kelas hanya bila kelas diberikan (untuk getEntri, kelas diabaikan).
+    if (kelas !== undefined && e.kelas != null && e.kelas !== "") {
+      return norm(e.kelas) === kl;
+    }
+    return true;
+  });
+}
+
+/**
+ * Ambil SATU entri kurikulum untuk kombinasi (jenjang/kelompok/mapel), tanpa
+ * memandang kelas. Berguna untuk membaca status/sumber data. null bila tak ada.
+ */
+export function getEntri(
+  jenjang: string,
+  kelompok: string,
+  mapel: string
+): KurikulumEntry | null {
+  return cariEntri(jenjang, kelompok, mapel)[0] ?? null;
+}
+
+/**
+ * Ambil daftar topik untuk kombinasi terpilih (gabung & dedup berdasarkan id).
+ * Tanda tangan & perilaku TIDAK berubah; kembalikan [] jika tak ada (fallback).
  */
 export function getTopik(
   jenjang: string,
@@ -166,20 +222,7 @@ export function getTopik(
   mapel: string,
   kelas?: string
 ): Topik[] {
-  const j = norm(jenjang);
-  const ck = canonKelompok(kelompok);
-  const cm = canonMapel(mapel);
-  const kl = norm(kelas);
-  const pesantren = ck === "pesantren";
-
-  const cocok = KURIKULUM.filter((e) => {
-    if (canonKelompok(e.kelompok) !== ck) return false;
-    if (canonMapel(e.mapel) !== cm) return false;
-    // Pesantren/kitab kuning lintas jenjang → abaikan jenjang.
-    if (!pesantren && norm(e.jenjang) !== j) return false;
-    if (e.kelas != null && e.kelas !== "") return norm(e.kelas) === kl;
-    return true;
-  });
+  const cocok = cariEntri(jenjang, kelompok, mapel, kelas);
 
   const out: Topik[] = [];
   const seen = new Set<string>();
