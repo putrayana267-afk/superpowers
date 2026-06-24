@@ -105,6 +105,7 @@ export function ToolForm({
                 jenjang: inputs.jenjang ?? '',
                 kelompok: inputs.kelompok ?? '',
                 mapel: inputs.mapel ?? '',
+                kelas: inputs.kelas ?? '',
                 pokok: inputs.pokok ?? '',
               }}
               onChange={(key, val) => onChange(key, val)}

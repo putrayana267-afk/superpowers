@@ -36,6 +36,7 @@ type Builder = (inputs: ToolInputs) => { instruction: string; context: string };
 function kurikulumContext(i: ToolInputs): Array<[string, string]> {
   return [
     ['Jenjang pendidikan', val(i, 'jenjang')],
+    ['Kelas/Tingkat', val(i, 'kelas')],
     ['Kelompok kurikulum', val(i, 'kelompok')],
     ['Mata pelajaran/Rumpun kitab', val(i, 'mapel')],
     ['Pokok pembahasan (materi/kitab)', val(i, 'pokok')],
