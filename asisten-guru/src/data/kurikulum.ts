@@ -152,6 +152,44 @@ const PPKN_FASE_A_TOPIK: Topik[] = [
   { id: "ppkn-nkri-kerjasama", label: "Bekerja sama menjaga lingkungan dalam keberagaman" },
 ];
 
+// Topik DRAFT Pendidikan Pancasila Fase B (Kelas 3 & 4) — diturunkan PERSIS dari
+// CP 4 elemen (Kepka BSKAP 046/H/KR/2025, Ruang GTK): Pancasila, UUD NRI 1945,
+// Bhinneka Tunggal Ika, NKRI. Granularitas per-kompetensi seperti Fase A.
+const PPKN_FASE_B_TOPIK: Topik[] = [
+  // A. Pancasila
+  { id: "ppknb-pcs-makna", label: "Makna sila-sila Pancasila" },
+  { id: "ppknb-pcs-penerapan", label: "Penerapan sila-sila Pancasila dalam kehidupan sehari-hari" },
+  { id: "ppknb-pcs-perumus", label: "Mengenal karakter para perumus Pancasila" },
+  { id: "ppknb-pcs-bangga", label: "Sikap bangga menjadi anak Indonesia & bahasa Indonesia sebagai bahasa persatuan" },
+  // B. UUD NRI 1945
+  { id: "ppknb-uud-aturan", label: "Mengidentifikasi & melaksanakan aturan di sekolah & lingkungan tempat tinggal" },
+  { id: "ppknb-uud-hakkewajiban", label: "Mengidentifikasi & melaksanakan hak & kewajiban sebagai anggota keluarga & warga sekolah" },
+  // C. Bhinneka Tunggal Ika
+  { id: "ppknb-bti-identitas", label: "Membedakan & menghargai identitas diri, keluarga, & teman sesuai budaya, suku bangsa, bahasa, agama & kepercayaan" },
+  // D. NKRI
+  { id: "ppknb-nkri-wilayah", label: "Mengidentifikasi lingkungan tempat tinggal (RT, RW, desa/kelurahan, kecamatan) sebagai bagian NKRI" },
+  { id: "ppknb-nkri-kerjasama", label: "Sikap kerja sama dalam keberagaman suku bangsa, sosial, & budaya yang terikat persatuan & kesatuan" },
+];
+
+// Topik DRAFT Pendidikan Pancasila Fase C (Kelas 5 & 6) — diturunkan PERSIS dari
+// CP 4 elemen (Kepka BSKAP 046/H/KR/2025, Ruang GTK). Granularitas seperti Fase A.
+const PPKN_FASE_C_TOPIK: Topik[] = [
+  // A. Pancasila
+  { id: "ppknc-pcs-kronologi", label: "Memahami kronologi sejarah kelahiran Pancasila" },
+  { id: "ppknc-pcs-teladan", label: "Meneladani sikap para perumus Pancasila & menerapkannya di lingkungan masyarakat" },
+  { id: "ppknc-pcs-kesatuan", label: "Menghubungkan sila-sila Pancasila sebagai satu kesatuan yang utuh" },
+  { id: "ppknc-pcs-nilaidasar", label: "Menguraikan makna nilai-nilai Pancasila sebagai dasar negara, pandangan hidup, & ideologi bangsa" },
+  // B. UUD NRI 1945
+  { id: "ppknc-uud-identifikasi", label: "Menyajikan hasil identifikasi bentuk norma, hak, & kewajiban sebagai anggota keluarga, warga sekolah, & warga negara" },
+  { id: "ppknc-uud-praktik", label: "Mempraktikkan norma, hak, & kewajiban dalam kehidupan sehari-hari" },
+  { id: "ppknc-uud-musyawarah", label: "Melaksanakan musyawarah untuk membuat kesepakatan & aturan bersama serta menerapkannya di keluarga & sekolah" },
+  // C. Bhinneka Tunggal Ika
+  { id: "ppknc-bti-keberagaman", label: "Menyajikan hasil identifikasi sikap menghormati, menjaga, & melestarikan keberagaman budaya dalam bingkai Bhinneka Tunggal Ika" },
+  // D. NKRI
+  { id: "ppknc-nkri-wilayah", label: "Mengenal wilayah (kabupaten/kota, provinsi) sebagai bagian NKRI" },
+  { id: "ppknc-nkri-gotongroyong", label: "Perilaku gotong royong untuk menjaga persatuan sebagai wujud bela negara" },
+];
+
 // Topik DRAFT PJOK Fase A (Kelas 1 & 2) — diturunkan PERSIS dari CP (Kepka BSKAP
 // 046/H/KR/2025, Ruang GTK). 4 elemen: Terampil Bergerak, Belajar Melalui Gerak,
 // Bergaya Hidup Aktif, Memilih Hidup yang Menyehatkan. Semua topik = CP-inti.
@@ -419,6 +457,47 @@ export const KURIKULUM: KurikulumEntry[] = [
     status: "verified",
     sumber: "CP Pendidikan Pancasila Fase A — Kepka BSKAP No. 046/H/KR/2025",
     topik: PPKN_FASE_A_TOPIK,
+  },
+
+  // -------------------------------------------------------------------------
+  // NASIONAL — SD/MI Pendidikan Pancasila, FASE B (Kelas 3 & 4) & FASE C
+  // (Kelas 5 & 6). Status: DRAFT. Sumber: Kepka BSKAP No. 046/H/KR/2025.
+  // -------------------------------------------------------------------------
+  {
+    jenjang: "SD/MI",
+    kelompok: "Umum/Nasional (Kemendikbud)",
+    mapel: "Pendidikan Pancasila",
+    kelas: "3",
+    status: "draft",
+    sumber: "CP Pendidikan Pancasila Fase B - Kepka BSKAP No. 046/H/KR/2025",
+    topik: PPKN_FASE_B_TOPIK,
+  },
+  {
+    jenjang: "SD/MI",
+    kelompok: "Umum/Nasional (Kemendikbud)",
+    mapel: "Pendidikan Pancasila",
+    kelas: "4",
+    status: "draft",
+    sumber: "CP Pendidikan Pancasila Fase B - Kepka BSKAP No. 046/H/KR/2025",
+    topik: PPKN_FASE_B_TOPIK,
+  },
+  {
+    jenjang: "SD/MI",
+    kelompok: "Umum/Nasional (Kemendikbud)",
+    mapel: "Pendidikan Pancasila",
+    kelas: "5",
+    status: "draft",
+    sumber: "CP Pendidikan Pancasila Fase C - Kepka BSKAP No. 046/H/KR/2025",
+    topik: PPKN_FASE_C_TOPIK,
+  },
+  {
+    jenjang: "SD/MI",
+    kelompok: "Umum/Nasional (Kemendikbud)",
+    mapel: "Pendidikan Pancasila",
+    kelas: "6",
+    status: "draft",
+    sumber: "CP Pendidikan Pancasila Fase C - Kepka BSKAP No. 046/H/KR/2025",
+    topik: PPKN_FASE_C_TOPIK,
   },
 
   // -------------------------------------------------------------------------
