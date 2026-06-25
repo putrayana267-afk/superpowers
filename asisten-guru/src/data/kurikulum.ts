@@ -393,6 +393,36 @@ const PAI_FASE_A_TOPIK: Topik[] = [
   { id: "paia-spi", label: "Memahami kisah beberapa nabi dan rasul." },
 ];
 
+// Topik PAI & Budi Pekerti Fase B (Kelas 3 & 4) — diturunkan PERSIS dari CP (Kepka
+// BKPDM No. 020 Tahun 2026, perubahan atas Kepka BSKAP 046/H/KR/2025). 5 elemen.
+const PAI_FASE_B_TOPIK: Topik[] = [
+  // Al-Qur'an Hadis
+  { id: "paib-quran-hadis", label: "Memahami beberapa surah pendek, ayat Al-Qur'an dan hadis tentang kewajiban salat dan menjaga hubungan baik dengan sesama." },
+  // Akidah
+  { id: "paib-akidah", label: "Memahami sifat-sifat Allah Swt., beberapa asmaulhusna, iman kepada kitab-kitab Allah Swt. dan rasul-rasul Allah Swt." },
+  // Akhlak
+  { id: "paib-akhlak", label: "Memahami akhlak terhadap Allah Swt. dengan berbaik sangka kepada-Nya, akhlak terhadap orang tua, keluarga, dan guru." },
+  // Fikih
+  { id: "paib-fikih", label: "Memahami puasa, salat jumat dan salat sunah, balig dan tanggung jawab yang menyertainya (taklīf)." },
+  // Sejarah Peradaban Islam
+  { id: "paib-spi", label: "Memahami kisah Nabi Muhammad saw. sebelum dan sesudah menjadi rasul periode Makkah." },
+];
+
+// Topik PAI & Budi Pekerti Fase C (Kelas 5 & 6) — diturunkan PERSIS dari CP (Kepka
+// BKPDM No. 020 Tahun 2026, perubahan atas Kepka BSKAP 046/H/KR/2025). 5 elemen.
+const PAI_FASE_C_TOPIK: Topik[] = [
+  // Al-Qur'an dan Hadis
+  { id: "paic-quran-hadis", label: "Memahami beberapa surah pendek dan ayat Al-Qur'an serta hadis tentang keragaman." },
+  // Akidah
+  { id: "paic-akidah", label: "Memahami beberapa asmaulhusna, iman kepada hari akhir, qadā' dan qadr." },
+  // Akhlak
+  { id: "paic-akhlak", label: "Memahami akhlak terhadap Allah Swt. dengan berdoa dan bertawakal kepada-Nya, akhlak terhadap teman, tetangga, non muslim, hewan, dan tumbuhan." },
+  // Fikih
+  { id: "paic-fikih", label: "Memahami puasa sunah, zakat, infak, sedekah, hadiah, makanan dan minuman yang halal dan haram." },
+  // Sejarah Peradaban Islam
+  { id: "paic-spi", label: "Memahami kisah Nabi Muhammad saw. periode Madinah dan khulafaurasyidin." },
+];
+
 export const KURIKULUM: KurikulumEntry[] = [
   // -------------------------------------------------------------------------
   // PESANTREN — NAHWU (Matan Al-Jurumiyah). Sesuai contoh gambar pengguna.
@@ -864,6 +894,48 @@ export const KURIKULUM: KurikulumEntry[] = [
     status: "verified",
     sumber: "CP Pendidikan Agama Islam dan Budi Pekerti Fase A — Kepka BKPDM No. 020 Tahun 2026 (perubahan atas Kepka BSKAP No. 046/H/KR/2025)",
     topik: PAI_FASE_A_TOPIK,
+  },
+
+  // -------------------------------------------------------------------------
+  // NASIONAL — SD/MI Pendidikan Agama Islam & Budi Pekerti, FASE B (Kelas 3 &
+  // 4) & FASE C (Kelas 5 & 6). Status: DRAFT. Sumber: Kepka BKPDM No. 020 Tahun
+  // 2026 (perubahan atas Kepka BSKAP No. 046/H/KR/2025).
+  // -------------------------------------------------------------------------
+  {
+    jenjang: "SD/MI",
+    kelompok: "Umum/Nasional (Kemendikbud)",
+    mapel: "Pendidikan Agama Islam dan Budi Pekerti",
+    kelas: "3",
+    status: "draft",
+    sumber: "CP Pendidikan Agama Islam dan Budi Pekerti Fase B — Kepka BKPDM No. 020 Tahun 2026 (perubahan atas Kepka BSKAP No. 046/H/KR/2025)",
+    topik: PAI_FASE_B_TOPIK,
+  },
+  {
+    jenjang: "SD/MI",
+    kelompok: "Umum/Nasional (Kemendikbud)",
+    mapel: "Pendidikan Agama Islam dan Budi Pekerti",
+    kelas: "4",
+    status: "draft",
+    sumber: "CP Pendidikan Agama Islam dan Budi Pekerti Fase B — Kepka BKPDM No. 020 Tahun 2026 (perubahan atas Kepka BSKAP No. 046/H/KR/2025)",
+    topik: PAI_FASE_B_TOPIK,
+  },
+  {
+    jenjang: "SD/MI",
+    kelompok: "Umum/Nasional (Kemendikbud)",
+    mapel: "Pendidikan Agama Islam dan Budi Pekerti",
+    kelas: "5",
+    status: "draft",
+    sumber: "CP Pendidikan Agama Islam dan Budi Pekerti Fase C — Kepka BKPDM No. 020 Tahun 2026 (perubahan atas Kepka BSKAP No. 046/H/KR/2025)",
+    topik: PAI_FASE_C_TOPIK,
+  },
+  {
+    jenjang: "SD/MI",
+    kelompok: "Umum/Nasional (Kemendikbud)",
+    mapel: "Pendidikan Agama Islam dan Budi Pekerti",
+    kelas: "6",
+    status: "draft",
+    sumber: "CP Pendidikan Agama Islam dan Budi Pekerti Fase C — Kepka BKPDM No. 020 Tahun 2026 (perubahan atas Kepka BSKAP No. 046/H/KR/2025)",
+    topik: PAI_FASE_C_TOPIK,
   },
 ];
 
