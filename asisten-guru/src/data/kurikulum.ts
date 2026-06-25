@@ -152,21 +152,23 @@ const PPKN_FASE_A_TOPIK: Topik[] = [
   { id: "ppkn-nkri-kerjasama", label: "Bekerja sama menjaga lingkungan dalam keberagaman" },
 ];
 
-// Topik DRAFT PJOK Fase A (Kelas 1 & 2) — diturunkan dari CP (Kepka BSKAP
-// 046/H/KR/2025). Elemen: keterampilan gerak (lokomotor/non-lokomotor/
-// manipulatif), aktivitas senam/berirama/air, kebugaran, & pola hidup sehat.
+// Topik DRAFT PJOK Fase A (Kelas 1 & 2) — diturunkan PERSIS dari CP (Kepka BSKAP
+// 046/H/KR/2025, Ruang GTK). 4 elemen: Terampil Bergerak, Belajar Melalui Gerak,
+// Bergaya Hidup Aktif, Memilih Hidup yang Menyehatkan. Semua topik = CP-inti.
 const PJOK_FASE_A_TOPIK: Topik[] = [
-  // A. Keterampilan gerak
-  { id: "pjok-gerak-lokomotor", label: "Pola gerak dasar lokomotor (jalan, lari, lompat)" },
-  { id: "pjok-gerak-nonlokomotor", label: "Pola gerak dasar non-lokomotor (memutar, mengayun, menekuk)" },
-  { id: "pjok-gerak-manipulatif", label: "Pola gerak dasar manipulatif (melempar, menangkap, menendang)" },
-  // B. Aktivitas
-  { id: "pjok-akt-senam", label: "Aktivitas senam sederhana" },
-  { id: "pjok-akt-berirama", label: "Aktivitas gerak berirama" },
-  { id: "pjok-akt-air", label: "Aktivitas permainan & olahraga air (kondisional)" },
-  // C. Kebugaran & pola hidup sehat
-  { id: "pjok-sehat-kebugaran", label: "Kebugaran jasmani terkait kesehatan" },
-  { id: "pjok-sehat-polahidup", label: "Pola hidup sehat & bersih" },
+  // A. Terampil Bergerak
+  { id: "pjok-tb-fundamental", label: "Mempraktikkan keterampilan gerak fundamental dalam berbagai situasi gerak" },
+  { id: "pjok-tb-eksplorasigerak", label: "Mengeksplorasi berbagai cara menggerakkan tubuh" },
+  { id: "pjok-tb-manipulasiobjek", label: "Memanipulasi objek dengan bagian tubuh & ruang yang berbeda serta menyimpulkan efektivitasnya" },
+  // B. Belajar Melalui Gerak
+  { id: "pjok-bmg-fairplay", label: "Mentaati & menerapkan peraturan untuk mengembangkan fair play dalam aktivitas jasmani" },
+  { id: "pjok-bmg-kolaborasi", label: "Menerapkan strategi kolaborasi dalam aktivitas jasmani" },
+  // C. Bergaya Hidup Aktif
+  { id: "pjok-bha-partisipasi", label: "Berpartisipasi dalam berbagai aktivitas jasmani & mengeksplorasi manfaatnya" },
+  // D. Memilih Hidup yang Menyehatkan
+  { id: "pjok-mhm-gayahidup", label: "Mengenali gaya hidup aktif dan sehat" },
+  { id: "pjok-mhm-gizi", label: "Mengenali manfaat makanan bergizi seimbang & informasi gizi pada produk makanan" },
+  { id: "pjok-mhm-risiko", label: "Mengenali situasi/potensi berisiko terhadap kesehatan & keselamatan serta strategi mencari bantuan kepada orang dewasa terpercaya" },
 ];
 
 export const KURIKULUM: KurikulumEntry[] = [
