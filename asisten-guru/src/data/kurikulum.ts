@@ -49,9 +49,9 @@ const BIND_FASE_A_TOPIK: Topik[] = [
   { id: "bind-b-eksposisi", label: "Teks eksposisi" },
 ];
 
-// Topik DRAFT Matematika Fase A (Kelas 1 & 2) — 4 elemen CP: Bilangan, Aljabar,
+// Topik Matematika Fase A (Kelas 1 & 2) — 4 elemen CP: Bilangan, Aljabar,
 // Pengukuran, Geometri (Analisis Data & Peluang BELUM ada di Fase A). Diturunkan
-// dari CP (Kepka BSKAP 046/H/KR/2025) → status 'draft' sampai diverifikasi ke ATP.
+// dari CP (Kepka BSKAP 046/H/KR/2025). Sudah diverifikasi (verified).
 const MTK_FASE_A_TOPIK: Topik[] = [
   // A. Bilangan
   { id: "mtk-bil-cacah100", label: "Bilangan cacah sampai 100 (membaca, menulis, nilai tempat)" },
@@ -72,7 +72,7 @@ const MTK_FASE_A_TOPIK: Topik[] = [
   { id: "mtk-geo-posisi", label: "Posisi benda (kanan/kiri/depan/belakang/atas/bawah)" },
 ];
 
-// Topik DRAFT Matematika Fase B (Kelas 3 & 4) — diturunkan PERSIS dari CP (Kepka
+// Topik Matematika Fase B (Kelas 3 & 4) — diturunkan PERSIS dari CP (Kepka
 // BSKAP 046/H/KR/2025, Ruang GTK). 5 elemen: Bilangan, Aljabar, Pengukuran,
 // Geometri, Analisis Data dan Peluang. Semua topik = CP-inti (tanpa turunan ATP).
 const MTK_FASE_B_TOPIK: Topik[] = [
@@ -100,7 +100,7 @@ const MTK_FASE_B_TOPIK: Topik[] = [
   { id: "mtkb-dat-sajianalisis", label: "Menyajikan, menganalisis & menginterpretasi data (tabel, diagram gambar, piktogram, diagram batang skala satu satuan)" },
 ];
 
-// Topik DRAFT Matematika Fase C (Kelas 5 & 6) — diturunkan PERSIS dari CP (Kepka
+// Topik Matematika Fase C (Kelas 5 & 6) — diturunkan PERSIS dari CP (Kepka
 // BSKAP 046/H/KR/2025, Ruang GTK). 5 elemen: Bilangan, Aljabar, Pengukuran,
 // Geometri, Analisis Data dan Peluang. Semua topik = CP-inti (tanpa turunan ATP).
 const MTK_FASE_C_TOPIK: Topik[] = [
@@ -132,9 +132,9 @@ const MTK_FASE_C_TOPIK: Topik[] = [
   { id: "mtkc-dat-peluang", label: "Menentukan kejadian berkemungkinan lebih besar dalam percobaan acak" },
 ];
 
-// Topik DRAFT Pendidikan Pancasila Fase A (Kelas 1 & 2) — 4 elemen CP: Pancasila,
+// Topik Pendidikan Pancasila Fase A (Kelas 1 & 2) — 4 elemen CP: Pancasila,
 // UUD NRI 1945, Bhinneka Tunggal Ika, NKRI. Diturunkan dari CP (Kepka BSKAP
-// 046/H/KR/2025) → status 'draft' sampai diverifikasi ke ATP/buku teks.
+// 046/H/KR/2025). Sudah diverifikasi (verified).
 const PPKN_FASE_A_TOPIK: Topik[] = [
   // A. Pancasila
   { id: "ppkn-pcs-benderalagu", label: "Bendera negara & lagu kebangsaan Indonesia" },
@@ -152,7 +152,7 @@ const PPKN_FASE_A_TOPIK: Topik[] = [
   { id: "ppkn-nkri-kerjasama", label: "Bekerja sama menjaga lingkungan dalam keberagaman" },
 ];
 
-// Topik DRAFT Pendidikan Pancasila Fase B (Kelas 3 & 4) — diturunkan PERSIS dari
+// Topik Pendidikan Pancasila Fase B (Kelas 3 & 4) — diturunkan PERSIS dari
 // CP 4 elemen (Kepka BSKAP 046/H/KR/2025, Ruang GTK): Pancasila, UUD NRI 1945,
 // Bhinneka Tunggal Ika, NKRI. Granularitas per-kompetensi seperti Fase A.
 const PPKN_FASE_B_TOPIK: Topik[] = [
@@ -171,7 +171,7 @@ const PPKN_FASE_B_TOPIK: Topik[] = [
   { id: "ppknb-nkri-kerjasama", label: "Sikap kerja sama dalam keberagaman suku bangsa, sosial, & budaya yang terikat persatuan & kesatuan" },
 ];
 
-// Topik DRAFT Pendidikan Pancasila Fase C (Kelas 5 & 6) — diturunkan PERSIS dari
+// Topik Pendidikan Pancasila Fase C (Kelas 5 & 6) — diturunkan PERSIS dari
 // CP 4 elemen (Kepka BSKAP 046/H/KR/2025, Ruang GTK). Granularitas seperti Fase A.
 const PPKN_FASE_C_TOPIK: Topik[] = [
   // A. Pancasila
@@ -190,7 +190,7 @@ const PPKN_FASE_C_TOPIK: Topik[] = [
   { id: "ppknc-nkri-gotongroyong", label: "Perilaku gotong royong untuk menjaga persatuan sebagai wujud bela negara" },
 ];
 
-// Topik DRAFT PJOK Fase A (Kelas 1 & 2) — diturunkan PERSIS dari CP (Kepka BSKAP
+// Topik PJOK Fase A (Kelas 1 & 2) — diturunkan PERSIS dari CP (Kepka BSKAP
 // 046/H/KR/2025, Ruang GTK). 4 elemen: Terampil Bergerak, Belajar Melalui Gerak,
 // Bergaya Hidup Aktif, Memilih Hidup yang Menyehatkan. Semua topik = CP-inti.
 const PJOK_FASE_A_TOPIK: Topik[] = [
@@ -209,7 +209,7 @@ const PJOK_FASE_A_TOPIK: Topik[] = [
   { id: "pjok-mhm-risiko", label: "Mengenali situasi/potensi berisiko terhadap kesehatan & keselamatan serta strategi mencari bantuan kepada orang dewasa terpercaya" },
 ];
 
-// Topik DRAFT IPAS Fase B (Kelas 3 & 4) — diturunkan PERSIS dari CP elemen
+// Topik IPAS Fase B (Kelas 3 & 4) — diturunkan PERSIS dari CP elemen
 // "Pemahaman IPAS" (Kepka BSKAP 046/H/KR/2025, Ruang GTK). Tiap topik = satu
 // klausa antar-titik-koma di CP. Elemen "Keterampilan proses" sengaja TIDAK
 // dijadikan topik (metode lintas-materi, bukan pokok bahasan).
@@ -227,7 +227,7 @@ const IPAS_FASE_B_TOPIK: Topik[] = [
   { id: "ipasb-kebutuhan-uang", label: "Perbedaan kebutuhan & keinginan; nilai mata uang & fungsinya" },
 ];
 
-// Topik DRAFT IPAS Fase C (Kelas 5 & 6) — diturunkan PERSIS dari CP elemen
+// Topik IPAS Fase C (Kelas 5 & 6) — diturunkan PERSIS dari CP elemen
 // "Pemahaman IPAS" (Kepka BSKAP 046/H/KR/2025, Ruang GTK). Tiap topik = satu
 // klausa antar-titik-koma di CP.
 const IPAS_FASE_C_TOPIK: Topik[] = [
@@ -386,7 +386,7 @@ export const KURIKULUM: KurikulumEntry[] = [
   },
 
   // -------------------------------------------------------------------------
-  // NASIONAL — SD/MI Matematika, FASE B (Kelas 3 & 4). Status: DRAFT.
+  // NASIONAL — SD/MI Matematika, FASE B (Kelas 3 & 4). Status: VERIFIED.
   // Sumber: Kepka BSKAP No. 046/H/KR/2025 — CP Matematika Fase B (Ruang GTK).
   // 5 elemen: Bilangan, Aljabar, Pengukuran, Geometri, Analisis Data & Peluang.
   // Satu set topik (MTK_FASE_B_TOPIK) melayani kelas 3 & 4 — pola sama Fase A.
@@ -411,7 +411,7 @@ export const KURIKULUM: KurikulumEntry[] = [
   },
 
   // -------------------------------------------------------------------------
-  // NASIONAL — SD/MI Matematika, FASE C (Kelas 5 & 6). Status: DRAFT.
+  // NASIONAL — SD/MI Matematika, FASE C (Kelas 5 & 6). Status: VERIFIED.
   // Sumber: Kepka BSKAP No. 046/H/KR/2025 — CP Matematika Fase C (Ruang GTK).
   // 5 elemen: Bilangan, Aljabar, Pengukuran, Geometri, Analisis Data & Peluang.
   // Satu set topik (MTK_FASE_C_TOPIK) melayani kelas 5 & 6 — pola sama Fase A/B.
@@ -436,7 +436,7 @@ export const KURIKULUM: KurikulumEntry[] = [
   },
 
   // -------------------------------------------------------------------------
-  // NASIONAL — SD/MI Pendidikan Pancasila, FASE A (Kelas 1 & 2). Status: DRAFT.
+  // NASIONAL — SD/MI Pendidikan Pancasila, FASE A (Kelas 1 & 2). Status: VERIFIED.
   // Sumber: Kepka BSKAP No. 046/H/KR/2025 — CP Pendidikan Pancasila Fase A.
   // 4 elemen: Pancasila, UUD NRI 1945, Bhinneka Tunggal Ika, NKRI.
   // -------------------------------------------------------------------------
@@ -461,7 +461,7 @@ export const KURIKULUM: KurikulumEntry[] = [
 
   // -------------------------------------------------------------------------
   // NASIONAL — SD/MI Pendidikan Pancasila, FASE B (Kelas 3 & 4) & FASE C
-  // (Kelas 5 & 6). Status: DRAFT. Sumber: Kepka BSKAP No. 046/H/KR/2025.
+  // (Kelas 5 & 6). Status: VERIFIED. Sumber: Kepka BSKAP No. 046/H/KR/2025.
   // -------------------------------------------------------------------------
   {
     jenjang: "SD/MI",
@@ -469,7 +469,7 @@ export const KURIKULUM: KurikulumEntry[] = [
     mapel: "Pendidikan Pancasila",
     kelas: "3",
     status: "verified",
-    sumber: "CP Pendidikan Pancasila Fase B - Kepka BSKAP No. 046/H/KR/2025",
+    sumber: "CP Pendidikan Pancasila Fase B — Kepka BSKAP No. 046/H/KR/2025",
     topik: PPKN_FASE_B_TOPIK,
   },
   {
@@ -478,7 +478,7 @@ export const KURIKULUM: KurikulumEntry[] = [
     mapel: "Pendidikan Pancasila",
     kelas: "4",
     status: "verified",
-    sumber: "CP Pendidikan Pancasila Fase B - Kepka BSKAP No. 046/H/KR/2025",
+    sumber: "CP Pendidikan Pancasila Fase B — Kepka BSKAP No. 046/H/KR/2025",
     topik: PPKN_FASE_B_TOPIK,
   },
   {
@@ -487,7 +487,7 @@ export const KURIKULUM: KurikulumEntry[] = [
     mapel: "Pendidikan Pancasila",
     kelas: "5",
     status: "verified",
-    sumber: "CP Pendidikan Pancasila Fase C - Kepka BSKAP No. 046/H/KR/2025",
+    sumber: "CP Pendidikan Pancasila Fase C — Kepka BSKAP No. 046/H/KR/2025",
     topik: PPKN_FASE_C_TOPIK,
   },
   {
@@ -496,12 +496,12 @@ export const KURIKULUM: KurikulumEntry[] = [
     mapel: "Pendidikan Pancasila",
     kelas: "6",
     status: "verified",
-    sumber: "CP Pendidikan Pancasila Fase C - Kepka BSKAP No. 046/H/KR/2025",
+    sumber: "CP Pendidikan Pancasila Fase C — Kepka BSKAP No. 046/H/KR/2025",
     topik: PPKN_FASE_C_TOPIK,
   },
 
   // -------------------------------------------------------------------------
-  // NASIONAL — SD/MI PJOK, FASE A (Kelas 1 & 2). Status: DRAFT.
+  // NASIONAL — SD/MI PJOK, FASE A (Kelas 1 & 2). Status: VERIFIED.
   // Sumber: Kepka BSKAP No. 046/H/KR/2025 — CP PJOK Fase A.
   // -------------------------------------------------------------------------
   {
@@ -524,7 +524,7 @@ export const KURIKULUM: KurikulumEntry[] = [
   },
 
   // -------------------------------------------------------------------------
-  // NASIONAL — SD/MI IPAS, FASE B (Kelas 3 & 4) & FASE C (Kelas 5 & 6). DRAFT.
+  // NASIONAL — SD/MI IPAS, FASE B (Kelas 3 & 4) & FASE C (Kelas 5 & 6). VERIFIED.
   // Sumber: Kepka BSKAP No. 046/H/KR/2025 — CP IPAS elemen "Pemahaman IPAS".
   // IPAS tidak memiliki Fase A (kelas 1 & 2 tetap fallback teks-bebas).
   // -------------------------------------------------------------------------
@@ -534,7 +534,7 @@ export const KURIKULUM: KurikulumEntry[] = [
     mapel: "IPAS",
     kelas: "3",
     status: "verified",
-    sumber: "CP IPAS Fase B - Kepka BSKAP No. 046/H/KR/2025",
+    sumber: "CP IPAS Fase B — Kepka BSKAP No. 046/H/KR/2025",
     topik: IPAS_FASE_B_TOPIK,
   },
   {
@@ -543,7 +543,7 @@ export const KURIKULUM: KurikulumEntry[] = [
     mapel: "IPAS",
     kelas: "4",
     status: "verified",
-    sumber: "CP IPAS Fase B - Kepka BSKAP No. 046/H/KR/2025",
+    sumber: "CP IPAS Fase B — Kepka BSKAP No. 046/H/KR/2025",
     topik: IPAS_FASE_B_TOPIK,
   },
   {
@@ -552,7 +552,7 @@ export const KURIKULUM: KurikulumEntry[] = [
     mapel: "IPAS",
     kelas: "5",
     status: "verified",
-    sumber: "CP IPAS Fase C - Kepka BSKAP No. 046/H/KR/2025",
+    sumber: "CP IPAS Fase C — Kepka BSKAP No. 046/H/KR/2025",
     topik: IPAS_FASE_C_TOPIK,
   },
   {
@@ -561,7 +561,7 @@ export const KURIKULUM: KurikulumEntry[] = [
     mapel: "IPAS",
     kelas: "6",
     status: "verified",
-    sumber: "CP IPAS Fase C - Kepka BSKAP No. 046/H/KR/2025",
+    sumber: "CP IPAS Fase C — Kepka BSKAP No. 046/H/KR/2025",
     topik: IPAS_FASE_C_TOPIK,
   },
 ];
