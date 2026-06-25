@@ -373,6 +373,22 @@ const BING_FASE_C_TOPIK: Topik[] = [
   { id: "bingc-tm-kosakata", label: "Menggunakan kosakata terkait lingkungan kelas & rumah serta strategi dasar menulis (menyalin kata/frasa, menggunakan gambar, bertanya cara menulis kata)" },
 ];
 
+// Topik Pendidikan Agama Islam & Budi Pekerti Fase A (Kelas 1 & 2) — diturunkan
+// PERSIS dari CP (Kepka BKPDM No. 020 Tahun 2026, perubahan atas Kepka BSKAP
+// 046/H/KR/2025). 5 elemen: Al-Qur'an Hadis, Akidah, Akhlak, Fikih, SPI.
+const PAI_FASE_A_TOPIK: Topik[] = [
+  // Al-Qur'an Hadis
+  { id: "paia-quran-hadis", label: "Memahami huruf hijaiah berharakat, huruf hijaiah bersambung, Surah al-Fātiḥah, beberapa surah pendek Al-Qur'an, dan hadis tentang kebersihan." },
+  // Akidah
+  { id: "paia-akidah", label: "Memahami rukun iman, iman kepada Allah Swt., beberapa asmaulhusna, dan iman kepada malaikat." },
+  // Akhlak
+  { id: "paia-akhlak", label: "Memahami akhlak terhadap Allah Swt. dengan menyucikan dan memuji-Nya dan akhlak terhadap diri sendiri." },
+  // Fikih
+  { id: "paia-fikih", label: "Memahami rukun Islam, syahadatain, tata cara bersuci, salat fardu, azan, ikamah, zikir, dan berdoa setelah salat." },
+  // Sejarah Peradaban Islam
+  { id: "paia-spi", label: "Memahami kisah beberapa nabi dan rasul." },
+];
+
 export const KURIKULUM: KurikulumEntry[] = [
   // -------------------------------------------------------------------------
   // PESANTREN — NAHWU (Matan Al-Jurumiyah). Sesuai contoh gambar pengguna.
@@ -820,6 +836,30 @@ export const KURIKULUM: KurikulumEntry[] = [
     status: "verified",
     sumber: "CP Bahasa Inggris Fase C — Kepka BSKAP No. 046/H/KR/2025",
     topik: BING_FASE_C_TOPIK,
+  },
+
+  // -------------------------------------------------------------------------
+  // NASIONAL — SD/MI Pendidikan Agama Islam & Budi Pekerti, FASE A (Kelas 1 &
+  // 2). Status: DRAFT. Sumber: Kepka BKPDM No. 020 Tahun 2026 (perubahan atas
+  // Kepka BSKAP No. 046/H/KR/2025). 5 elemen.
+  // -------------------------------------------------------------------------
+  {
+    jenjang: "SD/MI",
+    kelompok: "Umum/Nasional (Kemendikbud)",
+    mapel: "Pendidikan Agama Islam dan Budi Pekerti",
+    kelas: "1",
+    status: "draft",
+    sumber: "CP Pendidikan Agama Islam dan Budi Pekerti Fase A — Kepka BKPDM No. 020 Tahun 2026 (perubahan atas Kepka BSKAP No. 046/H/KR/2025)",
+    topik: PAI_FASE_A_TOPIK,
+  },
+  {
+    jenjang: "SD/MI",
+    kelompok: "Umum/Nasional (Kemendikbud)",
+    mapel: "Pendidikan Agama Islam dan Budi Pekerti",
+    kelas: "2",
+    status: "draft",
+    sumber: "CP Pendidikan Agama Islam dan Budi Pekerti Fase A — Kepka BKPDM No. 020 Tahun 2026 (perubahan atas Kepka BSKAP No. 046/H/KR/2025)",
+    topik: PAI_FASE_A_TOPIK,
   },
 ];
 
