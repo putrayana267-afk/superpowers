@@ -376,6 +376,10 @@ const BING_FASE_C_TOPIK: Topik[] = [
 // Topik Pendidikan Agama Islam & Budi Pekerti Fase A (Kelas 1 & 2) — diturunkan
 // PERSIS dari CP (Kepka BKPDM No. 020 Tahun 2026, perubahan atas Kepka BSKAP
 // 046/H/KR/2025). 5 elemen: Al-Qur'an Hadis, Akidah, Akhlak, Fikih, SPI.
+// PAI Fase A — sumber: portal CP resmi Kemendikdasmen (Ruang GTK,
+// guru.kemendikdasmen.go.id, tab "Rumusan CP"). Regulasi berlaku: Kepka BKPDM
+// No. 020 Tahun 2026. Belum spot-check ke salinan PDF Kepka; nomor halaman
+// lampiran belum tercatat (exception CLAUDE.md, disetujui pemilik repo).
 const PAI_FASE_A_TOPIK: Topik[] = [
   // Al-Qur'an Hadis
   { id: "paia-quran-hadis", label: "Memahami huruf hijaiah berharakat, huruf hijaiah bersambung, Surah al-Fātiḥah, beberapa surah pendek Al-Qur'an, dan hadis tentang kebersihan." },
@@ -848,7 +852,7 @@ export const KURIKULUM: KurikulumEntry[] = [
     kelompok: "Umum/Nasional (Kemendikbud)",
     mapel: "Pendidikan Agama Islam dan Budi Pekerti",
     kelas: "1",
-    status: "draft",
+    status: "verified",
     sumber: "CP Pendidikan Agama Islam dan Budi Pekerti Fase A — Kepka BKPDM No. 020 Tahun 2026 (perubahan atas Kepka BSKAP No. 046/H/KR/2025)",
     topik: PAI_FASE_A_TOPIK,
   },
@@ -857,7 +861,7 @@ export const KURIKULUM: KurikulumEntry[] = [
     kelompok: "Umum/Nasional (Kemendikbud)",
     mapel: "Pendidikan Agama Islam dan Budi Pekerti",
     kelas: "2",
-    status: "draft",
+    status: "verified",
     sumber: "CP Pendidikan Agama Islam dan Budi Pekerti Fase A — Kepka BKPDM No. 020 Tahun 2026 (perubahan atas Kepka BSKAP No. 046/H/KR/2025)",
     topik: PAI_FASE_A_TOPIK,
   },
