@@ -100,6 +100,38 @@ const MTK_FASE_B_TOPIK: Topik[] = [
   { id: "mtkb-dat-sajianalisis", label: "Menyajikan, menganalisis & menginterpretasi data (tabel, diagram gambar, piktogram, diagram batang skala satu satuan)" },
 ];
 
+// Topik DRAFT Matematika Fase C (Kelas 5 & 6) — diturunkan PERSIS dari CP (Kepka
+// BSKAP 046/H/KR/2025, Ruang GTK). 5 elemen: Bilangan, Aljabar, Pengukuran,
+// Geometri, Analisis Data dan Peluang. Semua topik = CP-inti (tanpa turunan ATP).
+const MTK_FASE_C_TOPIK: Topik[] = [
+  // A. Bilangan
+  { id: "mtkc-bil-cacah1jt", label: "Bilangan cacah sampai 1.000.000 (membaca, menulis, nilai tempat)" },
+  { id: "mtkc-bil-bandingurut", label: "Membandingkan & mengurutkan bilangan cacah sampai 1.000.000" },
+  { id: "mtkc-bil-kompdekomp", label: "Komposisi & dekomposisi bilangan cacah sampai 1.000.000" },
+  { id: "mtkc-bil-uang", label: "Menyelesaikan masalah yang berkaitan dengan uang" },
+  { id: "mtkc-bil-operasi100rb", label: "Penjumlahan, pengurangan, perkalian, & pembagian bilangan cacah sampai 100.000" },
+  { id: "mtkc-bil-kpkfpb", label: "Menyelesaikan masalah KPK & FPB" },
+  { id: "mtkc-bil-bandingpecahan", label: "Membandingkan & mengurutkan pecahan (termasuk pecahan campuran)" },
+  { id: "mtkc-bil-tambahkurangpecahan", label: "Penjumlahan & pengurangan pecahan" },
+  { id: "mtkc-bil-kalibagipecahan", label: "Perkalian & pembagian pecahan dengan bilangan asli" },
+  { id: "mtkc-bil-desimal", label: "Mengubah pecahan menjadi desimal; membandingkan & mengurutkan desimal (satu angka di belakang koma)" },
+  // B. Aljabar
+  { id: "mtkc-alj-nilaibelumdiketahui", label: "Mengisi nilai yang belum diketahui dalam kalimat matematika (+, −, ×, ÷ pada bilangan cacah sampai 1.000)" },
+  { id: "mtkc-alj-pola", label: "Mengidentifikasi, meniru, & mengembangkan pola bilangan membesar/mengecil (perkalian & pembagian)" },
+  { id: "mtkc-alj-proporsi", label: "Bernalar proporsional & menyelesaikan masalah proporsi (rasio satuan, perkalian & pembagian)" },
+  // C. Pengukuran
+  { id: "mtkc-ukur-kelilingluas", label: "Menentukan keliling & luas bangun datar (segitiga, segiempat, segi banyak) serta gabungannya" },
+  { id: "mtkc-ukur-durasi", label: "Menghitung durasi waktu" },
+  { id: "mtkc-ukur-sudut", label: "Mengukur besar sudut" },
+  // D. Geometri
+  { id: "mtkc-geo-bangunruang", label: "Mengonstruksi & mengurai bangun ruang (kubus, balok, & gabungannya) serta visualisasi spasial (depan, atas, samping)" },
+  { id: "mtkc-geo-bandingkarakteristik", label: "Membandingkan karakteristik antarbangun datar & antarbangun ruang" },
+  { id: "mtkc-geo-lokasipeta", label: "Menentukan lokasi pada peta dengan sistem berpetak" },
+  // E. Analisis Data dan Peluang
+  { id: "mtkc-dat-sajianalisis", label: "Menyajikan & menganalisis data banyak benda & data hasil pengukuran (gambar, piktogram, diagram batang, tabel frekuensi)" },
+  { id: "mtkc-dat-peluang", label: "Menentukan kejadian berkemungkinan lebih besar dalam percobaan acak" },
+];
+
 // Topik DRAFT Pendidikan Pancasila Fase A (Kelas 1 & 2) — 4 elemen CP: Pancasila,
 // UUD NRI 1945, Bhinneka Tunggal Ika, NKRI. Diturunkan dari CP (Kepka BSKAP
 // 046/H/KR/2025) → status 'draft' sampai diverifikasi ke ATP/buku teks.
@@ -302,6 +334,31 @@ export const KURIKULUM: KurikulumEntry[] = [
     status: "verified",
     sumber: "CP Matematika Fase B — Kepka BSKAP No. 046/H/KR/2025",
     topik: MTK_FASE_B_TOPIK,
+  },
+
+  // -------------------------------------------------------------------------
+  // NASIONAL — SD/MI Matematika, FASE C (Kelas 5 & 6). Status: DRAFT.
+  // Sumber: Kepka BSKAP No. 046/H/KR/2025 — CP Matematika Fase C (Ruang GTK).
+  // 5 elemen: Bilangan, Aljabar, Pengukuran, Geometri, Analisis Data & Peluang.
+  // Satu set topik (MTK_FASE_C_TOPIK) melayani kelas 5 & 6 — pola sama Fase A/B.
+  // -------------------------------------------------------------------------
+  {
+    jenjang: "SD/MI",
+    kelompok: "Umum/Nasional (Kemendikbud)",
+    mapel: "Matematika",
+    kelas: "5",
+    status: "draft",
+    sumber: "CP Matematika Fase C — Kepka BSKAP No. 046/H/KR/2025",
+    topik: MTK_FASE_C_TOPIK,
+  },
+  {
+    jenjang: "SD/MI",
+    kelompok: "Umum/Nasional (Kemendikbud)",
+    mapel: "Matematika",
+    kelas: "6",
+    status: "draft",
+    sumber: "CP Matematika Fase C — Kepka BSKAP No. 046/H/KR/2025",
+    topik: MTK_FASE_C_TOPIK,
   },
 
   // -------------------------------------------------------------------------
