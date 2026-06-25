@@ -49,6 +49,56 @@ const BIND_FASE_A_TOPIK: Topik[] = [
   { id: "bind-b-eksposisi", label: "Teks eksposisi" },
 ];
 
+// Topik Bahasa Indonesia Fase B (Kelas 3 & 4) — diturunkan PERSIS dari CP 4 elemen
+// (Kepka BSKAP 046/H/KR/2025, Ruang GTK): Menyimak, Membaca & Memirsa, Berbicara &
+// Mempresentasikan, Menulis. Granularitas CP-murni: 1 kompetensi CP = 1 topik.
+const BIND_FASE_B_TOPIK: Topik[] = [
+  // A. Menyimak
+  { id: "bindb-simak-idepokok", label: "Memahami ide pokok pesan lisan, media audio, teks aural, & instruksi lisan tentang hal menarik di lingkungan sekitar" },
+  { id: "bindb-simak-narasi", label: "Memahami & memaknai teks narasi yang dibacakan atau dari media audio" },
+  // B. Membaca dan Memirsa
+  { id: "bindb-baca-katabaru", label: "Membaca kata-kata baru dengan pola kombinasi huruf yang dikenali dengan fasih" },
+  { id: "bindb-baca-kosakata", label: "Memaknai kosakata baru & serapan bahasa daerah dari teks/tayangan tentang hal menarik di lingkungan sekitar" },
+  { id: "bindb-baca-pesan", label: "Memahami pesan & informasi tentang kehidupan sehari-hari, teks narasi, & puisi anak (cetak/elektronik)" },
+  { id: "bindb-baca-idepokok", label: "Memahami ide pokok & ide pendukung pada teks informatif & teks narasi" },
+  // C. Berbicara dan Mempresentasikan
+  { id: "bindb-bicara-santun", label: "Berbicara dengan pilihan kata & gestur santun, volume & intonasi tepat sesuai konteks" },
+  { id: "bindb-bicara-diskusi", label: "Terlibat aktif dalam percakapan & diskusi sesuai tata cara" },
+  { id: "bindb-bicara-ceritakembali", label: "Menceritakan kembali informasi dari teks narasi tentang hal menarik di lingkungan sekitar" },
+  // D. Menulis
+  { id: "bindb-tulis-teks", label: "Menulis berbagai teks sederhana dengan rangkaian kalimat beragam tentang hal menarik di lingkungan sekitar" },
+  { id: "bindb-tulis-kaidah", label: "Menggunakan kaidah kebahasaan sederhana & kosakata baru bermakna denotatif untuk menulis teks sesuai konteks" },
+  { id: "bindb-tulis-latin", label: "Terampil menulis kalimat dalam tulisan Latin & tegak bersambung" },
+];
+
+// Topik Bahasa Indonesia Fase C (Kelas 5 & 6) — diturunkan PERSIS dari CP 4 elemen
+// (Kepka BSKAP 046/H/KR/2025, Ruang GTK). Granularitas CP-murni: 1 kompetensi = 1
+// topik. CP mengulang 2 kompetensi verbatim antara Berbicara & Menulis (kosakata
+// denotatif/konotatif/kiasan; perasaan-imajinasi karya sastra) → dipertahankan setia.
+const BIND_FASE_C_TOPIK: Topik[] = [
+  // A. Menyimak
+  { id: "bindc-simak-analisis", label: "Menganalisis informasi: ciri objek, urutan proses kejadian, & nilai dari berbagai tipe teks nonfiksi & fiksi (lisan, teks aural, audio)" },
+  // B. Membaca dan Memirsa
+  { id: "bindc-baca-fasih", label: "Membaca kata-kata dengan berbagai pola kombinasi huruf dengan fasih & indah" },
+  { id: "bindc-baca-kosakata", label: "Memahami informasi & kosakata baru bermakna denotatif, konotatif, & kiasan untuk mengidentifikasi objek, fenomena, & karakter" },
+  { id: "bindc-baca-analisis", label: "Menganalisis informasi & nilai dalam teks sastra dari teks visual dan/atau audiovisual" },
+  { id: "bindc-baca-pengamatan", label: "Membaca hasil pengamatan" },
+  // C. Berbicara dan Mempresentasikan
+  { id: "bindc-bicara-menghibur", label: "Menyampaikan informasi secara lisan untuk menghibur & meyakinkan mitra tutur sesuai kaidah & konteks" },
+  { id: "bindc-bicara-kosakata", label: "Menggunakan kosakata baru bermakna denotatif, konotatif, & kiasan" },
+  { id: "bindc-bicara-pilihkata", label: "Memilih kata yang tepat sesuai norma sosial budaya" },
+  { id: "bindc-bicara-fasih", label: "Menyampaikan informasi dengan fasih & santun" },
+  { id: "bindc-bicara-sastra", label: "Menyampaikan perasaan berdasarkan fakta & imajinasi secara indah & menarik dalam bentuk karya sastra dengan kosakata kreatif" },
+  { id: "bindc-bicara-presentasi", label: "Mempresentasikan gagasan, hasil pengamatan, & pengalaman secara logis, sistematis, efektif, & kritis; mempresentasikan imajinasi secara kreatif" },
+  // D. Menulis
+  { id: "bindc-tulis-teks", label: "Menulis berbagai teks sederhana berdasarkan gagasan, hasil pengamatan, pengalaman, & imajinasi" },
+  { id: "bindc-tulis-kausalitas", label: "Menuliskan hasil pengamatan yang menjelaskan hubungan kausalitas (sebab-akibat) untuk meyakinkan pembaca" },
+  { id: "bindc-tulis-kaidah", label: "Menggunakan kaidah kebahasaan & kesastraan untuk menulis teks sesuai konteks & norma sosial budaya" },
+  { id: "bindc-tulis-kosakata", label: "Menggunakan kosakata baru bermakna denotatif, konotatif, & kiasan" },
+  { id: "bindc-tulis-sastra", label: "Menyampaikan perasaan berdasarkan fakta & imajinasi secara indah & menarik dalam bentuk karya sastra dengan kosakata kreatif" },
+  { id: "bindc-tulis-latin", label: "Terampil menulis teks dalam tulisan Latin & tegak bersambung" },
+];
+
 // Topik Matematika Fase A (Kelas 1 & 2) — 4 elemen CP: Bilangan, Aljabar,
 // Pengukuran, Geometri (Analisis Data & Peluang BELUM ada di Fase A). Diturunkan
 // dari CP (Kepka BSKAP 046/H/KR/2025). Sudah diverifikasi (verified).
@@ -400,6 +450,49 @@ export const KURIKULUM: KurikulumEntry[] = [
     status: "verified",
     sumber: "CP Bahasa Indonesia Fase A — Kepka BSKAP No. 046/H/KR/2025 (+ referensi ATP Kemendikdasmen)",
     topik: BIND_FASE_A_TOPIK,
+  },
+
+  // -------------------------------------------------------------------------
+  // NASIONAL — SD/MI Bahasa Indonesia, FASE B (Kelas 3 & 4) & FASE C (Kelas 5 &
+  // 6). Status: DRAFT. Sumber: Kepka BSKAP No. 046/H/KR/2025 — CP (Ruang GTK).
+  // CP-murni (tanpa ATP). 4 elemen: Menyimak, Membaca & Memirsa, Berbicara &
+  // Mempresentasikan, Menulis.
+  // -------------------------------------------------------------------------
+  {
+    jenjang: "SD/MI",
+    kelompok: "Umum/Nasional (Kemendikbud)",
+    mapel: "Bahasa Indonesia",
+    kelas: "3",
+    status: "draft",
+    sumber: "CP Bahasa Indonesia Fase B — Kepka BSKAP No. 046/H/KR/2025",
+    topik: BIND_FASE_B_TOPIK,
+  },
+  {
+    jenjang: "SD/MI",
+    kelompok: "Umum/Nasional (Kemendikbud)",
+    mapel: "Bahasa Indonesia",
+    kelas: "4",
+    status: "draft",
+    sumber: "CP Bahasa Indonesia Fase B — Kepka BSKAP No. 046/H/KR/2025",
+    topik: BIND_FASE_B_TOPIK,
+  },
+  {
+    jenjang: "SD/MI",
+    kelompok: "Umum/Nasional (Kemendikbud)",
+    mapel: "Bahasa Indonesia",
+    kelas: "5",
+    status: "draft",
+    sumber: "CP Bahasa Indonesia Fase C — Kepka BSKAP No. 046/H/KR/2025",
+    topik: BIND_FASE_C_TOPIK,
+  },
+  {
+    jenjang: "SD/MI",
+    kelompok: "Umum/Nasional (Kemendikbud)",
+    mapel: "Bahasa Indonesia",
+    kelas: "6",
+    status: "draft",
+    sumber: "CP Bahasa Indonesia Fase C — Kepka BSKAP No. 046/H/KR/2025",
+    topik: BIND_FASE_C_TOPIK,
   },
 
   // -------------------------------------------------------------------------
