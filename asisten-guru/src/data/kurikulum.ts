@@ -334,6 +334,45 @@ const IPAS_FASE_C_TOPIK: Topik[] = [
   { id: "ipasc-ekonomi", label: "Kegiatan ekonomi masyarakat & ekonomi kreatif di lingkungan sekitar" },
 ];
 
+// Topik Bahasa Inggris Fase B (Kelas 3 & 4) — diturunkan PERSIS dari CP 3 elemen
+// (Kepka BSKAP 046/H/KR/2025, Ruang GTK): Menyimak–Berbicara, Membaca–Memirsa,
+// Menulis–Mempresentasikan. Granularitas CP-murni: 1 kompetensi = 1 topik.
+const BING_FASE_B_TOPIK: Topik[] = [
+  // A. Menyimak – Berbicara
+  { id: "bingb-sb-interaksi", label: "Berinteraksi dalam bahasa Inggris pada situasi sosial & kelas yang makin luas namun rutin, dengan kalimat berpola sesuai konteks" },
+  { id: "bingb-sb-partisipasi", label: "Mengubah/mengganti sebagian elemen kalimat untuk berpartisipasi dalam rutinitas kelas (menyampaikan perasaan, kebutuhan, meminta pertolongan)" },
+  { id: "bingb-sb-idepokok", label: "Memahami ide pokok informasi lisan dengan bantuan visual & kosakata sederhana" },
+  { id: "bingb-sb-instruksi", label: "Mengikuti rangkaian instruksi sederhana terkait prosedur kelas & aktivitas belajar dengan bantuan visual" },
+  // B. Membaca – Memirsa
+  { id: "bingb-bm-kata", label: "Memahami kata-kata yang sering digunakan sehari-hari dengan bantuan gambar/ilustrasi" },
+  { id: "bingb-bm-teks", label: "Membaca & memberikan respons terhadap teks pendek sederhana & familiar (tulisan/digital, termasuk visual, multimodal, atau interaktif)" },
+  // C. Menulis – Mempresentasikan
+  { id: "bingb-tm-ide", label: "Mengomunikasikan ide & pengalaman melalui gambar & salinan tulisan" },
+  { id: "bingb-tm-teks", label: "Menghasilkan teks deskripsi & prosedur sederhana menggunakan kata/frasa sederhana & gambar (dengan bantuan guru)" },
+  { id: "bingb-tm-kosakata", label: "Menulis kosakata sederhana terkait lingkungan kelas & rumah dengan ejaan ciptaan sendiri" },
+];
+
+// Topik Bahasa Inggris Fase C (Kelas 5 & 6) — diturunkan PERSIS dari CP 3 elemen
+// (Kepka BSKAP 046/H/KR/2025, Ruang GTK). Granularitas CP-murni: 1 kompetensi = 1 topik.
+const BING_FASE_C_TOPIK: Topik[] = [
+  // A. Menyimak – Berbicara
+  { id: "bingc-sb-interaksi", label: "Berinteraksi dengan kalimat berpola tertentu pada situasi sosial & kelas yang makin luas namun rutin" },
+  { id: "bingc-sb-partisipasi", label: "Mengubah/mengganti sebagian elemen kalimat untuk berpartisipasi dalam aktivitas belajar (membuat pertanyaan sederhana, meminta klarifikasi & izin)" },
+  { id: "bingc-sb-strategi", label: "Menggunakan strategi untuk mengidentifikasi informasi inti (meminta pengulangan, berbicara lebih pelan, atau bertanya arti kata)" },
+  { id: "bingc-sb-instruksi", label: "Mengikuti rangkaian instruksi sederhana terkait prosedur kelas & aktivitas belajar" },
+  // B. Membaca – Memirsa
+  { id: "bingc-bm-kata", label: "Memahami kata sehari-hari & kata baru dengan bantuan gambar/ilustrasi serta kalimat dalam konteks yang dipahami" },
+  { id: "bingc-bm-teks", label: "Membaca & memberikan respons terhadap beragam teks pendek sederhana & familiar (tulisan/digital, termasuk visual, multimodal, atau interaktif)" },
+  { id: "bingc-bm-informasi", label: "Menemukan informasi dalam sebuah kalimat & menjelaskan topik teks yang dibaca atau diamati" },
+  // C. Menulis – Mempresentasikan
+  { id: "bingc-tm-ide", label: "Mengomunikasikan ide & pengalaman melalui salinan tulisan & tulisan sederhana sendiri serta menunjukkan perkembangan pemahaman proses menulis" },
+  { id: "bingc-tm-kaidah", label: "Menunjukkan kesadaran awal bahwa teks bahasa Inggris ditulis dengan kaidah (konvensi) sesuai konteks & tujuannya" },
+  { id: "bingc-tm-teks", label: "Menghasilkan teks deskripsi, cerita, & prosedur sederhana menggunakan kalimat berpola tertentu (dengan bantuan guru)" },
+  { id: "bingc-tm-tandabaca", label: "Menunjukkan kesadaran pentingnya tanda baca dasar & penggunaan huruf kapital" },
+  { id: "bingc-tm-bunyihuruf", label: "Menunjukkan pemahaman hubungan bunyi-huruf & ejaan kata-kata yang umum digunakan" },
+  { id: "bingc-tm-kosakata", label: "Menggunakan kosakata terkait lingkungan kelas & rumah serta strategi dasar menulis (menyalin kata/frasa, menggunakan gambar, bertanya cara menulis kata)" },
+];
+
 export const KURIKULUM: KurikulumEntry[] = [
   // -------------------------------------------------------------------------
   // PESANTREN — NAHWU (Matan Al-Jurumiyah). Sesuai contoh gambar pengguna.
@@ -738,6 +777,49 @@ export const KURIKULUM: KurikulumEntry[] = [
     status: "verified",
     sumber: "CP IPAS Fase C — Kepka BSKAP No. 046/H/KR/2025",
     topik: IPAS_FASE_C_TOPIK,
+  },
+
+  // -------------------------------------------------------------------------
+  // NASIONAL — SD/MI Bahasa Inggris, FASE B (Kelas 3 & 4) & FASE C (Kelas 5 &
+  // 6). Status: DRAFT. Sumber: Kepka BSKAP No. 046/H/KR/2025 — CP (Ruang GTK).
+  // CP-murni. 3 elemen: Menyimak–Berbicara, Membaca–Memirsa, Menulis–
+  // Mempresentasikan. Fase A (kelas 1 & 2) ditunda → fallback teks-bebas.
+  // -------------------------------------------------------------------------
+  {
+    jenjang: "SD/MI",
+    kelompok: "Umum/Nasional (Kemendikbud)",
+    mapel: "Bahasa Inggris",
+    kelas: "3",
+    status: "draft",
+    sumber: "CP Bahasa Inggris Fase B — Kepka BSKAP No. 046/H/KR/2025",
+    topik: BING_FASE_B_TOPIK,
+  },
+  {
+    jenjang: "SD/MI",
+    kelompok: "Umum/Nasional (Kemendikbud)",
+    mapel: "Bahasa Inggris",
+    kelas: "4",
+    status: "draft",
+    sumber: "CP Bahasa Inggris Fase B — Kepka BSKAP No. 046/H/KR/2025",
+    topik: BING_FASE_B_TOPIK,
+  },
+  {
+    jenjang: "SD/MI",
+    kelompok: "Umum/Nasional (Kemendikbud)",
+    mapel: "Bahasa Inggris",
+    kelas: "5",
+    status: "draft",
+    sumber: "CP Bahasa Inggris Fase C — Kepka BSKAP No. 046/H/KR/2025",
+    topik: BING_FASE_C_TOPIK,
+  },
+  {
+    jenjang: "SD/MI",
+    kelompok: "Umum/Nasional (Kemendikbud)",
+    mapel: "Bahasa Inggris",
+    kelas: "6",
+    status: "draft",
+    sumber: "CP Bahasa Inggris Fase C — Kepka BSKAP No. 046/H/KR/2025",
+    topik: BING_FASE_C_TOPIK,
   },
 ];
 
