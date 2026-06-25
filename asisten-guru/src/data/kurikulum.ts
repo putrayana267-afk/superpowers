@@ -209,6 +209,47 @@ const PJOK_FASE_A_TOPIK: Topik[] = [
   { id: "pjok-mhm-risiko", label: "Mengenali situasi/potensi berisiko terhadap kesehatan & keselamatan serta strategi mencari bantuan kepada orang dewasa terpercaya" },
 ];
 
+// Topik PJOK Fase B (Kelas 3 & 4) — diturunkan PERSIS dari CP 4 elemen (Kepka
+// BSKAP 046/H/KR/2025, Ruang GTK): Terampil Bergerak, Belajar Melalui Gerak,
+// Bergaya Hidup Aktif, Memilih Hidup yang Menyehatkan. Granularitas seperti Fase A.
+const PJOK_FASE_B_TOPIK: Topik[] = [
+  // A. Terampil Bergerak
+  { id: "pjokb-tb-haluskan", label: "Menghaluskan keterampilan gerak fundamental & menerapkannya dalam situasi gerak baru" },
+  { id: "pjokb-tb-strategi", label: "Menerapkan & menyesuaikan strategi gerak untuk mencapai keterampilan gerak" },
+  { id: "pjokb-tb-konsep", label: "Memeragakan konsep gerak dalam rangkaian gerak" },
+  // B. Belajar Melalui Gerak
+  { id: "pjokb-bmg-masalah", label: "Menerapkan strategi gerak sederhana & memecahkan masalah gerak" },
+  { id: "pjokb-bmg-fairplay", label: "Menyusun bersama & menerapkan peraturan untuk fair play saat berpartisipasi/merancang aktivitas jasmani" },
+  { id: "pjokb-bmg-peran", label: "Mempertunjukkan berbagai peran dengan cara terhormat untuk keberhasilan dalam aktivitas gerak kelompok/tim" },
+  // C. Bergaya Hidup Aktif
+  { id: "pjokb-bha-partisipasi", label: "Berpartisipasi dalam aktivitas jasmani & mengenali faktor yang membuatnya menyenangkan" },
+  // D. Memilih Hidup yang Menyehatkan
+  { id: "pjokb-mhm-risiko", label: "Mengenali risiko kesehatan akibat gaya hidup & aktivitas jasmani untuk pencegahannya" },
+  { id: "pjokb-mhm-gizi", label: "Mengeksplorasi pola makan sehat & bergizi seimbang untuk menunjang aktivitas sehari-hari" },
+  { id: "pjokb-mhm-cedera", label: "Mempraktikkan penanganan cedera ringan sesuai prinsip pertolongan pertama" },
+];
+
+// Topik PJOK Fase C (Kelas 5 & 6) — diturunkan PERSIS dari CP 4 elemen (Kepka
+// BSKAP 046/H/KR/2025, Ruang GTK). Granularitas per-kompetensi seperti Fase A.
+const PJOK_FASE_C_TOPIK: Topik[] = [
+  // A. Terampil Bergerak
+  { id: "pjokc-tb-modifikasi", label: "Menyesuaikan & memodifikasi keterampilan gerak melintasi berbagai situasi gerak" },
+  { id: "pjokc-tb-transfer", label: "Mentransfer strategi gerak yang sudah dikuasai ke berbagai situasi gerak berbeda" },
+  { id: "pjokc-tb-investigasi", label: "Menginvestigasi berbagai konsep gerak untuk meningkatkan capaian keterampilan gerak" },
+  // B. Belajar Melalui Gerak
+  { id: "pjokc-bmg-efektivitas", label: "Memprediksi & menguji efektivitas penerapan strategi gerak dalam berbagai situasi gerak" },
+  { id: "pjokc-bmg-peraturan", label: "Merancang & menguji peraturan alternatif & modifikasi permainan untuk fair play & partisipasi inklusif" },
+  { id: "pjokc-bmg-kontribusi", label: "Berpartisipasi positif dalam kelompok/tim: kontribusi, mendorong orang lain, & menegosiasikan peran & tanggung jawab" },
+  // C. Bergaya Hidup Aktif
+  { id: "pjokc-bha-pengaruh", label: "Berpartisipasi dalam aktivitas jasmani untuk menggambarkan pengaruh aktivitas jasmani teratur terhadap kesehatan" },
+  { id: "pjokc-bha-luarruang", label: "Berpartisipasi dalam aktivitas jasmani di luar ruang/lingkungan alam & menggambarkan faktor yang mempengaruhi partisipasi" },
+  { id: "pjokc-bha-sedenter", label: "Mengeksplorasi rekomendasi aktivitas jasmani & pencegahan perilaku sedenter serta strategi pencapaiannya" },
+  // D. Memilih Hidup yang Menyehatkan
+  { id: "pjokc-mhm-risiko", label: "Mengidentifikasi risiko kesehatan akibat gaya hidup & pencegahan melalui aktivitas jasmani (rekomendasi otoritas kesehatan)" },
+  { id: "pjokc-mhm-gizi", label: "Memilih makanan sehat untuk menunjang aktivitas jasmani berdasarkan informasi kandungan gizi" },
+  { id: "pjokc-mhm-cedera", label: "Mempraktikkan penanganan cedera sedang sesuai prinsip pertolongan pertama" },
+];
+
 // Topik IPAS Fase B (Kelas 3 & 4) — diturunkan PERSIS dari CP elemen
 // "Pemahaman IPAS" (Kepka BSKAP 046/H/KR/2025, Ruang GTK). Tiap topik = satu
 // klausa antar-titik-koma di CP. Elemen "Keterampilan proses" sengaja TIDAK
@@ -521,6 +562,47 @@ export const KURIKULUM: KurikulumEntry[] = [
     status: "verified",
     sumber: "CP PJOK Fase A — Kepka BSKAP No. 046/H/KR/2025",
     topik: PJOK_FASE_A_TOPIK,
+  },
+
+  // -------------------------------------------------------------------------
+  // NASIONAL — SD/MI PJOK, FASE B (Kelas 3 & 4) & FASE C (Kelas 5 & 6). DRAFT.
+  // Sumber: Kepka BSKAP No. 046/H/KR/2025 — CP PJOK (Ruang GTK).
+  // -------------------------------------------------------------------------
+  {
+    jenjang: "SD/MI",
+    kelompok: "Umum/Nasional (Kemendikbud)",
+    mapel: "PJOK",
+    kelas: "3",
+    status: "draft",
+    sumber: "CP PJOK Fase B — Kepka BSKAP No. 046/H/KR/2025",
+    topik: PJOK_FASE_B_TOPIK,
+  },
+  {
+    jenjang: "SD/MI",
+    kelompok: "Umum/Nasional (Kemendikbud)",
+    mapel: "PJOK",
+    kelas: "4",
+    status: "draft",
+    sumber: "CP PJOK Fase B — Kepka BSKAP No. 046/H/KR/2025",
+    topik: PJOK_FASE_B_TOPIK,
+  },
+  {
+    jenjang: "SD/MI",
+    kelompok: "Umum/Nasional (Kemendikbud)",
+    mapel: "PJOK",
+    kelas: "5",
+    status: "draft",
+    sumber: "CP PJOK Fase C — Kepka BSKAP No. 046/H/KR/2025",
+    topik: PJOK_FASE_C_TOPIK,
+  },
+  {
+    jenjang: "SD/MI",
+    kelompok: "Umum/Nasional (Kemendikbud)",
+    mapel: "PJOK",
+    kelas: "6",
+    status: "draft",
+    sumber: "CP PJOK Fase C — Kepka BSKAP No. 046/H/KR/2025",
+    topik: PJOK_FASE_C_TOPIK,
   },
 
   // -------------------------------------------------------------------------
