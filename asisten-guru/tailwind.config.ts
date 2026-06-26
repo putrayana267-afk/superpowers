@@ -16,19 +16,44 @@ export default {
           deep: '#B8860B',
         },
         ink: '#0B1F17',
+        // Token brand (hijau asli #047857, hue OKLCH ~165 dipertahankan). Resting =
+        // hex persis agar identik dgn warna sekarang; hover/active diturunkan L-nya
+        // (disiplin "pressed-darker" ala iOS), hue & chroma tetap.
+        brand: {
+          DEFAULT: '#047857', // = oklch(0.508 0.105 165.6), kontras putih 5.48:1
+          hover: 'oklch(0.468 0.105 165.6)', // -0.04 L
+          active: 'oklch(0.428 0.105 165.6)', // -0.08 L
+        },
       },
       fontFamily: {
         display: ['"Plus Jakarta Sans"', 'Poppins', 'system-ui', 'sans-serif'],
         body: ['Inter', 'system-ui', 'sans-serif'],
       },
+      // Skala tipe token (disiplin struktural: line-height unitless, tracking
+      // negatif di ukuran besar). Typeface tetap Inter/Plus Jakarta Sans.
+      fontSize: {
+        display: ['2.5rem', { lineHeight: '1.1', letterSpacing: '-0.02em' }],
+        h1: ['1.875rem', { lineHeight: '1.15', letterSpacing: '-0.015em' }],
+        h2: ['1.5rem', { lineHeight: '1.2', letterSpacing: '-0.01em' }],
+        h3: ['1.25rem', { lineHeight: '1.25', letterSpacing: '0' }],
+        body: ['1.0625rem', { lineHeight: '1.5', letterSpacing: '0' }],
+        caption: ['0.8125rem', { lineHeight: '1.4', letterSpacing: '0' }],
+      },
       borderRadius: {
         '2xl': '1rem',
         '3xl': '1.5rem',
+        // Radius token semantik (rounded-rect ala iOS).
+        button: '12px',
+        input: '10px',
+        card: '16px',
       },
       boxShadow: {
         glass: '0 8px 32px rgba(4, 120, 87, 0.12)',
         'glass-lg': '0 20px 60px rgba(4, 120, 87, 0.18)',
         gold: '0 0 0 1px rgba(212, 175, 55, 0.35)',
+        // Elevasi token — hanya untuk overlay (popover/menu, modal/sheet).
+        pop: '0 4px 12px rgba(0, 0, 0, 0.12)',
+        modal: '0 12px 32px rgba(0, 0, 0, 0.16)',
       },
       keyframes: {
         'fade-up': {
