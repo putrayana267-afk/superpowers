@@ -324,7 +324,10 @@ export default async function handler(
   const requestBody = JSON.stringify({
     contents: [{ role: 'user', parts: [{ text: userPrompt }] }],
     systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
-    generationConfig: { maxOutputTokens: MAX_OUTPUT_TOKENS },
+    generationConfig: {
+      maxOutputTokens: MAX_OUTPUT_TOKENS,
+      thinkingConfig: { thinkingBudget: 0 }, // cap thinking gemini-2.5-flash → pangkas latensi
+    },
   });
 
   const result = await fetchGeminiMultiKey(

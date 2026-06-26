@@ -50,7 +50,10 @@ async function geminiDirect(
       body: JSON.stringify({
         contents: [{ role: 'user', parts: [{ text: userPrompt }] }],
         systemInstruction: { parts: [{ text: systemPrompt }] },
-        generationConfig: { maxOutputTokens },
+        generationConfig: {
+          maxOutputTokens,
+          thinkingConfig: { thinkingBudget: 0 }, // cap thinking gemini-2.5-flash → pangkas latensi
+        },
       }),
     });
   } catch {
