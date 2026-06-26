@@ -146,7 +146,7 @@ export function SheetSelect({
                 onKeyDown={(e) => {
                   if (e.key === 'Escape') close();
                 }}
-                className="fixed left-1/2 top-1/2 z-[111] max-h-[70vh] w-[min(420px,92vw)] overflow-y-auto rounded-3xl border border-white/40 bg-white/95 p-2 shadow-glass-lg backdrop-blur-xl"
+                className="fixed left-1/2 top-1/2 z-[111] max-h-[75vh] w-[92vw] overflow-y-auto rounded-3xl border border-white/40 bg-white/95 p-3 shadow-glass-lg backdrop-blur-xl sm:w-[480px] md:w-[560px]"
                 style={{ transformOrigin: 'center' }}
                 initial={
                   reduce
@@ -169,9 +169,8 @@ export function SheetSelect({
                     : { duration: 0.26, ease: [0.16, 1, 0.3, 1] }
                 }
               >
-                <div className="sticky top-0 -mx-2 -mt-2 mb-1 flex items-center justify-center rounded-t-3xl bg-white/80 px-4 pb-2 pt-3 backdrop-blur">
-                  <span className="h-1 w-10 rounded-full bg-ink/15" aria-hidden />
-                  <p className="ml-3 text-sm font-semibold text-emerald-deep">
+                <div className="sticky top-0 -mx-3 -mt-3 mb-1 rounded-t-3xl bg-white/80 px-4 pb-3 pt-4 backdrop-blur">
+                  <p className="text-base font-semibold text-emerald-deep sm:text-lg">
                     {label}
                   </p>
                 </div>
@@ -179,7 +178,7 @@ export function SheetSelect({
                 {groups.map((group) => (
                   <div key={group.label}>
                     {groups.length > 1 && (
-                      <p className="px-3 pb-1 pt-3 text-xs font-semibold uppercase tracking-wider text-emerald-deep/60">
+                      <p className="px-4 pb-1 pt-3 text-xs font-semibold uppercase tracking-wider text-emerald-deep/60">
                         {group.label}
                       </p>
                     )}
@@ -193,7 +192,7 @@ export function SheetSelect({
                           aria-selected={selected}
                           onClick={() => pilih(item)}
                           className={cn(
-                            'flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-left text-sm text-ink transition-colors',
+                            'flex w-full items-center justify-between rounded-xl px-4 py-3.5 text-left text-base text-ink transition-colors',
                             selected
                               ? 'bg-emerald-deep/10 font-semibold text-emerald-deep'
                               : 'hover:bg-emerald-deep/5',
@@ -201,7 +200,7 @@ export function SheetSelect({
                         >
                           <span className="truncate">{item}</span>
                           {selected && (
-                            <Check className="h-4 w-4 shrink-0 text-emerald-deep" />
+                            <Check className="h-5 w-5 shrink-0 text-emerald-deep" />
                           )}
                         </button>
                       );
@@ -215,7 +214,7 @@ export function SheetSelect({
                   aria-selected={showManual}
                   onClick={pilihManual}
                   className={cn(
-                    'mt-1 flex w-full items-center justify-between rounded-xl border-t border-white/40 px-3 py-2.5 text-left text-sm text-ink transition-colors',
+                    'mt-1 flex w-full items-center justify-between rounded-xl border-t border-white/40 px-4 py-3.5 text-left text-base text-ink transition-colors',
                     showManual
                       ? 'bg-emerald-deep/10 font-semibold text-emerald-deep'
                       : 'hover:bg-emerald-deep/5',
@@ -223,7 +222,7 @@ export function SheetSelect({
                 >
                   <span className="truncate">Lainnya (ketik manual)</span>
                   {showManual && (
-                    <Check className="h-4 w-4 shrink-0 text-emerald-deep" />
+                    <Check className="h-5 w-5 shrink-0 text-emerald-deep" />
                   )}
                 </button>
               </motion.div>
