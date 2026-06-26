@@ -41,7 +41,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         whileTap={reduce ? undefined : { scale: 0.97 }}
         whileHover={reduce ? undefined : { y: -1 }}
         className={cn(
-          'inline-flex items-center justify-center rounded-xl font-medium transition-colors',
+          'inline-flex items-center justify-center rounded-xl font-medium transition-[background-color,box-shadow,transform] duration-150 ease-out',
           'disabled:cursor-not-allowed',
           variantClasses[variant],
           sizeClasses[size],
