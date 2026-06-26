@@ -12,6 +12,7 @@ import { getTopik, getEntri } from '../data/kurikulum';
 import type { Topik, StatusData } from '../data/kurikulum';
 import { Field } from './Field';
 import { FieldSuggest } from './FieldSuggest';
+import { SheetSelect } from './SheetSelect';
 import { cn } from '../lib/cn';
 import { controlBase, controlError } from './controlStyles';
 
@@ -413,7 +414,7 @@ export function KurikulumSelector({
           }}
         />
 
-        <LevelSelect
+        <SheetSelect
           // remount saat jenjang/kelompok berubah agar mode manual ikut bersih
           key={`mapel-${value.jenjang}-${value.kelompok}`}
           id="mapel"
