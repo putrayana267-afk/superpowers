@@ -129,7 +129,7 @@ export function SheetSelect({
           {open && (
             <>
               <motion.div
-                className="fixed inset-0 z-[110] bg-ink/40 backdrop-blur-sm"
+                className="fixed inset-0 z-[110] bg-ink/50"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
@@ -146,7 +146,7 @@ export function SheetSelect({
                 onKeyDown={(e) => {
                   if (e.key === 'Escape') close();
                 }}
-                className="fixed left-1/2 top-1/2 z-[111] max-h-[75vh] w-[92vw] overflow-y-auto rounded-3xl border border-white/40 bg-white/95 p-3 shadow-glass-lg backdrop-blur-xl sm:w-[480px] md:w-[560px]"
+                className="fixed left-1/2 top-1/2 z-[111] max-h-[75vh] w-[92vw] overflow-y-auto rounded-3xl border border-white/40 bg-white p-3 shadow-glass-lg sm:w-[480px] md:w-[560px]"
                 style={{ transformOrigin: 'center' }}
                 initial={
                   reduce
@@ -169,7 +169,7 @@ export function SheetSelect({
                     : { duration: 0.26, ease: [0.16, 1, 0.3, 1] }
                 }
               >
-                <div className="sticky top-0 -mx-3 -mt-3 mb-1 rounded-t-3xl bg-white/80 px-4 pb-3 pt-4 backdrop-blur">
+                <div className="sticky top-0 -mx-3 -mt-3 mb-1 rounded-t-3xl border-b border-ink/5 bg-white px-4 pb-3 pt-4">
                   <p className="text-base font-semibold text-emerald-deep sm:text-lg">
                     {label}
                   </p>
