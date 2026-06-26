@@ -14,11 +14,14 @@ import type { Tool } from '../features/tools/types';
 import { Button } from './Button';
 import { EmptyState } from './EmptyState';
 import { ResultSkeleton } from './Skeleton';
+import BlurText from './BlurText';
 
 export type ResultStatus = 'idle' | 'loading' | 'error' | 'done';
 
 interface ResultPanelProps {
   tool: Tool;
+  /** Judul hasil (mis. "Modul Ajar Matematika") — dianimasi reveal saat done. */
+  resultTitle: string;
   status: ResultStatus;
   result: string;
   error: string;
@@ -35,6 +38,7 @@ interface ResultPanelProps {
 
 export function ResultPanel({
   tool,
+  resultTitle,
   status,
   result,
   error,
@@ -114,6 +118,10 @@ export function ResultPanel({
             transition={{ duration: 0.3 }}
             className="flex h-full flex-col"
           >
+            <h2 className="mb-3 font-display text-xl font-extrabold text-emerald-deep sm:text-2xl">
+              <BlurText text={resultTitle} />
+            </h2>
+
             {streaming ? (
               <div
                 className="mb-4 inline-flex w-fit items-center gap-2 rounded-full bg-emerald-deep/10 px-3 py-1.5 text-xs font-semibold text-emerald-deep"

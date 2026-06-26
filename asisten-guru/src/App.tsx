@@ -397,6 +397,9 @@ export default function App({ onOpenShowcase }: AppProps) {
                   <Suspense fallback={<ResultSkeleton />}>
                     <ResultPanel
                       tool={activeTool}
+                      resultTitle={[activeTool.title, inputs?.mapel]
+                        .filter(Boolean)
+                        .join(' ')}
                       status={status}
                       result={result}
                       error={error}
