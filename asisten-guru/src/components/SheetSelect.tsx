@@ -146,24 +146,27 @@ export function SheetSelect({
                 onKeyDown={(e) => {
                   if (e.key === 'Escape') close();
                 }}
-                className="fixed inset-x-0 bottom-0 z-[111] max-h-[60vh] overflow-y-auto rounded-t-3xl border-t border-white/40 bg-white/95 p-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] shadow-glass-lg backdrop-blur-xl"
+                className="fixed left-1/2 top-1/2 z-[111] max-h-[70vh] w-[min(420px,92vw)] overflow-y-auto rounded-3xl border border-white/40 bg-white/95 p-2 shadow-glass-lg backdrop-blur-xl"
+                style={{ transformOrigin: 'center' }}
                 initial={
                   reduce
-                    ? { opacity: 0 }
-                    : { y: '100%', opacity: 0, scale: 0.98 }
+                    ? { x: '-50%', y: '-50%', opacity: 0 }
+                    : { x: '-50%', y: '-50%', scale: 0.85, opacity: 0 }
                 }
                 animate={
-                  reduce ? { opacity: 1 } : { y: 0, opacity: 1, scale: 1 }
+                  reduce
+                    ? { x: '-50%', y: '-50%', opacity: 1 }
+                    : { x: '-50%', y: '-50%', scale: 1, opacity: 1 }
                 }
                 exit={
                   reduce
-                    ? { opacity: 0 }
-                    : { y: '100%', opacity: 0, scale: 0.98 }
+                    ? { x: '-50%', y: '-50%', opacity: 0 }
+                    : { x: '-50%', y: '-50%', scale: 0.85, opacity: 0 }
                 }
                 transition={
                   reduce
                     ? { duration: 0 }
-                    : { duration: 0.28, ease: [0.16, 1, 0.3, 1] }
+                    : { duration: 0.26, ease: [0.16, 1, 0.3, 1] }
                 }
               >
                 <div className="sticky top-0 -mx-2 -mt-2 mb-1 flex items-center justify-center rounded-t-3xl bg-white/80 px-4 pb-2 pt-3 backdrop-blur">
