@@ -395,6 +395,11 @@ const PAI_FASE_A_TOPIK: Topik[] = [
 
 // Topik PAI & Budi Pekerti Fase B (Kelas 3 & 4) — diturunkan PERSIS dari CP (Kepka
 // BKPDM No. 020 Tahun 2026, perubahan atas Kepka BSKAP 046/H/KR/2025). 5 elemen.
+// PAI Fase B — sumber: portal CP resmi Kemendikdasmen (Ruang GTK,
+// guru.kemendikdasmen.go.id, tab "Rumusan CP"). Regulasi berlaku: Kepka BKPDM
+// No. 020 Tahun 2026. Korroborasi: teks portal menyimpang dari CP era-046
+// (terbukti via divergensi ATP guru) -> versi 020/2026. Belum spot-check ke
+// salinan PDF Kepka; nomor halaman lampiran belum tercatat (exception CLAUDE.md).
 const PAI_FASE_B_TOPIK: Topik[] = [
   // Al-Qur'an Hadis
   { id: "paib-quran-hadis", label: "Memahami beberapa surah pendek, ayat Al-Qur'an dan hadis tentang kewajiban salat dan menjaga hubungan baik dengan sesama." },
@@ -410,6 +415,11 @@ const PAI_FASE_B_TOPIK: Topik[] = [
 
 // Topik PAI & Budi Pekerti Fase C (Kelas 5 & 6) — diturunkan PERSIS dari CP (Kepka
 // BKPDM No. 020 Tahun 2026, perubahan atas Kepka BSKAP 046/H/KR/2025). 5 elemen.
+// PAI Fase C — sumber: portal CP resmi Kemendikdasmen (Ruang GTK,
+// guru.kemendikdasmen.go.id, tab "Rumusan CP"). Regulasi berlaku: Kepka BKPDM
+// No. 020 Tahun 2026. Korroborasi: teks portal menyimpang dari CP era-046
+// (terbukti via divergensi ATP guru) -> versi 020/2026. Belum spot-check ke
+// salinan PDF Kepka; nomor halaman lampiran belum tercatat (exception CLAUDE.md).
 const PAI_FASE_C_TOPIK: Topik[] = [
   // Al-Qur'an dan Hadis
   { id: "paic-quran-hadis", label: "Memahami beberapa surah pendek dan ayat Al-Qur'an serta hadis tentang keragaman." },
@@ -906,7 +916,7 @@ export const KURIKULUM: KurikulumEntry[] = [
     kelompok: "Umum/Nasional (Kemendikbud)",
     mapel: "Pendidikan Agama Islam dan Budi Pekerti",
     kelas: "3",
-    status: "draft",
+    status: "verified",
     sumber: "CP Pendidikan Agama Islam dan Budi Pekerti Fase B — Kepka BKPDM No. 020 Tahun 2026 (perubahan atas Kepka BSKAP No. 046/H/KR/2025)",
     topik: PAI_FASE_B_TOPIK,
   },
@@ -915,7 +925,7 @@ export const KURIKULUM: KurikulumEntry[] = [
     kelompok: "Umum/Nasional (Kemendikbud)",
     mapel: "Pendidikan Agama Islam dan Budi Pekerti",
     kelas: "4",
-    status: "draft",
+    status: "verified",
     sumber: "CP Pendidikan Agama Islam dan Budi Pekerti Fase B — Kepka BKPDM No. 020 Tahun 2026 (perubahan atas Kepka BSKAP No. 046/H/KR/2025)",
     topik: PAI_FASE_B_TOPIK,
   },
@@ -924,7 +934,7 @@ export const KURIKULUM: KurikulumEntry[] = [
     kelompok: "Umum/Nasional (Kemendikbud)",
     mapel: "Pendidikan Agama Islam dan Budi Pekerti",
     kelas: "5",
-    status: "draft",
+    status: "verified",
     sumber: "CP Pendidikan Agama Islam dan Budi Pekerti Fase C — Kepka BKPDM No. 020 Tahun 2026 (perubahan atas Kepka BSKAP No. 046/H/KR/2025)",
     topik: PAI_FASE_C_TOPIK,
   },
@@ -933,7 +943,7 @@ export const KURIKULUM: KurikulumEntry[] = [
     kelompok: "Umum/Nasional (Kemendikbud)",
     mapel: "Pendidikan Agama Islam dan Budi Pekerti",
     kelas: "6",
-    status: "draft",
+    status: "verified",
     sumber: "CP Pendidikan Agama Islam dan Budi Pekerti Fase C — Kepka BKPDM No. 020 Tahun 2026 (perubahan atas Kepka BSKAP No. 046/H/KR/2025)",
     topik: PAI_FASE_C_TOPIK,
   },
