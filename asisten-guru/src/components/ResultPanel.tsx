@@ -65,7 +65,7 @@ export function ResultPanel({
             aria-live="polite"
           >
             <p className="mb-4 text-sm font-medium text-emerald-deep/70">
-              Menyusun {tool.title.toLowerCase()}…
+              Menyusun {tool.title.toLowerCase()}… mohon tunggu sebentar ya.
             </p>
             <ResultSkeleton />
           </motion.div>
