@@ -22,8 +22,6 @@ const POKOK_INSTRUCTION =
   'bab/kitab yang lazim dipelajari. Jawab HANYA daftar, satu topik per baris, tanpa nomor, ' +
   'tanpa penjelasan tambahan.';
 
-/** Nilai sentinel untuk opsi "Lainnya (ketik manual)". */
-const OTHER = '__lainnya__';
 /** Sentinel untuk opsi "Tulis Kustom Pembahasan…" pada dropdown topik. */
 const POKOK_CUSTOM = '__pokok_custom__';
 
@@ -56,136 +54,6 @@ interface KurikulumSelectorProps {
   errors?: Partial<Record<LevelKey, string>>;
 }
 
-interface LevelSelectProps {
-  id: string;
-  label: string;
-  value: string;
-  groups: MapelGroup[];
-  onChange: (value: string) => void;
-  error?: string;
-  disabled?: boolean;
-  manualPlaceholder?: string;
-}
-
-/** Satu dropdown bertingkat dengan opsi "Lainnya (ketik manual)". */
-function LevelSelect({
-  id,
-  label,
-  value,
-  groups,
-  onChange,
-  error,
-  disabled,
-  manualPlaceholder,
-}: LevelSelectProps) {
-  const allItems = groups.flatMap((g) => g.mapel);
-  const isCustom = value !== '' && !allItems.includes(value);
-  const [manualChosen, setManualChosen] = useState(isCustom);
-
-  const showManual = manualChosen || isCustom;
-  const selectValue = showManual ? OTHER : value;
-
-  return (
-    <Field id={id} label={label} required error={error}>
-      <div className="relative">
-        <select
-          id={id}
-          value={selectValue}
-          disabled={disabled}
-          aria-invalid={Boolean(error)}
-          aria-describedby={error ? `${id}-error` : undefined}
-          onChange={(e) => {
-            const v = e.target.value;
-            if (v === OTHER) {
-              setManualChosen(true);
-              onChange('');
-            } else {
-              setManualChosen(false);
-              onChange(v);
-            }
-          }}
-          className={cn(
-            controlBase,
-            'cursor-pointer appearance-none pr-10',
-            error && controlError,
-            disabled && 'cursor-not-allowed opacity-50',
-          )}
-        >
-          <option value="" disabled>
-            — pilih —
-          </option>
-          {groups.length === 1
-            ? groups[0].mapel.map((item) => (
-                <option key={item} value={item}>
-                  {item}
-                </option>
-              ))
-            : groups.map((group) => (
-                <optgroup key={group.label} label={group.label}>
-                  {group.mapel.map((item) => (
-                    <option key={item} value={item}>
-                      {item}
-                    </option>
-                  ))}
-                </optgroup>
-              ))}
-          <option value={OTHER}>Lainnya (ketik manual)</option>
-        </select>
-        <ChevronDown
-          aria-hidden
-          className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-emerald-deep/70"
-        />
-      </div>
-
-      {showManual && (
-        <input
-          type="text"
-          value={value}
-          disabled={disabled}
-          placeholder={manualPlaceholder ?? 'Ketik manual…'}
-          aria-label={`${label} (ketik manual)`}
-          onChange={(e) => onChange(e.target.value)}
-          className={cn(controlBase, 'mt-2', error && controlError)}
-        />
-      )}
-    </Field>
-  );
-}
-
-/** Dropdown Kelas/Tingkat (nilai = "1".."12"). */
-function KelasSelect({
-  value,
-  options,
-  onChange,
-}: {
-  value: string;
-  options: string[];
-  onChange: (value: string) => void;
-}) {
-  return (
-    <Field id="kelas" label="Kelas / Tingkat">
-      <div className="relative">
-        <select
-          id="kelas"
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          className={cn(controlBase, 'cursor-pointer appearance-none pr-10')}
-        >
-          <option value="">— pilih kelas —</option>
-          {options.map((k) => (
-            <option key={k} value={k}>
-              Kelas {k}
-            </option>
-          ))}
-        </select>
-        <ChevronDown
-          aria-hidden
-          className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-emerald-deep/70"
-        />
-      </div>
-    </Field>
-  );
-}
 
 /**
  * Pokok Pembahasan: dropdown bila ada data topik tetap untuk kombinasi terpilih;
@@ -374,7 +242,7 @@ export function KurikulumSelector({
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <LevelSelect
+        <SheetSelect
           id="jenjang"
           label="Jenjang Pendidikan"
           value={value.jenjang}
@@ -390,17 +258,23 @@ export function KurikulumSelector({
         />
 
         {showKelas && (
-          <KelasSelect
+          <SheetSelect
+            id="kelas"
+            label="Kelas / Tingkat"
             value={value.kelas}
-            options={kelasOptions}
+            groups={[{ label: 'Kelas', mapel: kelasOptions }]}
+            labelPrefix="Kelas "
+            allowManual={false}
+            required={false}
+            placeholder="— pilih kelas —"
             onChange={(v) => {
-              onChange('kelas', v);
+              onChange('kelas', v); // value tetap "1".."6", BUKAN "Kelas 3"
               onChange('pokok', ''); // topik ikut kelas
             }}
           />
         )}
 
-        <LevelSelect
+        <SheetSelect
           id="kelompok"
           label="Kelompok Kurikulum"
           value={value.kelompok}

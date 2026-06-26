@@ -26,6 +26,14 @@ interface SheetSelectProps {
   error?: string;
   disabled?: boolean;
   manualPlaceholder?: string;
+  /** Prefiks tampilan opsi/nilai (display saja; value tetap mentah). Mis. "Kelas ". */
+  labelPrefix?: string;
+  /** Izinkan opsi "Lainnya (ketik manual)" + input manual. Default true. */
+  allowManual?: boolean;
+  /** Field wajib (tanda bintang). Default true. */
+  required?: boolean;
+  /** Teks placeholder saat belum ada pilihan. Default "— pilih —". */
+  placeholder?: string;
 }
 
 type PopoverCoords = {
@@ -46,6 +54,10 @@ export function SheetSelect({
   error,
   disabled,
   manualPlaceholder,
+  labelPrefix = '',
+  allowManual = true,
+  required = true,
+  placeholder = '— pilih —',
 }: SheetSelectProps) {
   const reduce = useReducedMotion();
   const isDesktop = useMediaQuery('(min-width: 768px)');
@@ -58,7 +70,7 @@ export function SheetSelect({
   const triggerRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
 
-  const showManual = manualChosen || isCustom;
+  const showManual = allowManual && (manualChosen || isCustom);
 
   const close = () => {
     setOpen(false);
@@ -142,7 +154,9 @@ export function SheetSelect({
   // nilai kustom diketik di <input> bawah.
   const triggerText = showManual
     ? 'Lainnya (ketik manual)'
-    : value || '— pilih —';
+    : value
+      ? `${labelPrefix}${value}`
+      : placeholder;
   const triggerMuted = !showManual && value === '';
 
   // Daftar opsi DIBAGI kedua mode. `wrap`: desktop membungkus nama panjang,
@@ -176,7 +190,7 @@ export function SheetSelect({
                       : 'hover:bg-emerald-deep/5',
                   )}
                 >
-                  <span className={textClass}>{item}</span>
+                  <span className={textClass}>{labelPrefix + item}</span>
                   {selected && (
                     <Check className="h-5 w-5 shrink-0 text-emerald-deep" />
                   )}
@@ -186,23 +200,25 @@ export function SheetSelect({
           </div>
         ))}
 
-        <button
-          type="button"
-          role="option"
-          aria-selected={showManual}
-          onClick={pilihManual}
-          className={cn(
-            'mt-1 flex w-full items-center justify-between gap-2 rounded-xl border-t border-white/40 px-4 py-3.5 text-left text-base text-ink transition-colors',
-            showManual
-              ? 'bg-emerald-deep/10 font-semibold text-emerald-deep'
-              : 'hover:bg-emerald-deep/5',
-          )}
-        >
-          <span className={textClass}>Lainnya (ketik manual)</span>
-          {showManual && (
-            <Check className="h-5 w-5 shrink-0 text-emerald-deep" />
-          )}
-        </button>
+        {allowManual && (
+          <button
+            type="button"
+            role="option"
+            aria-selected={showManual}
+            onClick={pilihManual}
+            className={cn(
+              'mt-1 flex w-full items-center justify-between gap-2 rounded-xl border-t border-white/40 px-4 py-3.5 text-left text-base text-ink transition-colors',
+              showManual
+                ? 'bg-emerald-deep/10 font-semibold text-emerald-deep'
+                : 'hover:bg-emerald-deep/5',
+            )}
+          >
+            <span className={textClass}>Lainnya (ketik manual)</span>
+            {showManual && (
+              <Check className="h-5 w-5 shrink-0 text-emerald-deep" />
+            )}
+          </button>
+        )}
       </>
     );
   };
@@ -210,7 +226,7 @@ export function SheetSelect({
   const yFrom = coords?.placement === 'top' ? 8 : -8;
 
   return (
-    <Field id={id} label={label} required error={error}>
+    <Field id={id} label={label} required={required} error={error}>
       <div className="relative">
         <button
           ref={triggerRef}
