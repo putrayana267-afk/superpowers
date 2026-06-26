@@ -5,13 +5,17 @@ import { ChevronDown, Check } from 'lucide-react';
 import type { MapelGroup } from '../data/struktur';
 import { Field } from './Field';
 import { cn } from '../lib/cn';
+import { useMediaQuery } from '../lib/useMediaQuery';
 import { controlBase, controlError } from './controlStyles';
 
 /**
- * Drop-in pengganti `LevelSelect` (PROPS SAMA) untuk satu dropdown saja:
- * trigger bergaya controlBase + panel bottom-sheet beranimasi (framer-motion,
- * via portal ke body agar tak terpotong stacking context kartu). Kontrak
- * value/opsi/"Lainnya (ketik manual)" meniru LevelSelect 1:1.
+ * Drop-in pengganti `LevelSelect` (PROPS SAMA) untuk satu dropdown saja.
+ * Presentasi panel RESPONSIF (kontrak/opsi/manual DIBAGI, tidak diduplikasi):
+ * - Mobile (<md): modal tengah + zoom + scrim peredup + scroll-lock body.
+ * - Desktop (>=md): popover nempel di bawah field (anchored via rect), tanpa
+ *   scrim/scroll-lock, turun-halus dari atas; render via portal agar tak
+ *   terpotong stacking context kartu. Kontrak value/opsi/"Lainnya" meniru
+ *   LevelSelect 1:1.
  */
 interface SheetSelectProps {
   id: string;
@@ -24,6 +28,15 @@ interface SheetSelectProps {
   manualPlaceholder?: string;
 }
 
+type PopoverCoords = {
+  left: number;
+  width: number;
+  top?: number;
+  bottom?: number;
+  maxHeight: number;
+  placement: 'bottom' | 'top';
+};
+
 export function SheetSelect({
   id,
   label,
@@ -35,30 +48,82 @@ export function SheetSelect({
   manualPlaceholder,
 }: SheetSelectProps) {
   const reduce = useReducedMotion();
+  const isDesktop = useMediaQuery('(min-width: 768px)');
   const allItems = groups.flatMap((g) => g.mapel);
   const isCustom = value !== '' && !allItems.includes(value);
   const [manualChosen, setManualChosen] = useState(isCustom);
   const [open, setOpen] = useState(false);
+  const [coords, setCoords] = useState<PopoverCoords | null>(null);
 
   const triggerRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
 
   const showManual = manualChosen || isCustom;
 
-  // Fokus ke panel saat buka (a11y). Kunci scroll body selama sheet terbuka.
+  const close = () => {
+    setOpen(false);
+    triggerRef.current?.focus();
+  };
+
+  // Fokus ke panel saat buka (a11y). Scroll-lock body HANYA mode modal (mobile).
   useEffect(() => {
     if (!open) return;
     panelRef.current?.focus();
+    if (isDesktop) return;
     const prev = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
     return () => {
       document.body.style.overflow = prev;
     };
-  }, [open]);
+  }, [open, isDesktop]);
 
-  const close = () => {
-    setOpen(false);
-    triggerRef.current?.focus();
+  // Desktop popover: tutup saat klik-luar / scroll / resize (paling kokoh).
+  useEffect(() => {
+    if (!open || !isDesktop) return;
+    const onPointerDown = (e: MouseEvent) => {
+      const t = e.target as Node;
+      if (panelRef.current?.contains(t) || triggerRef.current?.contains(t)) {
+        return;
+      }
+      close();
+    };
+    const onScrollResize = () => close();
+    document.addEventListener('mousedown', onPointerDown);
+    window.addEventListener('scroll', onScrollResize);
+    window.addEventListener('resize', onScrollResize);
+    return () => {
+      document.removeEventListener('mousedown', onPointerDown);
+      window.removeEventListener('scroll', onScrollResize);
+      window.removeEventListener('resize', onScrollResize);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open, isDesktop]);
+
+  const openPanel = () => {
+    if (disabled) return;
+    if (isDesktop && triggerRef.current) {
+      const r = triggerRef.current.getBoundingClientRect();
+      const gap = 6;
+      const margin = 8;
+      const spaceBelow = window.innerHeight - r.bottom;
+      const spaceAbove = r.top;
+      const below = spaceBelow >= spaceAbove;
+      const avail = (below ? spaceBelow : spaceAbove) - gap - margin;
+      const maxHeight = Math.max(
+        160,
+        Math.min(avail, Math.round(window.innerHeight * 0.6)),
+      );
+      setCoords({
+        left: r.left,
+        width: r.width,
+        maxHeight,
+        placement: below ? 'bottom' : 'top',
+        ...(below
+          ? { top: r.bottom + gap }
+          : { bottom: window.innerHeight - r.top + gap }),
+      });
+    }
+    setOpen(true);
   };
 
   const pilih = (nama: string) => {
@@ -80,6 +145,70 @@ export function SheetSelect({
     : value || '— pilih —';
   const triggerMuted = !showManual && value === '';
 
+  // Daftar opsi DIBAGI kedua mode. `wrap`: desktop membungkus nama panjang,
+  // mobile tetap truncate (perilaku modal lama).
+  const renderOptions = (wrap: boolean) => {
+    const textClass = wrap
+      ? 'min-w-0 whitespace-normal break-words'
+      : 'truncate';
+    return (
+      <>
+        {groups.map((group) => (
+          <div key={group.label}>
+            {groups.length > 1 && (
+              <p className="px-4 pb-1 pt-3 text-xs font-semibold uppercase tracking-wider text-emerald-deep/60">
+                {group.label}
+              </p>
+            )}
+            {group.mapel.map((item) => {
+              const selected = value === item;
+              return (
+                <button
+                  key={item}
+                  type="button"
+                  role="option"
+                  aria-selected={selected}
+                  onClick={() => pilih(item)}
+                  className={cn(
+                    'flex w-full items-center justify-between gap-2 rounded-xl px-4 py-3.5 text-left text-base text-ink transition-colors',
+                    selected
+                      ? 'bg-emerald-deep/10 font-semibold text-emerald-deep'
+                      : 'hover:bg-emerald-deep/5',
+                  )}
+                >
+                  <span className={textClass}>{item}</span>
+                  {selected && (
+                    <Check className="h-5 w-5 shrink-0 text-emerald-deep" />
+                  )}
+                </button>
+              );
+            })}
+          </div>
+        ))}
+
+        <button
+          type="button"
+          role="option"
+          aria-selected={showManual}
+          onClick={pilihManual}
+          className={cn(
+            'mt-1 flex w-full items-center justify-between gap-2 rounded-xl border-t border-white/40 px-4 py-3.5 text-left text-base text-ink transition-colors',
+            showManual
+              ? 'bg-emerald-deep/10 font-semibold text-emerald-deep'
+              : 'hover:bg-emerald-deep/5',
+          )}
+        >
+          <span className={textClass}>Lainnya (ketik manual)</span>
+          {showManual && (
+            <Check className="h-5 w-5 shrink-0 text-emerald-deep" />
+          )}
+        </button>
+      </>
+    );
+  };
+
+  const yFrom = coords?.placement === 'top' ? 8 : -8;
+
   return (
     <Field id={id} label={label} required error={error}>
       <div className="relative">
@@ -93,7 +222,7 @@ export function SheetSelect({
           aria-controls={open ? `${id}-listbox` : undefined}
           aria-invalid={Boolean(error)}
           aria-describedby={error ? `${id}-error` : undefined}
-          onClick={() => !disabled && setOpen(true)}
+          onClick={openPanel}
           className={cn(
             controlBase,
             'flex items-center justify-between pr-10 text-left',
@@ -126,18 +255,11 @@ export function SheetSelect({
 
       {createPortal(
         <AnimatePresence>
-          {open && (
-            <>
+          {open &&
+            (isDesktop && coords ? (
+              // DESKTOP — popover nempel di bawah/atas field, tanpa scrim.
               <motion.div
-                className="fixed inset-0 z-[110] bg-ink/50"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={reduce ? { duration: 0 } : { duration: 0.2 }}
-                onClick={close}
-                aria-hidden
-              />
-              <motion.div
+                key="popover"
                 ref={panelRef}
                 id={`${id}-listbox`}
                 role="listbox"
@@ -146,88 +268,83 @@ export function SheetSelect({
                 onKeyDown={(e) => {
                   if (e.key === 'Escape') close();
                 }}
-                className="fixed left-1/2 top-1/2 z-[111] max-h-[75vh] w-[92vw] overflow-y-auto rounded-3xl border border-white/40 bg-white p-3 shadow-glass-lg sm:w-[480px] md:w-[560px]"
-                style={{ transformOrigin: 'center' }}
-                initial={
-                  reduce
-                    ? { x: '-50%', y: '-50%', opacity: 0 }
-                    : { x: '-50%', y: '-50%', scale: 0.85, opacity: 0 }
-                }
-                animate={
-                  reduce
-                    ? { x: '-50%', y: '-50%', opacity: 1 }
-                    : { x: '-50%', y: '-50%', scale: 1, opacity: 1 }
-                }
-                exit={
-                  reduce
-                    ? { x: '-50%', y: '-50%', opacity: 0 }
-                    : { x: '-50%', y: '-50%', scale: 0.85, opacity: 0 }
-                }
+                style={{
+                  position: 'fixed',
+                  left: coords.left,
+                  width: coords.width,
+                  top: coords.top,
+                  bottom: coords.bottom,
+                  maxHeight: coords.maxHeight,
+                  transformOrigin:
+                    coords.placement === 'bottom' ? 'top' : 'bottom',
+                }}
+                className="z-[111] overflow-y-auto rounded-2xl border border-ink/10 bg-white p-2 shadow-glass-lg"
+                initial={reduce ? { opacity: 0 } : { opacity: 0, y: yFrom }}
+                animate={reduce ? { opacity: 1 } : { opacity: 1, y: 0 }}
+                exit={reduce ? { opacity: 0 } : { opacity: 0, y: yFrom }}
                 transition={
                   reduce
                     ? { duration: 0 }
-                    : { duration: 0.26, ease: [0.16, 1, 0.3, 1] }
+                    : { duration: 0.18, ease: [0.16, 1, 0.3, 1] }
                 }
               >
-                <div className="sticky top-0 -mx-3 -mt-3 mb-1 rounded-t-3xl border-b border-ink/5 bg-white px-4 pb-3 pt-4">
-                  <p className="text-base font-semibold text-emerald-deep sm:text-lg">
-                    {label}
-                  </p>
-                </div>
-
-                {groups.map((group) => (
-                  <div key={group.label}>
-                    {groups.length > 1 && (
-                      <p className="px-4 pb-1 pt-3 text-xs font-semibold uppercase tracking-wider text-emerald-deep/60">
-                        {group.label}
-                      </p>
-                    )}
-                    {group.mapel.map((item) => {
-                      const selected = value === item;
-                      return (
-                        <button
-                          key={item}
-                          type="button"
-                          role="option"
-                          aria-selected={selected}
-                          onClick={() => pilih(item)}
-                          className={cn(
-                            'flex w-full items-center justify-between rounded-xl px-4 py-3.5 text-left text-base text-ink transition-colors',
-                            selected
-                              ? 'bg-emerald-deep/10 font-semibold text-emerald-deep'
-                              : 'hover:bg-emerald-deep/5',
-                          )}
-                        >
-                          <span className="truncate">{item}</span>
-                          {selected && (
-                            <Check className="h-5 w-5 shrink-0 text-emerald-deep" />
-                          )}
-                        </button>
-                      );
-                    })}
-                  </div>
-                ))}
-
-                <button
-                  type="button"
-                  role="option"
-                  aria-selected={showManual}
-                  onClick={pilihManual}
-                  className={cn(
-                    'mt-1 flex w-full items-center justify-between rounded-xl border-t border-white/40 px-4 py-3.5 text-left text-base text-ink transition-colors',
-                    showManual
-                      ? 'bg-emerald-deep/10 font-semibold text-emerald-deep'
-                      : 'hover:bg-emerald-deep/5',
-                  )}
-                >
-                  <span className="truncate">Lainnya (ketik manual)</span>
-                  {showManual && (
-                    <Check className="h-5 w-5 shrink-0 text-emerald-deep" />
-                  )}
-                </button>
+                {renderOptions(true)}
               </motion.div>
-            </>
-          )}
+            ) : (
+              // MOBILE — modal tengah + zoom + scrim (TIDAK BERUBAH).
+              <>
+                <motion.div
+                  key="scrim"
+                  className="fixed inset-0 z-[110] bg-ink/50"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={reduce ? { duration: 0 } : { duration: 0.2 }}
+                  onClick={close}
+                  aria-hidden
+                />
+                <motion.div
+                  key="modal"
+                  ref={panelRef}
+                  id={`${id}-listbox`}
+                  role="listbox"
+                  aria-label={label}
+                  tabIndex={-1}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Escape') close();
+                  }}
+                  className="fixed left-1/2 top-1/2 z-[111] max-h-[75vh] w-[92vw] overflow-y-auto rounded-3xl border border-white/40 bg-white p-3 shadow-glass-lg sm:w-[480px] md:w-[560px]"
+                  style={{ transformOrigin: 'center' }}
+                  initial={
+                    reduce
+                      ? { x: '-50%', y: '-50%', opacity: 0 }
+                      : { x: '-50%', y: '-50%', scale: 0.85, opacity: 0 }
+                  }
+                  animate={
+                    reduce
+                      ? { x: '-50%', y: '-50%', opacity: 1 }
+                      : { x: '-50%', y: '-50%', scale: 1, opacity: 1 }
+                  }
+                  exit={
+                    reduce
+                      ? { x: '-50%', y: '-50%', opacity: 0 }
+                      : { x: '-50%', y: '-50%', scale: 0.85, opacity: 0 }
+                  }
+                  transition={
+                    reduce
+                      ? { duration: 0 }
+                      : { duration: 0.26, ease: [0.16, 1, 0.3, 1] }
+                  }
+                >
+                  <div className="sticky top-0 -mx-3 -mt-3 mb-1 rounded-t-3xl border-b border-ink/5 bg-white px-4 pb-3 pt-4">
+                    <p className="text-base font-semibold text-emerald-deep sm:text-lg">
+                      {label}
+                    </p>
+                  </div>
+                  {renderOptions(false)}
+                </motion.div>
+              </>
+            ))}
         </AnimatePresence>,
         document.body,
       )}
