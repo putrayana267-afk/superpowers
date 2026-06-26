@@ -132,8 +132,8 @@ export function Settings() {
           <li>Tempel di kolom di atas, lalu tekan Simpan.</li>
         </ol>
         <p className="mt-3 text-xs text-ink/50">
-          Kunci hanya disimpan di perangkat (SQLite), tidak dikirim ke server
-          mana pun selain Google saat membuat materi.
+          Kunci hanya disimpan di perangkat ini, tidak dikirim ke server mana pun
+          selain Google saat membuat materi.
         </p>
       </GlassCard>
     </div>
