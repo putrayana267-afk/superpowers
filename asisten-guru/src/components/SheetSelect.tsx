@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { startTransition, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { ChevronDown, Check } from 'lucide-react';
@@ -140,14 +140,17 @@ export function SheetSelect({
 
   const pilih = (nama: string) => {
     setManualChosen(false);
-    onChange(nama);
-    close();
+    close(); // urgent: mulai animasi exit + fokus trigger
+    // Cascade reset (berat utk Jenjang/Kelompok: remount Mapel + recompute getMapelGroups/
+    // getTopik) sbg transisi NON-URGENT → tak memblok frame exit. Nilai yg dikirim TETAP
+    // sama (Kelas "1".."6"); Mapel/Kelas yg ringan praktis seketika (perilaku tak berubah).
+    startTransition(() => onChange(nama));
   };
 
   const pilihManual = () => {
     setManualChosen(true);
-    onChange('');
     close();
+    startTransition(() => onChange(''));
   };
 
   // Teks trigger meniru LevelSelect: saat manual tampil label "Lainnya…",
