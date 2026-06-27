@@ -9,6 +9,8 @@ interface GlassCardProps {
   gold?: boolean;
   /** Aktifkan animasi reveal saat muncul. */
   animate?: boolean;
+  /** Permukaan SOLID (de-glass) — tanpa backdrop-blur/translusensi. */
+  solid?: boolean;
 }
 
 export function GlassCard({
@@ -16,6 +18,7 @@ export function GlassCard({
   className,
   gold = false,
   animate = true,
+  solid = false,
 }: GlassCardProps) {
   const reduce = useReducedMotion();
   return (
@@ -23,7 +26,12 @@ export function GlassCard({
       initial={animate && !reduce ? { opacity: 0, y: 10 } : false}
       animate={animate && !reduce ? { opacity: 1, y: 0 } : undefined}
       transition={{ duration: 0.35, ease: 'easeOut' }}
-      className={cn('glass p-5 sm:p-6', gold && 'gold-edge', className)}
+      className={cn(
+        solid ? 'surface' : 'glass',
+        'p-5 sm:p-6',
+        gold && 'gold-edge',
+        className,
+      )}
     >
       {children}
     </motion.div>

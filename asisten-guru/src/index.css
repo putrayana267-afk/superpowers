@@ -50,6 +50,12 @@
     @apply rounded-2xl border border-white/50 bg-white/75 shadow-glass-lg backdrop-blur-2xl;
   }
 
+  /* Permukaan SOLID (de-glass) untuk kartu layar utama — tanpa backdrop-blur,
+     tanpa translusensi. Border & teks pakai token live (emerald/ink). */
+  .surface {
+    @apply rounded-2xl border border-emerald-deep/10 bg-white shadow-sm;
+  }
+
   /* Garis tepi emas tipis untuk elemen kunci. */
   .gold-edge {
     box-shadow:

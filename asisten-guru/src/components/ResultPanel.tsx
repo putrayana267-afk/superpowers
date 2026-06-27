@@ -189,7 +189,7 @@ export function ResultPanel({
             </div>
             )}
 
-            <div className="mb-3 flex items-start gap-2 rounded-xl border border-amber-300/50 bg-amber-50/70 px-3 py-2 text-xs leading-relaxed text-amber-800 backdrop-blur">
+            <div className="mb-3 flex items-start gap-2 rounded-xl border border-amber-300/50 bg-amber-50 px-3 py-2 text-xs leading-relaxed text-amber-800">
               <span aria-hidden className="mt-px">
                 ⚠️
               </span>
