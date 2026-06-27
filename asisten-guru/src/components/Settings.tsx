@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { KeyRound, ExternalLink, Save, Eye, EyeOff, Loader2 } from 'lucide-react';
+import { Capacitor } from '@capacitor/core';
 import { GlassCard } from './GlassCard';
 import { Button } from './Button';
 import { useToast } from './Toast';
@@ -9,6 +10,7 @@ import { controlBase } from './controlStyles';
 
 const KEY = 'gemini_api_key';
 const AISTUDIO_URL = 'https://aistudio.google.com/app/apikey';
+const NATIVE = Capacitor.isNativePlatform();
 
 /** Halaman Pengaturan: pengguna menempelkan Gemini API key sendiri (BYOK). */
 export function Settings() {
@@ -43,6 +45,32 @@ export function Settings() {
     } finally {
       setSaving(false);
     }
+  }
+
+  // WEB: /api/generate memakai key SERVER (env) — key user TIDAK dipakai. Hanya
+  // NATIVE (geminiDirect) memakai key user dari SQLite. Maka di web tampilkan
+  // catatan jujur tanpa input/Simpan/instruksi. save()/getSetting dibiarkan utuh.
+  if (!NATIVE) {
+    return (
+      <div className="flex flex-col gap-6">
+        <GlassCard gold animate>
+          <div className="flex items-center gap-3">
+            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-deep text-white gold-edge">
+              <KeyRound className="h-5 w-5" />
+            </span>
+            <div>
+              <h2 className="font-display text-lg font-bold text-emerald-deep">
+                API Key
+              </h2>
+              <p className="text-xs text-ink/60">
+                Di web, materi dibuat otomatis lewat server — Anda tak perlu API
+                key di sini.
+              </p>
+            </div>
+          </div>
+        </GlassCard>
+      </div>
+    );
   }
 
   return (
