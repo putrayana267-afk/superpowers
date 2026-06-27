@@ -433,6 +433,27 @@ const PAI_FASE_C_TOPIK: Topik[] = [
   { id: "paic-spi", label: "Memahami kisah Nabi Muhammad saw. periode Madinah dan khulafaurasyidin." },
 ];
 
+// Topik Seni Musik Fase A (Kelas 1 & 2) — diturunkan PERSIS dari Rumusan CP
+// (portal Ruang GTK, guru.kemendikdasmen.go.id, tab "Rumusan CP", Seni Musik Fase A).
+// 5 elemen: Mengalami, Merefleksikan, Berpikir & Bekerja Secara Artistik,
+// Menciptakan, Berdampak. Granularitas: tiap kalimat "Peserta didik…" = 1 topik
+// (sama pola spt B.Indonesia/Pancasila). Nama elemen tercatat di slug id.
+// STATUS: draft — naik 'verified' HANYA setelah render diuji di app + spot-check manusia.
+const SENIMUSIK_FASE_A_TOPIK: Topik[] = [
+  // Mengalami (Experiencing)
+  { id: "senimusik-a-mengalami-unsurbunyi", label: "Mengidentifikasi & merespons unsur-unsur bunyi musik (nada & irama), baik dengan anggota tubuh maupun alat musik ritmis & melodis" },
+  // Merefleksikan (Reflecting)
+  { id: "senimusik-a-merefleksikan-tanggapan", label: "Memberi tanggapan/umpan balik atas praktik bermusik diri sendiri atau orang lain dengan bahasa sehari-hari" },
+  // Berpikir & Bekerja Secara Artistik (Thinking and Working Artistically)
+  { id: "senimusik-a-artistik-imitasi", label: "Mengimitasi pola irama & bunyi dasar ragam alat musik ritmis atau melodis" },
+  { id: "senimusik-a-artistik-identifikasialat", label: "Mengidentifikasi ragam alat musik & bunyi yang dihasilkannya" },
+  { id: "senimusik-a-artistik-mainkanrawat", label: "Mengetahui cara memainkan & membersihkan instrumen musik yang digunakan" },
+  // Menciptakan (Creating)
+  { id: "senimusik-a-menciptakan-produksibunyi", label: "Memproduksi bunyi & mengimitasi pola irama dengan anggota tubuh atau alat musik ritmis/melodis yang tersedia di lingkungan sekitar" },
+  // Berdampak (Impacting)
+  { id: "senimusik-a-berdampak-praktikpositif", label: "Menjalankan praktik bermusik yang memberikan dampak positif bagi dirinya" },
+];
+
 export const KURIKULUM: KurikulumEntry[] = [
   // -------------------------------------------------------------------------
   // PESANTREN — NAHWU (Matan Al-Jurumiyah). Sesuai contoh gambar pengguna.
@@ -946,6 +967,26 @@ export const KURIKULUM: KurikulumEntry[] = [
     status: "verified",
     sumber: "CP Pendidikan Agama Islam dan Budi Pekerti Fase C — Kepka BKPDM No. 020 Tahun 2026 (perubahan atas Kepka BSKAP No. 046/H/KR/2025)",
     topik: PAI_FASE_C_TOPIK,
+  },
+
+  // ── Seni Musik SD/MI (Fase A) — draft, sumber portal Ruang GTK ──
+  {
+    jenjang: "SD/MI",
+    kelompok: "Umum/Nasional (Kemendikbud)",
+    mapel: "Seni Musik",
+    kelas: "1",
+    status: "draft",
+    sumber: "Portal Ruang GTK (guru.kemendikdasmen.go.id) — Rumusan CP Seni Musik Fase A. Regulasi CP umum: Kepka BSKAP No. 046/H/KR/2025 (inferred; nomor & halaman tidak tampak di portal).",
+    topik: SENIMUSIK_FASE_A_TOPIK,
+  },
+  {
+    jenjang: "SD/MI",
+    kelompok: "Umum/Nasional (Kemendikbud)",
+    mapel: "Seni Musik",
+    kelas: "2",
+    status: "draft",
+    sumber: "Portal Ruang GTK (guru.kemendikdasmen.go.id) — Rumusan CP Seni Musik Fase A. Regulasi CP umum: Kepka BSKAP No. 046/H/KR/2025 (inferred; nomor & halaman tidak tampak di portal).",
+    topik: SENIMUSIK_FASE_A_TOPIK,
   },
 ];
 
