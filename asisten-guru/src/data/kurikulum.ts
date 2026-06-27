@@ -454,6 +454,22 @@ const SENIMUSIK_FASE_A_TOPIK: Topik[] = [
   { id: "senimusik-a-berdampak-praktikpositif", label: "Menjalankan praktik bermusik yang memberikan dampak positif bagi dirinya" },
 ];
 
+// Topik Seni Rupa Fase A (Kelas 1 & 2) — diturunkan PERSIS dari Rumusan CP
+// (portal Ruang GTK, guru.kemendikdasmen.go.id, tab "Rumusan CP", Seni Rupa Fase A).
+const SENIRUPA_FASE_A_TOPIK: Topik[] = [
+  // Mengalami (Experiencing)
+  { id: "senirupa-a-mengalami-unsurrupa", label: "Memahami unsur rupa di lingkungan sekitar & menyimpulkan hasil pemahaman atas dua unsur rupa" },
+  // Merefleksikan (Reflecting)
+  { id: "senirupa-a-merefleksikan-menilai", label: "Menilai karya & penciptaan karya seni rupa menggunakan kosakata sehari-hari" },
+  // Berpikir & Bekerja Secara Artistik (Thinking and Working Artistically)
+  { id: "senirupa-a-artistik-pengalamanvisual", label: "Menggunakan pengalaman visual sebagai sumber gagasan dalam berkarya" },
+  { id: "senirupa-a-artistik-eksplorasialatbahan", label: "Mengeksplorasi alat & bahan dasar yang tersedia di lingkungan sekitar" },
+  // Menciptakan (Making/Creating)
+  { id: "senirupa-a-menciptakan-karyapengamatan", label: "Membuat karya seni rupa dari hasil pengamatan lingkungan, menggunakan unsur garis, bentuk, dan/atau warna" },
+  // Berdampak (Impacting)
+  { id: "senirupa-a-berdampak-responspositif", label: "Memberi respons terhadap kejadian & lingkungan sehari-hari melalui karya seni rupa yang berdampak positif bagi dirinya" },
+];
+
 export const KURIKULUM: KurikulumEntry[] = [
   // -------------------------------------------------------------------------
   // PESANTREN — NAHWU (Matan Al-Jurumiyah). Sesuai contoh gambar pengguna.
@@ -987,6 +1003,26 @@ export const KURIKULUM: KurikulumEntry[] = [
     status: "draft",
     sumber: "Portal Ruang GTK (guru.kemendikdasmen.go.id) — Rumusan CP Seni Musik Fase A. Regulasi CP umum: Kepka BSKAP No. 046/H/KR/2025 (inferred; nomor & halaman tidak tampak di portal).",
     topik: SENIMUSIK_FASE_A_TOPIK,
+  },
+
+  // ── Seni Rupa SD/MI (Fase A) — draft, sumber portal Ruang GTK ──
+  {
+    jenjang: "SD/MI",
+    kelompok: "Umum/Nasional (Kemendikbud)",
+    mapel: "Seni Rupa",
+    kelas: "1",
+    status: "draft",
+    sumber: "Portal Ruang GTK (guru.kemendikdasmen.go.id) — Rumusan CP Seni Rupa Fase A. Berlaku via Kepka BSKAP No. 046/H/KR/2025 (perubahan atas 032/H/KR/2024); Seni Rupa tidak terdampak Kepka BKPDM No. 020 Tahun 2026. Nomor halaman PDF primer belum diverifikasi.",
+    topik: SENIRUPA_FASE_A_TOPIK,
+  },
+  {
+    jenjang: "SD/MI",
+    kelompok: "Umum/Nasional (Kemendikbud)",
+    mapel: "Seni Rupa",
+    kelas: "2",
+    status: "draft",
+    sumber: "Portal Ruang GTK (guru.kemendikdasmen.go.id) — Rumusan CP Seni Rupa Fase A. Berlaku via Kepka BSKAP No. 046/H/KR/2025 (perubahan atas 032/H/KR/2024); Seni Rupa tidak terdampak Kepka BKPDM No. 020 Tahun 2026. Nomor halaman PDF primer belum diverifikasi.",
+    topik: SENIRUPA_FASE_A_TOPIK,
   },
 ];
 
