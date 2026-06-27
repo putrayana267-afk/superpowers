@@ -202,6 +202,10 @@ export async function suggest(
     );
   }
 
+  // Hybrid: bila pengguna menyimpan key sendiri, kirim ke proxy untuk dipakai;
+  // bila kosong, server pakai key-nya sendiri (perilaku lama).
+  const userKey = (await getSetting(SETTING_API_KEY))?.trim();
+
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 35_000);
 
@@ -210,7 +214,7 @@ export async function suggest(
     response = await fetch('/api/suggest', {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ instruction, context }),
+      body: JSON.stringify({ instruction, context, ...(userKey ? { userKey } : {}) }),
       signal: controller.signal,
     });
   } catch (err) {

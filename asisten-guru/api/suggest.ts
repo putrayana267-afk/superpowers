@@ -29,6 +29,7 @@ const SYSTEM_PROMPT =
 interface RequestBody {
   instruction?: unknown;
   context?: unknown;
+  userKey?: unknown;
 }
 
 interface GeminiPart {
@@ -293,12 +294,6 @@ export default async function handler(
   }
 
   const apiKeys = collectGeminiKeys();
-  if (apiKeys.length === 0) {
-    res.status(500).json({
-      error: 'Server belum dikonfigurasi. Hubungi pengelola aplikasi.',
-    });
-    return;
-  }
 
   let body: RequestBody;
   if (typeof req.body === 'string') {
@@ -312,11 +307,21 @@ export default async function handler(
     body = (req.body ?? {}) as RequestBody;
   }
 
-  const { instruction, context } = body;
+  const { instruction, context, userKey } = body;
   if (typeof instruction !== 'string' || instruction.trim().length === 0) {
     res.status(400).json({ error: 'Instruksi tidak valid.' });
     return;
   }
+  // Hybrid: bila pengguna mengirim key sendiri, pakai itu; bila tidak, key server.
+  const trimmedUserKey = typeof userKey === 'string' ? userKey.trim() : '';
+  // 500 HANYA bila TAK ada key user DAN server pun tak punya key.
+  if (!trimmedUserKey && apiKeys.length === 0) {
+    res.status(500).json({
+      error: 'Server belum dikonfigurasi. Hubungi pengelola aplikasi.',
+    });
+    return;
+  }
+  const keys = trimmedUserKey ? [trimmedUserKey] : apiKeys;
   const ctx = isStringRecord(context) ? context : {};
 
   const userPrompt = buildPrompt(instruction, ctx);
@@ -328,13 +333,19 @@ export default async function handler(
   });
 
   const result = await fetchGeminiMultiKey(
-    apiKeys,
+    keys,
     requestBody,
     'suggest',
     'saran',
   );
   if (!result.ok) {
-    res.status(result.status).json({ error: result.error });
+    // Bila pakai key user & ditolak (auth/config → status 502 utk single user-key),
+    // pesan spesifik. Saat pakai key server, pesan lama dipertahankan.
+    const error =
+      trimmedUserKey && result.status === 502
+        ? 'Kunci Anda ditolak — periksa di Pengaturan.'
+        : result.error;
+    res.status(result.status).json({ error });
     return;
   }
   const geminiRes = result.response;
