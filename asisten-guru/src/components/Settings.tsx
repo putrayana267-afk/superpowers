@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { KeyRound, ExternalLink, Save, Eye, EyeOff, Loader2 } from 'lucide-react';
+import { Capacitor } from '@capacitor/core';
 import { GlassCard } from './GlassCard';
 import { Button } from './Button';
 import { useToast } from './Toast';
@@ -9,6 +10,7 @@ import { controlBase } from './controlStyles';
 
 const KEY = 'gemini_api_key';
 const AISTUDIO_URL = 'https://aistudio.google.com/app/apikey';
+const NATIVE = Capacitor.isNativePlatform();
 
 /** Halaman Pengaturan: pengguna menempelkan Gemini API key sendiri (BYOK). */
 export function Settings() {
@@ -57,8 +59,9 @@ export function Settings() {
               Gemini API Key
             </h2>
             <p className="text-xs text-ink/60">
-              Tersimpan hanya di perangkat Anda. Dipakai untuk membuat materi
-              saat online.
+              {NATIVE
+                ? 'Tersimpan hanya di perangkat Anda. Dipakai untuk membuat materi saat online.'
+                : 'Opsional. Diisi → materi dibuat memakai kunci Anda; dikosongkan → memakai server kami.'}
             </p>
           </div>
         </div>
@@ -132,8 +135,9 @@ export function Settings() {
           <li>Tempel di kolom di atas, lalu tekan Simpan.</li>
         </ol>
         <p className="mt-3 text-xs text-ink/50">
-          Kunci hanya disimpan di perangkat (SQLite), tidak dikirim ke server
-          mana pun selain Google saat membuat materi.
+          {NATIVE
+            ? 'Kunci hanya disimpan di perangkat (SQLite), tidak dikirim ke server mana pun selain Google saat membuat materi.'
+            : 'Kunci opsional, disimpan di perangkat ini. Bila diisi, materi dibuat memakai kunci Anda; bila kosong, memakai kunci server kami.'}
         </p>
       </GlassCard>
     </div>

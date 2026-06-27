@@ -128,6 +128,10 @@ export async function generate(
     return geminiDirect(buildSystemPrompt(), buildUserPrompt(toolId, inputs), 8192);
   }
 
+  // Hybrid: bila pengguna menyimpan key sendiri, kirim ke proxy untuk dipakai;
+  // bila kosong, server pakai key-nya sendiri (perilaku lama).
+  const userKey = (await getSetting(SETTING_API_KEY))?.trim();
+
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), TIMEOUT_MS);
 
@@ -136,7 +140,7 @@ export async function generate(
     response = await fetch('/api/generate', {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ toolId, inputs }),
+      body: JSON.stringify({ toolId, inputs, ...(userKey ? { userKey } : {}) }),
       signal: controller.signal,
     });
   } catch (err) {
