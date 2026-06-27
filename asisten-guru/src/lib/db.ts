@@ -20,6 +20,9 @@ const DB_VERSION = 1;
 /** SQLite asli hanya tersedia di platform native. */
 const NATIVE = Capacitor.isNativePlatform();
 
+/** Prefix kunci setelan di localStorage (fallback web). Ikut pola 'asisten-guru:'. */
+const SETTING_PREFIX = 'asisten-guru:setting:';
+
 const sqlite = new SQLiteConnection(CapacitorSQLite);
 let db: SQLiteDBConnection | null = null;
 let initPromise: Promise<void> | null = null;
@@ -163,7 +166,14 @@ export async function deleteGeneration(id: number): Promise<void> {
 
 /** Ambil nilai setelan (mis. 'gemini_api_key'). null di web. */
 export async function getSetting(key: string): Promise<string | null> {
-  if (!NATIVE) return null;
+  if (!NATIVE) {
+    // Web: fallback localStorage. Baca dibungkus aman → null bila storage diblokir.
+    try {
+      return localStorage.getItem(SETTING_PREFIX + key);
+    } catch {
+      return null;
+    }
+  }
   const conn = await getDb();
   const res = await conn.query(`SELECT value FROM settings WHERE key = ?;`, [key]);
   const rows = (res.values ?? []) as Array<{ value: string }>;
@@ -172,7 +182,12 @@ export async function getSetting(key: string): Promise<string | null> {
 
 /** Simpan/ubah nilai setelan. No-op di web. */
 export async function setSetting(key: string, value: string): Promise<void> {
-  if (!NATIVE) return;
+  if (!NATIVE) {
+    // Web: fallback localStorage. Error tulis SENGAJA dibiarkan merambat agar
+    // Settings.save menampilkan "Gagal menyimpan" yang jujur (bukan sukses palsu).
+    localStorage.setItem(SETTING_PREFIX + key, value);
+    return;
+  }
   const conn = await getDb();
   await conn.run(
     `INSERT INTO settings (key, value) VALUES (?, ?)

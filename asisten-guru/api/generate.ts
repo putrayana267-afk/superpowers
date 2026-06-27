@@ -231,6 +231,7 @@ const MAX_OUTPUT_TOKENS = 8192;
 interface RequestBody {
   toolId?: unknown;
   inputs?: unknown;
+  userKey?: unknown;
 }
 
 interface GeminiPart {
@@ -488,12 +489,6 @@ export default async function handler(
   }
 
   const apiKeys = collectGeminiKeys();
-  if (apiKeys.length === 0) {
-    res.status(500).json({
-      error: 'Server belum dikonfigurasi. Hubungi pengelola aplikasi.',
-    });
-    return;
-  }
 
   // Body sudah diparse oleh runtime bila content-type application/json.
   let body: RequestBody;
@@ -508,7 +503,17 @@ export default async function handler(
     body = (req.body ?? {}) as RequestBody;
   }
 
-  const { toolId, inputs } = body;
+  const { toolId, inputs, userKey } = body;
+  // Hybrid: bila pengguna mengirim key sendiri, pakai itu; bila tidak, key server.
+  const trimmedUserKey = typeof userKey === 'string' ? userKey.trim() : '';
+  // 500 HANYA bila TAK ada key user DAN server pun tak punya key.
+  if (!trimmedUserKey && apiKeys.length === 0) {
+    res.status(500).json({
+      error: 'Server belum dikonfigurasi. Hubungi pengelola aplikasi.',
+    });
+    return;
+  }
+  const keys = trimmedUserKey ? [trimmedUserKey] : apiKeys;
 
   if (typeof toolId !== 'string' || !VALID_TOOL_IDS.includes(toolId)) {
     res.status(400).json({ error: 'Alat yang diminta tidak dikenal.' });
@@ -537,13 +542,19 @@ export default async function handler(
   });
 
   const result = await fetchGeminiMultiKey(
-    apiKeys,
+    keys,
     requestBody,
     'generate',
     'hasil',
   );
   if (!result.ok) {
-    res.status(result.status).json({ error: result.error });
+    // Bila pakai key user & ditolak (auth/config → status 502 utk single user-key),
+    // pesan spesifik. Saat pakai key server, pesan lama dipertahankan.
+    const error =
+      trimmedUserKey && result.status === 502
+        ? 'Kunci Anda ditolak — periksa di Pengaturan.'
+        : result.error;
+    res.status(result.status).json({ error });
     return;
   }
   const geminiRes = result.response;
