@@ -28,6 +28,7 @@ export default {
       fontFamily: {
         display: ['"Plus Jakarta Sans"', 'Poppins', 'system-ui', 'sans-serif'],
         body: ['Inter', 'system-ui', 'sans-serif'],
+        serif: ['"Instrument Serif"', 'serif'],
       },
       // Skala tipe token (disiplin struktural: line-height unitless, tracking
       // negatif di ukuran besar). Typeface tetap Inter/Plus Jakarta Sans.
@@ -64,10 +65,17 @@ export default {
           '0%': { backgroundPosition: '-200% 0' },
           '100%': { backgroundPosition: '200% 0' },
         },
+        'fade-rise': {
+          '0%': { opacity: '0', transform: 'translateY(20px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
       },
       animation: {
         'fade-up': 'fade-up 0.4s ease-out',
         shimmer: 'shimmer 1.5s linear infinite',
+        'fade-rise': 'fade-rise 0.8s ease-out both',
+        'fade-rise-delay': 'fade-rise 0.8s ease-out 0.2s both',
+        'fade-rise-delay-2': 'fade-rise 0.8s ease-out 0.4s both',
       },
     },
   },
