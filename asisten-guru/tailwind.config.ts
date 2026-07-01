@@ -6,31 +6,35 @@ export default {
   theme: {
     extend: {
       colors: {
+        // Palet noir (tema gelap tunggal, hard-swap). ink dibalik jadi TERANG
+        // (dipakai sbg teks); emerald.soft dibalik jadi surface GELAP.
         emerald: {
-          primary: '#10B981',
-          deep: '#047857',
-          soft: '#ECFDF5',
+          primary: '#4CE896',
+          deep: '#8EFFCA',
+          soft: '#04331D',
         },
         gold: {
-          DEFAULT: '#D4AF37',
-          deep: '#B8860B',
+          DEFAULT: '#FFC24D',
+          deep: '#F0A52A',
         },
-        ink: '#0B1F17',
-        // Token brand (hijau asli #047857, hue OKLCH ~165 dipertahankan). Resting =
-        // hex persis agar identik dgn warna sekarang; hover/active diturunkan L-nya
-        // (disiplin "pressed-darker" ala iOS), hue & chroma tetap.
+        ink: '#EAFFF4',
+        // Aksen ekstra noir — dipakai fase komponen berikutnya.
+        violet: '#9B8CFF',
+        teal: '#34E7E0',
+        // Token brand (fill CTA) — noir: hijau terang; hover/active lebih dalam
+        // (pola "pressed-darker" dipertahankan).
         brand: {
-          DEFAULT: '#047857', // = oklch(0.508 0.105 165.6), kontras putih 5.48:1
-          hover: 'oklch(0.468 0.105 165.6)', // -0.04 L
-          active: 'oklch(0.428 0.105 165.6)', // -0.08 L
+          DEFAULT: '#4CE896',
+          hover: '#34C98C',
+          active: '#0BBF68',
         },
       },
       fontFamily: {
-        display: ['"Plus Jakarta Sans"', 'Poppins', 'system-ui', 'sans-serif'],
-        body: ['Inter', 'system-ui', 'sans-serif'],
+        display: ['"Space Grotesk"', 'system-ui', 'sans-serif'],
+        body: ['Manrope', 'system-ui', 'sans-serif'],
       },
       // Skala tipe token (disiplin struktural: line-height unitless, tracking
-      // negatif di ukuran besar). Typeface tetap Inter/Plus Jakarta Sans.
+      // negatif di ukuran besar). Typeface tetap Space Grotesk/Manrope.
       fontSize: {
         display: ['2.5rem', { lineHeight: '1.1', letterSpacing: '-0.02em' }],
         h1: ['1.875rem', { lineHeight: '1.15', letterSpacing: '-0.015em' }],

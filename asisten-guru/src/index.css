@@ -4,7 +4,7 @@
 
 @layer base {
   :root {
-    color-scheme: light;
+    color-scheme: dark;
   }
 
   html,
@@ -17,11 +17,11 @@
     @apply font-body text-ink antialiased;
     margin: 0;
     overflow-x: hidden;
-    background-color: #ecfdf5;
+    background-color: #04140c;
     background-image:
-      radial-gradient(1200px 600px at 100% -10%, rgba(16, 185, 129, 0.25), transparent 60%),
-      radial-gradient(900px 500px at -10% 10%, rgba(13, 148, 136, 0.22), transparent 55%),
-      linear-gradient(160deg, #ecfdf5 0%, #d1fae5 45%, #ccfbf1 100%);
+      radial-gradient(1200px 600px at 100% -10%, rgba(76, 232, 150, 0.1), transparent 60%),
+      radial-gradient(900px 500px at -10% 10%, rgba(52, 231, 224, 0.08), transparent 55%),
+      linear-gradient(160deg, #04140c 0%, #03100a 100%);
     background-attachment: fixed;
   }
 
@@ -34,7 +34,7 @@
 
   /* Fokus keyboard yang jelas untuk aksesibilitas. */
   :focus-visible {
-    outline: 2px solid #047857;
+    outline: 2px solid #4ce896;
     outline-offset: 2px;
     border-radius: 6px;
   }
@@ -43,11 +43,11 @@
 @layer components {
   /* Kartu frosted glass dasar. */
   .glass {
-    @apply rounded-2xl border border-white/40 bg-white/60 shadow-glass backdrop-blur-xl;
+    @apply rounded-2xl border border-[rgba(142,255,202,0.14)] bg-[rgba(4,51,29,0.55)] shadow-glass backdrop-blur-xl;
   }
 
   .glass-strong {
-    @apply rounded-2xl border border-white/50 bg-white/75 shadow-glass-lg backdrop-blur-2xl;
+    @apply rounded-2xl border border-[rgba(142,255,202,0.2)] bg-[rgba(4,51,29,0.7)] shadow-glass-lg backdrop-blur-2xl;
   }
 
   /* Garis tepi emas tipis untuk elemen kunci. */
@@ -62,9 +62,9 @@
     @apply rounded-lg bg-emerald-deep/10;
     background-image: linear-gradient(
       90deg,
-      rgba(4, 120, 87, 0.08) 25%,
-      rgba(4, 120, 87, 0.16) 37%,
-      rgba(4, 120, 87, 0.08) 63%
+      rgba(142, 255, 202, 0.04) 25%,
+      rgba(142, 255, 202, 0.12) 37%,
+      rgba(142, 255, 202, 0.04) 63%
     );
     background-size: 200% 100%;
     @apply animate-shimmer;
@@ -108,16 +108,16 @@
   @apply text-emerald-deep underline;
 }
 .prose-result blockquote {
-  @apply my-3 border-l-4 border-gold/60 bg-white/40 py-1 pl-4 italic;
+  @apply my-3 border-l-4 border-gold/60 bg-white/5 py-1 pl-4 italic;
 }
 .prose-result code {
   @apply rounded bg-emerald-deep/10 px-1.5 py-0.5 text-sm;
 }
 .prose-result pre {
-  @apply my-3 overflow-x-auto rounded-xl bg-ink/90 p-4 text-sm text-emerald-soft;
+  @apply my-3 overflow-x-auto rounded-xl bg-[#03100a] p-4 text-sm text-ink;
 }
 .prose-result pre code {
-  @apply bg-transparent p-0 text-emerald-soft;
+  @apply bg-transparent p-0 text-ink;
 }
 .prose-result table {
   @apply my-3 w-full border-collapse overflow-hidden rounded-xl text-sm;
@@ -174,9 +174,9 @@
     from var(--beam),
     transparent 0deg,
     transparent 250deg,
-    #10b981 300deg,
+    #4ce896 300deg,
     #ffffff 320deg,
-    #10b981 340deg,
+    #4ce896 340deg,
     transparent 360deg
   );
   -webkit-mask:
@@ -197,7 +197,7 @@
   z-index: -2;
   border-radius: inherit;
   padding: 2px;
-  background: rgba(4, 120, 87, 0.35);
+  background: rgba(76, 232, 150, 0.35);
   -webkit-mask:
     linear-gradient(#000 0 0) content-box,
     linear-gradient(#000 0 0);
@@ -211,6 +211,6 @@
 @media (prefers-reduced-motion: reduce) {
   .cta-beam::before {
     animation: none;
-    background: rgba(16, 185, 129, 0.55);
+    background: rgba(76, 232, 150, 0.6);
   }
 }
