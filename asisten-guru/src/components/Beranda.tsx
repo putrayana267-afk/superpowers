@@ -42,7 +42,10 @@ function formatDate(ts: number): string {
 
 /** Cuplikan hasil pendek (≤ ~80 char). Tidak pernah merender `inputs` mentah. */
 function snippet(result: string): string {
-  const flat = result.replace(/\s+/g, ' ').trim();
+  const flat = result
+    .replace(/[#*`_~]/g, '') // buang penanda markdown umum (tanda hubung dibiarkan)
+    .replace(/\s+/g, ' ') // rapikan spasi ganda
+    .trim();
   return flat.length > 80 ? `${flat.slice(0, 80)}…` : flat;
 }
 
@@ -151,7 +154,7 @@ export function Beranda({ history, onOpenEntry, onStartCreate }: BerandaProps) {
               <FileText className="h-6 w-6" />
             </div>
             <div>
-              <p className="font-display text-2xl font-extrabold text-emerald-deep">
+              <p className="font-grotesk text-2xl font-extrabold tabular-nums text-emerald-deep">
                 {countLabel}
               </p>
               <p className="text-sm text-ink/60">Dokumen tersimpan</p>
@@ -166,7 +169,7 @@ export function Beranda({ history, onOpenEntry, onStartCreate }: BerandaProps) {
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
               {breakdown.map(({ id, label, count: n }) => (
                 <GlassCard key={id} className="flex flex-col py-4">
-                  <p className="font-display text-2xl font-extrabold text-emerald-deep">
+                  <p className="font-grotesk text-2xl font-extrabold tabular-nums text-emerald-deep">
                     {n}
                   </p>
                   <p className="mt-0.5 text-xs text-ink/60">{label}</p>
