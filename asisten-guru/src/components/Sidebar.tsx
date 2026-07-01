@@ -1,5 +1,5 @@
 import { motion, useReducedMotion } from 'framer-motion';
-import { Library, Archive } from 'lucide-react';
+import { LayoutDashboard, Library, Archive } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { TOOLS, getCategories } from '../features/tools/registry';
 import { cn } from '../lib/cn';
@@ -7,6 +7,8 @@ import { cn } from '../lib/cn';
 interface SidebarProps {
   activeId: string;
   onSelect: (id: string) => void;
+  berandaActive: boolean;
+  onSelectBeranda: () => void;
   libraryActive: boolean;
   onSelectLibrary: () => void;
   savedActive: boolean;
@@ -63,6 +65,8 @@ function NavEntry({
 export function Sidebar({
   activeId,
   onSelect,
+  berandaActive,
+  onSelectBeranda,
   libraryActive,
   onSelectLibrary,
   savedActive,
@@ -78,6 +82,15 @@ export function Sidebar({
           Pustaka & Data
         </h2>
         <ul className="flex flex-col gap-1">
+          <li>
+            <NavEntry
+              active={berandaActive}
+              onClick={onSelectBeranda}
+              icon={LayoutDashboard}
+              label="Beranda"
+              reduce={reduce}
+            />
+          </li>
           <li>
             <NavEntry
               active={libraryActive}
@@ -108,7 +121,7 @@ export function Sidebar({
             {TOOLS.filter((t) => t.category === category).map((tool) => {
               const Icon = tool.icon;
               const active =
-                !libraryActive && !savedActive && tool.id === activeId;
+                !libraryActive && !savedActive && !berandaActive && tool.id === activeId;
               return (
                 <li key={tool.id}>
                   <button

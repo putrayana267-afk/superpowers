@@ -29,10 +29,11 @@ import { ResultSkeleton } from './components/Skeleton';
 import { Perpustakaan, PerpustakaanIcon } from './components/Perpustakaan';
 import { Settings, SettingsIcon } from './components/Settings';
 import { Tersimpan, TersimpanIcon } from './components/Tersimpan';
+import { Beranda } from './components/Beranda';
 import type { GenerationRow } from './lib/db';
 import { useToast } from './components/Toast';
 
-type View = 'tools' | 'perpustakaan' | 'settings' | 'tersimpan';
+type View = 'tools' | 'perpustakaan' | 'settings' | 'tersimpan' | 'beranda';
 
 interface AppProps {
   /** Buka kembali landing showcase (opsional, dari Root). */
@@ -246,6 +247,11 @@ export default function App({ onOpenShowcase }: AppProps) {
     setNavOpen(false);
   }, []);
 
+  const handleSelectBeranda = useCallback(() => {
+    setView('beranda');
+    setNavOpen(false);
+  }, []);
+
   const handleOpenEntry = useCallback((entry: HistoryEntry) => {
     setView('tools');
     setActiveId(entry.toolId);
@@ -296,6 +302,8 @@ export default function App({ onOpenShowcase }: AppProps) {
             <Sidebar
               activeId={activeId}
               onSelect={handleSelectTool}
+              berandaActive={view === 'beranda'}
+              onSelectBeranda={handleSelectBeranda}
               libraryActive={view === 'perpustakaan'}
               onSelectLibrary={handleSelectLibrary}
               savedActive={view === 'tersimpan'}
@@ -306,7 +314,9 @@ export default function App({ onOpenShowcase }: AppProps) {
 
         {/* Area kerja */}
         <main className="min-w-0 flex-1">
-          {view === 'settings' ? (
+          {view === 'beranda' ? (
+            <Beranda />
+          ) : view === 'settings' ? (
             <>
               <div className="mb-5">
                 <div className="flex items-center gap-3">
@@ -458,6 +468,8 @@ export default function App({ onOpenShowcase }: AppProps) {
                 <Sidebar
                   activeId={activeId}
                   onSelect={handleSelectTool}
+                  berandaActive={view === 'beranda'}
+                  onSelectBeranda={handleSelectBeranda}
                   libraryActive={view === 'perpustakaan'}
                   onSelectLibrary={handleSelectLibrary}
                   savedActive={view === 'tersimpan'}
