@@ -104,6 +104,21 @@ export function Beranda({ history, onOpenEntry, onStartCreate }: BerandaProps) {
   const countLabel = count >= 50 ? '50+' : String(count);
   const recent = history.slice(0, 6);
 
+  // Rincian jumlah per jenis dokumen — murni turunan dari `history` (tak ada data
+  // baru). Kelompokkan per toolId, label = toolTitle, urut jumlah menurun.
+  const byType = new Map<string, { id: string; label: string; count: number }>();
+  for (const entry of history) {
+    const cur = byType.get(entry.toolId);
+    if (cur) cur.count += 1;
+    else
+      byType.set(entry.toolId, {
+        id: entry.toolId,
+        label: entry.toolTitle,
+        count: 1,
+      });
+  }
+  const breakdown = [...byType.values()].sort((a, b) => b.count - a.count);
+
   return (
     <>
       <BerandaHeader />
@@ -142,6 +157,23 @@ export function Beranda({ history, onOpenEntry, onStartCreate }: BerandaProps) {
               <p className="text-sm text-ink/60">Dokumen tersimpan</p>
             </div>
           </GlassCard>
+
+          {/* Rincian jumlah per jenis dokumen */}
+          <div>
+            <h2 className="mb-3 px-1 text-xs font-semibold uppercase tracking-wider text-emerald-deep/60">
+              Per jenis
+            </h2>
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+              {breakdown.map(({ id, label, count: n }) => (
+                <GlassCard key={id} className="flex flex-col py-4">
+                  <p className="font-display text-2xl font-extrabold text-emerald-deep">
+                    {n}
+                  </p>
+                  <p className="mt-0.5 text-xs text-ink/60">{label}</p>
+                </GlassCard>
+              ))}
+            </div>
+          </div>
 
           {/* Terbaru: kartu yang bisa diklik untuk buka ulang */}
           <div>
