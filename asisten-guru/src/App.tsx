@@ -315,7 +315,11 @@ export default function App({ onOpenShowcase }: AppProps) {
         {/* Area kerja */}
         <main className="min-w-0 flex-1">
           {view === 'beranda' ? (
-            <Beranda />
+            <Beranda
+              history={history}
+              onOpenEntry={handleOpenEntry}
+              onStartCreate={() => setView('tools')}
+            />
           ) : view === 'settings' ? (
             <>
               <div className="mb-5">
