@@ -30,11 +30,13 @@ export default {
         },
       },
       fontFamily: {
-        display: ['"Space Grotesk"', 'system-ui', 'sans-serif'],
+        display: ['"Cormorant Garamond"', 'system-ui', 'sans-serif'],
         body: ['Manrope', 'system-ui', 'sans-serif'],
+        // Space Grotesk dipertahankan khusus hero (di-pin lewat font-grotesk).
+        grotesk: ['"Space Grotesk"', 'system-ui', 'sans-serif'],
       },
       // Skala tipe token (disiplin struktural: line-height unitless, tracking
-      // negatif di ukuran besar). Typeface tetap Space Grotesk/Manrope.
+      // negatif di ukuran besar). Typeface: display Cormorant Garamond, body Manrope.
       fontSize: {
         display: ['2.5rem', { lineHeight: '1.1', letterSpacing: '-0.02em' }],
         h1: ['1.875rem', { lineHeight: '1.15', letterSpacing: '-0.015em' }],
