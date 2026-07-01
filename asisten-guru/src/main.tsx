@@ -11,6 +11,7 @@ import type { ErrorInfo, ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App';
 import { ToastProvider } from './components/Toast';
+import { WelcomeSplash } from './components/WelcomeSplash';
 import { initDb } from './lib/db';
 import './index.css';
 
@@ -88,6 +89,8 @@ function Root() {
     return forced || !seen;
   });
 
+  const [splashDone, setSplashDone] = useState(false);
+
   const enterApp = useCallback(() => {
     try {
       localStorage.setItem(LANDING_SEEN_KEY, '1');
@@ -106,11 +109,15 @@ function Root() {
   }, []);
 
   const openShowcase = useCallback(() => {
+    setSplashDone(false);
     setShowLanding(true);
     window.scrollTo(0, 0);
   }, []);
 
   if (showLanding) {
+    if (!splashDone) {
+      return <WelcomeSplash onDone={() => setSplashDone(true)} />;
+    }
     return (
       <Suspense
         fallback={<div className="min-h-screen bg-[#0F1115]" aria-hidden />}
