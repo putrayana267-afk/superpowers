@@ -47,13 +47,13 @@ class ErrorBoundary extends Component<
             Coba muat ulang halaman. Jika tetap terjadi, bersihkan cache lalu
             buka kembali.
           </p>
-          <pre className="max-w-md overflow-auto rounded-lg bg-white/60 p-3 text-left text-xs text-ink/60">
+          <pre className="max-w-md overflow-auto rounded-lg bg-white/5 p-3 text-left text-xs text-ink/60">
             {String(this.state.error?.message ?? this.state.error)}
           </pre>
           <button
             type="button"
             onClick={() => window.location.reload()}
-            className="rounded-xl bg-emerald-deep px-5 py-2.5 text-sm font-semibold text-white"
+            className="rounded-xl bg-brand px-5 py-2.5 text-sm font-semibold text-[#04140C]"
           >
             Muat ulang
           </button>

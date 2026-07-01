@@ -78,7 +78,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
               exit={{ opacity: 0, y: 10, scale: 0.95 }}
               transition={{ duration: 0.2 }}
               className={cn(
-                'pointer-events-auto flex w-full max-w-sm items-start gap-3 rounded-xl border border-white/50 bg-white/90 px-4 py-3 shadow-glass-lg backdrop-blur-xl',
+                'pointer-events-auto flex w-full max-w-sm items-start gap-3 rounded-xl border border-white/50 bg-emerald-soft px-4 py-3 shadow-glass-lg backdrop-blur-xl',
               )}
             >
               <span className="mt-0.5">{icons[item.type]}</span>

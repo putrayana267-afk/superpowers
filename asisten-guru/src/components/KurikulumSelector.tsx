@@ -117,10 +117,10 @@ function PokokField({
     >
       {showBadge && (
         <div className="flex min-w-0 flex-wrap items-center gap-2">
-          <span className="inline-flex items-center rounded-md border border-amber-300/70 bg-amber-50 px-1.5 py-0.5 text-[11px] font-semibold text-amber-800">
+          <span className="inline-flex items-center rounded-md border border-gold bg-gold px-1.5 py-0.5 text-[11px] font-semibold text-[#04140C]">
             ⚠ {isContoh ? 'Contoh' : 'Draft'}
           </span>
-          <span className="min-w-0 text-xs text-amber-700">
+          <span className="min-w-0 text-xs text-gold">
             {isContoh
               ? 'Contoh — bukan data resmi.'
               : 'Data belum diverifikasi, mohon dicek.'}

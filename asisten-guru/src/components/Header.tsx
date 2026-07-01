@@ -19,19 +19,19 @@ export function Header({
   onOpenSettings,
 }: HeaderProps) {
   return (
-    <header className="sticky top-0 z-30 border-b border-white/30 bg-white/40 backdrop-blur-xl">
+    <header className="sticky top-0 z-30 border-b border-white/30 bg-white/5 backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-7xl items-center gap-3 px-4 sm:px-6">
         <button
           type="button"
           onClick={onOpenMenu}
           aria-label="Buka daftar alat"
-          className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/60 text-emerald-deep hover:bg-white/90 lg:hidden"
+          className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/5 text-emerald-deep hover:bg-white/10 lg:hidden"
         >
           <Menu className="h-5 w-5" />
         </button>
 
         <div className="flex items-center gap-2.5">
-          <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-deep text-white gold-edge">
+          <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-soft text-emerald-deep gold-edge">
             <GraduationCap className="h-5 w-5" />
           </span>
           <div className="leading-tight">

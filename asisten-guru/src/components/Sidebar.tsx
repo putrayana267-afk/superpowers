@@ -34,8 +34,8 @@ function NavEntry({
       className={cn(
         'group relative flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm transition-colors',
         active
-          ? 'bg-white/80 font-semibold text-emerald-deep shadow-glass'
-          : 'text-ink/70 hover:bg-white/50 hover:text-emerald-deep',
+          ? 'bg-white/5 font-semibold text-emerald-deep shadow-glass'
+          : 'text-ink/70 hover:bg-white/10 hover:text-emerald-deep',
       )}
     >
       {active && (
@@ -48,7 +48,7 @@ function NavEntry({
         className={cn(
           'flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg transition-colors',
           active
-            ? 'bg-emerald-deep text-white'
+            ? 'bg-brand text-[#04140C]'
             : 'bg-emerald-soft text-emerald-deep group-hover:bg-emerald-deep/10',
         )}
       >
@@ -118,8 +118,8 @@ export function Sidebar({
                     className={cn(
                       'group relative flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm transition-colors',
                       active
-                        ? 'bg-white/80 font-semibold text-emerald-deep shadow-glass'
-                        : 'text-ink/70 hover:bg-white/50 hover:text-emerald-deep',
+                        ? 'bg-white/5 font-semibold text-emerald-deep shadow-glass'
+                        : 'text-ink/70 hover:bg-white/10 hover:text-emerald-deep',
                     )}
                   >
                     {active && (
@@ -132,7 +132,7 @@ export function Sidebar({
                       className={cn(
                         'flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg transition-colors',
                         active
-                          ? 'bg-emerald-deep text-white'
+                          ? 'bg-brand text-[#04140C]'
                           : 'bg-emerald-soft text-emerald-deep group-hover:bg-emerald-deep/10',
                       )}
                     >
