@@ -310,7 +310,7 @@ export default function App({ onOpenShowcase }: AppProps) {
             <>
               <div className="mb-5">
                 <div className="flex items-center gap-3">
-                  <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-deep text-white gold-edge">
+                  <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-soft text-emerald-deep gold-edge">
                     <SettingsIcon className="h-5 w-5" />
                   </span>
                   <div>
@@ -329,7 +329,7 @@ export default function App({ onOpenShowcase }: AppProps) {
             <>
               <div className="mb-5">
                 <div className="flex items-center gap-3">
-                  <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-deep text-white gold-edge">
+                  <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-soft text-emerald-deep gold-edge">
                     <TersimpanIcon className="h-5 w-5" />
                   </span>
                   <div>
@@ -349,7 +349,7 @@ export default function App({ onOpenShowcase }: AppProps) {
             <>
               <div className="mb-5">
                 <div className="flex items-center gap-3">
-                  <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-deep text-white gold-edge">
+                  <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-soft text-emerald-deep gold-edge">
                     <PerpustakaanIcon className="h-5 w-5" />
                   </span>
                   <div>
@@ -368,7 +368,7 @@ export default function App({ onOpenShowcase }: AppProps) {
             <>
               <div className="mb-5">
                 <div className="flex items-center gap-3">
-                  <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-deep text-white gold-edge">
+                  <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-soft text-emerald-deep gold-edge">
                     <ActiveIcon className="h-5 w-5" />
                   </span>
                   <div>
@@ -429,7 +429,7 @@ export default function App({ onOpenShowcase }: AppProps) {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setNavOpen(false)}
-              className="absolute inset-0 bg-ink/30 backdrop-blur-sm"
+              className="absolute inset-0 bg-black/50 backdrop-blur-sm"
               aria-hidden
             />
             <motion.div
@@ -449,7 +449,7 @@ export default function App({ onOpenShowcase }: AppProps) {
                   type="button"
                   onClick={() => setNavOpen(false)}
                   aria-label="Tutup menu"
-                  className="flex h-9 w-9 items-center justify-center rounded-xl text-ink/50 hover:bg-white/60"
+                  className="flex h-9 w-9 items-center justify-center rounded-xl text-ink/50 hover:bg-white/10"
                 >
                   <X className="h-5 w-5" />
                 </button>

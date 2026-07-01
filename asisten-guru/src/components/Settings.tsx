@@ -51,7 +51,7 @@ export function Settings() {
     <div className="flex flex-col gap-6">
       <GlassCard gold animate>
         <div className="mb-4 flex items-center gap-3">
-          <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-deep text-white gold-edge">
+          <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-soft text-emerald-deep gold-edge">
             <KeyRound className="h-5 w-5" />
           </span>
           <div>

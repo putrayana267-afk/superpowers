@@ -49,7 +49,7 @@ export function HistoryDrawer({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="absolute inset-0 bg-ink/30 backdrop-blur-sm"
+            className="absolute inset-0 bg-black/50 backdrop-blur-sm"
             aria-hidden
           />
           <motion.aside
@@ -69,7 +69,7 @@ export function HistoryDrawer({
                 type="button"
                 onClick={onClose}
                 aria-label="Tutup riwayat"
-                className="flex h-9 w-9 items-center justify-center rounded-xl text-ink/50 hover:bg-white/60 hover:text-ink"
+                className="flex h-9 w-9 items-center justify-center rounded-xl text-ink/50 hover:bg-white/10 hover:text-ink"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -124,7 +124,7 @@ export function HistoryDrawer({
                       <button
                         type="button"
                         onClick={() => onOpenEntry(entry)}
-                        className="block w-full px-4 py-3 text-left hover:bg-white/40"
+                        className="block w-full px-4 py-3 text-left hover:bg-white/10"
                       >
                         <p className="font-display text-sm font-bold text-emerald-deep">
                           {entry.toolTitle}
@@ -137,7 +137,7 @@ export function HistoryDrawer({
                           {formatDate(entry.createdAt)}
                         </p>
                       </button>
-                      <div className="flex items-center justify-end gap-1 border-t border-white/40 bg-white/30 px-2 py-1.5">
+                      <div className="flex items-center justify-end gap-1 border-t border-white/40 bg-white/5 px-2 py-1.5">
                         <button
                           type="button"
                           onClick={() => onToggleFavorite(entry.id)}
@@ -151,7 +151,7 @@ export function HistoryDrawer({
                             'flex h-8 w-8 items-center justify-center rounded-lg transition-colors',
                             entry.favorite
                               ? 'text-gold-deep hover:bg-gold/15'
-                              : 'text-ink/40 hover:bg-white/60 hover:text-gold-deep',
+                              : 'text-ink/40 hover:bg-white/10 hover:text-gold-deep',
                           )}
                         >
                           <Star
@@ -196,8 +196,8 @@ function FilterTab({
       className={cn(
         'rounded-full px-3 py-1.5 text-xs font-semibold transition-colors',
         active
-          ? 'bg-emerald-deep text-white'
-          : 'bg-white/50 text-emerald-deep hover:bg-white/80',
+          ? 'bg-brand text-[#04140C]'
+          : 'bg-white/5 text-emerald-deep hover:bg-white/10',
       )}
     >
       {children}

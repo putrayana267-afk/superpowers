@@ -98,7 +98,7 @@ export function FieldSuggest({
                 onFill(item);
                 setItems([]);
               }}
-              className="rounded-full border border-emerald-deep/20 bg-white/60 px-2.5 py-1 text-xs text-emerald-deep transition hover:bg-emerald-deep hover:text-white"
+              className="rounded-full border border-emerald-deep/20 bg-white/5 px-2.5 py-1 text-xs text-emerald-deep transition hover:bg-emerald-deep/15"
             >
               {item}
             </button>
