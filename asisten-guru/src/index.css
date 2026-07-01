@@ -284,9 +284,11 @@
   .splash-loader-wrap { display: none !important; }
 }
 
-/* ===== Hero (PremiumHero) — masuk berurutan halus =====
-   Naik lembut + judul fokus dari buram, easing expo, bertahap. Hanya
-   transform/opacity/filter; berakhir pada state terlihat (aman reduced-motion). */
+/* ===== Hero (PremiumHero) — masuk berurutan halus ===== */
+@keyframes hero-bg-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
 @keyframes hero-rise {
   from { opacity: 0; transform: translateY(26px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -295,16 +297,14 @@
   from { opacity: 0; transform: translateY(34px) scale(0.98); filter: blur(10px); }
   to   { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
 }
-@keyframes hero-bg-in {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
 .hero-bg    { animation: hero-bg-in 1.6s ease-out both; }
-.hero-clock { animation: hero-rise 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both; }
-.hero-date  { animation: hero-rise 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.55s both; }
-.hero-title { animation: hero-title-in 1.9s cubic-bezier(0.16, 1, 0.3, 1) 0.85s both; }
-.hero-sub   { animation: hero-rise 1.5s cubic-bezier(0.16, 1, 0.3, 1) 1.45s both; }
-.hero-cta   { animation: hero-rise 1.5s cubic-bezier(0.16, 1, 0.3, 1) 1.8s both; }
+.hero-top   { animation: hero-rise 1.3s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both; }
+.hero-chip  { animation: hero-rise 1.3s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both; }
+.hero-title { animation: hero-title-in 1.9s cubic-bezier(0.16, 1, 0.3, 1) 0.8s both; }
+.hero-sub   { animation: hero-rise 1.5s cubic-bezier(0.16, 1, 0.3, 1) 1.35s both; }
+.hero-cta   { animation: hero-rise 1.5s cubic-bezier(0.16, 1, 0.3, 1) 1.7s both; }
 @media (prefers-reduced-motion: reduce) {
-  .hero-bg { animation: none !important; }
+  .hero-bg, .hero-top, .hero-chip, .hero-title, .hero-sub, .hero-cta {
+    animation: none !important;
+  }
 }

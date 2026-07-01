@@ -4,9 +4,8 @@ interface PremiumHeroProps {
   onEnter?: () => void;
 }
 
-/** Profil guru untuk sapaan hero. Kosongkan = sapaan generik.
- *  Isi untuk personal, mis. { nama: 'Akhid', mapel: 'Bahasa Arab' }. */
-const GURU = { nama: '', mapel: '' };
+/** Profil guru untuk sapaan hero — ganti nama/mapel di sini. */
+const GURU = { nama: 'Akhid', mapel: 'Bahasa Arab' };
 
 /** '/' di web/Vercel, './' di APK Capacitor. */
 const BASE = (import.meta as unknown as { env: { BASE_URL: string } }).env
@@ -19,28 +18,40 @@ function greetingByHour(h: number): string {
   return 'Selamat malam';
 }
 
+function pad(n: number): string {
+  return String(n).padStart(2, '0');
+}
+
+/**
+ * Hero "Akhid Noir": video terowongan + kartu jam kanan-atas, chip profil,
+ * sapaan gradien, satu CTA outline. Data = jam perangkat + konstanta GURU
+ * (data guru sendiri). Kontrak dijaga: named export + prop onEnter.
+ */
 export function PremiumHero({ onEnter }: PremiumHeroProps) {
   const [now, setNow] = useState<Date>(() => new Date());
   useEffect(() => {
-    const id = window.setInterval(() => setNow(new Date()), 30000);
+    const id = window.setInterval(() => setNow(new Date()), 1000);
     return () => window.clearInterval(id);
   }, []);
 
-  const greeting = greetingByHour(now.getHours());
-  const sapaan = (GURU.nama ? greeting + ', ' + GURU.nama : greeting).toUpperCase();
-  const subtitle = GURU.nama
-    ? GURU.nama + ' · Guru ' + GURU.mapel
-    : 'Asisten mengajar Kurikulum Merdeka';
-  const jam = new Intl.DateTimeFormat('id-ID', {
-    hour: '2-digit',
-    minute: '2-digit',
-  }).format(now);
-  const tanggal = new Intl.DateTimeFormat('id-ID', {
-    weekday: 'long',
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-  }).format(now);
+  const sapaan = (
+    greetingByHour(now.getHours()) + (GURU.nama ? ', ' + GURU.nama : '')
+  ).toUpperCase();
+  const inisial =
+    GURU.nama
+      .split(/\s+/)
+      .map((k) => k[0] ?? '')
+      .join('')
+      .slice(0, 2)
+      .toUpperCase() || 'G';
+  const hari = new Intl.DateTimeFormat('id-ID', { weekday: 'long' }).format(now);
+  const bulanTahun = (
+    new Intl.DateTimeFormat('id-ID', { month: 'short' }).format(now) +
+    ' ' +
+    now.getFullYear()
+  ).toUpperCase();
+  const jam =
+    pad(now.getHours()) + ':' + pad(now.getMinutes()) + ':' + pad(now.getSeconds());
 
   return (
     <div className="relative min-h-[100dvh] w-full overflow-hidden bg-[#04140c]">
@@ -73,40 +84,67 @@ export function PremiumHero({ onEnter }: PremiumHeroProps) {
       </div>
 
       <div
-        className="relative flex min-h-[100dvh] flex-col items-center justify-center px-6 text-center"
+        className="relative flex min-h-[100dvh] flex-col px-5 pb-10 pt-5"
         style={{ zIndex: 10 }}
       >
-        <div
-          className="hero-clock font-grotesk text-4xl font-bold tabular-nums tracking-tight text-white sm:text-5xl"
-          style={{ textShadow: '0 2px 24px rgba(0,0,0,.55)' }}
-        >
-          {jam}
-        </div>
-        <div className="hero-date mt-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-emerald-deep sm:text-xs">
-          {tanggal}
+        <div className="hero-top flex justify-end">
+          <div className="flex items-center gap-4 rounded-2xl border border-white/10 bg-[#04140c]/55 px-5 py-3 backdrop-blur-md">
+            <div className="text-center">
+              <div className="font-grotesk text-3xl font-bold leading-none tabular-nums text-white">
+                {now.getDate()}
+              </div>
+              <div className="mt-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-emerald-deep">
+                {bulanTahun}
+              </div>
+            </div>
+            <div className="h-10 w-px bg-white/15" />
+            <div>
+              <div className="flex items-center gap-2 text-sm font-semibold text-white">
+                <span className="inline-block h-2 w-2 rounded-full bg-[#4CE896]" />
+                {hari}
+              </div>
+              <div className="font-grotesk mt-0.5 text-2xl font-bold tabular-nums text-emerald-deep">
+                {jam}
+              </div>
+            </div>
+          </div>
         </div>
 
-        <h1
-          className="hero-title mt-8 font-display text-[clamp(2rem,8vw,3.5rem)] font-bold uppercase leading-[1.1] tracking-wide text-white"
-          style={{ textShadow: '0 2px 28px rgba(0,0,0,.6)' }}
-        >
-          {sapaan}
-        </h1>
-        <p
-          className="hero-sub mt-3 text-sm text-white/70 sm:text-base"
-          style={{ textShadow: '0 1px 16px rgba(0,0,0,.5)' }}
-        >
-          {subtitle}
-        </p>
+        <div className="flex flex-1 flex-col items-center justify-center text-center">
+          <div className="hero-chip flex items-center gap-3 rounded-full border border-white/10 bg-[#04140c]/55 py-2 pl-2 pr-5 backdrop-blur-md">
+            <span className="grid h-9 w-9 place-items-center rounded-full bg-gradient-to-br from-[#4CE896] to-violet font-grotesk text-sm font-bold text-[#04140c]">
+              {inisial}
+            </span>
+            <span className="text-sm font-semibold uppercase tracking-wide text-white">
+              {GURU.nama}
+            </span>
+            <span className="text-white/40">·</span>
+            <span className="text-sm font-semibold text-white/80">
+              Guru <span className="uppercase text-emerald-deep">{GURU.mapel}</span>
+            </span>
+          </div>
 
-        <button
-          type="button"
-          onClick={onEnter}
-          className="hero-cta mt-10 inline-flex items-center justify-center rounded-full bg-[#4CE896] px-8 py-4 text-base font-semibold text-[#04140c] transition-transform active:scale-95"
-          style={{ boxShadow: '0 0 26px -8px rgba(102,255,176,.7)' }}
-        >
-          Masuk ke ruang kerja
-        </button>
+          <h1 className="hero-title mt-6 bg-gradient-to-r from-[#4CE896] via-[#8EFFCA] to-[#EAFFF4] bg-clip-text font-grotesk text-[clamp(2.1rem,9vw,3.6rem)] font-bold uppercase leading-[1.08] tracking-tight text-transparent">
+            {sapaan}
+          </h1>
+          <p className="hero-sub mt-4 max-w-md text-base leading-relaxed text-white/75">
+            Modul ajar, bank soal, dan LKPD-mu hari ini — semuanya dalam satu
+            ruang kerja yang tenang.
+          </p>
+
+          <button
+            type="button"
+            onClick={onEnter}
+            className="hero-cta mt-9 flex w-full max-w-md items-center justify-center gap-2 rounded-2xl border border-[#4CE896]/45 bg-[#04140c]/60 px-6 py-4 text-lg font-semibold text-emerald-deep backdrop-blur-md transition-transform active:scale-[0.98]"
+            style={{
+              boxShadow:
+                '0 0 30px -12px rgba(76,232,150,.55), inset 0 0 22px -14px rgba(76,232,150,.5)',
+            }}
+          >
+            Masuk ke ruang kerja
+            <span aria-hidden>→</span>
+          </button>
+        </div>
       </div>
     </div>
   );
