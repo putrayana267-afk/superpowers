@@ -215,40 +215,35 @@
   }
 }
 
-/* ===== Layar Sambutan (WelcomeSplash) — urutan sinematik 10 detik =====
-   fade-in berlapis 3s → diam 4s (glow bernapas) → fade-out 3s (melayang+lembut).
-   Hanya transform/opacity/filter; semua keyframe berakhir pada state stabil. */
+/* ===== Layar Sambutan (WelcomeSplash) — reveal berurutan elegan 10 detik =====
+   Ketukan 1: eyebrow masked-rise (0.3s) → Ketukan 2: judul naik halus (1.9s,
+   SETELAH eyebrow settle) → diam → keluar melayang. Easing expo; hanya
+   transform/opacity/filter; berakhir pada state stabil (aman reduced-motion). */
 @keyframes splash-glow {
-  0%   { opacity: 0; transform: scale(0.8); }
+  0%   { opacity: 0; transform: scale(0.82); }
   30%  { opacity: 1; transform: scale(1); }
-  65%  { opacity: 0.85; transform: scale(1.05); }
+  65%  { opacity: 0.9; transform: scale(1.04); }
   100% { opacity: 1; transform: scale(1); }
 }
-@keyframes splash-eyebrow-in {
-  from { opacity: 0; letter-spacing: 0.10em; transform: translateY(12px); }
-  to   { opacity: 1; letter-spacing: 0.30em; transform: translateY(0); }
+@keyframes splash-eyebrow-rise {
+  0%   { opacity: 0; transform: translateY(120%); letter-spacing: 0.12em; }
+  100% { opacity: 1; transform: translateY(0);    letter-spacing: 0.30em; }
 }
-@keyframes splash-title-in {
-  0%   { opacity: 0; transform: translateY(30px) scale(0.96); filter: blur(20px); }
-  55%  { opacity: 1; }
+@keyframes splash-title-rise {
+  0%   { opacity: 0; transform: translateY(30px) scale(0.97); filter: blur(6px); }
+  60%  { opacity: 1; }
   100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
 }
 @keyframes splash-divider-in {
   from { opacity: 0; transform: scaleX(0); }
   to   { opacity: 1; transform: scaleX(1); }
 }
-@keyframes splash-sheen-sweep {
-  0%       { opacity: 0; transform: translateX(-120%) skewX(-16deg); }
-  20%      { opacity: 1; }
-  60%,100% { opacity: 0; transform: translateX(160%) skewX(-16deg); }
-}
 @keyframes splash-exit {
-  0%, 70% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
-  100%    { opacity: 0; transform: translateY(-14px) scale(1.02); filter: blur(8px); }
+  0%, 68% { opacity: 1; transform: translateY(0); filter: blur(0); }
+  100%    { opacity: 0; transform: translateY(-16px); filter: blur(6px); }
 }
 .splash-exit    { animation: splash-exit 10s ease-in-out both; }
 .splash-glow    { animation: splash-glow 10s ease-in-out both; }
-.splash-eyebrow { animation: splash-eyebrow-in 1.8s ease-out 0.3s both; }
-.splash-title   { animation: splash-title-in 2.4s cubic-bezier(0.16, 0.84, 0.32, 1) 0.6s both; }
-.splash-divider { transform-origin: center; animation: splash-divider-in 1.4s ease-out 1.7s both; }
-.splash-sheen   { animation: splash-sheen-sweep 3.4s ease-in-out 1.2s both; }
+.splash-eyebrow { animation: splash-eyebrow-rise 1.4s cubic-bezier(0.16, 1, 0.30, 1) 0.3s both; }
+.splash-title   { animation: splash-title-rise 1.6s cubic-bezier(0.16, 1, 0.30, 1) 1.9s both; }
+.splash-divider { transform-origin: center; animation: splash-divider-in 1.2s ease-out 2.9s both; }
