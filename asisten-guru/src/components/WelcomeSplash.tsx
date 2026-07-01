@@ -6,6 +6,10 @@ interface WelcomeSplashProps {
   onDone: () => void;
 }
 
+/** '/' di web/Vercel, './' di APK Capacitor. */
+const BASE = (import.meta as unknown as { env: { BASE_URL: string } }).env
+  .BASE_URL;
+
 /**
  * Layar sambutan sinematik sebelum hero — SENGAJA tanpa tombol lewati.
  * Presentasi murni; tanpa data/aset/dependency. Urutan: eyebrow "Asisten
@@ -57,6 +61,22 @@ export function WelcomeSplash({ onDone }: WelcomeSplashProps) {
           <div className="splash-loader" />
         </div>
       </div>
+
+      {/* Preload aset hero selama splash agar transisi ke hero tanpa pop. */}
+      <video
+        aria-hidden
+        muted
+        playsInline
+        preload="auto"
+        src={`${BASE}hero-tunnel.mp4`}
+        style={{ display: 'none' }}
+      />
+      <img
+        aria-hidden
+        alt=""
+        src={`${BASE}hero-tunnel.jpg`}
+        style={{ display: 'none' }}
+      />
 
       <span className="sr-only" role="status">
         Menyiapkan aplikasi…

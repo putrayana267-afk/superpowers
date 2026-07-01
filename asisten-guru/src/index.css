@@ -295,8 +295,16 @@
   from { opacity: 0; transform: translateY(34px) scale(0.98); filter: blur(10px); }
   to   { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
 }
+@keyframes hero-bg-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.hero-bg    { animation: hero-bg-in 1.6s ease-out both; }
 .hero-clock { animation: hero-rise 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both; }
 .hero-date  { animation: hero-rise 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.55s both; }
 .hero-title { animation: hero-title-in 1.9s cubic-bezier(0.16, 1, 0.3, 1) 0.85s both; }
 .hero-sub   { animation: hero-rise 1.5s cubic-bezier(0.16, 1, 0.3, 1) 1.45s both; }
 .hero-cta   { animation: hero-rise 1.5s cubic-bezier(0.16, 1, 0.3, 1) 1.8s both; }
+@media (prefers-reduced-motion: reduce) {
+  .hero-bg { animation: none !important; }
+}

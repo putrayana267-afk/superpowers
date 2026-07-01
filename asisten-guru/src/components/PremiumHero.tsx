@@ -44,37 +44,33 @@ export function PremiumHero({ onEnter }: PremiumHeroProps) {
 
   return (
     <div className="relative min-h-[100dvh] w-full overflow-hidden bg-[#04140c]">
-      <video
-        className="absolute inset-0 h-full w-full object-cover"
-        style={{ zIndex: 0 }}
-        src={`${BASE}hero-tunnel.mp4`}
-        poster={`${BASE}hero-tunnel.jpg`}
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="auto"
-        tabIndex={-1}
-        aria-hidden
-      />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0"
-        style={{
-          zIndex: 1,
-          background:
-            'radial-gradient(900px 620px at 50% 40%, transparent, rgba(2,5,10,.32) 76%), linear-gradient(180deg, rgba(2,5,10,.32), transparent 36%, rgba(2,5,10,.72))',
-        }}
-      />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0"
-        style={{
-          zIndex: 2,
-          background:
-            'radial-gradient(ellipse 95% 92% at 50% 44%, transparent 50%, rgba(1,3,8,.6))',
-        }}
-      />
+      <div aria-hidden className="hero-bg absolute inset-0" style={{ zIndex: 0 }}>
+        <video
+          className="absolute inset-0 h-full w-full object-cover"
+          src={`${BASE}hero-tunnel.mp4`}
+          poster={`${BASE}hero-tunnel.jpg`}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          tabIndex={-1}
+        />
+        <div
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background:
+              'radial-gradient(900px 620px at 50% 40%, transparent, rgba(2,5,10,.32) 76%), linear-gradient(180deg, rgba(2,5,10,.32), transparent 36%, rgba(2,5,10,.72))',
+          }}
+        />
+        <div
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background:
+              'radial-gradient(ellipse 95% 92% at 50% 44%, transparent 50%, rgba(1,3,8,.6))',
+          }}
+        />
+      </div>
 
       <div
         className="relative flex min-h-[100dvh] flex-col items-center justify-center px-6 text-center"

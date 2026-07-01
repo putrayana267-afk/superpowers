@@ -120,7 +120,7 @@ function Root() {
     }
     return (
       <Suspense
-        fallback={<div className="min-h-screen bg-[#0F1115]" aria-hidden />}
+        fallback={<div className="min-h-screen w-full bg-[#04140c]" />}
       >
         <PremiumHero onEnter={enterApp} />
       </Suspense>
