@@ -8,10 +8,9 @@ interface PremiumHeroProps {
  *  Isi untuk personal, mis. { nama: 'Akhid', mapel: 'Bahasa Arab' }. */
 const GURU = { nama: '', mapel: '' };
 
-/** '/' di web/Vercel, './' di APK Capacitor — agar aset public/ resolve di dua-duanya.
- *  Cast lokal: proyek ini tak memuat tipe `vite/client` (tsconfig types=["node"]),
- *  jadi import.meta.env di-cast agar tsc lolos tanpa menyentuh file lain. */
-const BASE = (import.meta as unknown as { env: { BASE_URL: string } }).env.BASE_URL;
+/** '/' di web/Vercel, './' di APK Capacitor. */
+const BASE = (import.meta as unknown as { env: { BASE_URL: string } }).env
+  .BASE_URL;
 
 function greetingByHour(h: number): string {
   if (h >= 4 && h < 11) return 'Selamat pagi';
@@ -20,12 +19,6 @@ function greetingByHour(h: number): string {
   return 'Selamat malam';
 }
 
-/**
- * Hero landing bergaya "Akhid Noir": video terowongan full-bleed + vignette,
- * sapaan by jam, jam+tanggal live, satu CTA masuk. Presentasi murni; sapaan
- * memakai data guru sendiri (bukan siswa). Kontrak: named export PremiumHero,
- * prop onEnter (dipanggil saat CTA ditekan) — dijaga agar main.tsx tak patah.
- */
 export function PremiumHero({ onEnter }: PremiumHeroProps) {
   const [now, setNow] = useState<Date>(() => new Date());
   useEffect(() => {
@@ -87,27 +80,25 @@ export function PremiumHero({ onEnter }: PremiumHeroProps) {
         className="relative flex min-h-[100dvh] flex-col items-center justify-center px-6 text-center"
         style={{ zIndex: 10 }}
       >
-        <div className="animate-fade-up">
-          <div
-            className="font-grotesk text-4xl font-bold tabular-nums tracking-tight text-white sm:text-5xl"
-            style={{ textShadow: '0 2px 24px rgba(0,0,0,.55)' }}
-          >
-            {jam}
-          </div>
-          <div className="mt-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-emerald-deep sm:text-xs">
-            {tanggal}
-          </div>
+        <div
+          className="hero-clock font-grotesk text-4xl font-bold tabular-nums tracking-tight text-white sm:text-5xl"
+          style={{ textShadow: '0 2px 24px rgba(0,0,0,.55)' }}
+        >
+          {jam}
+        </div>
+        <div className="hero-date mt-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-emerald-deep sm:text-xs">
+          {tanggal}
         </div>
 
         <h1
-          className="animate-fade-up mt-8 font-display text-[clamp(2rem,8vw,3.5rem)] font-bold uppercase leading-[1.1] tracking-wide text-white"
-          style={{ animationDelay: '0.1s', textShadow: '0 2px 28px rgba(0,0,0,.6)' }}
+          className="hero-title mt-8 font-display text-[clamp(2rem,8vw,3.5rem)] font-bold uppercase leading-[1.1] tracking-wide text-white"
+          style={{ textShadow: '0 2px 28px rgba(0,0,0,.6)' }}
         >
           {sapaan}
         </h1>
         <p
-          className="animate-fade-up mt-3 text-sm text-white/70 sm:text-base"
-          style={{ animationDelay: '0.2s', textShadow: '0 1px 16px rgba(0,0,0,.5)' }}
+          className="hero-sub mt-3 text-sm text-white/70 sm:text-base"
+          style={{ textShadow: '0 1px 16px rgba(0,0,0,.5)' }}
         >
           {subtitle}
         </p>
@@ -115,11 +106,8 @@ export function PremiumHero({ onEnter }: PremiumHeroProps) {
         <button
           type="button"
           onClick={onEnter}
-          className="animate-fade-up mt-10 inline-flex items-center justify-center rounded-full bg-[#4CE896] px-8 py-4 text-base font-semibold text-[#04140c] transition-transform active:scale-95"
-          style={{
-            animationDelay: '0.3s',
-            boxShadow: '0 0 26px -8px rgba(102,255,176,.7)',
-          }}
+          className="hero-cta mt-10 inline-flex items-center justify-center rounded-full bg-[#4CE896] px-8 py-4 text-base font-semibold text-[#04140c] transition-transform active:scale-95"
+          style={{ boxShadow: '0 0 26px -8px rgba(102,255,176,.7)' }}
         >
           Masuk ke ruang kerja
         </button>
