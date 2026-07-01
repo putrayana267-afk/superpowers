@@ -215,21 +215,22 @@
   }
 }
 
-/* ===== Layar Sambutan (WelcomeSplash) — animasi masuk sinematik =====
-   Hanya transform/opacity/filter. Semua keyframe BERAKHIR pada state terlihat,
-   jadi saat prefers-reduced-motion (aturan global menuntaskan ke 100% seketika)
-   konten tetap tampil. */
-@keyframes splash-glow-in {
-  from { opacity: 0; transform: scale(0.85); }
-  to   { opacity: 1; transform: scale(1); }
+/* ===== Layar Sambutan (WelcomeSplash) — urutan sinematik 10 detik =====
+   fade-in berlapis 3s → diam 4s (glow bernapas) → fade-out 3s (melayang+lembut).
+   Hanya transform/opacity/filter; semua keyframe berakhir pada state stabil. */
+@keyframes splash-glow {
+  0%   { opacity: 0; transform: scale(0.8); }
+  30%  { opacity: 1; transform: scale(1); }
+  65%  { opacity: 0.85; transform: scale(1.05); }
+  100% { opacity: 1; transform: scale(1); }
 }
 @keyframes splash-eyebrow-in {
-  from { opacity: 0; letter-spacing: 0.14em; transform: translateY(10px); }
+  from { opacity: 0; letter-spacing: 0.10em; transform: translateY(12px); }
   to   { opacity: 1; letter-spacing: 0.30em; transform: translateY(0); }
 }
 @keyframes splash-title-in {
-  0%   { opacity: 0; transform: translateY(26px) scale(0.97); filter: blur(16px); }
-  60%  { opacity: 1; }
+  0%   { opacity: 0; transform: translateY(30px) scale(0.96); filter: blur(20px); }
+  55%  { opacity: 1; }
   100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
 }
 @keyframes splash-divider-in {
@@ -237,12 +238,17 @@
   to   { opacity: 1; transform: scaleX(1); }
 }
 @keyframes splash-sheen-sweep {
-  0%   { opacity: 0; transform: translateX(-120%) skewX(-16deg); }
-  25%  { opacity: 1; }
-  100% { opacity: 0; transform: translateX(150%) skewX(-16deg); }
+  0%       { opacity: 0; transform: translateX(-120%) skewX(-16deg); }
+  20%      { opacity: 1; }
+  60%,100% { opacity: 0; transform: translateX(160%) skewX(-16deg); }
 }
-.splash-glow    { animation: splash-glow-in 1.2s ease-out both; }
-.splash-eyebrow { animation: splash-eyebrow-in 0.7s ease-out 0.1s both; }
-.splash-title   { animation: splash-title-in 0.95s cubic-bezier(0.16, 0.84, 0.32, 1) 0.4s both; }
-.splash-divider { transform-origin: center; animation: splash-divider-in 0.6s ease-out 1.15s both; }
-.splash-sheen   { animation: splash-sheen-sweep 0.9s ease-in-out 1.35s both; }
+@keyframes splash-exit {
+  0%, 70% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+  100%    { opacity: 0; transform: translateY(-14px) scale(1.02); filter: blur(8px); }
+}
+.splash-exit    { animation: splash-exit 10s ease-in-out both; }
+.splash-glow    { animation: splash-glow 10s ease-in-out both; }
+.splash-eyebrow { animation: splash-eyebrow-in 1.8s ease-out 0.3s both; }
+.splash-title   { animation: splash-title-in 2.4s cubic-bezier(0.16, 0.84, 0.32, 1) 0.6s both; }
+.splash-divider { transform-origin: center; animation: splash-divider-in 1.4s ease-out 1.7s both; }
+.splash-sheen   { animation: splash-sheen-sweep 3.4s ease-in-out 1.2s both; }
