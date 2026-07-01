@@ -17,7 +17,7 @@
     @apply font-body text-ink antialiased;
     margin: 0;
     overflow-x: hidden;
-    background-color: #04140c;
+    background-color: #04100a;
     background-image:
       radial-gradient(1200px 600px at 100% -10%, rgba(76, 232, 150, 0.1), transparent 60%),
       radial-gradient(900px 500px at -10% 10%, rgba(52, 231, 224, 0.08), transparent 55%),

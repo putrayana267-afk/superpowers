@@ -153,7 +153,7 @@ function KpiCard({
           {label}
         </span>
       </div>
-      <div className="font-display text-[clamp(0.95rem,4.2vw,1.875rem)] font-bold tabular-nums tracking-tight text-white">
+      <div className="font-grotesk text-[clamp(0.95rem,4.2vw,1.875rem)] font-bold tabular-nums tracking-tight text-white">
         {children}
       </div>
       <div
@@ -557,7 +557,7 @@ export function PremiumHero({ onEnter }: PremiumHeroProps) {
           </motion.div>
           <motion.h1
             variants={textItem}
-            className="font-display text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl lg:text-6xl"
+            className="font-grotesk text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl lg:text-6xl"
           >
             Pantau semuanya dalam{' '}
             <span
