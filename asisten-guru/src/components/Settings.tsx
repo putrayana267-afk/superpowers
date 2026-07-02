@@ -18,6 +18,7 @@ import { controlBase } from './controlStyles';
 import { KOTA } from '../features/waktu/kota';
 import type { Zona } from '../features/waktu/kota';
 import { useZonaWaktu } from '../features/waktu/useZonaWaktu';
+import type { PilihanZona } from '../features/waktu/useZonaWaktu';
 import { muatKecamatan, cariKecamatan } from '../features/waktu/kecamatan';
 import type { Kecamatan } from '../features/waktu/kecamatan';
 
@@ -44,10 +45,19 @@ export function Settings() {
     pilihan.mode === 'manual' ? pilihan.zona : null,
   );
 
+  // Umpan balik seragam: simpan, reset pencarian (daftar menutup), toast.
+  const pilihKota = (p: PilihanZona, labelToast: string) => {
+    setPilihan(p);
+    setCari('');
+    toast(`Zona waktu: ${labelToast} ✓`, 'success');
+  };
+
   // "Lainnya" tersimpan saat nama & zona sama-sama terisi.
   function simpanManual(nama: string, zona: Zona | null) {
     if (nama.trim() && zona) {
       setPilihan({ mode: 'manual', nama: nama.trim(), zona });
+      toast(`Zona waktu: ${nama.trim()} (${zona}) ✓`, 'success');
+      setManualNama('');
     }
   }
 
@@ -264,7 +274,10 @@ export function Settings() {
                     key={`${e.n}|${e.k}|${i}`}
                     type="button"
                     onClick={() =>
-                      setPilihan({ mode: 'kota', nama: e.n, zona: e.z })
+                      pilihKota(
+                        { mode: 'kota', nama: e.n, zona: e.z },
+                        `${e.n} (${e.z})`,
+                      )
                     }
                     className={cn(
                       'flex w-full items-center justify-between gap-2 rounded-lg px-3 py-2 text-left text-sm transition-colors',
@@ -311,7 +324,10 @@ export function Settings() {
                       key={k.nama}
                       type="button"
                       onClick={() =>
-                        setPilihan({ mode: 'kota', nama: k.nama, zona: k.zona })
+                        pilihKota(
+                          { mode: 'kota', nama: k.nama, zona: k.zona },
+                          `${k.nama} (${k.zona})`,
+                        )
                       }
                       className={cn(
                         'block w-full rounded-lg px-3 py-2 text-left text-sm transition-colors',
@@ -337,9 +353,9 @@ export function Settings() {
             <input
               type="text"
               value={manualNama}
-              onChange={(e) => {
-                setManualNama(e.target.value);
-                simpanManual(e.target.value, manualZona);
+              onChange={(e) => setManualNama(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') simpanManual(manualNama, manualZona);
               }}
               placeholder="Nama kota…"
               aria-label="Nama kota manual"
