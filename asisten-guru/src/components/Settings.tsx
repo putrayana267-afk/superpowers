@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   Key,
   ArrowSquareOut,
@@ -38,28 +38,16 @@ export function Settings() {
   // Zona Waktu & Kota — persist via useZonaWaktu ('am.zonaWaktu').
   const { pilihan, setPilihan } = useZonaWaktu();
   const [cari, setCari] = useState('');
-  const [manualNama, setManualNama] = useState(
-    pilihan.mode === 'manual' ? pilihan.nama : '',
-  );
-  const [manualZona, setManualZona] = useState<Zona | null>(
-    pilihan.mode === 'manual' ? pilihan.zona : null,
-  );
+  const refZona = useRef<HTMLDivElement>(null);
 
-  // Umpan balik seragam: simpan, reset pencarian (daftar menutup), toast.
+  // Umpan balik seragam: simpan, reset pencarian (daftar menutup), toast,
+  // lalu meluncur ke header "Aktif" agar konfirmasi terlihat.
   const pilihKota = (p: PilihanZona, labelToast: string) => {
     setPilihan(p);
     setCari('');
     toast(`Zona waktu: ${labelToast} ✓`, 'success');
+    refZona.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
-
-  // "Lainnya" tersimpan saat nama & zona sama-sama terisi.
-  function simpanManual(nama: string, zona: Zona | null) {
-    if (nama.trim() && zona) {
-      setPilihan({ mode: 'manual', nama: nama.trim(), zona });
-      toast(`Zona waktu: ${nama.trim()} (${zona}) ✓`, 'success');
-      setManualNama('');
-    }
-  }
 
   const kotaCocok = KOTA.filter((k) =>
     k.nama.toLowerCase().includes(cari.trim().toLowerCase()),
@@ -206,7 +194,7 @@ export function Settings() {
       </GlassCard>
 
       <GlassCard animate>
-        <div className="mb-4 flex items-center gap-3">
+        <div ref={refZona} className="mb-4 flex items-center gap-3">
           <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-soft text-emerald-deep gold-edge">
             <Clock className="h-5 w-5" />
           </span>
@@ -257,14 +245,13 @@ export function Settings() {
           )}
           {modeCari && muatKec === 'gagal' && (
             <p className="px-2 py-2 text-xs text-gold">
-              Daftar kecamatan gagal dimuat — pakai daftar populer di bawah
-              atau “Lainnya”.
+              Daftar kecamatan gagal dimuat — pakai daftar populer di bawah.
             </p>
           )}
           {hasilKecamatan &&
             (hasilKecamatan.length === 0 ? (
               <p className="px-2 py-3 text-xs text-ink/50">
-                Tidak ada kecamatan yang cocok — pakai “Lainnya” di bawah.
+                Tidak ada kecamatan yang cocok.
               </p>
             ) : (
               hasilKecamatan.map((e, i) => {
@@ -303,7 +290,7 @@ export function Settings() {
           )}
           {!hasilKecamatan && muatKec !== 'memuat' && kotaCocok.length === 0 && (
             <p className="px-2 py-3 text-xs text-ink/50">
-              Tidak ada kota yang cocok — pakai “Lainnya” di bawah.
+              Tidak ada kota yang cocok.
             </p>
           )}
           {hasilKecamatan || muatKec === 'memuat'
@@ -345,44 +332,6 @@ export function Settings() {
           })}
         </div>
 
-        <div className="mt-4">
-          <p className="text-sm font-medium text-ink/80">
-            Lainnya (kota di luar daftar)
-          </p>
-          <div className="mt-1.5 flex flex-col gap-2 sm:flex-row">
-            <input
-              type="text"
-              value={manualNama}
-              onChange={(e) => setManualNama(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') simpanManual(manualNama, manualZona);
-              }}
-              placeholder="Nama kota…"
-              aria-label="Nama kota manual"
-              className={cn(controlBase, 'sm:flex-1')}
-            />
-            <div className="flex gap-1.5">
-              {ZONA_URUT.map((zona) => (
-                <button
-                  key={zona}
-                  type="button"
-                  onClick={() => {
-                    setManualZona(zona);
-                    simpanManual(manualNama, zona);
-                  }}
-                  className={cn(
-                    'rounded-full px-3 py-1.5 text-xs font-semibold transition-colors',
-                    manualZona === zona && pilihan.mode === 'manual'
-                      ? 'bg-brand text-[#04140C]'
-                      : 'bg-white/5 text-emerald-deep hover:bg-white/10',
-                  )}
-                >
-                  {zona}
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
       </GlassCard>
     </div>
   );
