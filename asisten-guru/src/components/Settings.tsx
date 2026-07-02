@@ -18,6 +18,8 @@ import { controlBase } from './controlStyles';
 import { KOTA } from '../features/waktu/kota';
 import type { Zona } from '../features/waktu/kota';
 import { useZonaWaktu } from '../features/waktu/useZonaWaktu';
+import { muatKecamatan, cariKecamatan } from '../features/waktu/kecamatan';
+import type { Kecamatan } from '../features/waktu/kecamatan';
 
 const KEY = 'gemini_api_key';
 const ZONA_URUT: Zona[] = ['WIB', 'WITA', 'WIT'];
@@ -52,6 +54,25 @@ export function Settings() {
   const kotaCocok = KOTA.filter((k) =>
     k.nama.toLowerCase().includes(cari.trim().toLowerCase()),
   );
+
+  // Dataset kecamatan se-Indonesia (lazy; dimuat saat ketikan >= 2 huruf).
+  const [kecamatan, setKecamatan] = useState<Kecamatan[] | null>(null);
+  const [muatKec, setMuatKec] = useState<'idle' | 'memuat' | 'gagal'>('idle');
+  const modeCari = cari.trim().length >= 2;
+
+  useEffect(() => {
+    if (!modeCari || kecamatan || muatKec !== 'idle') return;
+    setMuatKec('memuat');
+    muatKecamatan()
+      .then((d) => {
+        setKecamatan(d);
+        setMuatKec('idle');
+      })
+      .catch(() => setMuatKec('gagal'));
+  }, [modeCari, kecamatan, muatKec]);
+
+  const hasilKecamatan =
+    modeCari && kecamatan ? cariKecamatan(kecamatan, cari).slice(0, 50) : null;
 
   useEffect(() => {
     let active = true;
@@ -218,12 +239,63 @@ export function Settings() {
         />
 
         <div className="mt-2 max-h-64 overflow-y-auto rounded-xl border border-white/10 bg-white/[0.03] p-2">
-          {kotaCocok.length === 0 && (
+          {modeCari && muatKec === 'memuat' && (
+            <p className="flex items-center gap-2 px-2 py-3 text-xs text-ink/50">
+              <CircleNotch className="h-3.5 w-3.5 animate-spin" />
+              Memuat daftar kecamatan…
+            </p>
+          )}
+          {modeCari && muatKec === 'gagal' && (
+            <p className="px-2 py-2 text-xs text-gold">
+              Daftar kecamatan gagal dimuat — pakai daftar populer di bawah
+              atau “Lainnya”.
+            </p>
+          )}
+          {hasilKecamatan &&
+            (hasilKecamatan.length === 0 ? (
+              <p className="px-2 py-3 text-xs text-ink/50">
+                Tidak ada kecamatan yang cocok — pakai “Lainnya” di bawah.
+              </p>
+            ) : (
+              hasilKecamatan.map((e, i) => {
+                const aktif = pilihan.mode === 'kota' && pilihan.nama === e.n;
+                return (
+                  <button
+                    key={`${e.n}|${e.k}|${i}`}
+                    type="button"
+                    onClick={() =>
+                      setPilihan({ mode: 'kota', nama: e.n, zona: e.z })
+                    }
+                    className={cn(
+                      'flex w-full items-center justify-between gap-2 rounded-lg px-3 py-2 text-left text-sm transition-colors',
+                      aktif
+                        ? 'bg-white/10 font-semibold text-emerald-deep'
+                        : 'text-ink/80 hover:bg-white/10',
+                    )}
+                  >
+                    <span className="min-w-0 truncate">
+                      {e.n} <span className="text-ink/50">— {e.k}</span>
+                    </span>
+                    <span className="shrink-0 rounded-full bg-white/5 px-2 py-0.5 text-[10px] font-semibold text-emerald-deep">
+                      {e.z}
+                    </span>
+                  </button>
+                );
+              })
+            ))}
+          {!hasilKecamatan && muatKec !== 'memuat' && (
+            <h3 className="px-2 pb-1 pt-2 text-xs font-semibold uppercase tracking-wider text-emerald-deep/60">
+              Populer
+            </h3>
+          )}
+          {!hasilKecamatan && muatKec !== 'memuat' && kotaCocok.length === 0 && (
             <p className="px-2 py-3 text-xs text-ink/50">
               Tidak ada kota yang cocok — pakai “Lainnya” di bawah.
             </p>
           )}
-          {ZONA_URUT.map((zona) => {
+          {hasilKecamatan || muatKec === 'memuat'
+            ? null
+            : ZONA_URUT.map((zona) => {
             const daftar = kotaCocok.filter((k) => k.zona === zona);
             if (daftar.length === 0) return null;
             return (
