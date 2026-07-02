@@ -297,7 +297,7 @@ export function SheetSelect({
                   transformOrigin:
                     coords.placement === 'bottom' ? 'top' : 'bottom',
                 }}
-                className="z-[111] overflow-y-auto rounded-[28px] border border-white/25 bg-[rgba(16,42,34,0.35)] p-2 backdrop-blur-2xl backdrop-saturate-[1.6] backdrop-brightness-[1.15] shadow-[0_28px_80px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.4),inset_0_0_0_1px_rgba(255,255,255,0.06)]"
+                className="z-[111] overflow-y-auto rounded-[28px] border border-white/25 bg-[rgba(16,42,34,0.30)] p-2 backdrop-blur-xl backdrop-saturate-[1.6] shadow-[0_28px_80px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.4),inset_0_0_0_1px_rgba(255,255,255,0.06)]"
                 initial={reduce ? { opacity: 0 } : { opacity: 0, y: yFrom }}
                 animate={reduce ? { opacity: 1 } : { opacity: 1, y: 0 }}
                 exit={reduce ? { opacity: 0 } : { opacity: 0, y: yFrom }}
@@ -314,18 +314,13 @@ export function SheetSelect({
               <>
                 <motion.div
                   key="scrim"
-                  className="fixed inset-0 z-[110] bg-black/50"
+                  className="fixed inset-0 z-[110] bg-[radial-gradient(120%_90%_at_20%_15%,rgba(52,190,130,0.85),transparent_55%),radial-gradient(110%_80%_at_85%_75%,rgba(56,180,205,0.65),transparent_55%),linear-gradient(rgba(0,0,0,0.40),rgba(0,0,0,0.40))]"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   transition={reduce ? { duration: 0 } : { duration: 0.2 }}
                   onClick={close}
                   aria-hidden
-                />
-                {/* Kanvas cahaya — aurora redup di bawah panel (nuansa iOS 26 noir). */}
-                <div
-                  aria-hidden
-                  className="pointer-events-none fixed inset-0 z-[110] bg-[radial-gradient(120%_90%_at_20%_15%,rgba(34,120,90,0.55),transparent_60%),radial-gradient(110%_80%_at_85%_75%,rgba(45,140,150,0.40),transparent_60%)]"
                 />
                 <motion.div
                   key="modal"
@@ -337,27 +332,15 @@ export function SheetSelect({
                   onKeyDown={(e) => {
                     if (e.key === 'Escape') close();
                   }}
-                  className="fixed left-1/2 top-1/2 z-[111] max-h-[75vh] w-[92vw] overflow-y-auto rounded-[28px] border border-white/25 bg-[rgba(16,42,34,0.35)] p-3 backdrop-blur-2xl backdrop-saturate-[1.6] backdrop-brightness-[1.15] shadow-[0_28px_80px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.4),inset_0_0_0_1px_rgba(255,255,255,0.06)] sm:w-[480px] md:w-[560px]"
+                  className="fixed left-1/2 top-1/2 z-[111] max-h-[75vh] w-[92vw] overflow-y-auto rounded-[28px] border border-white/25 bg-[rgba(16,42,34,0.30)] p-3 backdrop-blur-xl backdrop-saturate-[1.6] shadow-[0_28px_80px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.4),inset_0_0_0_1px_rgba(255,255,255,0.06)] sm:w-[480px] md:w-[560px]"
                   style={{ transformOrigin: 'center' }}
-                  initial={
-                    reduce
-                      ? { x: '-50%', y: '-50%', opacity: 0 }
-                      : { x: '-50%', y: '-50%', scale: 0.85, opacity: 0 }
-                  }
-                  animate={
-                    reduce
-                      ? { x: '-50%', y: '-50%', opacity: 1 }
-                      : { x: '-50%', y: '-50%', scale: 1, opacity: 1 }
-                  }
-                  exit={
-                    reduce
-                      ? { x: '-50%', y: '-50%', opacity: 0 }
-                      : { x: '-50%', y: '-50%', scale: 0.85, opacity: 0 }
-                  }
+                  initial={{ x: '-50%', y: '-50%', opacity: 0 }}
+                  animate={{ x: '-50%', y: '-50%', opacity: 1 }}
+                  exit={{ x: '-50%', y: '-50%', opacity: 0 }}
                   transition={
                     reduce
                       ? { duration: 0 }
-                      : { duration: 0.26, ease: [0.16, 1, 0.3, 1] }
+                      : { duration: 0.18, ease: [0.16, 1, 0.3, 1] }
                   }
                 >
                   {/* Highlight spekular atas — kilau kaca (pengganti sheen lama). */}
