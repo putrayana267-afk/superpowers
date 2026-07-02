@@ -6,7 +6,7 @@ import {
   useMemo,
   useState,
 } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion, useAnimationControls } from 'framer-motion';
 import { X } from 'lucide-react';
 import { TOOLS, getToolById } from './features/tools/registry';
 import type { HistoryEntry, Tool, ToolInputs } from './features/tools/types';
@@ -18,6 +18,7 @@ import {
   saveHistory,
 } from './lib/storage';
 import { copyToClipboard } from './lib/clipboard';
+import { cn } from './lib/cn';
 import { downloadDoc, downloadTxt } from './lib/download';
 import { Header } from './components/Header';
 import { Sidebar } from './components/Sidebar';
@@ -93,6 +94,16 @@ export default function App({ onOpenShowcase }: AppProps) {
   const [navOpen, setNavOpen] = useState(false);
   const [historyOpen, setHistoryOpen] = useState(false);
   const [view, setView] = useState<View>('tools');
+
+  // Otoritas animasi tunggal drawer (selalu ter-mount; tanpa AnimatePresence)
+  // — menghilangkan balapan AnimatePresence×drag.
+  const drawerControls = useAnimationControls();
+  useEffect(() => {
+    drawerControls.start({
+      x: navOpen ? 0 : '-105%',
+      transition: { type: 'spring', stiffness: 380, damping: 34 },
+    });
+  }, [navOpen, drawerControls]);
 
   const activeTool = getToolById(activeId) ?? TOOLS[0];
   const inputs = inputsByTool[activeId];
@@ -195,7 +206,6 @@ export default function App({ onOpenShowcase }: AppProps) {
 
   const handleSelectSaved = useCallback(() => {
     setView('tersimpan');
-    setNavOpen(false);
   }, []);
 
   const handleOpenSaved = useCallback((row: GenerationRow) => {
@@ -245,12 +255,10 @@ export default function App({ onOpenShowcase }: AppProps) {
 
   const handleSelectLibrary = useCallback(() => {
     setView('perpustakaan');
-    setNavOpen(false);
   }, []);
 
   const handleSelectBeranda = useCallback(() => {
     setView('beranda');
-    setNavOpen(false);
   }, []);
 
   const handleOpenEntry = useCallback((entry: HistoryEntry) => {
@@ -435,66 +443,68 @@ export default function App({ onOpenShowcase }: AppProps) {
         </main>
       </div>
 
-      {/* Drawer navigasi mobile */}
-      <AnimatePresence>
-        {navOpen && (
-          <div className="fixed inset-0 z-40 lg:hidden">
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.25 }}
-              onClick={() => setNavOpen(false)}
-              className="absolute inset-0 bg-black/50 backdrop-blur-sm"
-              aria-hidden
-            />
-            <motion.div
-              initial={{ x: '-100%' }}
-              animate={{ x: 0 }}
-              exit={{ x: '-100%' }}
-              transition={{ type: 'spring', stiffness: 380, damping: 34 }}
-              drag="x"
-              dragConstraints={{ left: -288, right: 0 }}
-              dragElastic={0.04}
-              dragSnapToOrigin
-              onDragEnd={(_e, info) => {
-                if (info.offset.x < -70 || info.velocity.x < -600) {
-                  setNavOpen(false);
-                }
-              }}
-              className="absolute left-0 top-0 flex h-full w-72 max-w-[80vw] flex-col border-r border-white/40 bg-emerald-soft/95 shadow-glass-lg backdrop-blur-xl"
-              role="dialog"
-              aria-label="Daftar alat"
-            >
-              <div className="flex items-center justify-between border-b border-white/40 px-4 py-4">
-                <span className="font-display font-bold text-emerald-deep">
-                  Pilih Alat
-                </span>
-                <button
-                  type="button"
-                  onClick={() => setNavOpen(false)}
-                  aria-label="Tutup menu"
-                  className="flex h-9 w-9 items-center justify-center rounded-xl text-ink/50 hover:bg-white/10"
-                >
-                  <X className="h-5 w-5" />
-                </button>
-              </div>
-              <div className="flex-1 overflow-y-auto p-4">
-                <Sidebar
-                  activeId={activeId}
-                  onSelect={handleSelectTool}
-                  berandaActive={view === 'beranda'}
-                  onSelectBeranda={handleSelectBeranda}
-                  libraryActive={view === 'perpustakaan'}
-                  onSelectLibrary={handleSelectLibrary}
-                  savedActive={view === 'tersimpan'}
-                  onSelectSaved={handleSelectSaved}
-                />
-              </div>
-            </motion.div>
-          </div>
+      {/* Drawer navigasi mobile — selalu ter-mount; animasi via drawerControls */}
+      <div
+        className={cn(
+          'fixed inset-0 z-40 lg:hidden',
+          !navOpen && 'pointer-events-none',
         )}
-      </AnimatePresence>
+      >
+        <motion.div
+          animate={{ opacity: navOpen ? 1 : 0 }}
+          transition={{ duration: 0.25 }}
+          style={{ pointerEvents: navOpen ? 'auto' : 'none' }}
+          onClick={() => setNavOpen(false)}
+          className="absolute inset-0 bg-black/50"
+          aria-hidden
+        />
+        <motion.div
+          initial={{ x: '-105%' }}
+          animate={drawerControls}
+          drag={navOpen ? 'x' : false}
+          dragConstraints={{ left: -288, right: 0 }}
+          dragElastic={0.04}
+          onDragEnd={(_e, info) => {
+            if (info.offset.x < -70 || info.velocity.x < -600) {
+              setNavOpen(false);
+            } else {
+              drawerControls.start({
+                x: 0,
+                transition: { type: 'spring', stiffness: 380, damping: 34 },
+              });
+            }
+          }}
+          className="absolute left-0 top-0 flex h-full w-72 max-w-[80vw] flex-col border-r border-white/40 bg-emerald-soft/95 shadow-glass-lg backdrop-blur-xl"
+          role="dialog"
+          aria-label="Daftar alat"
+        >
+          <div className="flex items-center justify-between border-b border-white/40 px-4 py-4">
+            <span className="font-display font-bold text-emerald-deep">
+              Pilih Alat
+            </span>
+            <button
+              type="button"
+              onClick={() => setNavOpen(false)}
+              aria-label="Tutup menu"
+              className="flex h-9 w-9 items-center justify-center rounded-xl text-ink/50 hover:bg-white/10"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </div>
+          <div className="flex-1 overflow-y-auto p-4">
+            <Sidebar
+              activeId={activeId}
+              onSelect={handleSelectTool}
+              berandaActive={view === 'beranda'}
+              onSelectBeranda={handleSelectBeranda}
+              libraryActive={view === 'perpustakaan'}
+              onSelectLibrary={handleSelectLibrary}
+              savedActive={view === 'tersimpan'}
+              onSelectSaved={handleSelectSaved}
+            />
+          </div>
+        </motion.div>
+      </div>
 
       <HistoryDrawer
         open={historyOpen}
