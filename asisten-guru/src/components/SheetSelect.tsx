@@ -187,15 +187,15 @@ export function SheetSelect({
                   aria-selected={selected}
                   onClick={() => pilih(item)}
                   className={cn(
-                    'flex w-full items-center justify-between gap-2 rounded-xl px-4 py-3.5 text-left text-base text-[#123B2A] transition-colors',
+                    'flex w-full items-center justify-between gap-2 rounded-xl px-4 py-3.5 text-left text-base text-[#EAFFF4]/90 transition-colors',
                     selected
-                      ? 'bg-white/60 font-semibold text-[#0E7A46]'
-                      : 'hover:bg-black/[0.04] active:bg-white/70',
+                      ? 'bg-white/[0.12] font-semibold text-[#EAFFF4]'
+                      : 'hover:bg-white/[0.08] active:bg-white/15',
                   )}
                 >
                   <span className={textClass}>{labelPrefix + item}</span>
                   {selected && (
-                    <Check className="h-5 w-5 shrink-0 text-[#0E7A46]" />
+                    <Check className="h-5 w-5 shrink-0 text-[#4CE896]" />
                   )}
                 </button>
               );
@@ -210,15 +210,15 @@ export function SheetSelect({
             aria-selected={showManual}
             onClick={pilihManual}
             className={cn(
-              'mt-1 flex w-full items-center justify-between gap-2 rounded-xl border-t border-black/[0.06] px-4 py-3.5 text-left text-base text-[#123B2A] transition-colors',
+              'mt-1 flex w-full items-center justify-between gap-2 rounded-xl border-t border-white/10 px-4 py-3.5 text-left text-base text-[#EAFFF4]/90 transition-colors',
               showManual
-                ? 'bg-white/60 font-semibold text-[#0E7A46]'
-                : 'hover:bg-black/[0.04] active:bg-white/70',
+                ? 'bg-white/[0.12] font-semibold text-[#EAFFF4]'
+                : 'hover:bg-white/[0.08] active:bg-white/15',
             )}
           >
             <span className={textClass}>Lainnya (ketik manual)</span>
             {showManual && (
-              <Check className="h-5 w-5 shrink-0 text-[#0E7A46]" />
+              <Check className="h-5 w-5 shrink-0 text-[#4CE896]" />
             )}
           </button>
         )}
@@ -297,7 +297,7 @@ export function SheetSelect({
                   transformOrigin:
                     coords.placement === 'bottom' ? 'top' : 'bottom',
                 }}
-                className="z-[111] overflow-y-auto rounded-[28px] border border-white/60 bg-[linear-gradient(160deg,rgba(214,232,221,0.92),rgba(213,226,232,0.90),rgba(236,242,238,0.92))] p-2 backdrop-blur-xl shadow-[0_24px_60px_rgba(0,0,0,0.45),inset_0_1px_0_rgba(255,255,255,0.8)]"
+                className="z-[111] overflow-y-auto rounded-[28px] border border-white/25 bg-[rgba(16,42,34,0.35)] p-2 backdrop-blur-2xl backdrop-saturate-[1.6] backdrop-brightness-[1.15] shadow-[0_28px_80px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.4),inset_0_0_0_1px_rgba(255,255,255,0.06)]"
                 initial={reduce ? { opacity: 0 } : { opacity: 0, y: yFrom }}
                 animate={reduce ? { opacity: 1 } : { opacity: 1, y: 0 }}
                 exit={reduce ? { opacity: 0 } : { opacity: 0, y: yFrom }}
@@ -314,13 +314,18 @@ export function SheetSelect({
               <>
                 <motion.div
                   key="scrim"
-                  className="fixed inset-0 z-[110] bg-black/40"
+                  className="fixed inset-0 z-[110] bg-black/50"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   transition={reduce ? { duration: 0 } : { duration: 0.2 }}
                   onClick={close}
                   aria-hidden
+                />
+                {/* Kanvas cahaya — aurora redup di bawah panel (nuansa iOS 26 noir). */}
+                <div
+                  aria-hidden
+                  className="pointer-events-none fixed inset-0 z-[110] bg-[radial-gradient(120%_90%_at_20%_15%,rgba(34,120,90,0.55),transparent_60%),radial-gradient(110%_80%_at_85%_75%,rgba(45,140,150,0.40),transparent_60%)]"
                 />
                 <motion.div
                   key="modal"
@@ -332,7 +337,7 @@ export function SheetSelect({
                   onKeyDown={(e) => {
                     if (e.key === 'Escape') close();
                   }}
-                  className="fixed left-1/2 top-1/2 z-[111] max-h-[75vh] w-[92vw] overflow-y-auto rounded-[28px] border border-white/60 bg-[linear-gradient(160deg,rgba(214,232,221,0.92),rgba(213,226,232,0.90),rgba(236,242,238,0.92))] p-3 backdrop-blur-xl shadow-[0_24px_60px_rgba(0,0,0,0.45),inset_0_1px_0_rgba(255,255,255,0.8)] sm:w-[480px] md:w-[560px]"
+                  className="fixed left-1/2 top-1/2 z-[111] max-h-[75vh] w-[92vw] overflow-y-auto rounded-[28px] border border-white/25 bg-[rgba(16,42,34,0.35)] p-3 backdrop-blur-2xl backdrop-saturate-[1.6] backdrop-brightness-[1.15] shadow-[0_28px_80px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.4),inset_0_0_0_1px_rgba(255,255,255,0.06)] sm:w-[480px] md:w-[560px]"
                   style={{ transformOrigin: 'center' }}
                   initial={
                     reduce
@@ -355,8 +360,13 @@ export function SheetSelect({
                       : { duration: 0.26, ease: [0.16, 1, 0.3, 1] }
                   }
                 >
-                  <div className="sticky top-0 -mx-3 -mt-3 mb-1 rounded-t-[28px] border-b border-black/[0.06] bg-white/50 px-4 pb-3 pt-4 backdrop-blur-md">
-                    <p className="text-base font-semibold text-[#0E3B26] sm:text-lg">
+                  {/* Highlight spekular atas — kilau kaca (pengganti sheen lama). */}
+                  <div
+                    aria-hidden
+                    className="pointer-events-none absolute inset-x-0 top-0 h-1/3 rounded-t-[28px] bg-[linear-gradient(180deg,rgba(255,255,255,0.14),transparent)]"
+                  />
+                  <div className="sticky top-0 -mx-3 -mt-3 mb-1 rounded-t-[28px] border-b border-white/10 bg-white/[0.08] px-4 pb-3 pt-4 backdrop-blur-xl">
+                    <p className="text-base font-semibold text-[#EAFFF4] sm:text-lg">
                       {label}
                     </p>
                   </div>
