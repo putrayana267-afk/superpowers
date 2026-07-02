@@ -187,7 +187,7 @@ export function SheetSelect({
                   aria-selected={selected}
                   onClick={() => pilih(item)}
                   className={cn(
-                    'flex w-full items-center justify-between gap-2 rounded-xl px-4 py-3.5 text-left text-base text-ink transition-colors',
+                    'flex w-full items-center justify-between gap-2 rounded-xl px-4 py-3.5 text-left text-base text-ink transition-colors [text-shadow:0_1px_2px_rgba(0,0,0,0.35)]',
                     selected
                       ? 'bg-white/10 font-semibold text-emerald-deep'
                       : 'hover:bg-emerald-deep/5 active:bg-white/15',
@@ -210,7 +210,7 @@ export function SheetSelect({
             aria-selected={showManual}
             onClick={pilihManual}
             className={cn(
-              'mt-1 flex w-full items-center justify-between gap-2 rounded-xl border-t border-white/[0.08] px-4 py-3.5 text-left text-base text-ink transition-colors',
+              'mt-1 flex w-full items-center justify-between gap-2 rounded-xl border-t border-white/[0.08] px-4 py-3.5 text-left text-base text-ink transition-colors [text-shadow:0_1px_2px_rgba(0,0,0,0.35)]',
               showManual
                 ? 'bg-white/10 font-semibold text-emerald-deep'
                 : 'hover:bg-emerald-deep/5 active:bg-white/15',
@@ -297,7 +297,7 @@ export function SheetSelect({
                   transformOrigin:
                     coords.placement === 'bottom' ? 'top' : 'bottom',
                 }}
-                className="z-[111] overflow-y-auto rounded-[28px] border border-white/20 bg-[linear-gradient(180deg,rgba(255,255,255,0.12),rgba(255,255,255,0.04))] p-2 backdrop-blur-2xl backdrop-saturate-[1.8] shadow-[0_24px_70px_rgba(0,0,0,0.65),inset_0_1px_0_rgba(255,255,255,0.28),inset_0_-1px_0_rgba(255,255,255,0.06)]"
+                className="z-[111] overflow-y-auto rounded-[28px] border border-white/25 bg-[linear-gradient(180deg,rgba(255,255,255,0.22),rgba(255,255,255,0.09))] p-2 backdrop-blur-2xl backdrop-saturate-150 shadow-[0_24px_70px_rgba(0,0,0,0.55),inset_0_1px_0_rgba(255,255,255,0.35)]"
                 initial={reduce ? { opacity: 0 } : { opacity: 0, y: yFrom }}
                 animate={reduce ? { opacity: 1 } : { opacity: 1, y: 0 }}
                 exit={reduce ? { opacity: 0 } : { opacity: 0, y: yFrom }}
@@ -314,7 +314,7 @@ export function SheetSelect({
               <>
                 <motion.div
                   key="scrim"
-                  className="fixed inset-0 z-[110] bg-black/45"
+                  className="fixed inset-0 z-[110] bg-black/30"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
@@ -322,10 +322,18 @@ export function SheetSelect({
                   onClick={close}
                   aria-hidden
                 />
-                {/* Cahaya di belakang panel — menghidupkan backdrop-blur kaca. */}
+                {/* Aurora di belakang panel — 3 blob warna menghidupkan kaca susu. */}
                 <div
                   aria-hidden
-                  className="pointer-events-none fixed left-1/2 top-[34%] z-[110] h-56 w-[64vw] -translate-x-1/2 -translate-y-1/2 bg-[radial-gradient(closest-side,rgba(76,232,150,0.22),transparent)] blur-2xl sm:w-[336px] md:w-[392px]"
+                  className="pointer-events-none fixed left-[16%] top-[26%] z-[110] aspect-square w-[64vw] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(closest-side,rgba(76,232,150,0.40),transparent)] blur-3xl sm:w-[336px] md:w-[392px]"
+                />
+                <div
+                  aria-hidden
+                  className="pointer-events-none fixed right-[4%] top-1/2 z-[110] aspect-square w-[55vw] -translate-y-1/2 rounded-full bg-[radial-gradient(closest-side,rgba(103,232,249,0.30),transparent)] blur-3xl sm:w-[288px] md:w-[336px]"
+                />
+                <div
+                  aria-hidden
+                  className="pointer-events-none fixed bottom-[18%] left-[14%] z-[110] aspect-square w-[50vw] -translate-x-1/2 translate-y-1/2 rounded-full bg-[radial-gradient(closest-side,rgba(255,244,214,0.22),transparent)] blur-3xl sm:w-[264px] md:w-[308px]"
                 />
                 <motion.div
                   key="modal"
@@ -337,7 +345,7 @@ export function SheetSelect({
                   onKeyDown={(e) => {
                     if (e.key === 'Escape') close();
                   }}
-                  className="fixed left-1/2 top-1/2 z-[111] max-h-[75vh] w-[92vw] overflow-y-auto rounded-[28px] border border-white/20 bg-[linear-gradient(180deg,rgba(255,255,255,0.12),rgba(255,255,255,0.04))] p-3 backdrop-blur-2xl backdrop-saturate-[1.8] shadow-[0_24px_70px_rgba(0,0,0,0.65),inset_0_1px_0_rgba(255,255,255,0.28),inset_0_-1px_0_rgba(255,255,255,0.06)] sm:w-[480px] md:w-[560px]"
+                  className="fixed left-1/2 top-1/2 z-[111] max-h-[75vh] w-[92vw] overflow-y-auto rounded-[28px] border border-white/25 bg-[linear-gradient(180deg,rgba(255,255,255,0.22),rgba(255,255,255,0.09))] p-3 backdrop-blur-2xl backdrop-saturate-150 shadow-[0_24px_70px_rgba(0,0,0,0.55),inset_0_1px_0_rgba(255,255,255,0.35)] sm:w-[480px] md:w-[560px]"
                   style={{ transformOrigin: 'center' }}
                   initial={
                     reduce
@@ -365,7 +373,7 @@ export function SheetSelect({
                     aria-hidden
                     className="pointer-events-none absolute inset-0 rounded-[28px] bg-[linear-gradient(115deg,rgba(255,255,255,0.10)_0%,transparent_40%)]"
                   />
-                  <div className="sticky top-0 -mx-3 -mt-3 mb-1 rounded-t-[28px] border-b border-white/10 bg-white/[0.06] px-4 pb-3 pt-4 backdrop-blur-xl">
+                  <div className="sticky top-0 -mx-3 -mt-3 mb-1 rounded-t-[28px] border-b border-white/10 bg-white/[0.12] px-4 pb-3 pt-4 backdrop-blur-xl">
                     <p className="text-base font-semibold text-emerald-deep sm:text-lg">
                       {label}
                     </p>
