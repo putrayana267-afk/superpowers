@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import type { ReactNode } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { X, Star, Trash2, Clock, Inbox } from 'lucide-react';
+import { X, Star, Trash, Clock, Tray } from '@phosphor-icons/react';
 import type { HistoryEntry } from '../features/tools/types';
 import { EmptyState } from './EmptyState';
 import { cn } from '../lib/cn';
@@ -102,7 +102,7 @@ export function HistoryDrawer({
             <div className="flex-1 overflow-y-auto px-5 pb-6">
               {visible.length === 0 ? (
                 <EmptyState
-                  icon={<Inbox className="h-7 w-7" />}
+                  icon={<Tray className="h-7 w-7" />}
                   title={
                     filter === 'favorite'
                       ? 'Belum ada favorit'
@@ -165,7 +165,7 @@ export function HistoryDrawer({
                           aria-label="Hapus dari riwayat"
                           className="flex h-8 w-8 items-center justify-center rounded-lg text-ink/40 transition-colors hover:bg-red-50 hover:text-red-500"
                         >
-                          <Trash2 className="h-4 w-4" />
+                          <Trash className="h-4 w-4" />
                         </button>
                       </div>
                     </li>

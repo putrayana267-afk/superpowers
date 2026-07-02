@@ -1,4 +1,4 @@
-import type { LucideIcon } from 'lucide-react';
+import type { Icon } from '@phosphor-icons/react';
 
 /** Tipe kolom input yang didukung oleh ToolForm. */
 export type FieldType =
@@ -52,7 +52,7 @@ export interface Tool {
   id: string;
   title: string;
   description: string;
-  icon: LucideIcon;
+  icon: Icon;
   /** Kategori untuk pengelompokan di sidebar. */
   category: string;
   fields: ToolField[];

@@ -1,5 +1,12 @@
 import { useEffect, useState } from 'react';
-import { KeyRound, ExternalLink, Save, Eye, EyeOff, Loader2 } from 'lucide-react';
+import {
+  Key,
+  ArrowSquareOut,
+  FloppyDisk,
+  Eye,
+  EyeSlash,
+  CircleNotch,
+} from '@phosphor-icons/react';
 import { Capacitor } from '@capacitor/core';
 import { GlassCard } from './GlassCard';
 import { Button } from './Button';
@@ -52,7 +59,7 @@ export function Settings() {
       <GlassCard gold animate>
         <div className="mb-4 flex items-center gap-3">
           <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-soft text-emerald-deep gold-edge">
-            <KeyRound className="h-5 w-5" />
+            <Key className="h-5 w-5" />
           </span>
           <div>
             <h2 className="font-display text-lg font-bold text-emerald-deep">
@@ -91,7 +98,7 @@ export function Settings() {
               className="absolute right-2 top-1/2 -translate-y-1/2 rounded-md p-1 text-ink/40 hover:text-ink/70"
             >
               {show ? (
-                <EyeOff className="h-4 w-4" />
+                <EyeSlash className="h-4 w-4" />
               ) : (
                 <Eye className="h-4 w-4" />
               )}
@@ -102,9 +109,9 @@ export function Settings() {
             disabled={saving || loading}
             icon={
               saving ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
+                <CircleNotch className="h-4 w-4 animate-spin" />
               ) : (
-                <Save className="h-4 w-4" />
+                <FloppyDisk className="h-4 w-4" />
               )
             }
           >
@@ -127,7 +134,7 @@ export function Settings() {
               className="inline-flex items-center gap-1 font-semibold text-emerald-deep underline"
             >
               Google AI Studio
-              <ExternalLink className="h-3.5 w-3.5" />
+              <ArrowSquareOut className="h-3.5 w-3.5" />
             </a>{' '}
             dan masuk dengan akun Google.
           </li>
@@ -145,4 +152,4 @@ export function Settings() {
 }
 
 /** Re-export ikon untuk entri navigasi Pengaturan. */
-export { KeyRound as SettingsIcon };
+export { Key as SettingsIcon };

@@ -3,13 +3,13 @@ import remarkGfm from 'remark-gfm';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Copy,
-  RefreshCw,
+  ArrowsClockwise,
   FileText,
-  FileType2,
+  FileDoc,
   Star,
-  Sparkles,
-  WifiOff,
-} from 'lucide-react';
+  Sparkle,
+  WifiSlash,
+} from '@phosphor-icons/react';
 import type { Tool } from '../features/tools/types';
 import { Button } from './Button';
 import { EmptyState } from './EmptyState';
@@ -79,13 +79,13 @@ export function ResultPanel({
             exit={{ opacity: 0 }}
           >
             <EmptyState
-              icon={<WifiOff className="h-7 w-7" />}
+              icon={<WifiSlash className="h-7 w-7" />}
               title="Belum berhasil dibuat"
               description={error}
               action={
                 <Button
                   onClick={onRetry}
-                  icon={<RefreshCw className="h-4 w-4" />}
+                  icon={<ArrowsClockwise className="h-4 w-4" />}
                 >
                   Coba Lagi
                 </Button>
@@ -102,7 +102,7 @@ export function ResultPanel({
             exit={{ opacity: 0 }}
           >
             <EmptyState
-              icon={<Sparkles className="h-7 w-7" />}
+              icon={<Sparkle className="h-7 w-7" />}
               title="Hasil akan muncul di sini"
               description={`Isi formulir di samping, lalu tekan "${tool.ctaLabel ?? 'Buat'}". Hasilnya bisa Anda salin, unduh, dan simpan ke favorit.`}
             />
@@ -157,7 +157,7 @@ export function ResultPanel({
                 variant="ghost"
                 size="sm"
                 onClick={onDownloadDoc}
-                icon={<FileType2 className="h-4 w-4" />}
+                icon={<FileDoc className="h-4 w-4" />}
               >
                 Word
               </Button>
@@ -165,7 +165,7 @@ export function ResultPanel({
                 variant="ghost"
                 size="sm"
                 onClick={onRegenerate}
-                icon={<RefreshCw className="h-4 w-4" />}
+                icon={<ArrowsClockwise className="h-4 w-4" />}
               >
                 Buat Ulang
               </Button>

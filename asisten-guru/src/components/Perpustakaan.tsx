@@ -1,16 +1,16 @@
 import { useMemo, useState } from 'react';
 import {
-  Search,
-  ExternalLink,
-  Library,
-  BookMarked,
-  Building2,
-  ClipboardCheck,
+  MagnifyingGlass,
+  ArrowSquareOut,
+  BookBookmark,
+  Buildings,
+  ClipboardText,
   Images,
   Lock,
-  Inbox,
-} from 'lucide-react';
-import type { LucideIcon } from 'lucide-react';
+  Tray,
+  Books,
+} from '@phosphor-icons/react';
+import type { Icon } from '@phosphor-icons/react';
 import { GlassCard } from './GlassCard';
 import { EmptyState } from './EmptyState';
 import { cn } from '../lib/cn';
@@ -39,7 +39,7 @@ interface Section {
   id: string;
   title: string;
   subtitle: string;
-  icon: LucideIcon;
+  icon: Icon;
   links: ResourceLink[];
   kitab?: KitabRumpun[];
 }
@@ -52,7 +52,7 @@ const SECTIONS: Section[] = [
     id: 'umum',
     title: 'Buku Teks, Modul Ajar & Perangkat',
     subtitle: 'Umum / Kemendikbud',
-    icon: Building2,
+    icon: Buildings,
     links: [
       {
         name: 'SIBI – Sistem Informasi Perbukuan Indonesia',
@@ -80,7 +80,7 @@ const SECTIONS: Section[] = [
     id: 'madrasah',
     title: 'Madrasah & Pesantren',
     subtitle: 'Kemenag',
-    icon: BookMarked,
+    icon: BookBookmark,
     links: [
       {
         name: 'SIKURMA – Sistem Kurikulum Madrasah',
@@ -131,7 +131,7 @@ const SECTIONS: Section[] = [
     id: 'asesmen',
     title: 'Bank Soal & Asesmen',
     subtitle: 'AKM / ANBK / Ujian',
-    icon: ClipboardCheck,
+    icon: ClipboardText,
     links: [
       {
         name: 'Pusmendik – Pusat Asesmen Pendidikan',
@@ -234,7 +234,7 @@ export function Perpustakaan() {
   return (
     <div className="flex flex-col gap-6">
       <div className="relative">
-        <Search
+        <MagnifyingGlass
           aria-hidden
           className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-emerald-deep/60"
         />
@@ -255,7 +255,7 @@ export function Perpustakaan() {
       {filtered.length === 0 ? (
         <GlassCard animate>
           <EmptyState
-            icon={<Inbox className="h-7 w-7" />}
+            icon={<Tray className="h-7 w-7" />}
             title="Tidak ada hasil"
             description={`Tidak ada sumber atau kitab yang cocok dengan "${query}".`}
           />
@@ -309,7 +309,7 @@ export function Perpustakaan() {
                           className="inline-flex items-center gap-1.5 rounded-lg bg-brand px-3 py-1.5 text-xs font-semibold text-[#04140C] transition hover:bg-brand-hover"
                         >
                           Buka
-                          <ExternalLink className="h-3.5 w-3.5" />
+                          <ArrowSquareOut className="h-3.5 w-3.5" />
                         </a>
                         {link.alt && (
                           <a
@@ -318,7 +318,7 @@ export function Perpustakaan() {
                             className="inline-flex items-center gap-1.5 rounded-lg border border-emerald-deep/20 bg-white/5 px-3 py-1.5 text-xs font-medium text-emerald-deep transition hover:bg-white/10"
                           >
                             {link.alt.label}
-                            <ExternalLink className="h-3.5 w-3.5" />
+                            <ArrowSquareOut className="h-3.5 w-3.5" />
                           </a>
                         )}
                       </div>
@@ -348,7 +348,7 @@ export function Perpustakaan() {
                               className="inline-flex items-center gap-1.5 rounded-full border border-emerald-deep/20 bg-white/5 px-3 py-1 text-xs text-emerald-deep transition hover:bg-emerald-deep/15"
                             >
                               {k}
-                              <Search className="h-3 w-3" />
+                              <MagnifyingGlass className="h-3 w-3" />
                             </a>
                           ))}
                         </div>
@@ -370,4 +370,4 @@ export function Perpustakaan() {
 }
 
 /** Ikon untuk entri navigasi Perpustakaan. */
-export const PerpustakaanIcon = Library;
+export const PerpustakaanIcon = Books;

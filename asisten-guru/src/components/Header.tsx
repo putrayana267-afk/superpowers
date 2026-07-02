@@ -1,4 +1,10 @@
-import { GraduationCap, History, Menu, Sparkles, Settings } from 'lucide-react';
+import {
+  GraduationCap,
+  ClockCounterClockwise,
+  List,
+  Sparkle,
+  GearSix,
+} from '@phosphor-icons/react';
 import { Button } from './Button';
 
 interface HeaderProps {
@@ -27,7 +33,7 @@ export function Header({
           aria-label="Buka daftar alat"
           className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/5 text-emerald-deep hover:bg-white/10 lg:hidden"
         >
-          <Menu className="h-5 w-5" />
+          <List className="h-5 w-5" />
         </button>
 
         <div className="flex items-center gap-2.5">
@@ -50,7 +56,7 @@ export function Header({
               variant="ghost"
               size="sm"
               onClick={onOpenShowcase}
-              icon={<Sparkles className="h-4 w-4" />}
+              icon={<Sparkle className="h-4 w-4" />}
               aria-label="Buka showcase"
             >
               <span className="hidden sm:inline">Showcase</span>
@@ -60,7 +66,7 @@ export function Header({
             variant="ghost"
             size="sm"
             onClick={onOpenHistory}
-            icon={<History className="h-4 w-4" />}
+            icon={<ClockCounterClockwise className="h-4 w-4" />}
             aria-label="Buka riwayat"
           >
             <span className="hidden sm:inline">Riwayat</span>
@@ -75,7 +81,7 @@ export function Header({
               variant="ghost"
               size="sm"
               onClick={onOpenSettings}
-              icon={<Settings className="h-4 w-4" />}
+              icon={<GearSix className="h-4 w-4" />}
               aria-label="Buka pengaturan"
             >
               <span className="hidden sm:inline">Pengaturan</span>

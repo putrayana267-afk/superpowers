@@ -7,7 +7,7 @@ import {
   useState,
 } from 'react';
 import { motion, useAnimationControls } from 'framer-motion';
-import { X } from 'lucide-react';
+import { IconContext, X } from '@phosphor-icons/react';
 import { TOOLS, getToolById } from './features/tools/registry';
 import type { HistoryEntry, Tool, ToolInputs } from './features/tools/types';
 import { generate, GenerateError, MissingApiKeyError } from './services/ai';
@@ -295,6 +295,7 @@ export default function App({ onOpenShowcase }: AppProps) {
   const ActiveIcon = activeTool.icon;
 
   return (
+    <IconContext.Provider value={{ weight: 'duotone' }}>
     <div className="min-h-screen">
       <Header
         onOpenMenu={() => setNavOpen(true)}
@@ -516,5 +517,6 @@ export default function App({ onOpenShowcase }: AppProps) {
         onClearAll={handleClearAll}
       />
     </div>
+    </IconContext.Provider>
   );
 }

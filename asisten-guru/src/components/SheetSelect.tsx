@@ -1,7 +1,7 @@
 import { startTransition, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
-import { ChevronDown, Check } from 'lucide-react';
+import { CaretDown, Check } from '@phosphor-icons/react';
 import type { MapelGroup } from '../data/struktur';
 import { Field } from './Field';
 import { cn } from '../lib/cn';
@@ -254,7 +254,7 @@ export function SheetSelect({
             {triggerText}
           </span>
         </button>
-        <ChevronDown
+        <CaretDown
           aria-hidden
           className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-emerald-deep/70"
         />
