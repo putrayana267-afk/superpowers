@@ -397,7 +397,7 @@ export default function App({ onOpenShowcase }: AppProps) {
               </div>
 
               <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-                <GlassCard className="h-fit" gold animate>
+                <GlassCard className="h-fit border border-white/10" animate>
                   <ToolForm
                     tool={activeTool}
                     inputs={inputs}
