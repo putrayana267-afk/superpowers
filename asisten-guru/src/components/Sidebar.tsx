@@ -1,6 +1,6 @@
 import { motion, useReducedMotion } from 'framer-motion';
-import { LayoutDashboard, Library, Archive } from 'lucide-react';
-import type { LucideIcon } from 'lucide-react';
+import { SquaresFour, Books, Archive } from '@phosphor-icons/react';
+import type { Icon } from '@phosphor-icons/react';
 import { TOOLS, getCategories } from '../features/tools/registry';
 import { cn } from '../lib/cn';
 
@@ -24,7 +24,7 @@ function NavEntry({
 }: {
   active: boolean;
   onClick: () => void;
-  icon: LucideIcon;
+  icon: Icon;
   label: string;
   reduce: boolean | null;
 }) {
@@ -86,7 +86,7 @@ export function Sidebar({
             <NavEntry
               active={berandaActive}
               onClick={onSelectBeranda}
-              icon={LayoutDashboard}
+              icon={SquaresFour}
               label="Beranda"
               reduce={reduce}
             />
@@ -95,7 +95,7 @@ export function Sidebar({
             <NavEntry
               active={libraryActive}
               onClick={onSelectLibrary}
-              icon={Library}
+              icon={Books}
               label="Perpustakaan"
               reduce={reduce}
             />

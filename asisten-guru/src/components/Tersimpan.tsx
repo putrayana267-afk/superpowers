@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Archive, Copy, Trash2, FolderOpen, Clock, Loader2 } from 'lucide-react';
+import { Archive as ArchiveDuotone } from '@phosphor-icons/react';
 import { GlassCard } from './GlassCard';
 import { EmptyState } from './EmptyState';
 import { Button } from './Button';
@@ -192,4 +193,4 @@ function FilterChip({
   );
 }
 
-export { Archive as TersimpanIcon };
+export { ArchiveDuotone as TersimpanIcon };

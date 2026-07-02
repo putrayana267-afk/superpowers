@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { KeyRound, ExternalLink, Save, Eye, EyeOff, Loader2 } from 'lucide-react';
+import { Key } from '@phosphor-icons/react';
 import { Capacitor } from '@capacitor/core';
 import { GlassCard } from './GlassCard';
 import { Button } from './Button';
@@ -145,4 +146,4 @@ export function Settings() {
 }
 
 /** Re-export ikon untuk entri navigasi Pengaturan. */
-export { KeyRound as SettingsIcon };
+export { Key as SettingsIcon };

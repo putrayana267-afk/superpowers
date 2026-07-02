@@ -2,7 +2,6 @@ import { useMemo, useState } from 'react';
 import {
   Search,
   ExternalLink,
-  Library,
   BookMarked,
   Building2,
   ClipboardCheck,
@@ -11,6 +10,7 @@ import {
   Inbox,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
+import { Books } from '@phosphor-icons/react';
 import { GlassCard } from './GlassCard';
 import { EmptyState } from './EmptyState';
 import { cn } from '../lib/cn';
@@ -370,4 +370,4 @@ export function Perpustakaan() {
 }
 
 /** Ikon untuk entri navigasi Perpustakaan. */
-export const PerpustakaanIcon = Library;
+export const PerpustakaanIcon = Books;

@@ -13,6 +13,7 @@
     "@capacitor-community/sqlite": "^7.0.3",
     "@capacitor/android": "^7.6.7",
     "@capacitor/core": "^7.6.7",
+    "@phosphor-icons/react": "^2.1.10",
     "framer-motion": "^11.3.19",
     "jeep-sqlite": "^2.8.0",
     "lucide-react": "^0.418.0",

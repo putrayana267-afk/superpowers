@@ -1,14 +1,14 @@
 import {
   BookOpen,
   ListChecks,
-  ClipboardList,
-  Table2,
-  Sparkles,
-  MessageSquareHeart,
+  ClipboardText,
+  Table,
+  Sparkle,
+  Heart,
   Lightbulb,
-  Send,
-  LayoutGrid,
-} from 'lucide-react';
+  PaperPlaneTilt,
+  GridFour,
+} from '@phosphor-icons/react';
 import type { Tool, ToolField } from './types';
 
 /** Field pemilih kurikulum bertingkat (Jenjang → Kelompok → Mapel → Pokok). */
@@ -129,7 +129,7 @@ export const TOOLS: Tool[] = [
     id: 'kisi-kisi',
     title: 'Kisi-kisi Soal',
     description: 'Susun tabel kisi-kisi lengkap dengan indikator & level kognitif.',
-    icon: LayoutGrid,
+    icon: GridFour,
     category: 'Asesmen',
     fields: [
       KURIKULUM_FIELD,
@@ -142,7 +142,7 @@ export const TOOLS: Tool[] = [
     id: 'lkpd',
     title: 'LKPD',
     description: 'Lembar Kerja Peserta Didik yang terstruktur dan siap cetak.',
-    icon: ClipboardList,
+    icon: ClipboardText,
     category: 'Perencanaan',
     fields: [
       KURIKULUM_FIELD,
@@ -169,7 +169,7 @@ export const TOOLS: Tool[] = [
     id: 'rubrik',
     title: 'Rubrik Penilaian',
     description: 'Tabel rubrik dengan deskriptor jelas dan cara hitung nilai.',
-    icon: Table2,
+    icon: Table,
     category: 'Asesmen',
     fields: [
       KURIKULUM_FIELD,
@@ -210,7 +210,7 @@ export const TOOLS: Tool[] = [
     id: 'sederhana',
     title: 'Penyederhana Materi',
     description: 'Ubah materi rumit menjadi penjelasan yang mudah dipahami.',
-    icon: Sparkles,
+    icon: Sparkle,
     category: 'Materi',
     fields: [
       KURIKULUM_FIELD,
@@ -222,7 +222,7 @@ export const TOOLS: Tool[] = [
     id: 'rapor',
     title: 'Komentar Rapor',
     description: 'Deskripsi capaian yang apresiatif dan membangun.',
-    icon: MessageSquareHeart,
+    icon: Heart,
     category: 'Komunikasi',
     fields: [
       KURIKULUM_FIELD,
@@ -248,7 +248,7 @@ export const TOOLS: Tool[] = [
     id: 'komunikasi-ortu',
     title: 'Komunikasi Orang Tua',
     description: 'Draf pesan WhatsApp atau email yang sopan dan jelas.',
-    icon: Send,
+    icon: PaperPlaneTilt,
     category: 'Komunikasi',
     fields: [
       KURIKULUM_FIELD,
