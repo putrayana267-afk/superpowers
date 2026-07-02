@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Sparkles, Loader2 } from 'lucide-react';
+import { Sparkle, CircleNotch } from '@phosphor-icons/react';
 import { suggest, GenerateError } from '../services/ai';
 import { useToast } from './Toast';
 import { cn } from '../lib/cn';
@@ -81,9 +81,9 @@ export function FieldSuggest({
         )}
       >
         {loading ? (
-          <Loader2 className="h-3.5 w-3.5 animate-spin" />
+          <CircleNotch className="h-3.5 w-3.5 animate-spin" />
         ) : (
-          <Sparkles className="h-3.5 w-3.5" />
+          <Sparkle className="h-3.5 w-3.5" />
         )}
         {loading ? 'Memuat…' : label}
       </button>

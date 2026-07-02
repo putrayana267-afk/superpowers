@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ChevronDown, GraduationCap } from 'lucide-react';
+import { CaretDown, GraduationCap } from '@phosphor-icons/react';
 import {
   JENJANG_NAMES,
   KELOMPOK_NAMES,
@@ -178,7 +178,7 @@ function PokokField({
               ))}
               <option value={POKOK_CUSTOM}>✏️ Ketik manual / lainnya…</option>
             </select>
-            <ChevronDown
+            <CaretDown
               aria-hidden
               className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-emerald-deep/70"
             />

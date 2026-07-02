@@ -8,7 +8,7 @@ import {
 } from 'react';
 import type { ReactNode } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { CheckCircle2, AlertTriangle, Info, X } from 'lucide-react';
+import { CheckCircle, Warning, Info, X } from '@phosphor-icons/react';
 import { cn } from '../lib/cn';
 
 type ToastType = 'success' | 'error' | 'info';
@@ -35,8 +35,8 @@ export function useToast(): ToastContextValue {
 }
 
 const icons: Record<ToastType, ReactNode> = {
-  success: <CheckCircle2 className="h-5 w-5 text-emerald-primary" />,
-  error: <AlertTriangle className="h-5 w-5 text-red-500" />,
+  success: <CheckCircle className="h-5 w-5 text-emerald-primary" />,
+  error: <Warning className="h-5 w-5 text-red-500" />,
   info: <Info className="h-5 w-5 text-emerald-deep" />,
 };
 

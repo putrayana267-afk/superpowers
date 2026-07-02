@@ -1,6 +1,12 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Archive, Copy, Trash2, FolderOpen, Clock, Loader2 } from 'lucide-react';
-import { Archive as ArchiveDuotone } from '@phosphor-icons/react';
+import {
+  Archive,
+  Copy,
+  Trash,
+  FolderOpen,
+  Clock,
+  CircleNotch,
+} from '@phosphor-icons/react';
 import { GlassCard } from './GlassCard';
 import { EmptyState } from './EmptyState';
 import { Button } from './Button';
@@ -96,7 +102,7 @@ export function Tersimpan({ onOpen }: TersimpanProps) {
       {loading ? (
         <GlassCard animate>
           <div className="flex items-center justify-center gap-2 py-10 text-sm text-ink/60">
-            <Loader2 className="h-4 w-4 animate-spin" />
+            <CircleNotch className="h-4 w-4 animate-spin" />
             Memuat…
           </div>
         </GlassCard>
@@ -155,7 +161,7 @@ export function Tersimpan({ onOpen }: TersimpanProps) {
                   variant="subtle"
                   size="sm"
                   onClick={() => handleDelete(row.id)}
-                  icon={<Trash2 className="h-4 w-4" />}
+                  icon={<Trash className="h-4 w-4" />}
                 >
                   Hapus
                 </Button>
@@ -193,4 +199,4 @@ function FilterChip({
   );
 }
 
-export { ArchiveDuotone as TersimpanIcon };
+export { Archive as TersimpanIcon };

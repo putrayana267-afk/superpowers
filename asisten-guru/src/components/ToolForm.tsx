@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import type { FormEvent } from 'react';
-import { Wand2, Loader2 } from 'lucide-react';
+import { MagicWand, CircleNotch } from '@phosphor-icons/react';
 import type { Tool, ToolInputs } from '../features/tools/types';
 import { Field } from './Field';
 import { Select } from './Select';
@@ -208,9 +208,9 @@ export function ToolForm({
         className="mt-1 w-full cta-beam"
         icon={
           loading ? (
-            <Loader2 className="h-4 w-4 animate-spin" />
+            <CircleNotch className="h-4 w-4 animate-spin" />
           ) : (
-            <Wand2 className="h-4 w-4" />
+            <MagicWand className="h-4 w-4" />
           )
         }
       >

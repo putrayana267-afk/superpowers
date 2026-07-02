@@ -1,13 +1,13 @@
 import {
-  LayoutDashboard,
+  SquaresFour,
   Users,
-  ClipboardCheck,
-  Award,
+  ClipboardText,
+  Medal,
   FileText,
   Star,
   Plus,
-} from 'lucide-react';
-import type { LucideIcon } from 'lucide-react';
+} from '@phosphor-icons/react';
+import type { Icon } from '@phosphor-icons/react';
 import type { HistoryEntry } from '../features/tools/types';
 import { GlassCard } from './GlassCard';
 
@@ -20,15 +20,15 @@ interface BerandaProps {
 interface DashTile {
   id: string;
   label: string;
-  icon: LucideIcon;
+  icon: Icon;
 }
 
 // Fitur data siswa yang belum dibangun — tetap "Segera hadir" (jujur), sekunder
 // di bawah konten dokumen nyata. TANPA angka/data palsu.
 const TILES: DashTile[] = [
   { id: 'siswa', label: 'Siswa', icon: Users },
-  { id: 'absensi', label: 'Absensi', icon: ClipboardCheck },
-  { id: 'nilai', label: 'Nilai', icon: Award },
+  { id: 'absensi', label: 'Absensi', icon: ClipboardText },
+  { id: 'nilai', label: 'Nilai', icon: Medal },
 ];
 
 /** Tanggal ringkas Indonesia — duplikat lokal; TIDAK menyentuh HistoryDrawer/Tersimpan. */
@@ -54,7 +54,7 @@ function BerandaHeader() {
     <div className="mb-5">
       <div className="flex items-center gap-3">
         <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-soft text-emerald-deep gold-edge">
-          <LayoutDashboard className="h-5 w-5" />
+          <SquaresFour className="h-5 w-5" />
         </span>
         <div>
           <h1 className="font-display text-xl font-extrabold text-emerald-deep sm:text-2xl">
