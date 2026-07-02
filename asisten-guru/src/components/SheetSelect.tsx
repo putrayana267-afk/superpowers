@@ -187,15 +187,15 @@ export function SheetSelect({
                   aria-selected={selected}
                   onClick={() => pilih(item)}
                   className={cn(
-                    'flex w-full items-center justify-between gap-2 rounded-xl px-4 py-3.5 text-left text-base text-ink transition-colors',
+                    'flex w-full items-center justify-between gap-2 rounded-xl px-4 py-3.5 text-left text-base text-[#EAFFF4]/90 transition-colors',
                     selected
-                      ? 'bg-emerald-deep/10 font-semibold text-emerald-deep'
-                      : 'hover:bg-emerald-deep/5',
+                      ? 'bg-white/[0.12] font-semibold text-[#EAFFF4]'
+                      : 'hover:bg-white/[0.08] active:bg-white/15',
                   )}
                 >
                   <span className={textClass}>{labelPrefix + item}</span>
                   {selected && (
-                    <Check className="h-5 w-5 shrink-0 text-emerald-deep" />
+                    <Check className="h-5 w-5 shrink-0 text-[#4CE896]" />
                   )}
                 </button>
               );
@@ -210,15 +210,15 @@ export function SheetSelect({
             aria-selected={showManual}
             onClick={pilihManual}
             className={cn(
-              'mt-1 flex w-full items-center justify-between gap-2 rounded-xl border-t border-white/40 px-4 py-3.5 text-left text-base text-ink transition-colors',
+              'mt-1 flex w-full items-center justify-between gap-2 rounded-xl border-t border-white/10 px-4 py-3.5 text-left text-base text-[#EAFFF4]/90 transition-colors',
               showManual
-                ? 'bg-emerald-deep/10 font-semibold text-emerald-deep'
-                : 'hover:bg-emerald-deep/5',
+                ? 'bg-white/[0.12] font-semibold text-[#EAFFF4]'
+                : 'hover:bg-white/[0.08] active:bg-white/15',
             )}
           >
             <span className={textClass}>Lainnya (ketik manual)</span>
             {showManual && (
-              <Check className="h-5 w-5 shrink-0 text-emerald-deep" />
+              <Check className="h-5 w-5 shrink-0 text-[#4CE896]" />
             )}
           </button>
         )}
@@ -297,7 +297,7 @@ export function SheetSelect({
                   transformOrigin:
                     coords.placement === 'bottom' ? 'top' : 'bottom',
                 }}
-                className="z-[111] overflow-y-auto rounded-2xl border border-ink/10 bg-emerald-soft p-2 shadow-glass-lg"
+                className="z-[111] overflow-y-auto rounded-[28px] border border-white/25 bg-[rgba(16,42,34,0.30)] p-2 backdrop-blur-xl backdrop-saturate-[1.6] shadow-[0_28px_80px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.4),inset_0_0_0_1px_rgba(255,255,255,0.06)]"
                 initial={reduce ? { opacity: 0 } : { opacity: 0, y: yFrom }}
                 animate={reduce ? { opacity: 1 } : { opacity: 1, y: 0 }}
                 exit={reduce ? { opacity: 0 } : { opacity: 0, y: yFrom }}
@@ -314,7 +314,7 @@ export function SheetSelect({
               <>
                 <motion.div
                   key="scrim"
-                  className="fixed inset-0 z-[110] bg-black/60"
+                  className="fixed inset-0 z-[110] bg-[radial-gradient(120%_90%_at_20%_15%,rgba(52,190,130,0.85),transparent_55%),radial-gradient(110%_80%_at_85%_75%,rgba(56,180,205,0.65),transparent_55%),linear-gradient(rgba(0,0,0,0.40),rgba(0,0,0,0.40))]"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
@@ -332,31 +332,24 @@ export function SheetSelect({
                   onKeyDown={(e) => {
                     if (e.key === 'Escape') close();
                   }}
-                  className="fixed left-1/2 top-1/2 z-[111] max-h-[75vh] w-[92vw] overflow-y-auto rounded-3xl border border-white/40 bg-emerald-soft p-3 shadow-glass-lg sm:w-[480px] md:w-[560px]"
+                  className="fixed left-1/2 top-1/2 z-[111] max-h-[75vh] w-[92vw] overflow-y-auto rounded-[28px] border border-white/25 bg-[rgba(16,42,34,0.30)] p-3 backdrop-blur-xl backdrop-saturate-[1.6] shadow-[0_28px_80px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.4),inset_0_0_0_1px_rgba(255,255,255,0.06)] sm:w-[480px] md:w-[560px]"
                   style={{ transformOrigin: 'center' }}
-                  initial={
-                    reduce
-                      ? { x: '-50%', y: '-50%', opacity: 0 }
-                      : { x: '-50%', y: '-50%', scale: 0.85, opacity: 0 }
-                  }
-                  animate={
-                    reduce
-                      ? { x: '-50%', y: '-50%', opacity: 1 }
-                      : { x: '-50%', y: '-50%', scale: 1, opacity: 1 }
-                  }
-                  exit={
-                    reduce
-                      ? { x: '-50%', y: '-50%', opacity: 0 }
-                      : { x: '-50%', y: '-50%', scale: 0.85, opacity: 0 }
-                  }
+                  initial={{ x: '-50%', y: '-50%', opacity: 0 }}
+                  animate={{ x: '-50%', y: '-50%', opacity: 1 }}
+                  exit={{ x: '-50%', y: '-50%', opacity: 0 }}
                   transition={
                     reduce
                       ? { duration: 0 }
-                      : { duration: 0.26, ease: [0.16, 1, 0.3, 1] }
+                      : { duration: 0.18, ease: [0.16, 1, 0.3, 1] }
                   }
                 >
-                  <div className="sticky top-0 -mx-3 -mt-3 mb-1 rounded-t-3xl border-b border-ink/5 bg-emerald-soft px-4 pb-3 pt-4">
-                    <p className="text-base font-semibold text-emerald-deep sm:text-lg">
+                  {/* Highlight spekular atas — kilau kaca (pengganti sheen lama). */}
+                  <div
+                    aria-hidden
+                    className="pointer-events-none absolute inset-x-0 top-0 h-1/3 rounded-t-[28px] bg-[linear-gradient(180deg,rgba(255,255,255,0.14),transparent)]"
+                  />
+                  <div className="sticky top-0 -mx-3 -mt-3 mb-1 rounded-t-[28px] border-b border-white/10 bg-white/[0.08] px-4 pb-3 pt-4 backdrop-blur-xl">
+                    <p className="text-base font-semibold text-[#EAFFF4] sm:text-lg">
                       {label}
                     </p>
                   </div>

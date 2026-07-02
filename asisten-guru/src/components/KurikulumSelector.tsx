@@ -235,7 +235,7 @@ export function KurikulumSelector({
   );
 
   return (
-    <div className="rounded-2xl border border-white/40 bg-white/30 p-4 gold-edge">
+    <div className="rounded-2xl border border-white/10 bg-white/[0.05] p-4 backdrop-blur-md shadow-[inset_0_1px_0_rgba(255,255,255,0.10)] gold-edge">
       <div className="mb-3 flex items-center gap-2 text-sm font-semibold text-emerald-deep">
         <GraduationCap className="h-4 w-4" />
         Kurikulum
