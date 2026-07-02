@@ -264,7 +264,7 @@ export function Perpustakaan() {
         filtered.map(({ section, links, kitab }) => {
           const SectionIcon = section.icon;
           return (
-            <GlassCard key={section.id} gold animate>
+            <GlassCard key={section.id} className="border border-white/10" animate>
               <div className="mb-4 flex items-center gap-3">
                 <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-soft text-emerald-deep gold-edge">
                   <SectionIcon className="h-5 w-5" />

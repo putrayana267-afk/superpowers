@@ -119,7 +119,8 @@ export default function App({ onOpenShowcase }: AppProps) {
     setResult('');
     setError('');
     setCurrentEntryId(null);
-    setNavOpen(false);
+    // Drawer SENGAJA tidak ditutup: pilih alat mengganti konten di belakang,
+    // pengguna menutup via geser-kiri, tombol X, atau ketuk scrim.
   }, []);
 
   const handleChange = useCallback(
@@ -442,6 +443,7 @@ export default function App({ onOpenShowcase }: AppProps) {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
+              transition={{ duration: 0.25 }}
               onClick={() => setNavOpen(false)}
               className="absolute inset-0 bg-black/50 backdrop-blur-sm"
               aria-hidden
@@ -450,7 +452,16 @@ export default function App({ onOpenShowcase }: AppProps) {
               initial={{ x: '-100%' }}
               animate={{ x: 0 }}
               exit={{ x: '-100%' }}
-              transition={{ type: 'tween', duration: 0.3, ease: 'easeOut' }}
+              transition={{ type: 'spring', stiffness: 380, damping: 34 }}
+              drag="x"
+              dragConstraints={{ left: -288, right: 0 }}
+              dragElastic={0.04}
+              dragSnapToOrigin
+              onDragEnd={(_e, info) => {
+                if (info.offset.x < -70 || info.velocity.x < -600) {
+                  setNavOpen(false);
+                }
+              }}
               className="absolute left-0 top-0 flex h-full w-72 max-w-[80vw] flex-col border-r border-white/40 bg-emerald-soft/95 shadow-glass-lg backdrop-blur-xl"
               role="dialog"
               aria-label="Daftar alat"
