@@ -7,7 +7,7 @@ import {
   useState,
 } from 'react';
 import { motion, useAnimationControls } from 'framer-motion';
-import { IconContext, X } from '@phosphor-icons/react';
+import { IconContext, X, GraduationCap } from '@phosphor-icons/react';
 import { TOOLS, getToolById } from './features/tools/registry';
 import type { HistoryEntry, Tool, ToolInputs } from './features/tools/types';
 import { generate, GenerateError, MissingApiKeyError } from './services/ai';
@@ -309,6 +309,19 @@ export default function App({ onOpenShowcase }: AppProps) {
         {/* Sidebar desktop */}
         <aside className="hidden w-64 flex-shrink-0 lg:block">
           <div className="sticky top-24">
+            <div className="mb-5 flex items-center gap-2.5 rounded-2xl border border-white/10 bg-[#04140C] p-3">
+              <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-emerald-soft text-emerald-deep gold-edge">
+                <GraduationCap className="h-5 w-5" />
+              </span>
+              <div className="leading-tight">
+                <p className="font-display text-base font-extrabold text-emerald-deep">
+                  Asisten Mengajar
+                </p>
+                <p className="text-xs text-ink/50">
+                  Bantuan AI untuk guru Indonesia
+                </p>
+              </div>
+            </div>
             <Sidebar
               activeId={activeId}
               onSelect={handleSelectTool}
