@@ -329,6 +329,7 @@ export default function App({ onOpenShowcase }: AppProps) {
               history={history}
               onOpenEntry={handleOpenEntry}
               onStartCreate={() => setView('tools')}
+              onSelectTool={handleSelectTool}
             />
           ) : view === 'settings' ? (
             <>
