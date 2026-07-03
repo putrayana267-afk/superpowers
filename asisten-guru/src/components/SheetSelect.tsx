@@ -381,7 +381,7 @@ export function SheetSelect({
               <>
                 <motion.div
                   key="scrim"
-                  className="fixed inset-0 z-[110] bg-[radial-gradient(120%_90%_at_20%_15%,rgba(52,190,130,0.85),transparent_55%),radial-gradient(110%_80%_at_85%_75%,rgba(56,180,205,0.65),transparent_55%),linear-gradient(rgba(0,0,0,0.40),rgba(0,0,0,0.40))] backdrop-blur-md backdrop-saturate-150"
+                  className="fixed inset-0 z-[110] bg-[radial-gradient(120%_90%_at_20%_15%,rgba(52,190,130,0.28),transparent_55%),radial-gradient(110%_80%_at_85%_75%,rgba(56,180,205,0.18),transparent_55%),linear-gradient(rgba(0,0,0,0.32),rgba(0,0,0,0.32))] backdrop-blur-sm backdrop-saturate-150"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
