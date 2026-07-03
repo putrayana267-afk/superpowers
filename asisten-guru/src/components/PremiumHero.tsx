@@ -1,12 +1,16 @@
 import { useEffect, useState } from 'react';
 import { useZonaWaktu } from '../features/waktu/useZonaWaktu';
+import {
+  DEFAULT_PROFIL,
+  loadProfil,
+  loadFoto,
+  inisialDari,
+  type Profil,
+} from '../lib/profil';
 
 interface PremiumHeroProps {
   onEnter?: () => void;
 }
-
-/** Profil guru untuk sapaan hero — ganti nama/mapel di sini. */
-const GURU = { nama: 'Akhid', mapel: 'Bahasa Arab' };
 
 /** '/' di web/Vercel, './' di APK Capacitor. */
 const BASE = (import.meta as unknown as { env: { BASE_URL: string } }).env
@@ -45,14 +49,31 @@ function bagianWaktu(now: Date, timeZone: string | undefined) {
 
 /**
  * Hero "Akhid Noir": video terowongan + kartu jam kanan-atas, chip profil,
- * sapaan gradien, satu CTA outline. Data = jam perangkat + konstanta GURU
- * (data guru sendiri). Kontrak dijaga: named export + prop onEnter.
+ * sapaan gradien, satu CTA outline. Data = jam perangkat + profil tersimpan
+ * (lib/profil, default aman). Kontrak dijaga: named export + prop onEnter.
  */
 export function PremiumHero({ onEnter }: PremiumHeroProps) {
   const [now, setNow] = useState<Date>(() => new Date());
   useEffect(() => {
     const id = window.setInterval(() => setNow(new Date()), 1000);
     return () => window.clearInterval(id);
+  }, []);
+
+  // Profil identitas tersimpan (async). Default aman tampil dulu saat loading
+  // → tak ada "flash kosong" pada avatar/sapaan.
+  const [profil, setProfil] = useState<Profil>(DEFAULT_PROFIL);
+  const [foto, setFoto] = useState<string | null>(null);
+  useEffect(() => {
+    let active = true;
+    loadProfil()
+      .then((p) => active && setProfil(p))
+      .catch(() => {});
+    loadFoto()
+      .then((f) => active && setFoto(f))
+      .catch(() => {});
+    return () => {
+      active = false;
+    };
   }, []);
 
   const { label, timeZone } = useZonaWaktu();
@@ -62,15 +83,9 @@ export function PremiumHero({ onEnter }: PremiumHeroProps) {
   );
 
   const sapaan = (
-    greetingByHour(jamAngka) + (GURU.nama ? ', ' + GURU.nama : '')
+    greetingByHour(jamAngka) + (profil.nama ? ', ' + profil.nama : '')
   ).toUpperCase();
-  const inisial =
-    GURU.nama
-      .split(/\s+/)
-      .map((k) => k[0] ?? '')
-      .join('')
-      .slice(0, 2)
-      .toUpperCase() || 'G';
+  const inisial = inisialDari(profil.nama);
 
   return (
     <div className="relative min-h-[100dvh] w-full overflow-hidden bg-[#04140c]">
@@ -131,15 +146,24 @@ export function PremiumHero({ onEnter }: PremiumHeroProps) {
 
         <div className="flex flex-1 flex-col items-center justify-center text-center">
           <div className="hero-chip flex items-center gap-3 rounded-full border border-white/10 bg-[#04140c]/55 py-2 pl-2 pr-5 backdrop-blur-md">
-            <span className="grid h-9 w-9 place-items-center rounded-full bg-gradient-to-br from-[#4CE896] to-violet font-grotesk text-sm font-bold text-[#04140c]">
-              {inisial}
-            </span>
+            {foto ? (
+              <img
+                src={foto}
+                alt=""
+                className="h-9 w-9 rounded-full object-cover"
+              />
+            ) : (
+              <span className="grid h-9 w-9 place-items-center rounded-full bg-gradient-to-br from-[#4CE896] to-violet font-grotesk text-sm font-bold text-[#04140c]">
+                {inisial}
+              </span>
+            )}
             <span className="text-sm font-semibold uppercase tracking-wide text-white">
-              {GURU.nama}
+              {profil.nama}
             </span>
             <span className="text-white/40">·</span>
             <span className="text-sm font-semibold text-white/80">
-              Guru <span className="uppercase text-emerald-deep">{GURU.mapel}</span>
+              Guru{' '}
+              <span className="uppercase text-emerald-deep">{profil.mapel}</span>
             </span>
           </div>
 

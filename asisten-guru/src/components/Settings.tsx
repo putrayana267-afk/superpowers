@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type ChangeEvent } from 'react';
 import {
   Key,
   ArrowSquareOut,
@@ -8,12 +8,25 @@ import {
   CircleNotch,
   Clock,
   Check,
+  User,
+  Camera,
+  Trash,
 } from '@phosphor-icons/react';
 import { Capacitor } from '@capacitor/core';
 import { GlassCard } from './GlassCard';
 import { Button } from './Button';
 import { useToast } from './Toast';
 import { getSetting, setSetting } from '../lib/db';
+import {
+  DEFAULT_PROFIL,
+  loadProfil,
+  saveProfil,
+  loadFoto,
+  saveFoto,
+  hapusFoto,
+  kompresGambar,
+  inisialDari,
+} from '../lib/profil';
 import { cn } from '../lib/cn';
 import { controlBase } from './controlStyles';
 import { KOTA } from '../features/waktu/kota';
@@ -35,6 +48,14 @@ export function Settings() {
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+
+  // Profil identitas — persist via lib/profil (kunci 'profil' + 'profil_foto').
+  const [nama, setNama] = useState('');
+  const [mapel, setMapel] = useState('');
+  const [bio, setBio] = useState('');
+  const [foto, setFoto] = useState<string | null>(null);
+  const [loadingProfil, setLoadingProfil] = useState(true);
+  const [savingProfil, setSavingProfil] = useState(false);
 
   // Zona Waktu & Kota — persist via useZonaWaktu ('am.zonaWaktu').
   const { pilihan, setPilihan } = useZonaWaktu();
@@ -105,6 +126,67 @@ export function Settings() {
       toast('Gagal menyimpan. Coba lagi.', 'error');
     } finally {
       setSaving(false);
+    }
+  }
+
+  // Muat profil + foto sekali. loadProfil/loadFoto tak pernah throw (aman).
+  useEffect(() => {
+    let active = true;
+    loadProfil()
+      .then((p) => {
+        if (!active) return;
+        setNama(p.nama);
+        setMapel(p.mapel);
+        setBio(p.bio);
+      })
+      .finally(() => active && setLoadingProfil(false));
+    loadFoto()
+      .then((f) => active && setFoto(f))
+      .catch(() => {});
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  async function saveProfilForm() {
+    setSavingProfil(true);
+    try {
+      await saveProfil({
+        nama: nama.trim(),
+        mapel: mapel.trim(),
+        bio: bio.trim(),
+      });
+      toast('Profil tersimpan.', 'success');
+    } catch {
+      toast('Gagal menyimpan profil. Coba lagi.', 'error');
+    } finally {
+      setSavingProfil(false);
+    }
+  }
+
+  // Pilih foto → kompres di klien (canvas, sisi maks 384px, JPEG 0.7) →
+  // simpan ke 'profil_foto'. Reset input agar file yang sama bisa dipilih lagi.
+  async function pilihFoto(e: ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    e.target.value = '';
+    if (!file) return;
+    try {
+      const dataUrl = await kompresGambar(file);
+      await saveFoto(dataUrl);
+      setFoto(dataUrl);
+      toast('Foto profil tersimpan.', 'success');
+    } catch {
+      toast('Gagal memproses foto. Coba gambar lain.', 'error');
+    }
+  }
+
+  async function hapusFotoProfil() {
+    try {
+      await hapusFoto();
+      setFoto(null);
+      toast('Foto dihapus.', 'success');
+    } catch {
+      toast('Gagal menghapus foto.', 'error');
     }
   }
 
@@ -200,6 +282,123 @@ export function Settings() {
             ? 'Kunci hanya disimpan di perangkat (SQLite), tidak dikirim ke server mana pun selain Google saat membuat materi.'
             : 'Kunci opsional, disimpan di perangkat ini. Bila diisi, materi dibuat memakai kunci Anda; bila kosong, memakai kunci server kami.'}
         </p>
+      </GlassCard>
+
+      <GlassCard animate>
+        <div className="mb-4 flex items-center gap-3">
+          <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-soft text-emerald-deep gold-edge">
+            <User className="h-5 w-5" />
+          </span>
+          <div>
+            <h2 className="font-display text-lg font-bold text-emerald-deep">
+              Profil
+            </h2>
+            <p className="text-xs text-ink/60">
+              Nama, mata pelajaran, bio, &amp; foto — tampil pada sapaan
+              pembuka. Tersimpan di perangkat ini.
+            </p>
+          </div>
+        </div>
+
+        <div className="mb-4 flex items-center gap-4">
+          {foto ? (
+            <img
+              src={foto}
+              alt=""
+              className="h-16 w-16 rounded-full border border-white/10 object-cover"
+            />
+          ) : (
+            <span className="grid h-16 w-16 place-items-center rounded-full bg-gradient-to-br from-[#4CE896] to-violet font-grotesk text-xl font-bold text-[#04140C]">
+              {inisialDari(nama || DEFAULT_PROFIL.nama)}
+            </span>
+          )}
+          <div className="flex flex-wrap gap-2">
+            <label className="inline-flex cursor-pointer items-center gap-1.5 rounded-xl border border-white/10 bg-white/[0.04] px-3 py-2 text-sm font-medium text-ink/80 transition-opacity hover:opacity-80 active:opacity-70">
+              <Camera className="h-4 w-4" />
+              {foto ? 'Ganti foto' : 'Unggah foto'}
+              <input
+                type="file"
+                accept="image/*"
+                onChange={pilihFoto}
+                className="hidden"
+              />
+            </label>
+            {foto && (
+              <button
+                type="button"
+                onClick={hapusFotoProfil}
+                className="inline-flex items-center gap-1.5 rounded-xl border border-white/10 bg-white/[0.04] px-3 py-2 text-sm font-medium text-ink/60 transition-opacity hover:opacity-80 active:opacity-70"
+              >
+                <Trash className="h-4 w-4" />
+                Hapus
+              </button>
+            )}
+          </div>
+        </div>
+
+        <label
+          htmlFor="profil-nama"
+          className="text-sm font-medium text-ink/80"
+        >
+          Nama
+        </label>
+        <input
+          id="profil-nama"
+          type="text"
+          value={nama}
+          onChange={(e) => setNama(e.target.value)}
+          placeholder={loadingProfil ? 'Memuat…' : DEFAULT_PROFIL.nama}
+          disabled={loadingProfil}
+          className={cn(controlBase, 'mt-1.5')}
+        />
+
+        <label
+          htmlFor="profil-mapel"
+          className="mt-3 block text-sm font-medium text-ink/80"
+        >
+          Mata pelajaran
+        </label>
+        <input
+          id="profil-mapel"
+          type="text"
+          value={mapel}
+          onChange={(e) => setMapel(e.target.value)}
+          placeholder={loadingProfil ? 'Memuat…' : DEFAULT_PROFIL.mapel}
+          disabled={loadingProfil}
+          className={cn(controlBase, 'mt-1.5')}
+        />
+
+        <label
+          htmlFor="profil-bio"
+          className="mt-3 block text-sm font-medium text-ink/80"
+        >
+          Bio <span className="text-ink/40">(opsional)</span>
+        </label>
+        <textarea
+          id="profil-bio"
+          value={bio}
+          onChange={(e) => setBio(e.target.value)}
+          rows={3}
+          placeholder="mis. Guru Bahasa Arab MTs, gemar metode bermain peran."
+          disabled={loadingProfil}
+          className={cn(controlBase, 'mt-1.5 resize-y')}
+        />
+
+        <div className="mt-3">
+          <Button
+            onClick={saveProfilForm}
+            disabled={savingProfil || loadingProfil}
+            icon={
+              savingProfil ? (
+                <CircleNotch className="h-4 w-4 animate-spin" />
+              ) : (
+                <FloppyDisk className="h-4 w-4" />
+              )
+            }
+          >
+            Simpan
+          </Button>
+        </div>
       </GlassCard>
 
       <GlassCard animate>
