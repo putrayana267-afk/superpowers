@@ -273,7 +273,7 @@ export function SheetSelect({
   const renderFooter = (bleed: string) => (
     <div
       className={cn(
-        'sticky bottom-0 z-10 mt-1.5 rounded-b-[28px] border-t border-white/10 bg-[rgba(6,24,15,0.82)] px-4 pb-3 pt-3 backdrop-blur-xl',
+        'sticky bottom-0 z-10 mt-1.5 border-t border-white/10 px-4 pb-3 pt-3',
         bleed,
       )}
     >
@@ -284,8 +284,8 @@ export function SheetSelect({
         className={cn(
           'flex w-full items-center justify-center gap-2 rounded-xl px-4 py-3 text-base font-semibold transition-opacity',
           pending !== null
-            ? 'bg-[#4CE896] text-[#04140C] hover:opacity-90 active:opacity-80'
-            : 'cursor-not-allowed bg-white/10 text-white/40',
+            ? 'border border-transparent bg-[#4CE896] text-[#04140C] hover:opacity-90 active:opacity-80'
+            : 'cursor-not-allowed border border-white/[0.12] bg-transparent text-[#EAFFF4]/40',
         )}
       >
         <Check className="h-5 w-5" />
@@ -363,7 +363,7 @@ export function SheetSelect({
                   transformOrigin:
                     coords.placement === 'bottom' ? 'top' : 'bottom',
                 }}
-                className="z-[111] overflow-y-auto rounded-[28px] border border-white/25 bg-[rgba(16,42,34,0.30)] p-2 backdrop-blur-xl backdrop-saturate-[1.6] shadow-[0_28px_80px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.4),inset_0_0_0_1px_rgba(255,255,255,0.06)]"
+                className="z-[111] overflow-y-auto rounded-[28px] border border-white/15 bg-[rgba(10,34,24,0.55)] p-2 backdrop-blur-lg backdrop-saturate-[1.6] shadow-[0_28px_80px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.12)]"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
@@ -399,7 +399,7 @@ export function SheetSelect({
                   onKeyDown={(e) => {
                     if (e.key === 'Escape') close();
                   }}
-                  className="fixed left-1/2 top-1/2 z-[111] max-h-[75vh] w-[92vw] overflow-y-auto rounded-[28px] border border-white/25 bg-[rgba(16,42,34,0.30)] p-3 backdrop-blur-xl backdrop-saturate-[1.6] shadow-[0_28px_80px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.4),inset_0_0_0_1px_rgba(255,255,255,0.06)] sm:w-[480px] md:w-[560px]"
+                  className="fixed left-1/2 top-1/2 z-[111] max-h-[75vh] w-[92vw] overflow-y-auto rounded-[28px] border border-white/15 bg-[rgba(10,34,24,0.55)] p-3 backdrop-blur-lg backdrop-saturate-[1.6] shadow-[0_28px_80px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.12)] sm:w-[480px] md:w-[560px]"
                   style={{ transformOrigin: 'center' }}
                   initial={{ x: '-50%', y: '-50%', opacity: 0 }}
                   animate={{ x: '-50%', y: '-50%', opacity: 1 }}
@@ -410,7 +410,7 @@ export function SheetSelect({
                       : { duration: 0.18, ease: [0.16, 1, 0.3, 1] }
                   }
                 >
-                  <div className="sticky top-0 z-10 -mx-3 -mt-3 mb-2 rounded-t-[28px] border-b border-white/10 bg-[rgba(6,24,15,0.72)] px-4 pb-3 pt-4 backdrop-blur-xl">
+                  <div className="sticky top-0 z-10 -mx-3 -mt-3 mb-2 border-b border-white/10 px-4 pb-3 pt-4">
                     <p className="text-base font-semibold text-[#EAFFF4] sm:text-lg">
                       {label}
                     </p>
