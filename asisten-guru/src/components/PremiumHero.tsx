@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useZonaWaktu } from '../features/waktu/useZonaWaktu';
 
 interface PremiumHeroProps {
   onEnter?: () => void;
@@ -18,8 +19,28 @@ function greetingByHour(h: number): string {
   return 'Selamat malam';
 }
 
-function pad(n: number): string {
-  return String(n).padStart(2, '0');
+/** Satu sumber zona: semua bagian tanggal/jam dari satu formatToParts. */
+function bagianWaktu(now: Date, timeZone: string | undefined) {
+  const parts = new Intl.DateTimeFormat('id-ID', {
+    timeZone,
+    weekday: 'long',
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hourCycle: 'h23',
+  }).formatToParts(now);
+  const ambil = (type: Intl.DateTimeFormatPartTypes): string =>
+    parts.find((p) => p.type === type)?.value ?? '';
+  return {
+    hari: ambil('weekday'),
+    tanggal: ambil('day'),
+    bulanTahun: `${ambil('month')} ${ambil('year')}`.toUpperCase(),
+    jam: `${ambil('hour')}:${ambil('minute')}:${ambil('second')}`,
+    jamAngka: Number(ambil('hour')),
+  };
 }
 
 /**
@@ -34,8 +55,14 @@ export function PremiumHero({ onEnter }: PremiumHeroProps) {
     return () => window.clearInterval(id);
   }, []);
 
+  const { label, timeZone } = useZonaWaktu();
+  const { hari, tanggal, bulanTahun, jam, jamAngka } = bagianWaktu(
+    now,
+    timeZone,
+  );
+
   const sapaan = (
-    greetingByHour(now.getHours()) + (GURU.nama ? ', ' + GURU.nama : '')
+    greetingByHour(jamAngka) + (GURU.nama ? ', ' + GURU.nama : '')
   ).toUpperCase();
   const inisial =
     GURU.nama
@@ -44,14 +71,6 @@ export function PremiumHero({ onEnter }: PremiumHeroProps) {
       .join('')
       .slice(0, 2)
       .toUpperCase() || 'G';
-  const hari = new Intl.DateTimeFormat('id-ID', { weekday: 'long' }).format(now);
-  const bulanTahun = (
-    new Intl.DateTimeFormat('id-ID', { month: 'short' }).format(now) +
-    ' ' +
-    now.getFullYear()
-  ).toUpperCase();
-  const jam =
-    pad(now.getHours()) + ':' + pad(now.getMinutes()) + ':' + pad(now.getSeconds());
 
   return (
     <div className="relative min-h-[100dvh] w-full overflow-hidden bg-[#04140c]">
@@ -91,7 +110,7 @@ export function PremiumHero({ onEnter }: PremiumHeroProps) {
           <div className="flex items-center gap-4 rounded-2xl border border-white/10 bg-[#04140c]/55 px-5 py-3 backdrop-blur-md">
             <div className="text-center">
               <div className="font-grotesk text-3xl font-bold leading-none tabular-nums text-white">
-                {now.getDate()}
+                {tanggal}
               </div>
               <div className="mt-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-emerald-deep">
                 {bulanTahun}
@@ -101,7 +120,7 @@ export function PremiumHero({ onEnter }: PremiumHeroProps) {
             <div>
               <div className="flex items-center gap-2 text-sm font-semibold text-white">
                 <span className="inline-block h-2 w-2 rounded-full bg-[#4CE896]" />
-                {hari}
+                {label ? `${hari} · ${label}` : hari}
               </div>
               <div className="font-grotesk mt-0.5 text-2xl font-bold tabular-nums text-emerald-deep">
                 {jam}
