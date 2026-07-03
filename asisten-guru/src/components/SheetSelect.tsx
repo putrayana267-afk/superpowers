@@ -45,6 +45,12 @@ type PopoverCoords = {
   placement: 'bottom' | 'top';
 };
 
+/** Kandidat pilihan konfirmasi 2-ketukan: opsi nyata, mode manual, atau kosong. */
+type Pending =
+  | { kind: 'item'; value: string }
+  | { kind: 'manual' }
+  | null;
+
 export function SheetSelect({
   id,
   label,
@@ -66,6 +72,9 @@ export function SheetSelect({
   const [manualChosen, setManualChosen] = useState(isCustom);
   const [open, setOpen] = useState(false);
   const [coords, setCoords] = useState<PopoverCoords | null>(null);
+  // Konfirmasi 2-ketukan: ketuk opsi hanya menandai `pending`; hanya tombol
+  // "Terapkan" yang meng-commit ke onChange. null = belum ada kandidat.
+  const [pending, setPending] = useState<Pending>(null);
 
   const triggerRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
@@ -113,6 +122,15 @@ export function SheetSelect({
 
   const openPanel = () => {
     if (disabled) return;
+    // Pra-sorot pilihan yang sedang aktif sebagai kandidat awal (mode manual,
+    // opsi terpilih, atau kosong bila belum memilih).
+    setPending(
+      showManual
+        ? { kind: 'manual' }
+        : value !== ''
+          ? { kind: 'item', value }
+          : null,
+    );
     if (isDesktop && triggerRef.current) {
       const r = triggerRef.current.getBoundingClientRect();
       const gap = 6;
@@ -138,19 +156,25 @@ export function SheetSelect({
     setOpen(true);
   };
 
-  const pilih = (nama: string) => {
-    setManualChosen(false);
+  // Commit kandidat (ketukan kedua). Selalu tutup; panggil onChange HANYA bila
+  // pilihan benar-benar berubah — menjaga kontrak cascade (onChange Jenjang/
+  // Kelompok me-reset turunan), agar konfirmasi tanpa-perubahan tak menghapus
+  // Mapel/Kelas/Pokok yang sudah dipilih.
+  const terapkan = () => {
+    if (!pending) return;
     close(); // urgent: mulai animasi exit + fokus trigger
-    // Cascade reset (berat utk Jenjang/Kelompok: remount Mapel + recompute getMapelGroups/
-    // getTopik) sbg transisi NON-URGENT → tak memblok frame exit. Nilai yg dikirim TETAP
-    // sama (Kelas "1".."6"); Mapel/Kelas yg ringan praktis seketika (perilaku tak berubah).
-    startTransition(() => onChange(nama));
-  };
-
-  const pilihManual = () => {
-    setManualChosen(true);
-    close();
-    startTransition(() => onChange(''));
+    if (pending.kind === 'manual') {
+      if (showManual) return; // sudah mode manual → cukup tutup, nilai dipertahankan
+      setManualChosen(true);
+      // Cascade reset (berat utk Jenjang/Kelompok: remount Mapel + recompute
+      // getMapelGroups/getTopik) sbg transisi NON-URGENT → tak memblok frame exit.
+      startTransition(() => onChange(''));
+      return;
+    }
+    // pending.kind === 'item'
+    if (!showManual && pending.value === value) return; // tak berubah → tak commit ulang
+    setManualChosen(false);
+    startTransition(() => onChange(pending.value));
   };
 
   // Teks trigger meniru LevelSelect: saat manual tampil label "Lainnya…",
@@ -162,37 +186,53 @@ export function SheetSelect({
       : placeholder;
   const triggerMuted = !showManual && value === '';
 
+  // Kelas visual "terpilih" (tint aksen, garis kiri, centang) — DIBAGI opsi &
+  // manual. Sorotan mengikuti `pending` (kandidat), bukan lagi `value`.
+  const rowSelected =
+    'border border-[rgba(76,232,150,0.28)] bg-[rgba(76,232,150,0.10)] font-semibold text-[#EAFFF4]';
+  const rowIdle =
+    'border border-transparent text-[#EAFFF4]/90 hover:bg-white/[0.06] active:bg-white/[0.10]';
+  const accentLine = (
+    <span
+      aria-hidden
+      className="absolute left-1.5 top-1/2 h-6 w-[3px] -translate-y-1/2 rounded-full bg-[#4CE896]"
+    />
+  );
+
   // Daftar opsi DIBAGI kedua mode. `wrap`: desktop membungkus nama panjang,
-  // mobile tetap truncate (perilaku modal lama).
+  // mobile tetap truncate (perilaku modal lama). Jarak antar-baris ~6px.
   const renderOptions = (wrap: boolean) => {
     const textClass = wrap
       ? 'min-w-0 whitespace-normal break-words'
       : 'truncate';
+    const manualSelected = pending !== null && pending.kind === 'manual';
     return (
-      <>
+      <div className="space-y-1.5">
         {groups.map((group) => (
-          <div key={group.label}>
+          <div key={group.label} className="space-y-1.5">
             {groups.length > 1 && (
-              <p className="px-4 pb-1 pt-3 text-xs font-semibold uppercase tracking-wider text-emerald-deep/60">
+              <p className="px-4 pb-1 pt-2 text-xs font-semibold uppercase tracking-wider text-emerald-deep/60">
                 {group.label}
               </p>
             )}
             {group.mapel.map((item) => {
-              const selected = value === item;
+              const selected =
+                pending !== null &&
+                pending.kind === 'item' &&
+                pending.value === item;
               return (
                 <button
                   key={item}
                   type="button"
                   role="option"
                   aria-selected={selected}
-                  onClick={() => pilih(item)}
+                  onClick={() => setPending({ kind: 'item', value: item })}
                   className={cn(
-                    'flex w-full items-center justify-between gap-2 rounded-xl px-4 py-3.5 text-left text-base text-[#EAFFF4]/90 transition-colors',
-                    selected
-                      ? 'bg-white/[0.12] font-semibold text-[#EAFFF4]'
-                      : 'hover:bg-white/[0.08] active:bg-white/15',
+                    'relative flex w-full items-center justify-between gap-2 rounded-xl px-4 py-3.5 text-left text-base transition-colors',
+                    selected ? rowSelected : rowIdle,
                   )}
                 >
+                  {selected && accentLine}
                   <span className={textClass}>{labelPrefix + item}</span>
                   {selected && (
                     <Check className="h-5 w-5 shrink-0 text-[#4CE896]" />
@@ -204,29 +244,55 @@ export function SheetSelect({
         ))}
 
         {allowManual && (
-          <button
-            type="button"
-            role="option"
-            aria-selected={showManual}
-            onClick={pilihManual}
-            className={cn(
-              'mt-1 flex w-full items-center justify-between gap-2 rounded-xl border-t border-white/10 px-4 py-3.5 text-left text-base text-[#EAFFF4]/90 transition-colors',
-              showManual
-                ? 'bg-white/[0.12] font-semibold text-[#EAFFF4]'
-                : 'hover:bg-white/[0.08] active:bg-white/15',
-            )}
-          >
-            <span className={textClass}>Lainnya (ketik manual)</span>
-            {showManual && (
-              <Check className="h-5 w-5 shrink-0 text-[#4CE896]" />
-            )}
-          </button>
+          <>
+            <div aria-hidden className="mx-2 border-t border-white/10" />
+            <button
+              type="button"
+              role="option"
+              aria-selected={manualSelected}
+              onClick={() => setPending({ kind: 'manual' })}
+              className={cn(
+                'relative flex w-full items-center justify-between gap-2 rounded-xl px-4 py-3.5 text-left text-base transition-colors',
+                manualSelected ? rowSelected : rowIdle,
+              )}
+            >
+              {manualSelected && accentLine}
+              <span className={textClass}>Lainnya (ketik manual)</span>
+              {manualSelected && (
+                <Check className="h-5 w-5 shrink-0 text-[#4CE896]" />
+              )}
+            </button>
+          </>
         )}
-      </>
+      </div>
     );
   };
 
-  const yFrom = coords?.placement === 'top' ? 8 : -8;
+  // Footer sticky — tombol Terapkan (commit kandidat). AKTIF hanya saat pending.
+  // `bleed` menembus padding panel agar rata tepi (mis. '-mx-3 -mb-3').
+  const renderFooter = (bleed: string) => (
+    <div
+      className={cn(
+        'sticky bottom-0 z-10 mt-1.5 rounded-b-[28px] border-t border-white/10 bg-[rgba(6,24,15,0.82)] px-4 pb-3 pt-3 backdrop-blur-xl',
+        bleed,
+      )}
+    >
+      <button
+        type="button"
+        disabled={pending === null}
+        onClick={terapkan}
+        className={cn(
+          'flex w-full items-center justify-center gap-2 rounded-xl px-4 py-3 text-base font-semibold transition-opacity',
+          pending !== null
+            ? 'bg-[#4CE896] text-[#04140C] hover:opacity-90 active:opacity-80'
+            : 'cursor-not-allowed bg-white/10 text-white/40',
+        )}
+      >
+        <Check className="h-5 w-5" />
+        Terapkan
+      </button>
+    </div>
+  );
 
   return (
     <Field id={id} label={label} required={required} error={error}>
@@ -298,9 +364,9 @@ export function SheetSelect({
                     coords.placement === 'bottom' ? 'top' : 'bottom',
                 }}
                 className="z-[111] overflow-y-auto rounded-[28px] border border-white/25 bg-[rgba(16,42,34,0.30)] p-2 backdrop-blur-xl backdrop-saturate-[1.6] shadow-[0_28px_80px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.4),inset_0_0_0_1px_rgba(255,255,255,0.06)]"
-                initial={reduce ? { opacity: 0 } : { opacity: 0, y: yFrom }}
-                animate={reduce ? { opacity: 1 } : { opacity: 1, y: 0 }}
-                exit={reduce ? { opacity: 0 } : { opacity: 0, y: yFrom }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
                 transition={
                   reduce
                     ? { duration: 0 }
@@ -308,13 +374,14 @@ export function SheetSelect({
                 }
               >
                 {renderOptions(true)}
+                {renderFooter('-mx-2 -mb-2')}
               </motion.div>
             ) : (
               // MOBILE — modal tengah + zoom + scrim (TIDAK BERUBAH).
               <>
                 <motion.div
                   key="scrim"
-                  className="fixed inset-0 z-[110] bg-[radial-gradient(120%_90%_at_20%_15%,rgba(52,190,130,0.85),transparent_55%),radial-gradient(110%_80%_at_85%_75%,rgba(56,180,205,0.65),transparent_55%),linear-gradient(rgba(0,0,0,0.40),rgba(0,0,0,0.40))]"
+                  className="fixed inset-0 z-[110] bg-[radial-gradient(120%_90%_at_20%_15%,rgba(52,190,130,0.85),transparent_55%),radial-gradient(110%_80%_at_85%_75%,rgba(56,180,205,0.65),transparent_55%),linear-gradient(rgba(0,0,0,0.40),rgba(0,0,0,0.40))] backdrop-blur-md backdrop-saturate-150"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
@@ -343,17 +410,13 @@ export function SheetSelect({
                       : { duration: 0.18, ease: [0.16, 1, 0.3, 1] }
                   }
                 >
-                  {/* Highlight spekular atas — kilau kaca (pengganti sheen lama). */}
-                  <div
-                    aria-hidden
-                    className="pointer-events-none absolute inset-x-0 top-0 h-1/3 rounded-t-[28px] bg-[linear-gradient(180deg,rgba(255,255,255,0.14),transparent)]"
-                  />
-                  <div className="sticky top-0 -mx-3 -mt-3 mb-1 rounded-t-[28px] border-b border-white/10 bg-white/[0.08] px-4 pb-3 pt-4 backdrop-blur-xl">
+                  <div className="sticky top-0 z-10 -mx-3 -mt-3 mb-2 rounded-t-[28px] border-b border-white/10 bg-[rgba(6,24,15,0.72)] px-4 pb-3 pt-4 backdrop-blur-xl">
                     <p className="text-base font-semibold text-[#EAFFF4] sm:text-lg">
                       {label}
                     </p>
                   </div>
                   {renderOptions(false)}
+                  {renderFooter('-mx-3 -mb-3')}
                 </motion.div>
               </>
             ))}
