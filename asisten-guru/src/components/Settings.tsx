@@ -7,6 +7,7 @@ import {
   EyeSlash,
   CircleNotch,
   Clock,
+  Check,
 } from '@phosphor-icons/react';
 import { Capacitor } from '@capacitor/core';
 import { GlassCard } from './GlassCard';
@@ -40,11 +41,19 @@ export function Settings() {
   const [cari, setCari] = useState('');
   const refZona = useRef<HTMLDivElement>(null);
 
-  // Umpan balik seragam: simpan, reset pencarian (daftar menutup), toast,
+  // Kandidat kota (menunggu konfirmasi centang) + buka/tutup daftar.
+  const [kandidat, setKandidat] = useState<{
+    p: PilihanZona;
+    label: string;
+  } | null>(null);
+  const [daftarTerbuka, setDaftarTerbuka] = useState(true);
+
+  // Umpan balik seragam: simpan, reset pencarian, tutup daftar, toast,
   // lalu meluncur ke header "Aktif" agar konfirmasi terlihat.
   const pilihKota = (p: PilihanZona, labelToast: string) => {
     setPilihan(p);
     setCari('');
+    setDaftarTerbuka(false);
     toast(`Zona waktu: ${labelToast} ✓`, 'success');
     refZona.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
@@ -227,15 +236,36 @@ export function Settings() {
           Otomatis (ikut perangkat)
         </button>
 
-        <input
-          type="text"
-          value={cari}
-          onChange={(e) => setCari(e.target.value)}
-          placeholder="Cari kota…"
-          aria-label="Cari kota"
-          className={cn(controlBase, 'mt-3')}
-        />
+        <div className="relative mt-3">
+          <input
+            type="text"
+            value={kandidat ? kandidat.label : cari}
+            onChange={(e) => {
+              setKandidat(null);
+              setCari(e.target.value);
+              setDaftarTerbuka(true);
+            }}
+            onFocus={() => setDaftarTerbuka(true)}
+            placeholder="Cari kota…"
+            aria-label="Cari kota"
+            className={cn(controlBase, kandidat && 'pr-12')}
+          />
+          {kandidat && (
+            <button
+              type="button"
+              onClick={() => {
+                pilihKota(kandidat.p, kandidat.label);
+                setKandidat(null);
+              }}
+              aria-label="Terapkan kota"
+              className="absolute right-1 top-1/2 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-lg text-emerald-primary hover:bg-white/10"
+            >
+              <Check className="h-5 w-5" />
+            </button>
+          )}
+        </div>
 
+        {daftarTerbuka && (
         <div className="mt-2 max-h-64 overflow-y-auto rounded-xl border border-white/10 bg-white/[0.03] p-2">
           {modeCari && muatKec === 'memuat' && (
             <p className="flex items-center gap-2 px-2 py-3 text-xs text-ink/50">
@@ -256,19 +286,24 @@ export function Settings() {
             ) : (
               hasilKecamatan.map((e, i) => {
                 const aktif = pilihan.mode === 'kota' && pilihan.nama === e.n;
+                const isKandidat =
+                  kandidat !== null &&
+                  kandidat.p.mode !== 'auto' &&
+                  kandidat.p.nama === e.n &&
+                  kandidat.p.zona === e.z;
                 return (
                   <button
                     key={`${e.n}|${e.k}|${i}`}
                     type="button"
                     onClick={() =>
-                      pilihKota(
-                        { mode: 'kota', nama: e.n, zona: e.z },
-                        `${e.n} (${e.z})`,
-                      )
+                      setKandidat({
+                        p: { mode: 'kota', nama: e.n, zona: e.z },
+                        label: `${e.n} (${e.z})`,
+                      })
                     }
                     className={cn(
                       'flex w-full items-center justify-between gap-2 rounded-lg px-3 py-2 text-left text-sm transition-colors',
-                      aktif
+                      aktif || isKandidat
                         ? 'bg-white/10 font-semibold text-emerald-deep'
                         : 'text-ink/80 hover:bg-white/10',
                     )}
@@ -306,19 +341,24 @@ export function Settings() {
                 {daftar.map((k) => {
                   const aktif =
                     pilihan.mode === 'kota' && pilihan.nama === k.nama;
+                  const isKandidat =
+                    kandidat !== null &&
+                    kandidat.p.mode !== 'auto' &&
+                    kandidat.p.nama === k.nama &&
+                    kandidat.p.zona === k.zona;
                   return (
                     <button
                       key={k.nama}
                       type="button"
                       onClick={() =>
-                        pilihKota(
-                          { mode: 'kota', nama: k.nama, zona: k.zona },
-                          `${k.nama} (${k.zona})`,
-                        )
+                        setKandidat({
+                          p: { mode: 'kota', nama: k.nama, zona: k.zona },
+                          label: `${k.nama} (${k.zona})`,
+                        })
                       }
                       className={cn(
                         'block w-full rounded-lg px-3 py-2 text-left text-sm transition-colors',
-                        aktif
+                        aktif || isKandidat
                           ? 'bg-white/10 font-semibold text-emerald-deep'
                           : 'text-ink/80 hover:bg-white/10',
                       )}
@@ -331,6 +371,7 @@ export function Settings() {
             );
           })}
         </div>
+        )}
 
       </GlassCard>
     </div>
