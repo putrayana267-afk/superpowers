@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import {
   Users,
   ClipboardText,
@@ -13,13 +12,6 @@ import { TOOLS, getToolById } from '../features/tools/registry';
 import { useZonaWaktu } from '../features/waktu/useZonaWaktu';
 import { GlassCard } from './GlassCard';
 import { ActivityBars } from './ActivityBars';
-import {
-  loadProfil,
-  loadFoto,
-  inisialDari,
-  DEFAULT_PROFIL,
-  type Profil,
-} from '../lib/profil';
 
 interface BerandaProps {
   history: HistoryEntry[];
@@ -155,23 +147,6 @@ function Banner({
       ? `${count} dokumen tersimpan`
       : 'Semua bahan ajarmu dalam satu ruang kerja yang tenang.';
 
-  // Profil identitas tersimpan (async, lib/profil). Default aman tampil dulu
-  // saat loading → tak ada "flash kosong" pada avatar/nama.
-  const [profil, setProfil] = useState<Profil>(DEFAULT_PROFIL);
-  const [foto, setFoto] = useState<string | null>(null);
-  useEffect(() => {
-    let active = true;
-    loadProfil()
-      .then((p) => active && setProfil(p))
-      .catch(() => {});
-    loadFoto()
-      .then((f) => active && setFoto(f))
-      .catch(() => {});
-    return () => {
-      active = false;
-    };
-  }, []);
-
   return (
     <section className="relative overflow-hidden rounded-3xl border border-white/10 bg-emerald-soft p-6 sm:p-8">
       <div
@@ -183,29 +158,6 @@ function Banner({
         }}
       />
       <div className="relative">
-        <div className="mb-4 flex items-center gap-3">
-          {foto ? (
-            <img
-              src={foto}
-              alt=""
-              className="h-9 w-9 rounded-full object-cover"
-            />
-          ) : (
-            <span className="grid h-9 w-9 place-items-center rounded-full bg-gradient-to-br from-[#4CE896] to-violet font-grotesk text-sm font-bold text-[#04140C]">
-              {inisialDari(profil.nama)}
-            </span>
-          )}
-          <div className="min-w-0">
-            <p className="font-display text-sm font-bold text-ink">
-              {profil.nama}
-            </p>
-            {profil.bio && (
-              <p className="line-clamp-1 max-w-[15rem] text-xs text-ink/60">
-                {profil.bio}
-              </p>
-            )}
-          </div>
-        </div>
         <h1 className="font-display text-4xl font-bold leading-[1.05] text-emerald-deep sm:text-5xl">
           {sapaan}
         </h1>
