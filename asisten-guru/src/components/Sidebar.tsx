@@ -1,8 +1,16 @@
+import { useState, useEffect } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { SquaresFour, Books, Archive } from '@phosphor-icons/react';
 import type { Icon } from '@phosphor-icons/react';
 import { TOOLS, getCategories } from '../features/tools/registry';
 import { cn } from '../lib/cn';
+import {
+  loadProfil,
+  loadFoto,
+  inisialDari,
+  DEFAULT_PROFIL,
+  type Profil,
+} from '../lib/profil';
 
 interface SidebarProps {
   activeId: string;
@@ -75,8 +83,28 @@ export function Sidebar({
   const reduce = useReducedMotion();
   const categories = getCategories();
 
+  // Profil identitas tersimpan (async) untuk kartu bawah. Default aman saat
+  // loading → tak ada "flash kosong".
+  const [profil, setProfil] = useState<Profil>(DEFAULT_PROFIL);
+  const [foto, setFoto] = useState<string | null>(null);
+  useEffect(() => {
+    let active = true;
+    loadProfil()
+      .then((p) => active && setProfil(p))
+      .catch(() => {});
+    loadFoto()
+      .then((f) => active && setFoto(f))
+      .catch(() => {});
+    return () => {
+      active = false;
+    };
+  }, []);
+
   return (
-    <nav aria-label="Navigasi" className="flex flex-col gap-5">
+    <nav
+      aria-label="Navigasi"
+      className="flex flex-col gap-5 rounded-2xl border border-white/10 bg-[#04140C] p-4"
+    >
       <div>
         <h2 className="mb-2 px-2 text-xs font-semibold uppercase tracking-wider text-emerald-deep/60">
           Pustaka & Data
@@ -159,6 +187,26 @@ export function Sidebar({
           </ul>
         </div>
       ))}
+
+      <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-emerald-soft p-3">
+        {foto ? (
+          <img
+            src={foto}
+            alt=""
+            className="h-10 w-10 flex-shrink-0 rounded-full object-cover"
+          />
+        ) : (
+          <span className="grid h-10 w-10 flex-shrink-0 place-items-center rounded-full bg-gradient-to-br from-[#4CE896] to-violet font-grotesk text-sm font-bold text-[#04140C]">
+            {inisialDari(profil.nama)}
+          </span>
+        )}
+        <div className="min-w-0">
+          <p className="truncate font-display text-sm font-bold text-emerald-deep">
+            {profil.nama}
+          </p>
+          <p className="truncate text-xs text-ink/60">{profil.mapel}</p>
+        </div>
+      </div>
     </nav>
   );
 }
