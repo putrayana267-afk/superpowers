@@ -34,18 +34,60 @@ const TILES: DashTile[] = [
   { id: 'nilai', label: 'Nilai', icon: Medal },
 ];
 
-/** Tint aksen per alat (LOKAL) — rotasi 4 hue token noir; toolId asing → primary. */
-const ACCENT_DEFAULT = { bg: 'bg-emerald-primary/10', text: 'text-emerald-primary' };
-const ACCENTS: Record<string, { bg: string; text: string }> = {
-  'modul-ajar': { bg: 'bg-emerald-primary/10', text: 'text-emerald-primary' },
-  'bank-soal': { bg: 'bg-teal/10', text: 'text-teal' },
-  'kisi-kisi': { bg: 'bg-gold/10', text: 'text-gold' },
-  lkpd: { bg: 'bg-violet/10', text: 'text-violet' },
-  rubrik: { bg: 'bg-emerald-primary/10', text: 'text-emerald-primary' },
-  sederhana: { bg: 'bg-teal/10', text: 'text-teal' },
-  rapor: { bg: 'bg-gold/10', text: 'text-gold' },
-  'ide-kegiatan': { bg: 'bg-violet/10', text: 'text-violet' },
-  'komunikasi-ortu': { bg: 'bg-emerald-primary/10', text: 'text-emerald-primary' },
+/**
+ * Tint aksen per alat (LOKAL) — 4 hue token noir. Tiap hue punya: `text` (ikon
+ * penuh), `chip` (bg ikon), `ring` (border berwarna lembut), `bar` (garis jejak),
+ * `wash` (radial sudut atas-kiri, opacity SANGAT rendah — jaga noir). Pemetaan
+ * hue tak berubah: emerald·teal·gold·violet berputar seperti sebelumnya.
+ */
+interface Accent {
+  text: string;
+  chip: string;
+  ring: string;
+  bar: string;
+  wash: string;
+}
+const HUE: Record<'emerald' | 'teal' | 'gold' | 'violet', Accent> = {
+  emerald: {
+    text: 'text-emerald-primary',
+    chip: 'bg-emerald-primary/[0.18]',
+    ring: 'border-emerald-primary/25',
+    bar: 'bg-emerald-primary/70',
+    wash: 'radial-gradient(180px at 0% 0%, rgba(76,232,150,.12), transparent 70%)',
+  },
+  teal: {
+    text: 'text-teal',
+    chip: 'bg-teal/[0.18]',
+    ring: 'border-teal/25',
+    bar: 'bg-teal/70',
+    wash: 'radial-gradient(180px at 0% 0%, rgba(52,231,224,.12), transparent 70%)',
+  },
+  gold: {
+    text: 'text-gold',
+    chip: 'bg-gold/[0.18]',
+    ring: 'border-gold/25',
+    bar: 'bg-gold/70',
+    wash: 'radial-gradient(180px at 0% 0%, rgba(255,194,77,.12), transparent 70%)',
+  },
+  violet: {
+    text: 'text-violet',
+    chip: 'bg-violet/[0.18]',
+    ring: 'border-violet/25',
+    bar: 'bg-violet/70',
+    wash: 'radial-gradient(180px at 0% 0%, rgba(155,140,255,.12), transparent 70%)',
+  },
+};
+const ACCENT_DEFAULT: Accent = HUE.emerald;
+const ACCENTS: Record<string, Accent> = {
+  'modul-ajar': HUE.emerald,
+  'bank-soal': HUE.teal,
+  'kisi-kisi': HUE.gold,
+  lkpd: HUE.violet,
+  rubrik: HUE.emerald,
+  sederhana: HUE.teal,
+  rapor: HUE.gold,
+  'ide-kegiatan': HUE.violet,
+  'komunikasi-ortu': HUE.emerald,
 };
 
 /** Tanggal ringkas Indonesia — duplikat lokal; TIDAK menyentuh HistoryDrawer/Tersimpan. */
@@ -112,11 +154,11 @@ function Banner({
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            'radial-gradient(420px 300px at 12% 15%, rgba(76,232,150,.25), transparent 70%), radial-gradient(380px 300px at 90% 95%, rgba(52,231,224,.18), transparent 72%)',
+            'linear-gradient(135deg, rgba(76,232,150,.12), transparent 45%), radial-gradient(420px 300px at 12% 15%, rgba(76,232,150,.25), transparent 70%), radial-gradient(380px 300px at 90% 95%, rgba(52,231,224,.18), transparent 72%)',
         }}
       />
       <div className="relative">
-        <h1 className="font-display text-3xl font-bold text-emerald-deep sm:text-4xl">
+        <h1 className="font-display text-4xl font-bold leading-[1.05] text-emerald-deep sm:text-5xl">
           {sapaan}
         </h1>
         <p className="mt-2 max-w-md text-sm text-ink/65">{subtext}</p>
@@ -149,15 +191,23 @@ function AksiCepat({ onSelectTool }: { onSelectTool: (id: string) => void }) {
               key={tool.id}
               type="button"
               onClick={() => onSelectTool(tool.id)}
-              className="flex min-w-[140px] snap-start flex-col gap-3 rounded-2xl border border-white/10 bg-emerald-soft/60 p-4 text-left transition-opacity hover:opacity-90 active:opacity-80"
+              className={`relative min-w-[150px] snap-start overflow-hidden rounded-2xl border bg-[#06180F] p-5 text-left transition-opacity hover:opacity-90 active:opacity-80 ${accent.ring}`}
             >
               <span
-                className={`flex h-10 w-10 items-center justify-center rounded-xl ${accent.bg}`}
-              >
-                <Ikon className={`h-5 w-5 ${accent.text}`} />
-              </span>
-              <span className="font-display text-sm font-bold text-emerald-deep">
-                {tool.title}
+                aria-hidden
+                className="pointer-events-none absolute inset-0"
+                style={{ background: accent.wash }}
+              />
+              <span className="relative flex flex-col gap-3">
+                <span className={`h-[2px] w-8 rounded-full ${accent.bar}`} />
+                <span
+                  className={`flex h-10 w-10 items-center justify-center rounded-xl ${accent.chip}`}
+                >
+                  <Ikon className={`h-5 w-5 ${accent.text}`} />
+                </span>
+                <span className="font-display text-sm font-bold text-emerald-deep">
+                  {tool.title}
+                </span>
               </span>
             </button>
           );
