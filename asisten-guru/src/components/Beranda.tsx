@@ -189,6 +189,7 @@ function KotakKebutuhan({
 }) {
   const [teks, setTeks] = useState('');
   const [tanpaHasil, setTanpaHasil] = useState(false);
+  const [fokus, setFokus] = useState(false);
 
   const coba = () => {
     const id = matchToolByKeyword(teks);
@@ -200,46 +201,63 @@ function KotakKebutuhan({
   };
 
   return (
-    <div className="rounded-2xl border border-white/10 bg-emerald-soft/60 p-5">
-      <h2 className="mb-3 px-1 text-xs font-semibold uppercase tracking-wider text-emerald-deep/60">
-        Ceritakan kebutuhanmu
-      </h2>
-      <textarea
-        id="kotak-kebutuhan"
-        aria-label="Ceritakan kebutuhanmu"
-        rows={2}
-        value={teks}
-        onChange={(e) => {
-          setTeks(e.target.value);
-          if (tanpaHasil) setTanpaHasil(false);
+    <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-emerald-soft/60 p-5">
+      <div
+        aria-hidden
+        className={
+          'pointer-events-none absolute inset-0 transition-opacity duration-500 ' +
+          'motion-reduce:transition-none ' +
+          (fokus ? 'opacity-90' : 'opacity-40')
+        }
+        style={{
+          background:
+            'radial-gradient(240px 150px at 18% 0%, rgba(76,232,150,0.28), transparent 70%),' +
+            'radial-gradient(220px 150px at 100% 100%, rgba(52,231,224,0.20), transparent 72%)',
         }}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter' && !e.shiftKey) {
-            e.preventDefault();
-            coba();
-          }
-        }}
-        placeholder="mis. bikin soal ulangan, atau modul ajar…"
-        className="w-full resize-none rounded-input border border-white/10 bg-[#06180F] p-3 text-sm text-ink placeholder:text-ink/55 focus:border-emerald-primary/40 focus:outline-none"
       />
-      <div className="mt-3 flex justify-end">
-        <button
-          type="button"
-          onClick={coba}
-          className="inline-flex min-h-[44px] items-center rounded-input border border-emerald-primary/25 bg-emerald-primary/15 px-5 text-sm font-semibold text-emerald-deep transition-opacity hover:opacity-90 active:opacity-80"
+      <div className="relative">
+        <h2 className="mb-3 px-1 text-xs font-semibold uppercase tracking-wider text-emerald-deep/60">
+          Ceritakan kebutuhanmu
+        </h2>
+        <textarea
+          id="kotak-kebutuhan"
+          aria-label="Ceritakan kebutuhanmu"
+          rows={2}
+          value={teks}
+          onChange={(e) => {
+            setTeks(e.target.value);
+            if (tanpaHasil) setTanpaHasil(false);
+          }}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+              e.preventDefault();
+              coba();
+            }
+          }}
+          onFocus={() => setFokus(true)}
+          onBlur={() => setFokus(false)}
+          placeholder="mis. bikin soal ulangan, atau modul ajar…"
+          className="w-full resize-none rounded-input border border-white/10 bg-[#06180F] p-3 text-sm text-ink placeholder:text-ink/55 focus:border-emerald-primary/40 focus:outline-none"
+        />
+        <div className="mt-3 flex justify-end">
+          <button
+            type="button"
+            onClick={coba}
+            className="inline-flex min-h-[44px] items-center rounded-input border border-emerald-primary/25 bg-emerald-primary/15 px-5 text-sm font-semibold text-emerald-deep transition-opacity hover:opacity-90 active:opacity-80"
+          >
+            Bantu pilih
+          </button>
+        </div>
+        <p
+          aria-live="polite"
+          className={`mt-2 text-xs text-ink/70 transition-opacity duration-200 motion-reduce:transition-none ${
+            tanpaHasil ? 'opacity-100' : 'opacity-0'
+          }`}
         >
-          Bantu pilih
-        </button>
+          Belum ketemu yang pas — coba kata lebih spesifik, atau pilih dari Aksi
+          cepat di bawah.
+        </p>
       </div>
-      <p
-        aria-live="polite"
-        className={`mt-2 text-xs text-ink/70 transition-opacity duration-200 motion-reduce:transition-none ${
-          tanpaHasil ? 'opacity-100' : 'opacity-0'
-        }`}
-      >
-        Belum ketemu yang pas — coba kata lebih spesifik, atau pilih dari Aksi
-        cepat di bawah.
-      </p>
     </div>
   );
 }
