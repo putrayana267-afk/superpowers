@@ -109,7 +109,7 @@ function Root() {
   }, []);
 
   const openShowcase = useCallback(() => {
-    setSplashDone(false);
+    setSplashDone(true);
     setShowLanding(true);
     window.scrollTo(0, 0);
   }, []);

@@ -301,7 +301,6 @@ export default function App({ onOpenShowcase }: AppProps) {
         onOpenMenu={() => setNavOpen(true)}
         onOpenHistory={() => setHistoryOpen(true)}
         historyCount={history.length}
-        onOpenShowcase={onOpenShowcase}
         onOpenSettings={handleOpenSettings}
       />
 
@@ -331,6 +330,7 @@ export default function App({ onOpenShowcase }: AppProps) {
               onSelectLibrary={handleSelectLibrary}
               savedActive={view === 'tersimpan'}
               onSelectSaved={handleSelectSaved}
+              onOpenHero={onOpenShowcase}
             />
           </div>
         </aside>
@@ -516,6 +516,7 @@ export default function App({ onOpenShowcase }: AppProps) {
               onSelectLibrary={handleSelectLibrary}
               savedActive={view === 'tersimpan'}
               onSelectSaved={handleSelectSaved}
+              onOpenHero={onOpenShowcase}
             />
           </div>
         </motion.div>

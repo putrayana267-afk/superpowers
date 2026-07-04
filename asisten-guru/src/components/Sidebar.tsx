@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
-import { SquaresFour, Books, Archive } from '@phosphor-icons/react';
+import { SquaresFour, Books, Archive, Sparkle } from '@phosphor-icons/react';
 import type { Icon } from '@phosphor-icons/react';
 import { TOOLS, getCategories } from '../features/tools/registry';
 import { cn } from '../lib/cn';
@@ -21,6 +21,8 @@ interface SidebarProps {
   onSelectLibrary: () => void;
   savedActive: boolean;
   onSelectSaved: () => void;
+  /** Buka layar hero (Mode Fokus) langsung. Opsional: mengikuti App.onOpenShowcase. */
+  onOpenHero?: () => void;
 }
 
 function NavEntry({
@@ -79,6 +81,7 @@ export function Sidebar({
   onSelectLibrary,
   savedActive,
   onSelectSaved,
+  onOpenHero,
 }: SidebarProps) {
   const reduce = useReducedMotion();
   const categories = getCategories();
@@ -134,6 +137,15 @@ export function Sidebar({
               onClick={onSelectSaved}
               icon={Archive}
               label="Tersimpan"
+              reduce={reduce}
+            />
+          </li>
+          <li>
+            <NavEntry
+              active={false}
+              onClick={() => onOpenHero?.()}
+              icon={Sparkle}
+              label="Layar Sambutan"
               reduce={reduce}
             />
           </li>
