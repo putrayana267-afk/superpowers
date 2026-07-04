@@ -20,6 +20,7 @@ import {
 import { copyToClipboard } from './lib/clipboard';
 import { cn } from './lib/cn';
 import { downloadDoc, downloadTxt } from './lib/download';
+import { EASE_FLOW } from './lib/motion';
 import { Header } from './components/Header';
 import { Sidebar } from './components/Sidebar';
 import { ToolForm } from './components/ToolForm';
@@ -101,7 +102,7 @@ export default function App({ onOpenShowcase }: AppProps) {
   useEffect(() => {
     drawerControls.start({
       x: navOpen ? 0 : '-105%',
-      transition: { type: 'tween', duration: 0.5, ease: [0.4, 0, 0.2, 1] },
+      transition: { type: 'tween', duration: 0.5, ease: EASE_FLOW },
     });
   }, [navOpen, drawerControls]);
 
@@ -467,7 +468,7 @@ export default function App({ onOpenShowcase }: AppProps) {
       >
         <motion.div
           animate={{ opacity: navOpen ? 1 : 0 }}
-          transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
+          transition={{ duration: 0.5, ease: EASE_FLOW }}
           style={{ pointerEvents: navOpen ? 'auto' : 'none' }}
           onClick={() => setNavOpen(false)}
           className="absolute inset-0 bg-black/50"
@@ -485,7 +486,7 @@ export default function App({ onOpenShowcase }: AppProps) {
             } else {
               drawerControls.start({
                 x: 0,
-                transition: { type: 'tween', duration: 0.5, ease: [0.4, 0, 0.2, 1] },
+                transition: { type: 'tween', duration: 0.5, ease: EASE_FLOW },
               });
             }
           }}

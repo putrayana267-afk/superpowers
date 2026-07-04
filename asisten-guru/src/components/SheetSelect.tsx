@@ -7,6 +7,7 @@ import { Field } from './Field';
 import { cn } from '../lib/cn';
 import { useMediaQuery } from '../lib/useMediaQuery';
 import { controlBase, controlError } from './controlStyles';
+import { EASE_FLOW } from '../lib/motion';
 
 /**
  * Drop-in pengganti `LevelSelect` (PROPS SAMA) untuk satu dropdown saja.
@@ -385,7 +386,7 @@ export function SheetSelect({
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  transition={reduce ? { duration: 0 } : { duration: 0.24, ease: [0.4, 0, 0.2, 1] }}
+                  transition={reduce ? { duration: 0 } : { duration: 0.24, ease: EASE_FLOW }}
                   onClick={close}
                   aria-hidden
                 />
@@ -407,7 +408,7 @@ export function SheetSelect({
                   transition={
                     reduce
                       ? { duration: 0 }
-                      : { duration: 0.24, ease: [0.4, 0, 0.2, 1] }
+                      : { duration: 0.24, ease: EASE_FLOW }
                   }
                 >
                   <div className="sticky top-0 z-10 -mx-3 -mt-3 mb-2 border-b border-white/10 px-4 pb-3 pt-4">
