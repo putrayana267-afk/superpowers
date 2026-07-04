@@ -489,7 +489,7 @@ export default function App({ onOpenShowcase }: AppProps) {
               });
             }
           }}
-          className="absolute left-0 top-0 flex h-full w-72 max-w-[80vw] flex-col border-r border-white/40 bg-emerald-soft/95 shadow-glass-lg backdrop-blur-xl"
+          className="absolute left-0 top-0 flex h-full w-72 max-w-[80vw] flex-col border-r border-white/40 bg-emerald-soft/95 shadow-glass-lg"
           role="dialog"
           aria-label="Daftar alat"
         >
