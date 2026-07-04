@@ -145,7 +145,7 @@ export function Sidebar({
               active={false}
               onClick={() => onOpenHero?.()}
               icon={Sparkle}
-              label="Mode Fokus"
+              label="Layar Sambutan"
               reduce={reduce}
             />
           </li>
