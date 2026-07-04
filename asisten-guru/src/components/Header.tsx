@@ -1,10 +1,5 @@
 import { useState, useEffect } from 'react';
-import {
-  ClockCounterClockwise,
-  List,
-  Sparkle,
-  GearSix,
-} from '@phosphor-icons/react';
+import { ClockCounterClockwise, List, GearSix } from '@phosphor-icons/react';
 import { Button } from './Button';
 import {
   loadProfil,
@@ -18,8 +13,6 @@ interface HeaderProps {
   onOpenMenu: () => void;
   onOpenHistory: () => void;
   historyCount: number;
-  /** Buka landing showcase (opsional). */
-  onOpenShowcase?: () => void;
   /** Buka halaman Pengaturan (opsional). */
   onOpenSettings?: () => void;
 }
@@ -28,7 +21,6 @@ export function Header({
   onOpenMenu,
   onOpenHistory,
   historyCount,
-  onOpenShowcase,
   onOpenSettings,
 }: HeaderProps) {
   // Profil identitas tersimpan (async). Default aman tampil dulu saat loading
@@ -78,17 +70,6 @@ export function Header({
         </div>
 
         <div className="ml-auto flex items-center gap-2">
-          {onOpenShowcase && (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={onOpenShowcase}
-              icon={<Sparkle className="h-4 w-4" />}
-              aria-label="Buka showcase"
-            >
-              <span className="hidden sm:inline">Showcase</span>
-            </Button>
-          )}
           <Button
             variant="ghost"
             size="sm"
