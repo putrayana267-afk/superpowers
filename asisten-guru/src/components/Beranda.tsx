@@ -264,6 +264,19 @@ function KotakKebutuhan({
 
 /** Rail aksi cepat — SEMUA alat registry, urutan asli; klik → pilih alat. */
 function AksiCepat({ onSelectTool }: { onSelectTool: (id: string) => void }) {
+  // Ilustrasi PNG per alat (dari public/). Fallback ke ikon Phosphor bila id
+  // tak terpetakan. Hanya tampilan — tak menyentuh logika onSelectTool/TOOLS.
+  const IKON_SRC: Record<string, string> = {
+    'modul-ajar': '/05_Teaching-Module.png',
+    'bank-soal': '/06_Question-Bank.png',
+    'kisi-kisi': '/07_Exam-Blueprint.png',
+    lkpd: '/08_Student-Worksheet.png',
+    rubrik: '/09_Scoring-Rubric.png',
+    sederhana: '/10_Simplify-Material.png',
+    rapor: '/11_Report-Card.png',
+    'ide-kegiatan': '/12_Activity-Ideas.png',
+    'komunikasi-ortu': '/13_Parent-Communication.png',
+  };
   return (
     <div>
       <h2 className="mb-3 px-1 text-xs font-semibold uppercase tracking-wider text-emerald-deep/60">
@@ -278,7 +291,7 @@ function AksiCepat({ onSelectTool }: { onSelectTool: (id: string) => void }) {
               key={tool.id}
               type="button"
               onClick={() => onSelectTool(tool.id)}
-              className={`relative min-w-[150px] snap-start overflow-hidden rounded-2xl border bg-[#06180F] p-5 text-left transition-opacity hover:opacity-90 active:opacity-80 ${accent.ring}`}
+              className={`relative min-w-[168px] snap-start overflow-hidden rounded-2xl border bg-[#06180F] p-5 text-left transition-opacity hover:opacity-90 active:opacity-80 ${accent.ring}`}
             >
               <span
                 aria-hidden
@@ -287,11 +300,19 @@ function AksiCepat({ onSelectTool }: { onSelectTool: (id: string) => void }) {
               />
               <span className="relative flex flex-col gap-3">
                 <span className={`h-[2px] w-8 rounded-full ${accent.bar}`} />
-                <span
-                  className={`flex h-10 w-10 items-center justify-center rounded-xl ${accent.chip}`}
-                >
-                  <Ikon className={`h-5 w-5 ${accent.text}`} />
-                </span>
+                {IKON_SRC[tool.id] ? (
+                  <img
+                    src={IKON_SRC[tool.id]}
+                    alt=""
+                    className="h-16 w-16 object-contain"
+                  />
+                ) : (
+                  <span
+                    className={`flex h-10 w-10 items-center justify-center rounded-xl ${accent.chip}`}
+                  >
+                    <Ikon className={`h-5 w-5 ${accent.text}`} />
+                  </span>
+                )}
                 <span className="font-display text-sm font-bold text-emerald-deep">
                   {tool.title}
                 </span>
