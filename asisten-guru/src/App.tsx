@@ -101,7 +101,7 @@ export default function App({ onOpenShowcase }: AppProps) {
   useEffect(() => {
     drawerControls.start({
       x: navOpen ? 0 : '-105%',
-      transition: { type: 'spring', stiffness: 380, damping: 34 },
+      transition: { type: 'tween', duration: 0.5, ease: [0.4, 0, 0.2, 1] },
     });
   }, [navOpen, drawerControls]);
 
@@ -467,7 +467,7 @@ export default function App({ onOpenShowcase }: AppProps) {
       >
         <motion.div
           animate={{ opacity: navOpen ? 1 : 0 }}
-          transition={{ duration: 0.25 }}
+          transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
           style={{ pointerEvents: navOpen ? 'auto' : 'none' }}
           onClick={() => setNavOpen(false)}
           className="absolute inset-0 bg-black/50"
@@ -485,11 +485,11 @@ export default function App({ onOpenShowcase }: AppProps) {
             } else {
               drawerControls.start({
                 x: 0,
-                transition: { type: 'spring', stiffness: 380, damping: 34 },
+                transition: { type: 'tween', duration: 0.5, ease: [0.4, 0, 0.2, 1] },
               });
             }
           }}
-          className="absolute left-0 top-0 flex h-full w-72 max-w-[80vw] flex-col border-r border-white/40 bg-emerald-soft/95 shadow-glass-lg backdrop-blur-xl"
+          className="absolute left-0 top-0 flex h-full w-72 max-w-[80vw] flex-col border-r border-white/40 bg-emerald-soft/95 shadow-glass-lg"
           role="dialog"
           aria-label="Daftar alat"
         >
