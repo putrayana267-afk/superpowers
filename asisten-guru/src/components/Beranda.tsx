@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   Users,
   ClipboardText,
@@ -9,6 +10,7 @@ import {
 import type { Icon } from '@phosphor-icons/react';
 import type { HistoryEntry } from '../features/tools/types';
 import { TOOLS, getToolById } from '../features/tools/registry';
+import { matchToolByKeyword } from '../features/tools/routeKeywords';
 import { useZonaWaktu } from '../features/waktu/useZonaWaktu';
 import { GlassCard } from './GlassCard';
 import { ActivityBars } from './ActivityBars';
@@ -172,6 +174,73 @@ function Banner({
         </button>
       </div>
     </section>
+  );
+}
+
+/**
+ * Kotak "Ceritakan kebutuhanmu" — LAPIS 1 (cocok-kata client-only, TANPA AI).
+ * Teks guru → matchToolByKeyword → buka tool via onSelectTool. Tak menyentuh
+ * field kurikulum. Gagal cocok → hint lembut (fade opacity, hormati reduced-motion).
+ */
+function KotakKebutuhan({
+  onSelectTool,
+}: {
+  onSelectTool: (id: string) => void;
+}) {
+  const [teks, setTeks] = useState('');
+  const [tanpaHasil, setTanpaHasil] = useState(false);
+
+  const coba = () => {
+    const id = matchToolByKeyword(teks);
+    if (id && getToolById(id)) {
+      onSelectTool(id);
+      return;
+    }
+    setTanpaHasil(true);
+  };
+
+  return (
+    <div className="rounded-2xl border border-white/10 bg-emerald-soft/60 p-5">
+      <h2 className="mb-3 px-1 text-xs font-semibold uppercase tracking-wider text-emerald-deep/60">
+        Ceritakan kebutuhanmu
+      </h2>
+      <textarea
+        id="kotak-kebutuhan"
+        aria-label="Ceritakan kebutuhanmu"
+        rows={2}
+        value={teks}
+        onChange={(e) => {
+          setTeks(e.target.value);
+          if (tanpaHasil) setTanpaHasil(false);
+        }}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            coba();
+          }
+        }}
+        placeholder="mis. bikin soal ulangan, atau modul ajar…"
+        className="w-full resize-none rounded-input border border-white/10 bg-[#06180F] p-3 text-sm text-ink placeholder:text-ink/55 focus:border-emerald-primary/40 focus:outline-none"
+      />
+      <div className="mt-3 flex justify-end">
+        <button
+          type="button"
+          onClick={coba}
+          className="inline-flex min-h-[44px] items-center rounded-input border border-emerald-primary/25 bg-emerald-primary/15 px-5 text-sm font-semibold text-emerald-deep transition-opacity hover:opacity-90 active:opacity-80"
+        >
+          Bantu pilih
+        </button>
+      </div>
+      <p
+        aria-live="polite"
+        className={`mt-2 text-xs text-ink/70 transition-opacity duration-200 motion-reduce:transition-none ${
+          tanpaHasil ? 'opacity-100' : 'opacity-0'
+        }`}
+      >
+        Belum ketemu yang pas — coba kata lebih spesifik, atau pilih dari Aksi
+        cepat di bawah.
+      </p>
+    </div>
   );
 }
 
@@ -373,6 +442,7 @@ export function Beranda({
   return (
     <div className="flex flex-col gap-8">
       <Banner count={count} onStartCreate={onStartCreate} />
+      <KotakKebutuhan onSelectTool={onSelectTool} />
       <AksiCepat onSelectTool={onSelectTool} />
 
       {count === 0 ? (
