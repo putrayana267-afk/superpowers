@@ -101,7 +101,7 @@ export default function App({ onOpenShowcase }: AppProps) {
   useEffect(() => {
     drawerControls.start({
       x: navOpen ? 0 : '-105%',
-      transition: { type: 'spring', stiffness: 380, damping: 34 },
+      transition: { type: 'spring', stiffness: 230, damping: 28 },
     });
   }, [navOpen, drawerControls]);
 
@@ -467,7 +467,7 @@ export default function App({ onOpenShowcase }: AppProps) {
       >
         <motion.div
           animate={{ opacity: navOpen ? 1 : 0 }}
-          transition={{ duration: 0.25 }}
+          transition={{ duration: 0.3, ease: 'easeOut' }}
           style={{ pointerEvents: navOpen ? 'auto' : 'none' }}
           onClick={() => setNavOpen(false)}
           className="absolute inset-0 bg-black/50"
@@ -485,7 +485,7 @@ export default function App({ onOpenShowcase }: AppProps) {
             } else {
               drawerControls.start({
                 x: 0,
-                transition: { type: 'spring', stiffness: 380, damping: 34 },
+                transition: { type: 'spring', stiffness: 230, damping: 28 },
               });
             }
           }}
