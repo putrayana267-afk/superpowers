@@ -377,7 +377,7 @@ export function SheetSelect({
                 {renderFooter('-mx-2 -mb-2')}
               </motion.div>
             ) : (
-              // MOBILE — modal tengah + zoom + scrim (TIDAK BERUBAH).
+              // MOBILE — modal tengah + grow-in scale + scrim.
               <>
                 <motion.div
                   key="scrim"
@@ -385,7 +385,7 @@ export function SheetSelect({
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  transition={reduce ? { duration: 0 } : { duration: 0.2 }}
+                  transition={reduce ? { duration: 0 } : { duration: 0.24, ease: [0.4, 0, 0.2, 1] }}
                   onClick={close}
                   aria-hidden
                 />
@@ -401,13 +401,13 @@ export function SheetSelect({
                   }}
                   className="fixed left-1/2 top-1/2 z-[111] max-h-[75vh] w-[92vw] overflow-y-auto rounded-[28px] border border-white/15 bg-[rgba(10,34,24,0.55)] p-3 backdrop-blur-lg backdrop-saturate-[1.6] shadow-[0_28px_80px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.12)] sm:w-[480px] md:w-[560px]"
                   style={{ transformOrigin: 'center' }}
-                  initial={{ x: '-50%', y: '-50%', opacity: 0 }}
-                  animate={{ x: '-50%', y: '-50%', opacity: 1 }}
-                  exit={{ x: '-50%', y: '-50%', opacity: 0 }}
+                  initial={{ x: '-50%', y: '-50%', opacity: 0, scale: 0.96 }}
+                  animate={{ x: '-50%', y: '-50%', opacity: 1, scale: 1 }}
+                  exit={{ x: '-50%', y: '-50%', opacity: 0, scale: 0.96 }}
                   transition={
                     reduce
                       ? { duration: 0 }
-                      : { duration: 0.18, ease: [0.16, 1, 0.3, 1] }
+                      : { duration: 0.24, ease: [0.4, 0, 0.2, 1] }
                   }
                 >
                   <div className="sticky top-0 z-10 -mx-3 -mt-3 mb-2 border-b border-white/10 px-4 pb-3 pt-4">
