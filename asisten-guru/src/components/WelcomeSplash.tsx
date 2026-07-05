@@ -28,7 +28,7 @@ export function WelcomeSplash({ onDone }: WelcomeSplashProps) {
   }, [onDone]);
 
   return (
-    <div className="splash-root relative min-h-screen w-full overflow-hidden bg-[#04140c]">
+    <div className="splash-root relative min-h-screen w-full overflow-hidden bg-[#101c13]">
       <div
         aria-hidden
         className="splash-glow pointer-events-none absolute inset-0"
