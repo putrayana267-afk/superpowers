@@ -299,7 +299,7 @@ export function Perpustakaan() {
                           )}
                         </div>
                         {link.desc && (
-                          <p className="mt-1 text-sm text-ink/60">{link.desc}</p>
+                          <p className="mt-1 text-sm text-ink/75">{link.desc}</p>
                         )}
                       </div>
                       <div className="flex flex-shrink-0 items-center gap-2">
@@ -345,10 +345,10 @@ export function Perpustakaan() {
                               href={SYAMILAH_URL}
                               {...EXTERNAL}
                               title={`Cari ${k} di Syamilah`}
-                              className="inline-flex items-center gap-1.5 rounded-full border border-emerald-deep/20 bg-white/5 px-3 py-1 text-xs text-emerald-deep transition hover:bg-emerald-deep/15"
+                              className="inline-flex items-center gap-1.5 rounded-full border border-emerald-deep/20 bg-white/5 px-3 py-1 text-xs text-ink/90 transition hover:bg-emerald-deep/15"
                             >
                               {k}
-                              <MagnifyingGlass className="h-3 w-3" />
+                              <MagnifyingGlass className="h-3 w-3 text-emerald-deep/70" />
                             </a>
                           ))}
                         </div>
