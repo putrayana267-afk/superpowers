@@ -11,7 +11,7 @@ export default {
         emerald: {
           primary: '#4CE896',
           deep: '#8EFFCA',
-          soft: '#04331D',
+          soft: '#022b22',
         },
         gold: {
           DEFAULT: '#FFC24D',

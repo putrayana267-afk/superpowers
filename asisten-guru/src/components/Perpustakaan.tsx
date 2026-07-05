@@ -245,9 +245,9 @@ export function Perpustakaan() {
           placeholder="Cari sumber atau nama kitab…"
           aria-label="Cari sumber atau kitab"
           className={cn(
-            'w-full rounded-xl border border-white/10 bg-[#04331D]/70 py-2.5 pl-10 pr-3.5 text-sm text-[#EAFFF4]',
+            'w-full rounded-xl border border-white/10 bg-[#022b22]/70 py-2.5 pl-10 pr-3.5 text-sm text-[#EAFFF4]',
             'placeholder:text-[#EAFFF4]/40 shadow-sm backdrop-blur transition',
-            'focus:border-emerald-primary focus:bg-[#04331D] focus:outline-none focus:ring-2 focus:ring-emerald-primary/30',
+            'focus:border-emerald-primary focus:bg-[#022b22] focus:outline-none focus:ring-2 focus:ring-emerald-primary/30',
           )}
         />
       </div>

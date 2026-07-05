@@ -88,7 +88,7 @@ export function PremiumHero({ onEnter }: PremiumHeroProps) {
   const inisial = inisialDari(profil.nama);
 
   return (
-    <div className="relative min-h-[100dvh] w-full overflow-hidden bg-[#04140c]">
+    <div className="relative min-h-[100dvh] w-full overflow-hidden bg-[#101c13]">
       <div aria-hidden className="hero-bg absolute inset-0" style={{ zIndex: 0 }}>
         <video
           className="absolute inset-0 h-full w-full object-cover"
@@ -122,7 +122,7 @@ export function PremiumHero({ onEnter }: PremiumHeroProps) {
         style={{ zIndex: 10 }}
       >
         <div className="hero-top flex justify-end">
-          <div className="flex items-center gap-4 rounded-2xl border border-white/10 bg-[#04140c]/55 px-5 py-3 backdrop-blur-md">
+          <div className="flex items-center gap-4 rounded-2xl border border-white/10 bg-[#101c13]/55 px-5 py-3 backdrop-blur-md">
             <div className="text-center">
               <div className="font-grotesk text-3xl font-bold leading-none tabular-nums text-white">
                 {tanggal}
@@ -145,7 +145,7 @@ export function PremiumHero({ onEnter }: PremiumHeroProps) {
         </div>
 
         <div className="flex flex-1 flex-col items-center justify-center text-center">
-          <div className="hero-chip flex items-center gap-3 rounded-full border border-white/10 bg-[#04140c]/55 py-2 pl-2 pr-5 backdrop-blur-md">
+          <div className="hero-chip flex items-center gap-3 rounded-full border border-white/10 bg-[#101c13]/55 py-2 pl-2 pr-5 backdrop-blur-md">
             {foto ? (
               <img
                 src={foto}
@@ -178,7 +178,7 @@ export function PremiumHero({ onEnter }: PremiumHeroProps) {
           <button
             type="button"
             onClick={onEnter}
-            className="hero-cta mt-9 flex w-full max-w-md items-center justify-center gap-2 rounded-2xl border border-[#4CE896]/45 bg-[#04140c]/60 px-6 py-4 text-lg font-semibold text-emerald-deep backdrop-blur-md transition-transform active:scale-[0.98]"
+            className="hero-cta mt-9 flex w-full max-w-md items-center justify-center gap-2 rounded-2xl border border-[#4CE896]/45 bg-[#101c13]/60 px-6 py-4 text-lg font-semibold text-emerald-deep backdrop-blur-md transition-transform active:scale-[0.98]"
             style={{
               boxShadow:
                 '0 0 30px -12px rgba(76,232,150,.55), inset 0 0 22px -14px rgba(76,232,150,.5)',
