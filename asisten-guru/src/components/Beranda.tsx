@@ -1,14 +1,8 @@
-import {
-  Users,
-  ClipboardText,
-  Medal,
-  FileText,
-  Star,
-  Plus,
-} from '@phosphor-icons/react';
-import type { Icon } from '@phosphor-icons/react';
+import { useState } from 'react';
+import { FileText, Star, Plus } from '@phosphor-icons/react';
 import type { HistoryEntry } from '../features/tools/types';
 import { TOOLS, getToolById } from '../features/tools/registry';
+import { matchToolByKeyword } from '../features/tools/routeKeywords';
 import { useZonaWaktu } from '../features/waktu/useZonaWaktu';
 import { GlassCard } from './GlassCard';
 import { ActivityBars } from './ActivityBars';
@@ -19,20 +13,6 @@ interface BerandaProps {
   onStartCreate: () => void;
   onSelectTool: (id: string) => void;
 }
-
-interface DashTile {
-  id: string;
-  label: string;
-  icon: Icon;
-}
-
-// Fitur data siswa yang belum dibangun — tetap "Segera hadir" (jujur), sekunder
-// di bawah konten dokumen nyata. TANPA angka/data palsu.
-const TILES: DashTile[] = [
-  { id: 'siswa', label: 'Siswa', icon: Users },
-  { id: 'absensi', label: 'Absensi', icon: ClipboardText },
-  { id: 'nilai', label: 'Nilai', icon: Medal },
-];
 
 /**
  * Tint aksen per alat (LOKAL) — 4 hue token noir. Tiap hue punya: `text` (ikon
@@ -148,7 +128,7 @@ function Banner({
       : 'Semua bahan ajarmu dalam satu ruang kerja yang tenang.';
 
   return (
-    <section className="relative overflow-hidden rounded-3xl border border-white/10 bg-emerald-soft p-6 sm:p-8">
+    <section className="relative overflow-hidden rounded-3xl border border-[#569578]/25 bg-[#022b22] p-6 sm:p-8">
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0"
@@ -175,6 +155,91 @@ function Banner({
   );
 }
 
+/**
+ * Kotak "Ceritakan kebutuhanmu" — LAPIS 1 (cocok-kata client-only, TANPA AI).
+ * Teks guru → matchToolByKeyword → buka tool via onSelectTool. Tak menyentuh
+ * field kurikulum. Gagal cocok → hint lembut (fade opacity, hormati reduced-motion).
+ */
+function KotakKebutuhan({
+  onSelectTool,
+}: {
+  onSelectTool: (id: string) => void;
+}) {
+  const [teks, setTeks] = useState('');
+  const [tanpaHasil, setTanpaHasil] = useState(false);
+  const [fokus, setFokus] = useState(false);
+
+  const coba = () => {
+    const id = matchToolByKeyword(teks);
+    if (id && getToolById(id)) {
+      onSelectTool(id);
+      return;
+    }
+    setTanpaHasil(true);
+  };
+
+  return (
+    <div className="relative overflow-hidden rounded-2xl border border-[#569578]/25 bg-[#022b22]/60 p-5">
+      <div
+        aria-hidden
+        className={
+          'pointer-events-none absolute inset-0 transition-opacity duration-500 ' +
+          'motion-reduce:transition-none ' +
+          (fokus ? 'opacity-90' : 'opacity-40')
+        }
+        style={{
+          background:
+            'radial-gradient(240px 150px at 18% 0%, rgba(76,232,150,0.28), transparent 70%),' +
+            'radial-gradient(220px 150px at 100% 100%, rgba(52,231,224,0.20), transparent 72%)',
+        }}
+      />
+      <div className="relative">
+        <h2 className="mb-3 px-1 text-xs font-semibold uppercase tracking-wider text-emerald-deep/60">
+          Ceritakan kebutuhanmu
+        </h2>
+        <textarea
+          id="kotak-kebutuhan"
+          aria-label="Ceritakan kebutuhanmu"
+          rows={2}
+          value={teks}
+          onChange={(e) => {
+            setTeks(e.target.value);
+            if (tanpaHasil) setTanpaHasil(false);
+          }}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+              e.preventDefault();
+              coba();
+            }
+          }}
+          onFocus={() => setFokus(true)}
+          onBlur={() => setFokus(false)}
+          placeholder="mis. bikin soal ulangan, atau modul ajar…"
+          className="w-full resize-none rounded-input border border-[#569578]/25 bg-[#17281d] p-3 text-sm text-ink placeholder:text-ink/55 focus:border-emerald-primary/40 focus:outline-none"
+        />
+        <div className="mt-3 flex justify-end">
+          <button
+            type="button"
+            onClick={coba}
+            className="inline-flex min-h-[44px] items-center rounded-input border border-emerald-primary/25 bg-emerald-primary/15 px-5 text-sm font-semibold text-emerald-deep transition-opacity hover:opacity-90 active:opacity-80"
+          >
+            Bantu pilih
+          </button>
+        </div>
+        <p
+          aria-live="polite"
+          className={`mt-2 text-xs text-ink/70 transition-opacity duration-200 motion-reduce:transition-none ${
+            tanpaHasil ? 'opacity-100' : 'opacity-0'
+          }`}
+        >
+          Belum ketemu yang pas — coba kata lebih spesifik, atau pilih dari Aksi
+          cepat di bawah.
+        </p>
+      </div>
+    </div>
+  );
+}
+
 /** Rail aksi cepat — SEMUA alat registry, urutan asli; klik → pilih alat. */
 function AksiCepat({ onSelectTool }: { onSelectTool: (id: string) => void }) {
   return (
@@ -191,7 +256,7 @@ function AksiCepat({ onSelectTool }: { onSelectTool: (id: string) => void }) {
               key={tool.id}
               type="button"
               onClick={() => onSelectTool(tool.id)}
-              className={`relative min-w-[150px] snap-start overflow-hidden rounded-2xl border bg-[#06180F] p-5 text-left transition-opacity hover:opacity-90 active:opacity-80 ${accent.ring}`}
+              className={`relative min-w-[168px] snap-start overflow-hidden rounded-2xl border bg-[#17281d] p-5 text-left transition-opacity hover:opacity-90 active:opacity-80 ${accent.ring}`}
             >
               <span
                 aria-hidden
@@ -201,9 +266,9 @@ function AksiCepat({ onSelectTool }: { onSelectTool: (id: string) => void }) {
               <span className="relative flex flex-col gap-3">
                 <span className={`h-[2px] w-8 rounded-full ${accent.bar}`} />
                 <span
-                  className={`flex h-10 w-10 items-center justify-center rounded-xl ${accent.chip}`}
+                  className={`flex h-14 w-14 items-center justify-center rounded-2xl ${accent.chip}`}
                 >
-                  <Ikon className={`h-5 w-5 ${accent.text}`} />
+                  <Ikon weight="duotone" className={`h-7 w-7 ${accent.text}`} />
                 </span>
                 <span className="font-display text-sm font-bold text-emerald-deep">
                   {tool.title}
@@ -241,7 +306,7 @@ function Statistik({
           {breakdown.map(({ id, label, count: n }) => (
             <span
               key={id}
-              className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-emerald-soft/60 px-3 py-1.5"
+              className="inline-flex items-center gap-1.5 rounded-full border border-[#569578]/25 bg-[#022b22]/60 px-3 py-1.5"
             >
               <span className="font-grotesk text-sm font-bold tabular-nums text-emerald-deep">
                 {n}
@@ -282,7 +347,7 @@ function Terbaru({
             >
               <GlassCard className="h-full" animate={false}>
                 <div className="flex items-start gap-3">
-                  <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl bg-emerald-soft text-emerald-deep">
+                  <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl bg-[#022b22] text-emerald-deep">
                     <Ikon className="h-5 w-5" />
                   </span>
                   <div className="min-w-0 flex-1">
@@ -311,28 +376,27 @@ function Terbaru({
   );
 }
 
-/** Segera hadir — satu baris kompak 3 tile kecil; badge emas dipertahankan. */
-function SegeraHadir() {
+function CaraKerja() {
+  const langkah = [
+    { n: '1', judul: 'Pilih alat & isi kurikulum', teks: 'Tentukan jenjang, mapel, dan pokok bahasan dari Capaian Pembelajaran resmi.' },
+    { n: '2', judul: 'AI menyusun dokumennya', teks: 'Modul Ajar, LKPD, soal, rubrik — sesuai struktur Kurikulum Merdeka.' },
+    { n: '3', judul: 'Simpan, unduh, atau bagikan', teks: 'Dokumen tersimpan di sini agar mudah dibuka kembali.' },
+  ];
   return (
     <div>
       <h2 className="mb-3 px-1 text-xs font-semibold uppercase tracking-wider text-emerald-deep/60">
-        Segera hadir
+        Cara kerja
       </h2>
-      <div className="flex flex-col gap-3 sm:flex-row">
-        {TILES.map(({ id, label, icon: Ikon }) => (
-          <div
-            key={id}
-            className="flex flex-1 items-center gap-3 rounded-2xl border border-white/10 bg-emerald-soft/60 px-4 py-3"
-          >
-            <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl bg-emerald-soft text-emerald-deep">
-              <Ikon className="h-4 w-4" />
+      <div className="flex flex-col gap-3">
+        {langkah.map(({ n, judul, teks }) => (
+          <div key={n} className="flex items-start gap-3 rounded-2xl border border-[#569578]/25 bg-[#022b22]/60 p-4">
+            <span className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border border-emerald-primary/40 font-grotesk text-sm font-bold text-emerald-primary">
+              {n}
             </span>
-            <span className="font-display text-sm font-bold text-emerald-deep">
-              {label}
-            </span>
-            <span className="ml-auto inline-flex items-center rounded-full border border-gold/40 bg-gold/10 px-2 py-0.5 text-[10px] font-medium text-gold">
-              Segera hadir
-            </span>
+            <div>
+              <h3 className="font-display text-sm font-bold text-emerald-deep">{judul}</h3>
+              <p className="mt-0.5 text-xs leading-relaxed text-ink/60">{teks}</p>
+            </div>
           </div>
         ))}
       </div>
@@ -373,22 +437,22 @@ export function Beranda({
   return (
     <div className="flex flex-col gap-8">
       <Banner count={count} onStartCreate={onStartCreate} />
+      <KotakKebutuhan onSelectTool={onSelectTool} />
       <AksiCepat onSelectTool={onSelectTool} />
 
       {count === 0 ? (
         <>
-          <div className="rounded-2xl border border-white/10 bg-emerald-soft/60 px-5 py-4 text-sm text-ink/60">
+          <div className="rounded-2xl border border-[#569578]/25 bg-[#022b22]/60 px-5 py-4 text-sm text-ink/60">
             Belum ada dokumen — yang Anda buat akan muncul di sini agar mudah
             dibuka kembali.
           </div>
-          <SegeraHadir />
+          <CaraKerja />
         </>
       ) : (
         <>
           <Statistik count={count} breakdown={breakdown} />
           <ActivityBars history={history} />
           <Terbaru recent={recent} onOpenEntry={onOpenEntry} />
-          <SegeraHadir />
         </>
       )}
     </div>
