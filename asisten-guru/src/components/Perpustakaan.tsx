@@ -299,7 +299,7 @@ export function Perpustakaan() {
                           )}
                         </div>
                         {link.desc && (
-                          <p className="mt-1 text-sm text-ink/60">{link.desc}</p>
+                          <p className="mt-1 text-sm text-ink/75">{link.desc}</p>
                         )}
                       </div>
                       <div className="flex flex-shrink-0 items-center gap-2">
