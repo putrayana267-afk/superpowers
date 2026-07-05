@@ -1,13 +1,5 @@
 import { useState } from 'react';
-import {
-  Users,
-  ClipboardText,
-  Medal,
-  FileText,
-  Star,
-  Plus,
-} from '@phosphor-icons/react';
-import type { Icon } from '@phosphor-icons/react';
+import { FileText, Star, Plus } from '@phosphor-icons/react';
 import type { HistoryEntry } from '../features/tools/types';
 import { TOOLS, getToolById } from '../features/tools/registry';
 import { matchToolByKeyword } from '../features/tools/routeKeywords';
@@ -21,20 +13,6 @@ interface BerandaProps {
   onStartCreate: () => void;
   onSelectTool: (id: string) => void;
 }
-
-interface DashTile {
-  id: string;
-  label: string;
-  icon: Icon;
-}
-
-// Fitur data siswa yang belum dibangun — tetap "Segera hadir" (jujur), sekunder
-// di bawah konten dokumen nyata. TANPA angka/data palsu.
-const TILES: DashTile[] = [
-  { id: 'siswa', label: 'Siswa', icon: Users },
-  { id: 'absensi', label: 'Absensi', icon: ClipboardText },
-  { id: 'nilai', label: 'Nilai', icon: Medal },
-];
 
 /**
  * Tint aksen per alat (LOKAL) — 4 hue token noir. Tiap hue punya: `text` (ikon
@@ -398,28 +376,27 @@ function Terbaru({
   );
 }
 
-/** Segera hadir — satu baris kompak 3 tile kecil; badge emas dipertahankan. */
-function SegeraHadir() {
+function CaraKerja() {
+  const langkah = [
+    { n: '1', judul: 'Pilih alat & isi kurikulum', teks: 'Tentukan jenjang, mapel, dan pokok bahasan dari Capaian Pembelajaran resmi.' },
+    { n: '2', judul: 'AI menyusun dokumennya', teks: 'Modul Ajar, LKPD, soal, rubrik — sesuai struktur Kurikulum Merdeka.' },
+    { n: '3', judul: 'Simpan, unduh, atau bagikan', teks: 'Dokumen tersimpan di sini agar mudah dibuka kembali.' },
+  ];
   return (
     <div>
       <h2 className="mb-3 px-1 text-xs font-semibold uppercase tracking-wider text-emerald-deep/60">
-        Segera hadir
+        Cara kerja
       </h2>
-      <div className="flex flex-col gap-3 sm:flex-row">
-        {TILES.map(({ id, label, icon: Ikon }) => (
-          <div
-            key={id}
-            className="flex flex-1 items-center gap-3 rounded-2xl border border-[#569578]/25 bg-[#022b22]/60 px-4 py-3"
-          >
-            <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl bg-[#022b22] text-emerald-deep">
-              <Ikon className="h-4 w-4" />
+      <div className="flex flex-col gap-3">
+        {langkah.map(({ n, judul, teks }) => (
+          <div key={n} className="flex items-start gap-3 rounded-2xl border border-[#569578]/25 bg-[#022b22]/60 p-4">
+            <span className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border border-emerald-primary/40 font-grotesk text-sm font-bold text-emerald-primary">
+              {n}
             </span>
-            <span className="font-display text-sm font-bold text-emerald-deep">
-              {label}
-            </span>
-            <span className="ml-auto inline-flex items-center rounded-full border border-gold/40 bg-gold/10 px-2 py-0.5 text-[10px] font-medium text-gold">
-              Segera hadir
-            </span>
+            <div>
+              <h3 className="font-display text-sm font-bold text-emerald-deep">{judul}</h3>
+              <p className="mt-0.5 text-xs leading-relaxed text-ink/60">{teks}</p>
+            </div>
           </div>
         ))}
       </div>
@@ -469,14 +446,13 @@ export function Beranda({
             Belum ada dokumen — yang Anda buat akan muncul di sini agar mudah
             dibuka kembali.
           </div>
-          <SegeraHadir />
+          <CaraKerja />
         </>
       ) : (
         <>
           <Statistik count={count} breakdown={breakdown} />
           <ActivityBars history={history} />
           <Terbaru recent={recent} onOpenEntry={onOpenEntry} />
-          <SegeraHadir />
         </>
       )}
     </div>
