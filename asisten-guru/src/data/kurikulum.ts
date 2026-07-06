@@ -470,6 +470,22 @@ const SENIRUPA_FASE_A_TOPIK: Topik[] = [
   { id: "senirupa-a-berdampak-responspositif", label: "Memberi respons terhadap kejadian & lingkungan sehari-hari melalui karya seni rupa yang berdampak positif bagi dirinya" },
 ];
 
+// Topik Seni Tari Fase A (Kelas 1 & 2) — VERBATIM dari Rumusan CP
+// (portal Ruang GTK, guru.kemendikdasmen.go.id, tab "Rumusan CP", Seni Tari Fase A).
+// Label = teks capaian per elemen apa adanya; belum diverifikasi ke PDF primer → draft.
+const SENITARI_FASE_A_TOPIK: Topik[] = [
+  // Mengalami (Experiencing)
+  { id: "senitari-a-mengalami", label: "Peserta didik mengamati bentuk tari sebagai media komunikasi serta mengembangkan kesadaran diri dalam mengeksplorasi unsur utama tari meliputi gerak, ruang, tenaga, waktu, gerak di tempat dan gerak berpindah." },
+  // Merefleksikan (Reflecting)
+  { id: "senitari-a-merefleksikan", label: "Peserta didik mengenal dan menilai dengan mengidentifikasi unsur utama tari meliputi gerak, ruang, tenaga, waktu, gerak di tempat dan gerak berpindah, serta mengemukakan pencapaian diri secara lisan, tulisan, dan kinestetik." },
+  // Berpikir dan Bekerja Artistik (Thinking and Working Artistically)
+  { id: "senitari-a-artistik", label: "Peserta didik meragakan hasil gerak berdasarkan norma/perilaku yang sesuai dalam menari dengan keyakinan dan percaya diri saat mengekspresikan ide, perasaan kepada penonton atau lingkungan sekitar." },
+  // Menciptakan (Creating)
+  { id: "senitari-a-menciptakan", label: "Peserta didik mengembangkan unsur utama tari (gerak, ruang, waktu, dan tenaga), gerak di tempat, dan gerak berpindah untuk membuat gerak sederhana yang memiliki kesatuan gerak yang indah." },
+  // Berdampak (Impacting)
+  { id: "senitari-a-berdampak", label: "Peserta didik menerima proses pembelajaran sehingga tumbuh rasa ingin tahu dan dapat menunjukkan antusiasme yang berdampak pada kemampuan diri dalam menyelesaikan aktivitas pembelajaran tari." },
+];
+
 export const KURIKULUM: KurikulumEntry[] = [
   // -------------------------------------------------------------------------
   // PESANTREN — NAHWU (Matan Al-Jurumiyah). Sesuai contoh gambar pengguna.
@@ -1023,6 +1039,26 @@ export const KURIKULUM: KurikulumEntry[] = [
     status: "draft",
     sumber: "Portal Ruang GTK (guru.kemendikdasmen.go.id) — Rumusan CP Seni Rupa Fase A. Berlaku via Kepka BSKAP No. 046/H/KR/2025 (perubahan atas 032/H/KR/2024); Seni Rupa tidak terdampak Kepka BKPDM No. 020 Tahun 2026. Nomor halaman PDF primer belum diverifikasi.",
     topik: SENIRUPA_FASE_A_TOPIK,
+  },
+
+  // ── Seni Tari SD/MI (Fase A) — draft, sumber portal Ruang GTK ──
+  {
+    jenjang: "SD/MI",
+    kelompok: "Umum/Nasional (Kemendikbud)",
+    mapel: "Seni Tari",
+    kelas: "1",
+    status: "draft",
+    sumber: "Portal Ruang GTK (guru.kemendikdasmen.go.id) — Rumusan CP, Capaian per Elemen, Seni Tari Fase A. Berlaku via Kepka BSKAP No. 046/H/KR/2025 (perubahan atas 032/H/KR/2024); Seni Tari tidak terdampak Kepka BKPDM No. 020 Tahun 2026. Nomor halaman PDF primer belum diverifikasi.",
+    topik: SENITARI_FASE_A_TOPIK,
+  },
+  {
+    jenjang: "SD/MI",
+    kelompok: "Umum/Nasional (Kemendikbud)",
+    mapel: "Seni Tari",
+    kelas: "2",
+    status: "draft",
+    sumber: "Portal Ruang GTK (guru.kemendikdasmen.go.id) — Rumusan CP, Capaian per Elemen, Seni Tari Fase A. Berlaku via Kepka BSKAP No. 046/H/KR/2025 (perubahan atas 032/H/KR/2024); Seni Tari tidak terdampak Kepka BKPDM No. 020 Tahun 2026. Nomor halaman PDF primer belum diverifikasi.",
+    topik: SENITARI_FASE_A_TOPIK,
   },
 ];
 
