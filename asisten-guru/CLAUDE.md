@@ -140,11 +140,11 @@ Entri = interface `KurikulumEntry`:
 `kosong → draft → verified` — tidak ada jalan pintas.
 
 Naik ke `verified` HANYA jika kelimanya terpenuhi:
-1. PDF resmi ada
-2. Kutipan teks + nomor halaman ada (dicatat di `sumber` / ringkasan sesi — bukan field terpisah)
-3. Screenshot app dari manusia ada
-4. Manusia spot-check 3–5 entri ke PDF asli
-5. Manusia menyetujui eksplisit
+1. Sumber RESMI ada — PDF Kepka BSKAP ATAU halaman CP resmi di portal kemendikdasmen (guru.kemendikdasmen.go.id). BUKAN scribd, blog, atau file buatan AI.
+2. Teks VERBATIM — CP disalin kata-per-kata dari sumber resmi itu, bukan diringkas/ditulis ulang. Ini validator kebenaran.
+3. Penunjuk reproducible ada — nomor halaman (bila dari PDF) ATAU URL portal + screenshot (bila dari portal). Dicatat di `sumber`/ringkasan sesi, bukan field terpisah.
+4. Manusia spot-check 3–5 entri: teks entri cocok verbatim dengan sumber resmi.
+5. Manusia menyetujui eksplisit.
 
 Kurang satu = tetap `draft`.
 
