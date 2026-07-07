@@ -1,3 +1,5 @@
+@asisten-guru/CLAUDE.md
+
 # Superpowers — Contributor Guidelines
 
 ## If You Are an AI Agent
