@@ -158,6 +158,14 @@ Kurang satu = tetap `draft`.
 - **Dua sumber bertentangan:** jangan pilih sendiri. Laporkan keduanya + halaman masing-masing, minta keputusan.
 - **Ada peraturan revisi baru:** entri `verified` lama jangan di-overwrite. Buat entri baru `draft`, tandai relasinya, minta manusia memutuskan.
 
+### 4.7 Granularitas & isi `topik`
+`topik` = **daftar pokok pembahasan diskrit**; guru pilih SATU (atau ketik manual) → jadi `pokok` → prompt Modul Ajar (`generate.ts` `val(i,'pokok')`). Karena itu tiap `label`:
+- **Satu kompetensi/satuan ajar ATOMIK** — satu hal yang wajar jadi fokus satu modul. Boleh tema ("Diriku"), keterampilan ("Membaca permulaan"), atau kompetensi CP. Kalimat boleh **panjang asal tetap SATU kompetensi**.
+- **JANGAN membundel** banyak sub-keterampilan dalam satu label. Pelanggaran (draft Seni Tari): "Peserta didik mengamati bentuk tari … gerak, ruang, tenaga, waktu, di tempat & berpindah" = ≥3 sub-keterampilan → **pecah**. Heuristik: tiap elemen CP biasanya jadi beberapa topik (di data sekarang 6–14 per fase), bukan 1 elemen = 1 topik.
+- Verbatim CP = **bukti sumber**, BUKAN isi `label` (§4.4 no.2). Rumah verbatim = **ringkasan sesi**; `sumber` memuat sitasi + penunjuk (§4.2, §4.4 no.3). `label` = topik ajar yang **diturunkan** dari CP.
+- **Bentuk pelanggaran:** menempel CP verbatim ke `label` agar "lolos verbatim §4.4 no.2" — itu justru melanggar §4.7.
+- Catatan UI: `label` juga opsi dropdown di HP (§14) — usahakan ringkas, tapi **kesetiaan > keringkasan** (tanpa batas karakter keras).
+
 ---
 
 ## 5 · Alur Kerja Fase
@@ -191,7 +199,7 @@ Baca kode, struktur, data, aturan. **DILARANG** ubah file / commit / deploy / kl
 |---|---|
 | Fix UI kecil | build lolos + diff + URL preview + screenshot manusia |
 | Fitur baru | semua di atas + kasus uji tertulis + data `verified` tidak tersentuh |
-| Data kurikulum | `status` benar + `sumber` lengkap (§4.2) + manusia mengecek (§4.4) |
+| Data kurikulum | `status` benar + `sumber` lengkap (§4.2) + `topik` atomik (§4.7) + manusia mengecek (§4.4) |
 | Refactor | build lolos + perilaku tidak berubah (jelaskan cara membuktikannya) |
 | Dependensi baru | alasan + dampak ukuran bundle + izin manusia SEBELUM install |
 
