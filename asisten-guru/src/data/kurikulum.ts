@@ -467,7 +467,7 @@ const SENIRUPA_FASE_A_TOPIK: Topik[] = [
   // Menciptakan (Making/Creating)
   { id: "senirupa-a-menciptakan-karyapengamatan", label: "Membuat karya seni rupa dari hasil pengamatan lingkungan, menggunakan unsur garis, bentuk, dan/atau warna" },
   // Berdampak (Impacting)
-  { id: "senirupa-a-berdampak-responspositif", label: "Memberi respons terhadap kejadian & lingkungan sehari-hari melalui karya seni rupa yang berdampak positif bagi dirinya" },
+  { id: "senirupa-a-berdampak-responspositif", label: "Memberi respons terhadap kejadian sehari-hari & keadaan lingkungan sekitar melalui karya seni rupa yang berdampak positif bagi dirinya" },
 ];
 
 // Topik Seni Tari Fase A (Kelas 1 & 2) — VERBATIM dari Rumusan CP
@@ -1027,8 +1027,8 @@ export const KURIKULUM: KurikulumEntry[] = [
     kelompok: "Umum/Nasional (Kemendikbud)",
     mapel: "Seni Rupa",
     kelas: "1",
-    status: "draft",
-    sumber: "Portal Ruang GTK (guru.kemendikdasmen.go.id) — Rumusan CP Seni Rupa Fase A. Berlaku via Kepka BSKAP No. 046/H/KR/2025 (perubahan atas 032/H/KR/2024); Seni Rupa tidak terdampak Kepka BKPDM No. 020 Tahun 2026. Nomor halaman PDF primer belum diverifikasi.",
+    status: "verified",
+    sumber: "Portal Ruang GTK (guru.kemendikdasmen.go.id) — Rumusan CP Seni Rupa Fase A. Berlaku via Kepka BSKAP No. 046/H/KR/2025 (perubahan atas 032/H/KR/2024); Seni Rupa tidak terdampak Kepka BKPDM No. 020 Tahun 2026.",
     topik: SENIRUPA_FASE_A_TOPIK,
   },
   {
@@ -1036,8 +1036,8 @@ export const KURIKULUM: KurikulumEntry[] = [
     kelompok: "Umum/Nasional (Kemendikbud)",
     mapel: "Seni Rupa",
     kelas: "2",
-    status: "draft",
-    sumber: "Portal Ruang GTK (guru.kemendikdasmen.go.id) — Rumusan CP Seni Rupa Fase A. Berlaku via Kepka BSKAP No. 046/H/KR/2025 (perubahan atas 032/H/KR/2024); Seni Rupa tidak terdampak Kepka BKPDM No. 020 Tahun 2026. Nomor halaman PDF primer belum diverifikasi.",
+    status: "verified",
+    sumber: "Portal Ruang GTK (guru.kemendikdasmen.go.id) — Rumusan CP Seni Rupa Fase A. Berlaku via Kepka BSKAP No. 046/H/KR/2025 (perubahan atas 032/H/KR/2024); Seni Rupa tidak terdampak Kepka BKPDM No. 020 Tahun 2026.",
     topik: SENIRUPA_FASE_A_TOPIK,
   },
 
