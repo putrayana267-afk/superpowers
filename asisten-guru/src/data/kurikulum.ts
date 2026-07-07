@@ -1007,8 +1007,8 @@ export const KURIKULUM: KurikulumEntry[] = [
     kelompok: "Umum/Nasional (Kemendikbud)",
     mapel: "Seni Musik",
     kelas: "1",
-    status: "draft",
-    sumber: "Portal Ruang GTK (guru.kemendikdasmen.go.id) — Rumusan CP Seni Musik Fase A. Regulasi CP umum: Kepka BSKAP No. 046/H/KR/2025 (inferred; nomor & halaman tidak tampak di portal).",
+    status: "verified",
+    sumber: "Portal Ruang GTK (guru.kemendikdasmen.go.id) — Rumusan CP Seni Musik Fase A.",
     topik: SENIMUSIK_FASE_A_TOPIK,
   },
   {
@@ -1016,8 +1016,8 @@ export const KURIKULUM: KurikulumEntry[] = [
     kelompok: "Umum/Nasional (Kemendikbud)",
     mapel: "Seni Musik",
     kelas: "2",
-    status: "draft",
-    sumber: "Portal Ruang GTK (guru.kemendikdasmen.go.id) — Rumusan CP Seni Musik Fase A. Regulasi CP umum: Kepka BSKAP No. 046/H/KR/2025 (inferred; nomor & halaman tidak tampak di portal).",
+    status: "verified",
+    sumber: "Portal Ruang GTK (guru.kemendikdasmen.go.id) — Rumusan CP Seni Musik Fase A.",
     topik: SENIMUSIK_FASE_A_TOPIK,
   },
 
