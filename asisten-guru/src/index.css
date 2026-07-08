@@ -96,7 +96,7 @@
   @apply my-2 list-disc space-y-1 pl-5;
 }
 .prose-result ol {
-  @apply my-2 list-decimal space-y-1 pl-5;
+  @apply my-2 list-decimal space-y-1 pl-8;
 }
 .prose-result li {
   @apply leading-relaxed;
