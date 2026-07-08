@@ -66,22 +66,45 @@ const builders: Record<string, Builder> = {
 
   'bank-soal': (i) => {
     const jumlah = val(i, 'jumlah') || '5';
+    const jenis = val(i, 'bentuk') || 'Pilihan Ganda';
+    const pembuka =
+      `Hasilkan TEPAT ${jumlah} butir soal LENGKAP. ` +
+      `Jangan berhenti sebelum SEMUA ${jumlah} soal selesai. Jangan menyingkat.\n\n`;
+    const penutup =
+      'Sesuaikan dengan tingkat kesulitan kognitif yang diminta (C1–C2 mudah, C3–C4 sedang, C5–C6 sulit) ' +
+      'serta jenjang, mata pelajaran, dan pokok pembahasan di atas. ' +
+      'Tulis dalam Markdown rapi dengan penomoran urut.';
+    let format;
+    if (jenis === 'Isian') {
+      format =
+        'Format tiap butir soal (Isian):\n' +
+        '- Nomor urut dan kalimat/pertanyaan RUMPANG dengan penanda kosong (mis. _____) untuk diisi siswa.\n' +
+        '- **Kunci Jawaban**: jawaban yang diterima; bila ada, sebutkan variasi jawaban yang sah.\n' +
+        '- **Pembahasan**: penjelasan ringkas mengapa jawaban itu benar.\n' +
+        'TANPA pilihan A–E dan TANPA kunci berupa huruf.\n';
+    } else if (jenis === 'Esai') {
+      format =
+        'Format tiap butir soal (Esai):\n' +
+        '- Nomor urut dan pertanyaan TERBUKA yang jelas.\n' +
+        '- **Rubrik/Kriteria Penilaian**: kriteria penilaian (atau jawaban model beserta poin).\n' +
+        '- **Pembahasan**: penjelasan ringkas poin-poin jawaban yang diharapkan.\n' +
+        'TANPA pilihan A–E dan TANPA kunci berupa huruf.\n';
+    } else {
+      format =
+        'Format tiap butir soal (Pilihan Ganda):\n' +
+        '- Nomor urut dan pertanyaan yang jelas.\n' +
+        '- 5 pilihan jawaban berlabel A, B, C, D, E (tepat satu yang benar).\n' +
+        '- **Kunci Jawaban**: tulis hurufnya.\n' +
+        '- **Pembahasan**: penjelasan ringkas mengapa jawaban itu benar.\n';
+    }
     return {
       context: contextLines([
         ...kurikulumContext(i),
         ['Jumlah soal', jumlah],
         ['Tingkat kesulitan kognitif', val(i, 'kesulitan')],
+        ['Jenis soal', jenis],
       ]),
-      instruction:
-        `Hasilkan TEPAT ${jumlah} butir soal LENGKAP (pertanyaan + pilihan A-E + kunci jawaban + pembahasan). ` +
-        `Jangan berhenti sebelum SEMUA ${jumlah} soal selesai. Jangan menyingkat.\n\n` +
-        'Format tiap butir soal:\n' +
-        '- Nomor urut dan pertanyaan yang jelas.\n' +
-        '- 5 pilihan jawaban berlabel A, B, C, D, E (tepat satu yang benar).\n' +
-        '- **Kunci Jawaban**: tulis hurufnya.\n' +
-        '- **Pembahasan**: penjelasan ringkas mengapa jawaban itu benar.\n' +
-        'Sesuaikan dengan tingkat kesulitan kognitif yang diminta (C1–C2 mudah, C3–C4 sedang, C5–C6 sulit) ' +
-        'serta jenjang, mata pelajaran, dan pokok pembahasan di atas.',
+      instruction: pembuka + format + penutup,
     };
   },
 
