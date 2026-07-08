@@ -84,12 +84,6 @@ const BENTUK_SOAL_OPTIONS = [
   { label: 'Campuran', value: 'Campuran' },
 ];
 
-const JENIS_SOAL_OPTIONS = [
-  { label: 'Pilihan Ganda', value: 'Pilihan Ganda' },
-  { label: 'Isian', value: 'Isian' },
-  { label: 'Esai', value: 'Esai' },
-];
-
 export const TOOLS: Tool[] = [
   {
     id: 'modul-ajar',
@@ -126,9 +120,10 @@ export const TOOLS: Tool[] = [
     category: 'Asesmen',
     fields: [
       KURIKULUM_FIELD,
-      { id: 'jumlah', label: 'Jumlah Soal', type: 'number', required: true, defaultValue: '5', placeholder: '5' },
+      { id: 'jumlahPg', label: 'Jumlah Pilihan Ganda', type: 'number', required: true, defaultValue: '5', placeholder: '5' },
+      { id: 'jumlahIsian', label: 'Jumlah Isian', type: 'number', required: true, defaultValue: '0', placeholder: '0' },
+      { id: 'jumlahEsai', label: 'Jumlah Esai', type: 'number', required: true, defaultValue: '0', placeholder: '0' },
       { id: 'kesulitan', label: 'Tingkat Kesulitan Kognitif', type: 'select', required: true, options: KESULITAN_OPTIONS, defaultValue: 'Sedang (C3-C4)' },
-      { id: 'bentuk', label: 'Jenis Soal', type: 'select', required: true, options: JENIS_SOAL_OPTIONS, defaultValue: 'Pilihan Ganda' },
     ],
     ctaLabel: 'Buat Soal',
   },

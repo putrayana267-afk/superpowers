@@ -65,46 +65,77 @@ const builders: Record<string, Builder> = {
   }),
 
   'bank-soal': (i) => {
-    const jumlah = val(i, 'jumlah') || '5';
-    const jenis = val(i, 'bentuk') || 'Pilihan Ganda';
-    const pembuka =
-      `Hasilkan TEPAT ${jumlah} butir soal LENGKAP. ` +
-      `Jangan berhenti sebelum SEMUA ${jumlah} soal selesai. Jangan menyingkat.\n\n`;
-    const penutup =
-      'Sesuaikan dengan tingkat kesulitan kognitif yang diminta (C1–C2 mudah, C3–C4 sedang, C5–C6 sulit) ' +
-      'serta jenjang, mata pelajaran, dan pokok pembahasan di atas. ' +
-      'Tulis dalam Markdown rapi dengan penomoran urut.';
-    let format;
-    if (jenis === 'Isian') {
-      format =
-        'Format tiap butir soal (Isian):\n' +
-        '- Nomor urut dan kalimat/pertanyaan RUMPANG dengan penanda kosong (mis. _____) untuk diisi siswa.\n' +
-        '- **Kunci Jawaban**: jawaban yang diterima; bila ada, sebutkan variasi jawaban yang sah.\n' +
-        '- **Pembahasan**: penjelasan ringkas mengapa jawaban itu benar.\n' +
-        'TANPA pilihan A–E dan TANPA kunci berupa huruf.\n';
-    } else if (jenis === 'Esai') {
-      format =
-        'Format tiap butir soal (Esai):\n' +
-        '- Nomor urut dan pertanyaan TERBUKA yang jelas.\n' +
-        '- **Rubrik/Kriteria Penilaian**: kriteria penilaian (atau jawaban model beserta poin).\n' +
-        '- **Pembahasan**: penjelasan ringkas poin-poin jawaban yang diharapkan.\n' +
-        'TANPA pilihan A–E dan TANPA kunci berupa huruf.\n';
-    } else {
-      format =
-        'Format tiap butir soal (Pilihan Ganda):\n' +
-        '- Nomor urut dan pertanyaan yang jelas.\n' +
-        '- 5 pilihan jawaban berlabel A, B, C, D, E (tepat satu yang benar).\n' +
-        '- **Kunci Jawaban**: tulis hurufnya.\n' +
-        '- **Pembahasan**: penjelasan ringkas mengapa jawaban itu benar.\n';
+    const clampInt = (v: string): number => {
+      const n = Math.floor(Number(v));
+      return Number.isFinite(n) && n > 0 ? n : 0;
+    };
+    const nPg = clampInt(val(i, 'jumlahPg'));
+    const nIsian = clampInt(val(i, 'jumlahIsian'));
+    const nEsai = clampInt(val(i, 'jumlahEsai'));
+    const total = nPg + nIsian + nEsai;
+
+    const context = contextLines([
+      ...kurikulumContext(i),
+      ['Jumlah Pilihan Ganda', String(nPg)],
+      ['Jumlah Isian', String(nIsian)],
+      ['Jumlah Esai', String(nEsai)],
+      ['Total soal', String(total)],
+      ['Tingkat kesulitan kognitif', val(i, 'kesulitan')],
+    ]);
+
+    if (total === 0) {
+      return {
+        context,
+        instruction:
+          'Tidak ada soal yang diminta (jumlah Pilihan Ganda, Isian, dan Esai semuanya 0). ' +
+          'Nyatakan dengan sopan bahwa belum ada soal yang dapat dibuat, lalu minta guru mengisi ' +
+          'setidaknya satu jumlah soal. Jangan mengarang soal.',
+      };
     }
+
+    const pakaiHeader = [nPg, nIsian, nEsai].filter((n) => n > 0).length > 1;
+
+    const formatPg = (n: number): string =>
+      (pakaiHeader ? `### Pilihan Ganda (${n} soal)\n` : '') +
+      'Format tiap butir soal:\n' +
+      '- Nomor urut dan pertanyaan yang jelas.\n' +
+      '- 5 pilihan jawaban berlabel A, B, C, D, E (tepat satu yang benar).\n' +
+      '- **Kunci Jawaban**: tulis hurufnya.\n' +
+      '- **Pembahasan**: penjelasan ringkas mengapa jawaban itu benar.\n' +
+      `Hasilkan TEPAT ${n} soal untuk bagian ini, dengan penomoran berurutan.\n`;
+    const formatIsian = (n: number): string =>
+      (pakaiHeader ? `### Isian (${n} soal)\n` : '') +
+      'Format tiap butir soal:\n' +
+      '- Nomor urut dan kalimat/pertanyaan RUMPANG dengan penanda kosong (mis. _____) untuk diisi siswa.\n' +
+      '- **Kunci Jawaban**: jawaban yang diterima; bila ada, sebutkan variasi jawaban yang sah.\n' +
+      '- **Pembahasan**: penjelasan ringkas mengapa jawaban itu benar.\n' +
+      'TANPA pilihan A–E dan TANPA kunci berupa huruf.\n' +
+      `Hasilkan TEPAT ${n} soal untuk bagian ini, dengan penomoran berurutan.\n`;
+    const formatEsai = (n: number): string =>
+      (pakaiHeader ? `### Esai (${n} soal)\n` : '') +
+      'Format tiap butir soal:\n' +
+      '- Nomor urut dan pertanyaan TERBUKA yang jelas.\n' +
+      '- **Rubrik/Kriteria Penilaian**: kriteria penilaian (atau jawaban model beserta poin).\n' +
+      '- **Pembahasan**: penjelasan ringkas poin-poin jawaban yang diharapkan.\n' +
+      'TANPA pilihan A–E dan TANPA kunci berupa huruf.\n' +
+      `Hasilkan TEPAT ${n} soal untuk bagian ini, dengan penomoran berurutan.\n`;
+
+    const seksi: string[] = [];
+    if (nPg > 0) seksi.push(formatPg(nPg));
+    if (nIsian > 0) seksi.push(formatIsian(nIsian));
+    if (nEsai > 0) seksi.push(formatEsai(nEsai));
+
+    const pembuka =
+      `Hasilkan soal dengan komposisi PERSIS: ${nPg} Pilihan Ganda, ${nIsian} Isian, ${nEsai} Esai (total ${total} soal). ` +
+      'Jangan menyingkat dan jangan berhenti sebelum SEMUA soal selesai.\n\n';
+    const penutup =
+      '\nSesuaikan dengan tingkat kesulitan kognitif yang diminta (C1–C2 mudah, C3–C4 sedang, C5–C6 sulit) ' +
+      'serta jenjang, mata pelajaran, dan pokok pembahasan di atas. ' +
+      'Tulis dalam Markdown rapi dengan penomoran yang jelas.';
+
     return {
-      context: contextLines([
-        ...kurikulumContext(i),
-        ['Jumlah soal', jumlah],
-        ['Tingkat kesulitan kognitif', val(i, 'kesulitan')],
-        ['Jenis soal', jenis],
-      ]),
-      instruction: pembuka + format + penutup,
+      context,
+      instruction: pembuka + seksi.join('\n') + penutup,
     };
   },
 
