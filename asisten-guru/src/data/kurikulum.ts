@@ -475,15 +475,20 @@ const SENIRUPA_FASE_A_TOPIK: Topik[] = [
 // Label = teks capaian per elemen apa adanya; belum diverifikasi ke PDF primer → draft.
 const SENITARI_FASE_A_TOPIK: Topik[] = [
   // Mengalami (Experiencing)
-  { id: "senitari-a-mengalami", label: "Peserta didik mengamati bentuk tari sebagai media komunikasi serta mengembangkan kesadaran diri dalam mengeksplorasi unsur utama tari meliputi gerak, ruang, tenaga, waktu, gerak di tempat dan gerak berpindah." },
+  { id: "senitari-a-mengalami-amati", label: "Mengamati bentuk tari sebagai media komunikasi" },
+  { id: "senitari-a-mengalami-gerakruang", label: "Mengeksplorasi unsur gerak & ruang dalam tari" },
+  { id: "senitari-a-mengalami-tenagawaktu", label: "Mengeksplorasi unsur tenaga & waktu dalam tari" },
+  { id: "senitari-a-mengalami-lokomotor", label: "Mengeksplorasi gerak di tempat & gerak berpindah" },
   // Merefleksikan (Reflecting)
-  { id: "senitari-a-merefleksikan", label: "Peserta didik mengenal dan menilai dengan mengidentifikasi unsur utama tari meliputi gerak, ruang, tenaga, waktu, gerak di tempat dan gerak berpindah, serta mengemukakan pencapaian diri secara lisan, tulisan, dan kinestetik." },
-  // Berpikir dan Bekerja Artistik (Thinking and Working Artistically)
-  { id: "senitari-a-artistik", label: "Peserta didik meragakan hasil gerak berdasarkan norma/perilaku yang sesuai dalam menari dengan keyakinan dan percaya diri saat mengekspresikan ide, perasaan kepada penonton atau lingkungan sekitar." },
+  { id: "senitari-a-merefleksikan-nilaiunsur", label: "Mengenal & menilai unsur utama tari" },
+  { id: "senitari-a-merefleksikan-pencapaian", label: "Mengemukakan pencapaian diri secara lisan, tulisan & kinestetik" },
+  // Berpikir & Bekerja Secara Artistik (Thinking and Working Artistically)
+  { id: "senitari-a-artistik-ragamnorma", label: "Meragakan gerak tari sesuai norma dengan percaya diri" },
+  { id: "senitari-a-artistik-ekspresi", label: "Mengekspresikan ide & perasaan kepada penonton" },
   // Menciptakan (Creating)
-  { id: "senitari-a-menciptakan", label: "Peserta didik mengembangkan unsur utama tari (gerak, ruang, waktu, dan tenaga), gerak di tempat, dan gerak berpindah untuk membuat gerak sederhana yang memiliki kesatuan gerak yang indah." },
+  { id: "senitari-a-menciptakan-geraksederhana", label: "Membuat gerak sederhana yang memiliki kesatuan gerak dari unsur utama tari" },
   // Berdampak (Impacting)
-  { id: "senitari-a-berdampak", label: "Peserta didik menerima proses pembelajaran sehingga tumbuh rasa ingin tahu dan dapat menunjukkan antusiasme yang berdampak pada kemampuan diri dalam menyelesaikan aktivitas pembelajaran tari." },
+  { id: "senitari-a-berdampak-antusias", label: "Menumbuhkan rasa ingin tahu & antusiasme dalam pembelajaran tari" },
 ];
 
 export const KURIKULUM: KurikulumEntry[] = [
