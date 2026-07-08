@@ -308,12 +308,12 @@ Gerbang fungsional utama = screenshot dari manusia. Tanpa itu, tulis:
 
 | File | blob (baseline) | Kenapa beku |
 |---|---|---|
-| `api/generate.ts` | `1320961f` (stabil) | mesin generasi dokumen |
+| `api/generate.ts` | (**bergerak, izin**) | mesin generasi dokumen; berubah HANYA via izin eksplisit per-kejadian (baseline terkini di ringkasan sesi, bukan di sini); blob beda tanpa izin = BERHENTI dan lapor |
 | `api/suggest.ts` | `5d100892` (stabil) | proxy Gemini saran |
 | `src/data/struktur.ts` | `b41100cc` (stabil) | struktur mapel/jenjang |
 | `src/data/kurikulum.ts` | `bb46cf5b` (**bergerak**) | dataset; naik tiap tambah kurikulum — cek baseline terbaru di ringkasan sesi, bukan di sini |
 
-Verifikasi tiap sesi: `git ls-tree <ref> asisten-guru/<path>` — **percaya git, bukan panel.** Kalau blob salah satu dari 3 file "stabil" berubah tanpa izin → **BERHENTI dan lapor.**
+Verifikasi tiap sesi: `git ls-tree <ref> asisten-guru/<path>` — **percaya git, bukan panel.** Kalau blob salah satu dari 2 file "stabil" (`suggest.ts`, `struktur.ts`) berubah tanpa izin → **BERHENTI dan lapor.**
 
 Juga tidak boleh disentuh tanpa izin: `.github/workflows/**` (pagar CI) · `.gitignore` (pagar rahasia) · file ini `CLAUDE.md` (aturan main) · entri `verified` di `kurikulum.ts` (data suci).
 
