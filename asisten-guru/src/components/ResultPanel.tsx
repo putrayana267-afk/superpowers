@@ -1,5 +1,6 @@
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import remarkBreaks from 'remark-breaks';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Copy,
@@ -201,7 +202,7 @@ export function ResultPanel({
             </div>
 
             <div className="prose-result max-w-none flex-1 overflow-y-auto">
-              <ReactMarkdown remarkPlugins={[remarkGfm]}>{result}</ReactMarkdown>
+              <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks]}>{result}</ReactMarkdown>
               {streaming && (
                 <span className="ml-0.5 inline-block h-4 w-2 animate-pulse rounded-sm bg-emerald-primary align-text-bottom" />
               )}
