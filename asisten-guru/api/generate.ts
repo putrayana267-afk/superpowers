@@ -131,7 +131,11 @@ const builders: Record<string, Builder> = {
     const penutup =
       '\nSesuaikan dengan tingkat kesulitan kognitif yang diminta (C1–C2 mudah, C3–C4 sedang, C5–C6 sulit) ' +
       'serta jenjang, mata pelajaran, dan pokok pembahasan di atas. ' +
-      'Tulis dalam Markdown rapi dengan penomoran yang jelas.';
+      'Tulis dalam Markdown rapi dengan penomoran yang jelas.\n\n' +
+      'TATA LETAK WAJIB (Markdown): pisahkan tiap butir soal dengan satu baris kosong; ' +
+      'untuk pilihan ganda, tulis kelima pilihan A, B, C, D, E sebagai daftar Markdown, SATU pilihan per baris (tiap baris diawali "- "); ' +
+      'tulis "Kunci Jawaban", "Pembahasan", dan "Rubrik" masing-masing pada baris tersendiri, dipisahkan dari badan soal oleh baris kosong; ' +
+      'JANGAN menaruh beberapa pilihan atau beberapa label pada satu baris yang sama.';
 
     return {
       context,
