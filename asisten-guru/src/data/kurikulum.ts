@@ -491,6 +491,25 @@ const SENITARI_FASE_A_TOPIK: Topik[] = [
   { id: "senitari-a-berdampak-antusias", label: "Menumbuhkan rasa ingin tahu & antusiasme dalam pembelajaran tari" },
 ];
 
+// Topik Seni Teater Fase A (Kelas 1 & 2) — derivasi SETIA (makna) dari Rumusan CP.
+// (portal Ruang GTK, guru.kemendikdasmen.go.id, tab "Rumusan CP", Seni Teater Fase A).
+// Verbatim CP disimpan di ringkasan sesi (bukti sumber), BUKAN di label (§4.7).
+const SENITEATER_FASE_A_TOPIK: Topik[] = [
+  // Mengalami (Experiencing)
+  { id: "seniteater-a-mengalami-amatirespons", label: "Mengamati & merespons gerak tubuh serta suara di sekitar" },
+  { id: "seniteater-a-mengalami-mimesis", label: "Meniru gerak tubuh & suara sebagai media komunikasi emosi, personifikasi identitas diri/orang sekitar & mimesis objek" },
+  { id: "seniteater-a-mengalami-olahtubuhvokal", label: "Olah tubuh & vokal untuk mengenal fungsi gerak tubuh serta melatih ekspresi wajah" },
+  // Merefleksikan (Reflecting)
+  { id: "seniteater-a-merefleksikan-pengalaman", label: "Mengenali pengalaman & emosi selama proses berseni teater" },
+  { id: "seniteater-a-merefleksikan-ceritakarya", label: "Menceritakan sebuah karya dengan kosakata sehari-hari" },
+  // Berpikir & Bekerja Secara Artistik (Thinking and Working Artistically)
+  { id: "seniteater-a-artistik-tatapanggung", label: "Mengenal bentuk & fungsi tata artistik panggung dalam pertunjukan" },
+  // Menciptakan (Making/Creating)
+  { id: "seniteater-a-menciptakan-lakon", label: "Menirukan tokoh di sekitar atau rekaan lalu memainkannya sebagai pelakon dalam lakon pertunjukan" },
+  // Berdampak (Impacting)
+  { id: "seniteater-a-berdampak-karya", label: "Menghasilkan karya teater (naskah/lakon) dari minat, pengamatan & pengalaman yang berdampak positif bagi dirinya" },
+];
+
 export const KURIKULUM: KurikulumEntry[] = [
   // -------------------------------------------------------------------------
   // PESANTREN — NAHWU (Matan Al-Jurumiyah). Sesuai contoh gambar pengguna.
@@ -1064,6 +1083,26 @@ export const KURIKULUM: KurikulumEntry[] = [
     status: "verified",
     sumber: "Portal Ruang GTK (guru.kemendikdasmen.go.id) — Rumusan CP Seni Tari Fase A.",
     topik: SENITARI_FASE_A_TOPIK,
+  },
+
+  // ── Seni Teater SD/MI (Fase A) — draft, sumber portal Ruang GTK ──
+  {
+    jenjang: "SD/MI",
+    kelompok: "Umum/Nasional (Kemendikbud)",
+    mapel: "Seni Teater",
+    kelas: "1",
+    status: "draft",
+    sumber: "Portal Ruang GTK (guru.kemendikdasmen.go.id) — Rumusan CP Seni Teater Fase A.",
+    topik: SENITEATER_FASE_A_TOPIK,
+  },
+  {
+    jenjang: "SD/MI",
+    kelompok: "Umum/Nasional (Kemendikbud)",
+    mapel: "Seni Teater",
+    kelas: "2",
+    status: "draft",
+    sumber: "Portal Ruang GTK (guru.kemendikdasmen.go.id) — Rumusan CP Seni Teater Fase A.",
+    topik: SENITEATER_FASE_A_TOPIK,
   },
 ];
 
