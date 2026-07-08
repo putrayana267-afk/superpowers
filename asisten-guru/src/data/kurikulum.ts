@@ -510,6 +510,24 @@ const SENITEATER_FASE_A_TOPIK: Topik[] = [
   { id: "seniteater-a-berdampak-karya", label: "Menghasilkan karya teater (naskah/lakon) dari minat, pengamatan & pengalaman yang berdampak positif bagi dirinya" },
 ];
 
+// Topik Seni Musik Fase C (Kelas 5 & 6) — derivasi SETIA (makna) dari Rumusan CP.
+// (portal Ruang GTK, guru.kemendikdasmen.go.id, tab "Rumusan CP", Seni Musik Fase C).
+// Verbatim CP disimpan di ringkasan sesi (bukti sumber), BUKAN di label (§4.7).
+const SENIMUSIK_FASE_C_TOPIK: Topik[] = [
+  // Mengalami (Experiencing)
+  { id: "senimusik-c-mengalami-unsurbunyi", label: "Menggunakan & mengembangkan unsur bunyi musik (nada, irama, melodi)" },
+  { id: "senimusik-c-mengalami-kepekaan", label: "Menunjukkan kepekaan unsur bunyi intrinsik & ekstrinsik sambil memadukan alat musik ritmis & melodis" },
+  // Merefleksikan (Reflecting)
+  { id: "senimusik-c-merefleksikan-umpanbalik", label: "Memberi umpan balik atas karya & kemampuan bermusik diri/orang lain dengan istilah musik yang tepat" },
+  // Berpikir & Bekerja Secara Artistik (Thinking and Working Artistically)
+  { id: "senimusik-c-artistik-eksplorasinotasi", label: "Mengeksplorasi variasi pola irama, tempo & bunyi dasar alat ritmis/melodis memakai notasi & teknik dasar yang dipelajari" },
+  { id: "senimusik-c-artistik-alternatifbunyi", label: "Menemukan alternatif menghasilkan bunyi musik sederhana lewat anggota tubuh & eksplorasi material di lingkungan sekitar" },
+  // Menciptakan (Creating)
+  { id: "senimusik-c-menciptakan-gubahpola", label: "Memproduksi, mengembangkan, atau menggubah pola irama dengan anggota tubuh/alat ritmis & melodis dari lingkungan sekitar &/atau kearifan lokal daerah" },
+  // Berdampak (Impacting)
+  { id: "senimusik-c-berdampak-praktikpositif", label: "Menjalankan praktik bermusik yang berdampak positif bagi diri & lingkungan sekitar" },
+];
+
 export const KURIKULUM: KurikulumEntry[] = [
   // -------------------------------------------------------------------------
   // PESANTREN — NAHWU (Matan Al-Jurumiyah). Sesuai contoh gambar pengguna.
@@ -1043,6 +1061,26 @@ export const KURIKULUM: KurikulumEntry[] = [
     status: "verified",
     sumber: "Portal Ruang GTK (guru.kemendikdasmen.go.id) — Rumusan CP Seni Musik Fase A.",
     topik: SENIMUSIK_FASE_A_TOPIK,
+  },
+
+  // ── Seni Musik SD/MI (Fase C) — draft, sumber portal Ruang GTK ──
+  {
+    jenjang: "SD/MI",
+    kelompok: "Umum/Nasional (Kemendikbud)",
+    mapel: "Seni Musik",
+    kelas: "5",
+    status: "draft",
+    sumber: "Portal Ruang GTK (guru.kemendikdasmen.go.id) — Rumusan CP Seni Musik Fase C.",
+    topik: SENIMUSIK_FASE_C_TOPIK,
+  },
+  {
+    jenjang: "SD/MI",
+    kelompok: "Umum/Nasional (Kemendikbud)",
+    mapel: "Seni Musik",
+    kelas: "6",
+    status: "draft",
+    sumber: "Portal Ruang GTK (guru.kemendikdasmen.go.id) — Rumusan CP Seni Musik Fase C.",
+    topik: SENIMUSIK_FASE_C_TOPIK,
   },
 
   // ── Seni Rupa SD/MI (Fase A) — draft, sumber portal Ruang GTK ──
