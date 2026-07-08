@@ -1052,8 +1052,8 @@ export const KURIKULUM: KurikulumEntry[] = [
     kelompok: "Umum/Nasional (Kemendikbud)",
     mapel: "Seni Tari",
     kelas: "1",
-    status: "draft",
-    sumber: "Portal Ruang GTK (guru.kemendikdasmen.go.id) — Rumusan CP, Capaian per Elemen, Seni Tari Fase A. Berlaku via Kepka BSKAP No. 046/H/KR/2025 (perubahan atas 032/H/KR/2024); Seni Tari tidak terdampak Kepka BKPDM No. 020 Tahun 2026. Nomor halaman PDF primer belum diverifikasi.",
+    status: "verified",
+    sumber: "Portal Ruang GTK (guru.kemendikdasmen.go.id) — Rumusan CP Seni Tari Fase A.",
     topik: SENITARI_FASE_A_TOPIK,
   },
   {
@@ -1061,8 +1061,8 @@ export const KURIKULUM: KurikulumEntry[] = [
     kelompok: "Umum/Nasional (Kemendikbud)",
     mapel: "Seni Tari",
     kelas: "2",
-    status: "draft",
-    sumber: "Portal Ruang GTK (guru.kemendikdasmen.go.id) — Rumusan CP, Capaian per Elemen, Seni Tari Fase A. Berlaku via Kepka BSKAP No. 046/H/KR/2025 (perubahan atas 032/H/KR/2024); Seni Tari tidak terdampak Kepka BKPDM No. 020 Tahun 2026. Nomor halaman PDF primer belum diverifikasi.",
+    status: "verified",
+    sumber: "Portal Ruang GTK (guru.kemendikdasmen.go.id) — Rumusan CP Seni Tari Fase A.",
     topik: SENITARI_FASE_A_TOPIK,
   },
 ];
