@@ -231,6 +231,17 @@ export function ResultPanel({
               <BankSoalView data={bankSoal.data} validation={bankSoal.validation} />
             ) : (
               <>
+                {isBankSoal && result.trim().length > 0 && (
+                  <div className="mb-3 flex items-start gap-2 rounded-xl border border-violet/40 bg-violet/10 px-3 py-2 text-xs leading-relaxed text-violet backdrop-blur">
+                    <span aria-hidden className="mt-px">
+                      🗂️
+                    </span>
+                    <p>
+                      <strong>Legacy</strong> — hasil lama berformat teks, belum
+                      tervalidasi struktur Bank Soal v2.1.
+                    </p>
+                  </div>
+                )}
                 <div className="mb-3 flex items-start gap-2 rounded-xl border border-gold/40 bg-gold/10 px-3 py-2 text-xs leading-relaxed text-gold backdrop-blur">
                   <span aria-hidden className="mt-px">
                     ⚠️

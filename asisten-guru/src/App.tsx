@@ -69,6 +69,42 @@ function jumlahDimintaBankSoal(inputs: ToolInputs | undefined): {
   return { pg: n('jumlahPg'), isian: n('jumlahIsian'), esai: n('jumlahEsai') };
 }
 
+/**
+ * Muat-ulang hasil bank-soal tersimpan (Tahap 6). Menentukan penyajian:
+ * - envelope JSON v1 valid    → { bankSoal } (BankSoalView; Sumber + Draft AI dari view)
+ * - JSON tapi bukan envelope   → { bankSoalError } (banner jujur + raw fallback)
+ * - bukan JSON (markdown lama)  → keduanya null (Markdown + badge Legacy di ResultPanel)
+ * Tidak pernah mengklaim "verified".
+ */
+function parseSavedBankSoal(result: string): {
+  bankSoal: { data: BankSoal; validation: ValidationResult } | null;
+  bankSoalError: string | null;
+} {
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(result);
+  } catch {
+    return { bankSoal: null, bankSoalError: null };
+  }
+  const env = parsed as {
+    schemaVersion?: unknown;
+    jumlahDiminta?: { pg: number; isian: number; esai: number };
+    soal?: BankSoal;
+  };
+  if (env.schemaVersion !== 'bank-soal-json-v1' || !env.soal) {
+    return { bankSoal: null, bankSoalError: 'Format tersimpan tak dikenali.' };
+  }
+  try {
+    const validation = validateBankSoal(
+      env.soal,
+      env.jumlahDiminta ?? { pg: 0, isian: 0, esai: 0 },
+    );
+    return { bankSoal: { data: env.soal, validation }, bankSoalError: null };
+  } catch {
+    return { bankSoal: null, bankSoalError: 'Format tersimpan tak dikenali.' };
+  }
+}
+
 /** Bangun nilai input awal sebuah alat dari skema field-nya. */
 function buildDefaults(tool: Tool): ToolInputs {
   const obj: ToolInputs = {};
@@ -329,9 +365,16 @@ export default function App({ onOpenShowcase }: AppProps) {
     setStatus('done');
     setStreaming(false);
     setCurrentEntryId(null);
-    // Muat-ulang bank-soal (parse envelope/legacy) = Tahap 6; kosongkan dulu agar tak stale.
-    setBankSoal(null);
-    setBankSoalError(null);
+    // Muat-ulang bank-soal (Tahap 6): envelope→BankSoalView · JSON off-contract→error ·
+    // markdown lama→Markdown + badge Legacy. Tool lain: tak berubah.
+    if (row.tool === 'bank-soal') {
+      const hydrated = parseSavedBankSoal(row.output_text);
+      setBankSoal(hydrated.bankSoal);
+      setBankSoalError(hydrated.bankSoalError);
+    } else {
+      setBankSoal(null);
+      setBankSoalError(null);
+    }
   }, []);
 
   const handleCopy = useCallback(async () => {
@@ -377,8 +420,14 @@ export default function App({ onOpenShowcase }: AppProps) {
     setStatus('done');
     setStreaming(false);
     setCurrentEntryId(entry.id);
-    setBankSoal(null);
-    setBankSoalError(null);
+    if (entry.toolId === 'bank-soal') {
+      const hydrated = parseSavedBankSoal(entry.result);
+      setBankSoal(hydrated.bankSoal);
+      setBankSoalError(hydrated.bankSoalError);
+    } else {
+      setBankSoal(null);
+      setBankSoalError(null);
+    }
     setHistoryOpen(false);
     setNavOpen(false);
   }, []);
