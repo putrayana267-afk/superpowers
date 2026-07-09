@@ -1,0 +1,26 @@
+name: Parity Guard (Bank Soal)
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  parity-check:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: asisten-guru
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Cek parity blok Bank Soal (byte-identik src vs api)
+        run: npm run check:parity
