@@ -7,6 +7,11 @@ import {
   buildSuggestPrompt,
   SUGGEST_SYSTEM_PROMPT,
 } from '../features/tools/promptBuilder';
+import {
+  BANKSOAL_RESPONSE_SCHEMA,
+  SYSTEM_PROMPT_BANKSOAL,
+  buildBankSoalUserPrompt,
+} from '../features/tools/bankSoal';
 
 /** Pesan error ramah berbahasa Indonesia untuk ditampilkan ke guru. */
 export class GenerateError extends Error {}
@@ -19,7 +24,10 @@ const GEMINI_MODEL = 'gemini-2.5-flash';
 const SETTING_API_KEY = 'gemini_api_key';
 
 interface GeminiResponse {
-  candidates?: Array<{ content?: { parts?: Array<{ text?: string }> } }>;
+  candidates?: Array<{
+    content?: { parts?: Array<{ text?: string }> };
+    finishReason?: string;
+  }>;
 }
 
 /**
@@ -30,6 +38,7 @@ async function geminiDirect(
   systemPrompt: string,
   userPrompt: string,
   maxOutputTokens: number,
+  jsonConfig?: { responseMimeType: string; responseSchema: unknown },
 ): Promise<string> {
   const apiKey = (await getSetting(SETTING_API_KEY))?.trim();
   if (!apiKey) {
@@ -50,7 +59,7 @@ async function geminiDirect(
       body: JSON.stringify({
         contents: [{ role: 'user', parts: [{ text: userPrompt }] }],
         systemInstruction: { parts: [{ text: systemPrompt }] },
-        generationConfig: { maxOutputTokens },
+        generationConfig: { maxOutputTokens, ...(jsonConfig ?? {}) },
       }),
     });
   } catch {
@@ -87,6 +96,12 @@ async function geminiDirect(
     data = (await response.json()) as GeminiResponse;
   } catch {
     throw new GenerateError(FRIENDLY_SERVER);
+  }
+  // Mode JSON (bank-soal): output terpotong = JSON tak lengkap → gagal jujur.
+  if (jsonConfig && data.candidates?.[0]?.finishReason === 'MAX_TOKENS') {
+    throw new GenerateError(
+      'Output terpotong, kurangi jumlah soal atau coba lagi.',
+    );
   }
   const text = (data.candidates?.[0]?.content?.parts ?? [])
     .map((p) => p.text ?? '')
@@ -125,6 +140,17 @@ export async function generate(
 ): Promise<string> {
   // Native (BYOK): panggil Gemini langsung memakai key pengguna.
   if (Capacitor.isNativePlatform()) {
+    if (toolId === 'bank-soal') {
+      return geminiDirect(
+        SYSTEM_PROMPT_BANKSOAL,
+        buildBankSoalUserPrompt(inputs),
+        8192,
+        {
+          responseMimeType: 'application/json',
+          responseSchema: BANKSOAL_RESPONSE_SCHEMA,
+        },
+      );
+    }
     return geminiDirect(buildSystemPrompt(), buildUserPrompt(toolId, inputs), 8192);
   }
 
