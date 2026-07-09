@@ -240,36 +240,53 @@ export function serializeBankSoal(data: BankSoal): string {
   const huruf: KunciPg[] = ['A', 'B', 'C', 'D', 'E'];
   const lines: string[] = [];
 
-  if (typeof data.sumber === 'string' && data.sumber.trim().length > 0) {
-    lines.push(`**Sumber:** ${data.sumber.trim()}`, '');
-  }
+  // Bersihkan nilai; JANGAN pernah String() sebuah objek (cegah "[object Object]").
+  const clean = (v: unknown): string => {
+    if (v == null) return '-';
+    if (typeof v === 'string') return v.trim() || '-';
+    if (typeof v === 'number' || typeof v === 'boolean') return String(v);
+    return '-';
+  };
+
+  // Sumber: SELALU tampil (slot atribusi wajib; jangan mengarang).
+  lines.push(`Sumber: ${clean(data.sumber)}`, '');
 
   if (Array.isArray(data.pilihanGanda) && data.pilihanGanda.length > 0) {
-    lines.push('## Pilihan Ganda', '');
+    lines.push('PILIHAN GANDA', '');
     data.pilihanGanda.forEach((s, i) => {
-      lines.push(`${i + 1}. ${s.pertanyaan}`);
-      for (const h of huruf) lines.push(`   ${h}. ${s.opsi?.[h] ?? ''}`);
-      lines.push(`   **Kunci Jawaban:** ${s.kunci}`);
-      lines.push(`   **Pembahasan:** ${s.pembahasan}`, '');
+      lines.push(`${i + 1}. ${clean(s?.pertanyaan)}`);
+      for (const h of huruf) {
+        const opsi = s?.opsi?.[h];
+        if (typeof opsi === 'string' && opsi.trim().length > 0) {
+          lines.push(`${h}. ${opsi.trim()}`);
+        }
+      }
+      lines.push(`Kunci Jawaban: ${clean(s?.kunci)}`);
+      lines.push(`Pembahasan: ${clean(s?.pembahasan)}`, '');
     });
   }
 
   if (Array.isArray(data.isian) && data.isian.length > 0) {
-    lines.push('## Isian', '');
+    lines.push('ISIAN', '');
     data.isian.forEach((s, i) => {
-      lines.push(`${i + 1}. ${s.pertanyaan}`);
-      lines.push(`   **Kunci Jawaban:** ${s.kunci}`);
-      lines.push(`   **Pembahasan:** ${s.pembahasan}`, '');
+      lines.push(`${i + 1}. ${clean(s?.pertanyaan)}`);
+      lines.push(`Kunci Jawaban: ${clean(s?.kunci)}`);
+      lines.push(`Pembahasan: ${clean(s?.pembahasan)}`, '');
     });
   }
 
   if (Array.isArray(data.esai) && data.esai.length > 0) {
-    lines.push('## Esai', '');
+    lines.push('ESAI', '');
     data.esai.forEach((s, i) => {
-      lines.push(`${i + 1}. ${s.pertanyaan}`);
-      lines.push('   **Rubrik Penilaian:**');
-      for (const r of s.rubrik ?? []) lines.push(`   - Skor ${r.skor}: ${r.deskriptor}`);
-      lines.push(`   **Pembahasan:** ${s.pembahasan}`, '');
+      lines.push(`${i + 1}. ${clean(s?.pertanyaan)}`);
+      lines.push('Rubrik:');
+      const rubrik = Array.isArray(s?.rubrik) ? s.rubrik : [];
+      if (rubrik.length > 0) {
+        for (const r of rubrik) lines.push(`Skor ${clean(r?.skor)}: ${clean(r?.deskriptor)}`);
+      } else {
+        lines.push('-');
+      }
+      lines.push(`Pembahasan: ${clean(s?.pembahasan)}`, '');
     });
   }
 
