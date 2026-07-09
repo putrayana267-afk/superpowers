@@ -189,84 +189,13 @@ const builders: Record<string, Builder> = {
       '(untuk Kekhasan Pesantren, gunakan pendekatan kitab kuning/dirasah islamiyah).',
   }),
 
-  'bank-soal': (i) => {
-    const clampInt = (v: string): number => {
-      const n = Math.floor(Number(v));
-      return Number.isFinite(n) && n > 0 ? n : 0;
-    };
-    const nPg = clampInt(val(i, 'jumlahPg'));
-    const nIsian = clampInt(val(i, 'jumlahIsian'));
-    const nEsai = clampInt(val(i, 'jumlahEsai'));
-    const total = nPg + nIsian + nEsai;
-
-    const context = contextLines([
-      ...kurikulumContext(i),
-      ['Jumlah Pilihan Ganda', String(nPg)],
-      ['Jumlah Isian', String(nIsian)],
-      ['Jumlah Esai', String(nEsai)],
-      ['Total soal', String(total)],
-      ['Tingkat kesulitan kognitif', val(i, 'kesulitan')],
-    ]);
-
-    if (total === 0) {
-      return {
-        context,
-        instruction:
-          'Tidak ada soal yang diminta (jumlah Pilihan Ganda, Isian, dan Esai semuanya 0). ' +
-          'Nyatakan dengan sopan bahwa belum ada soal yang dapat dibuat, lalu minta guru mengisi ' +
-          'setidaknya satu jumlah soal. Jangan mengarang soal.',
-      };
-    }
-
-    const pakaiHeader = [nPg, nIsian, nEsai].filter((n) => n > 0).length > 1;
-
-    const formatPg = (n: number): string =>
-      (pakaiHeader ? `### Pilihan Ganda (${n} soal)\n` : '') +
-      'Format tiap butir soal:\n' +
-      '- Nomor urut dan pertanyaan yang jelas.\n' +
-      '- 5 pilihan jawaban berlabel A, B, C, D, E (tepat satu yang benar).\n' +
-      '- **Kunci Jawaban**: tulis hurufnya.\n' +
-      '- **Pembahasan**: penjelasan ringkas mengapa jawaban itu benar.\n' +
-      `Hasilkan TEPAT ${n} soal untuk bagian ini, dengan penomoran berurutan.\n`;
-    const formatIsian = (n: number): string =>
-      (pakaiHeader ? `### Isian (${n} soal)\n` : '') +
-      'Format tiap butir soal:\n' +
-      '- Nomor urut dan kalimat/pertanyaan RUMPANG dengan penanda kosong (mis. _____) untuk diisi siswa.\n' +
-      '- **Kunci Jawaban**: jawaban yang diterima; bila ada, sebutkan variasi jawaban yang sah.\n' +
-      '- **Pembahasan**: penjelasan ringkas mengapa jawaban itu benar.\n' +
-      'TANPA pilihan A–E dan TANPA kunci berupa huruf.\n' +
-      `Hasilkan TEPAT ${n} soal untuk bagian ini, dengan penomoran berurutan.\n`;
-    const formatEsai = (n: number): string =>
-      (pakaiHeader ? `### Esai (${n} soal)\n` : '') +
-      'Format tiap butir soal:\n' +
-      '- Nomor urut dan pertanyaan TERBUKA yang jelas.\n' +
-      '- **Rubrik/Kriteria Penilaian**: kriteria penilaian (atau jawaban model beserta poin).\n' +
-      '- **Pembahasan**: penjelasan ringkas poin-poin jawaban yang diharapkan.\n' +
-      'TANPA pilihan A–E dan TANPA kunci berupa huruf.\n' +
-      `Hasilkan TEPAT ${n} soal untuk bagian ini, dengan penomoran berurutan.\n`;
-
-    const seksi: string[] = [];
-    if (nPg > 0) seksi.push(formatPg(nPg));
-    if (nIsian > 0) seksi.push(formatIsian(nIsian));
-    if (nEsai > 0) seksi.push(formatEsai(nEsai));
-
-    const pembuka =
-      `Hasilkan soal dengan komposisi PERSIS: ${nPg} Pilihan Ganda, ${nIsian} Isian, ${nEsai} Esai (total ${total} soal). ` +
-      'Jangan menyingkat dan jangan berhenti sebelum SEMUA soal selesai.\n\n';
-    const penutup =
-      '\nSesuaikan dengan tingkat kesulitan kognitif yang diminta (C1–C2 mudah, C3–C4 sedang, C5–C6 sulit) ' +
-      'serta jenjang, mata pelajaran, dan pokok pembahasan di atas. ' +
-      'Tulis dalam Markdown rapi dengan penomoran yang jelas.\n\n' +
-      'TATA LETAK WAJIB (Markdown): pisahkan tiap butir soal dengan satu baris kosong; ' +
-      'untuk pilihan ganda, tulis kelima pilihan A, B, C, D, E sebagai daftar Markdown, SATU pilihan per baris (tiap baris diawali "- "); ' +
-      'tulis "Kunci Jawaban", "Pembahasan", dan "Rubrik" masing-masing pada baris tersendiri, dipisahkan dari badan soal oleh baris kosong; ' +
-      'JANGAN menaruh beberapa pilihan atau beberapa label pada satu baris yang sama.';
-
-    return {
-      context,
-      instruction: pembuka + seksi.join('\n') + penutup,
-    };
-  },
+  'bank-soal': (i) => ({
+    // Mode JSON (Tahap 3): user-prompt diambil dari blok parity (buildBankSoalUserPrompt);
+    // FORMAT ditegakkan schema, bukan instruksi Markdown. context kosong → buildUserPrompt
+    // tak menambah blok generik (prompt sudah self-contained, memuat konteksnya sendiri).
+    context: '',
+    instruction: buildBankSoalUserPrompt(i),
+  }),
 
   lkpd: (i) => ({
     context: contextLines([
@@ -379,8 +308,9 @@ const builders: Record<string, Builder> = {
 
 const VALID_TOOL_IDS = Object.keys(builders);
 
-function buildSystemPrompt(): string {
-  return BASE_SYSTEM_PROMPT;
+function buildSystemPrompt(toolId: string): string {
+  // Bank-soal (mode JSON) pakai system prompt khusus dari blok parity; tool lain tetap.
+  return toolId === 'bank-soal' ? SYSTEM_PROMPT_BANKSOAL : BASE_SYSTEM_PROMPT;
 }
 
 function buildUserPrompt(toolId: string, inputs: ToolInputs): string {
@@ -707,7 +637,7 @@ export default async function handler(
     return;
   }
 
-  const systemPrompt = buildSystemPrompt();
+  const systemPrompt = buildSystemPrompt(toolId);
 
   let userPrompt: string;
   try {
@@ -721,7 +651,15 @@ export default async function handler(
   const requestBody = JSON.stringify({
     contents: [{ role: 'user', parts: [{ text: userPrompt }] }],
     systemInstruction: { parts: [{ text: systemPrompt }] },
-    generationConfig: { maxOutputTokens: MAX_OUTPUT_TOKENS },
+    // Bank-soal: mode JSON terstruktur (schema-enforced). Tool lain: teks biasa (tak berubah).
+    generationConfig:
+      toolId === 'bank-soal'
+        ? {
+            maxOutputTokens: MAX_OUTPUT_TOKENS,
+            responseMimeType: 'application/json',
+            responseSchema: BANKSOAL_RESPONSE_SCHEMA,
+          }
+        : { maxOutputTokens: MAX_OUTPUT_TOKENS },
   });
 
   const result = await fetchGeminiMultiKey(
