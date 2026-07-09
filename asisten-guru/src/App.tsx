@@ -12,6 +12,7 @@ import { TOOLS, getToolById } from './features/tools/registry';
 import type { HistoryEntry, Tool, ToolInputs } from './features/tools/types';
 import {
   safeParseBankSoal,
+  serializeBankSoal,
   type BankSoal,
   type ValidationResult,
 } from './features/tools/bankSoal';
@@ -377,23 +378,33 @@ export default function App({ onOpenShowcase }: AppProps) {
     }
   }, []);
 
+  // Teks ekspor: bank-soal valid → serializeBankSoal (+caveat Draft, tanpa Verified);
+  // legacy/tool lain → result apa adanya.
+  const exportText = useMemo(
+    () =>
+      bankSoal
+        ? `Draft AI — belum diverifikasi manusia. Periksa & sesuaikan sebelum dipakai sebagai dokumen resmi.\n\n${serializeBankSoal(bankSoal.data)}`
+        : result,
+    [bankSoal, result],
+  );
+
   const handleCopy = useCallback(async () => {
-    const ok = await copyToClipboard(result);
+    const ok = await copyToClipboard(exportText);
     toast(
       ok ? 'Hasil tersalin ke papan klip.' : 'Gagal menyalin. Coba lagi.',
       ok ? 'success' : 'error',
     );
-  }, [result, toast]);
+  }, [exportText, toast]);
 
   const handleDownloadTxt = useCallback(() => {
-    downloadTxt(activeTool.title, result);
+    downloadTxt(activeTool.title, exportText);
     toast('Berkas .txt sedang diunduh.', 'success');
-  }, [activeTool.title, result, toast]);
+  }, [activeTool.title, exportText, toast]);
 
   const handleDownloadDoc = useCallback(() => {
-    downloadDoc(activeTool.title, result);
+    downloadDoc(activeTool.title, exportText);
     toast('Berkas Word sedang diunduh.', 'success');
-  }, [activeTool.title, result, toast]);
+  }, [activeTool.title, exportText, toast]);
 
   const handleToggleFavoriteCurrent = useCallback(() => {
     if (!currentEntryId) return;

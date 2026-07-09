@@ -147,8 +147,8 @@ export function ResultPanel({
               </div>
             ) : (
             <div className="mb-4 flex flex-wrap items-center gap-2">
-              {/* Salin/.txt/Word untuk bank-soal ditunda ke Tahap 7 (perlu serializer). */}
-              {!isBankSoal && (
+              {/* Salin/.txt/Word: tampil utk semua KECUALI bank-soal off-contract (error). */}
+              {!(isBankSoal && bankSoalError) && (
                 <>
                   <Button
                     variant="primary"
