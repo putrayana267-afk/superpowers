@@ -10,6 +10,12 @@ import { motion, useAnimationControls } from 'framer-motion';
 import { IconContext, X, GraduationCap } from '@phosphor-icons/react';
 import { TOOLS, getToolById } from './features/tools/registry';
 import type { HistoryEntry, Tool, ToolInputs } from './features/tools/types';
+import {
+  safeParseBankSoal,
+  type BankSoal,
+  type ValidationResult,
+} from './features/tools/bankSoal';
+import { validateBankSoal } from './features/tools/validateBankSoal';
 import { generate, GenerateError, MissingApiKeyError } from './services/ai';
 import { saveGeneration } from './lib/db';
 import {
@@ -46,6 +52,22 @@ interface AppProps {
 const ResultPanel = lazy(() =>
   import('./components/ResultPanel').then((m) => ({ default: m.ResultPanel })),
 );
+
+/** Batas lunak total soal per permintaan bank-soal (A1). >20 → arahkan per bagian. */
+const SOFT_CAP_TOTAL = 20;
+
+/** Hitung jumlah diminta bank-soal dari inputs (bilangan bulat ≥ 0). */
+function jumlahDimintaBankSoal(inputs: ToolInputs | undefined): {
+  pg: number;
+  isian: number;
+  esai: number;
+} {
+  const n = (k: string): number => {
+    const v = Math.floor(Number(inputs?.[k] ?? ''));
+    return Number.isFinite(v) && v > 0 ? v : 0;
+  };
+  return { pg: n('jumlahPg'), isian: n('jumlahIsian'), esai: n('jumlahEsai') };
+}
 
 /** Bangun nilai input awal sebuah alat dari skema field-nya. */
 function buildDefaults(tool: Tool): ToolInputs {
@@ -90,6 +112,12 @@ export default function App({ onOpenShowcase }: AppProps) {
   const [error, setError] = useState('');
   const [streaming, setStreaming] = useState(false);
   const [currentEntryId, setCurrentEntryId] = useState<string | null>(null);
+  // Bank Soal (mode JSON v2.1): hasil parse+validasi & alasan gagal parse.
+  const [bankSoal, setBankSoal] = useState<{
+    data: BankSoal;
+    validation: ValidationResult;
+  } | null>(null);
+  const [bankSoalError, setBankSoalError] = useState<string | null>(null);
 
   const [history, setHistory] = useState<HistoryEntry[]>([]);
   const [navOpen, setNavOpen] = useState(false);
@@ -131,6 +159,8 @@ export default function App({ onOpenShowcase }: AppProps) {
     setResult('');
     setError('');
     setCurrentEntryId(null);
+    setBankSoal(null);
+    setBankSoalError(null);
     // Drawer SENGAJA tidak ditutup: pilih alat mengganti konten di belakang,
     // pengguna menutup via geser-kiri, tombol X, atau ketuk scrim.
   }, []);
@@ -146,14 +176,88 @@ export default function App({ onOpenShowcase }: AppProps) {
   );
 
   const runGenerate = useCallback(async () => {
+    const isBankSoal = activeTool.id === 'bank-soal';
+    const diminta = jumlahDimintaBankSoal(inputs);
+
+    // GUARD bank-soal sebelum memanggil AI (A1): total 0 & >20 dicegah di client.
+    if (isBankSoal) {
+      const total = diminta.pg + diminta.isian + diminta.esai;
+      if (total === 0) {
+        toast(
+          'Isi jumlah soal minimal satu (Pilihan Ganda, Isian, atau Esai).',
+          'info',
+        );
+        return;
+      }
+      if (total > SOFT_CAP_TOTAL) {
+        toast(
+          `Maksimal ${SOFT_CAP_TOTAL} soal per permintaan. Untuk lebih banyak, buat per bagian.`,
+          'info',
+        );
+        return;
+      }
+    }
+
     setStatus('loading');
     setError('');
     setResult('');
     setStreaming(false);
     setCurrentEntryId(null);
+    setBankSoal(null);
+    setBankSoalError(null);
 
     try {
       const text = await generate(activeTool.id, inputs);
+
+      // Bank Soal: parse + validasi di CLIENT (server hanya kirim JSON string).
+      if (isBankSoal) {
+        const parsed = safeParseBankSoal(text);
+        if (!parsed.ok) {
+          // JSON invalid/terpotong → error jujur + fallback mentah. TIDAK disimpan.
+          setResult(text);
+          setBankSoal(null);
+          setBankSoalError(parsed.reason);
+          setStatus('done');
+          setStreaming(false);
+          setCurrentEntryId(null);
+          return;
+        }
+        const validation = validateBankSoal(parsed.data, diminta);
+        // Envelope simpan (R2) — BUKAN raw JSON string.
+        const envelope = JSON.stringify({
+          schemaVersion: 'bank-soal-json-v1',
+          jumlahDiminta: diminta,
+          soal: parsed.data,
+        });
+        setResult(envelope);
+        setBankSoal({ data: parsed.data, validation });
+        setBankSoalError(null);
+        setStatus('done');
+        setStreaming(false);
+
+        const entryBS: HistoryEntry = {
+          id: createId(),
+          toolId: activeTool.id,
+          toolTitle: activeTool.title,
+          inputs: { ...inputs },
+          result: envelope,
+          createdAt: Date.now(),
+          favorite: false,
+        };
+        setCurrentEntryId(entryBS.id);
+        setHistory((prev) => [entryBS, ...prev]);
+        // Simpan envelope (termasuk bila ada issue struktur = riwayat draft bermasalah).
+        void saveGeneration({
+          tool: activeTool.id,
+          title: activeTool.title,
+          subject: inputs.mapel ?? '',
+          grade: inputs.jenjang ?? '',
+          inputJson: JSON.stringify(inputs),
+          outputText: envelope,
+          createdAt: entryBS.createdAt,
+        }).catch((e) => console.error('Gagal menyimpan ke SQLite:', e));
+        return;
+      }
 
       setResult(text);
       setStatus('done');
@@ -225,6 +329,9 @@ export default function App({ onOpenShowcase }: AppProps) {
     setStatus('done');
     setStreaming(false);
     setCurrentEntryId(null);
+    // Muat-ulang bank-soal (parse envelope/legacy) = Tahap 6; kosongkan dulu agar tak stale.
+    setBankSoal(null);
+    setBankSoalError(null);
   }, []);
 
   const handleCopy = useCallback(async () => {
@@ -270,6 +377,8 @@ export default function App({ onOpenShowcase }: AppProps) {
     setStatus('done');
     setStreaming(false);
     setCurrentEntryId(entry.id);
+    setBankSoal(null);
+    setBankSoalError(null);
     setHistoryOpen(false);
     setNavOpen(false);
   }, []);
@@ -444,6 +553,8 @@ export default function App({ onOpenShowcase }: AppProps) {
                       error={error}
                       isFavorite={isFavorite}
                       streaming={streaming}
+                      bankSoal={bankSoal}
+                      bankSoalError={bankSoalError}
                       onCopy={handleCopy}
                       onDownloadTxt={handleDownloadTxt}
                       onDownloadDoc={handleDownloadDoc}
