@@ -41,7 +41,7 @@ export function Header({
   }, []);
 
   return (
-    <header className="sticky top-0 z-30 border-b border-white/30 bg-white/5 backdrop-blur-xl">
+    <header className="sticky top-0 z-30 border-b border-white/30 bg-white/5 backdrop-blur-xl pt-[env(safe-area-inset-top)]">
       <div className="mx-auto flex h-16 max-w-7xl items-center gap-3 px-4 sm:px-6">
         <button
           type="button"
