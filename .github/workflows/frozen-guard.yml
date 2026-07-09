@@ -1,0 +1,49 @@
+name: Frozen Guard
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  frozen-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verifikasi 6 file frozen (blob SHA di tree HEAD)
+        run: |
+          fail=0
+
+          check() {
+            want="$1"
+            path="$2"
+            got="$(git rev-parse "HEAD:$path" 2>/dev/null || true)"
+
+            if [ "$got" != "$want" ]; then
+              echo "FROZEN BERUBAH / HILANG: $path"
+              echo " expected: $want"
+              echo " got: ${got:-<tidak ada di tree>}"
+              fail=1
+            else
+              echo "OK: $path"
+            fi
+          }
+
+          check d56da0b49135ae9cc841c3c7b14ee553de01f168 CLAUDE.md
+          check 5241c419eed542c5b69177f1318a9799ada1b278 asisten-guru/CLAUDE.md
+          check 5d100892ffb839ce1f5a641aaba3a0b3a5ca7804 asisten-guru/api/suggest.ts
+          check b41100ccefe34f4563d47b1daa642e0333213dd2 asisten-guru/src/data/struktur.ts
+          check caff740bfc6c9c1d160f777048a2aae909e0e3e3 asisten-guru/src/data/kurikulum.ts
+          check b769e47b765c646c461d1f69f70ba35c1a6b198b asisten-guru/src/index.css
+
+          if [ "$fail" -ne 0 ]; then
+            echo ""
+            echo "STOP: file frozen berubah. Jika DISENGAJA/unfreeze,"
+            echo "update SHA yang sesuai di .github/workflows/frozen-guard.yml pada PR yang SAMA."
+            exit 1
+          fi
+
+          echo "Semua 6 file frozen utuh."
