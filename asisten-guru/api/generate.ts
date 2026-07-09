@@ -45,6 +45,131 @@ function kurikulumContext(i: ToolInputs): Array<[string, string]> {
   ];
 }
 
+// Blok parity Bank Soal (dead code Tahap 2): schema+prompt HARUS byte-identik dgn
+// src/features/tools/bankSoal.ts. Dijaga scripts/check-banksoal-parity.mjs. Belum di-wire.
+// <BANKSOAL-PARITY-START>
+export const BANKSOAL_RESPONSE_SCHEMA = {
+  type: 'OBJECT',
+  properties: {
+    sumber: { type: 'STRING' },
+    pilihanGanda: {
+      type: 'ARRAY',
+      items: {
+        type: 'OBJECT',
+        properties: {
+          nomor: { type: 'INTEGER' },
+          pertanyaan: { type: 'STRING' },
+          opsi: {
+            type: 'OBJECT',
+            properties: {
+              A: { type: 'STRING' },
+              B: { type: 'STRING' },
+              C: { type: 'STRING' },
+              D: { type: 'STRING' },
+              E: { type: 'STRING' },
+            },
+            required: ['A', 'B', 'C', 'D', 'E'],
+            propertyOrdering: ['A', 'B', 'C', 'D', 'E'],
+          },
+          kunci: { type: 'STRING', enum: ['A', 'B', 'C', 'D', 'E'] },
+          pembahasan: { type: 'STRING' },
+        },
+        required: ['nomor', 'pertanyaan', 'opsi', 'kunci', 'pembahasan'],
+        propertyOrdering: ['nomor', 'pertanyaan', 'opsi', 'kunci', 'pembahasan'],
+      },
+    },
+    isian: {
+      type: 'ARRAY',
+      items: {
+        type: 'OBJECT',
+        properties: {
+          nomor: { type: 'INTEGER' },
+          pertanyaan: { type: 'STRING' },
+          kunci: { type: 'STRING' },
+          pembahasan: { type: 'STRING' },
+        },
+        required: ['nomor', 'pertanyaan', 'kunci', 'pembahasan'],
+        propertyOrdering: ['nomor', 'pertanyaan', 'kunci', 'pembahasan'],
+      },
+    },
+    esai: {
+      type: 'ARRAY',
+      items: {
+        type: 'OBJECT',
+        properties: {
+          nomor: { type: 'INTEGER' },
+          pertanyaan: { type: 'STRING' },
+          rubrik: {
+            type: 'ARRAY',
+            items: {
+              type: 'OBJECT',
+              properties: {
+                skor: { type: 'INTEGER' },
+                deskriptor: { type: 'STRING' },
+              },
+              required: ['skor', 'deskriptor'],
+              propertyOrdering: ['skor', 'deskriptor'],
+            },
+          },
+          pembahasan: { type: 'STRING' },
+        },
+        required: ['nomor', 'pertanyaan', 'rubrik', 'pembahasan'],
+        propertyOrdering: ['nomor', 'pertanyaan', 'rubrik', 'pembahasan'],
+      },
+    },
+  },
+  required: ['sumber', 'pilihanGanda', 'isian', 'esai'],
+  propertyOrdering: ['sumber', 'pilihanGanda', 'isian', 'esai'],
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Prompt (SPEC §3). Format ditegakkan schema; prompt fokus ke KONTEN.
+// ─────────────────────────────────────────────────────────────────────────────
+export const SYSTEM_PROMPT_BANKSOAL =
+  'Anda adalah asisten guru penyusun draft soal. Keluarkan HANYA satu objek JSON valid ' +
+  'sesuai skema yang diminta. Tanpa markdown, tanpa blok kode, tanpa teks pembuka/penutup.';
+
+export function buildBankSoalUserPrompt(inputs: ToolInputs): string {
+  const g = (k: string): string => (inputs[k] ?? '').trim();
+  const nPg = g('jumlahPg') || '0';
+  const nIsian = g('jumlahIsian') || '0';
+  const nEsai = g('jumlahEsai') || '0';
+  const kesulitan = g('kesulitan');
+
+  const konteks = ([
+    ['Jenjang pendidikan', g('jenjang')],
+    ['Kelas/Tingkat', g('kelas')],
+    ['Kelompok kurikulum', g('kelompok')],
+    ['Mata pelajaran/Rumpun kitab', g('mapel')],
+    ['Pokok pembahasan (materi/kitab)', g('pokok')],
+    ['Jumlah Pilihan Ganda', nPg],
+    ['Jumlah Isian', nIsian],
+    ['Jumlah Esai', nEsai],
+    ['Tingkat kesulitan kognitif', kesulitan],
+  ] as Array<[string, string]>)
+    .filter(([, v]) => v.length > 0)
+    .map(([label, v]) => `- ${label}: ${v}`)
+    .join('\n');
+
+  return (
+    `Hasilkan soal dengan komposisi PERSIS: ${nPg} Pilihan Ganda, ${nIsian} Isian, ${nEsai} Esai.\n` +
+    'Isi setiap field sesuai skema JSON. Aturan konten:\n' +
+    "- Pilihan Ganda: 5 opsi (A–E), TEPAT SATU benar. 'kunci' = huruf opsi yang benar.\n" +
+    "  'pembahasan' ringkas menjelaskan mengapa benar.\n" +
+    "- Isian: 'pertanyaan' berupa kalimat RUMPANG dengan penanda kosong (_____).\n" +
+    "  'kunci' = jawaban sah (sebutkan variasi bila ada). TANPA opsi A–E.\n" +
+    "- Esai: 'pertanyaan' terbuka. 'rubrik' = daftar level skor (skor + deskriptor), minimal 2 level.\n" +
+    "  'pembahasan' = poin jawaban yang diharapkan.\n" +
+    "- 'sumber' = dasar kurikulum/CP dari konteks di bawah.\n" +
+    `- Sesuaikan tingkat kognitif (${kesulitan}) serta jenjang, mata pelajaran, dan pokok bahasan di konteks.\n` +
+    '- JANGAN menambah teks di luar JSON. JANGAN mengarang data kurikulum.\n' +
+    '\n' +
+    'Konteks:\n' +
+    konteks
+  );
+}
+// <BANKSOAL-PARITY-END>
+
 const builders: Record<string, Builder> = {
   'modul-ajar': (i) => ({
     context: contextLines([

@@ -64,6 +64,7 @@ export interface JumlahDiminta {
 // ─────────────────────────────────────────────────────────────────────────────
 // Schema respons Gemini — OpenAPI subset (SPEC §1). Dikirim hanya saat bank-soal.
 // ─────────────────────────────────────────────────────────────────────────────
+// <BANKSOAL-PARITY-START>
 export const BANKSOAL_RESPONSE_SCHEMA = {
   type: 'OBJECT',
   properties: {
@@ -184,6 +185,7 @@ export function buildBankSoalUserPrompt(inputs: ToolInputs): string {
     konteks
   );
 }
+// <BANKSOAL-PARITY-END>
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Parse aman (SPEC §5)
