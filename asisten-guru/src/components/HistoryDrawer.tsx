@@ -58,7 +58,7 @@ export function HistoryDrawer({
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ type: 'tween', duration: 0.3, ease: EASE_FLOW }}
-            className="absolute right-0 top-0 flex h-full w-full max-w-md flex-col border-l border-white/40 bg-emerald-soft/95 shadow-glass-lg backdrop-blur-xl"
+            className="absolute right-0 top-0 flex h-full w-full max-w-md flex-col border-l border-white/40 bg-emerald-soft/95 shadow-glass-lg backdrop-blur-xl pt-[env(safe-area-inset-top)]"
             role="dialog"
             aria-label="Riwayat & Favorit"
           >
