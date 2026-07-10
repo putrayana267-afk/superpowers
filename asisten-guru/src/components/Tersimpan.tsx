@@ -16,6 +16,7 @@ import { copyToClipboard } from '../lib/clipboard';
 import { listGenerations, deleteGeneration } from '../lib/db';
 import type { GenerationRow } from '../lib/db';
 import { TOOLS, getToolById } from '../features/tools/registry';
+import { previewText } from '../lib/previewText';
 
 interface TersimpanProps {
   /** Buka hasil tersimpan kembali di area kerja. */
@@ -132,7 +133,7 @@ export function Tersimpan({ onOpen }: TersimpanProps) {
                     )}
                   </div>
                   <p className="mt-1.5 line-clamp-2 text-sm text-ink/70">
-                    {row.output_text.replace(/[#*`>_-]/g, '').slice(0, 160)}
+                    {previewText(row.output_text, 160)}
                   </p>
                   <p className="mt-1.5 flex items-center gap-1 text-[11px] text-ink/40">
                     <Clock className="h-3 w-3" />
