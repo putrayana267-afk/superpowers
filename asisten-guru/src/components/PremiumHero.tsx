@@ -118,7 +118,7 @@ export function PremiumHero({ onEnter }: PremiumHeroProps) {
       </div>
 
       <div
-        className="relative flex min-h-[100dvh] flex-col px-5 pb-10 pt-5"
+        className="relative flex min-h-[100dvh] flex-col px-5 pb-10 pt-[calc(1.25rem_+_env(safe-area-inset-top))]"
         style={{ zIndex: 10 }}
       >
         <div className="hero-top flex justify-end">
