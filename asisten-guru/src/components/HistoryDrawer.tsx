@@ -6,6 +6,7 @@ import type { HistoryEntry } from '../features/tools/types';
 import { EmptyState } from './EmptyState';
 import { cn } from '../lib/cn';
 import { EASE_FLOW } from '../lib/motion';
+import { previewText } from '../lib/previewText';
 
 interface HistoryDrawerProps {
   open: boolean;
@@ -131,7 +132,7 @@ export function HistoryDrawer({
                           {entry.toolTitle}
                         </p>
                         <p className="mt-1 line-clamp-2 text-xs text-ink/60">
-                          {entry.result.replace(/[#*`>_-]/g, '').slice(0, 120)}
+                          {previewText(entry.result, 120)}
                         </p>
                         <p className="mt-1.5 flex items-center gap-1 text-[11px] text-ink/40">
                           <Clock className="h-3 w-3" />
