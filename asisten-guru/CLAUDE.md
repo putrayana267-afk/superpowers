@@ -441,3 +441,23 @@ Contoh nyata:
 ---
 
 **Pengingat terakhir:** jangan ngarang kurikulum · bukti terminal mentah · jangan bocorkan key · jangan klaim palsu.
+
+## 18 · Bar MATENG (Definisi Rilis)
+
+**MATENG = boleh di-tag versi stabil.** App SUDAH live; ini aturan BERHENTI, bukan aturan mulai. Tag dibuat HANYA saat 7 kriteria di bawah hijau SEMUA. Tiap kriteria diverifikasi LIVE ke origin/Vercel — bukan panel, bukan laporan CC, bukan ingatan.
+
+| # | Kriteria | Hijau berarti | Cara cek |
+|---|---|---|---|
+| 1 | Integritas beku | 9 file beku pada baseline SHA yang disepakati; nol edit siluman | `git ls-tree -r origin/main`; tiap merge `tree(main)==tree(^2)` |
+| 2 | Invarian hantu | `#1F4B2C`=0 di index.css; `#4CE896` ada (4, case-insensitive); baris 1 root `CLAUDE.md` = `@asisten-guru/CLAUDE.md` | `git show origin/main:<file>` + grep |
+| 3 | Data kurikulum bersih | NOL entri `status:"verified"` yang melanggar §4.4 (sumber kosong / topik non-atomik §4.7 / belum dicek manusia). TANPA kuota jumlah verified | grep entri verified + spot-check manusia |
+| 4 | Build & deploy produksi | Vercel produksi = tip main, status READY, webhook sehat | Vercel (projectId `superpowers`, teamId `akhid`) / preview termuat manusia |
+| 5 | Gerbang fungsional HP | generate dokumen, suggest/auto-fill, ekspor `.docx` terbukti JALAN di HP guru via screenshot manusia. Build hijau TIDAK cukup (§9) | screenshot dari manusia |
+| 6 | Router terkonfirmasi | Status beku `routeKeywords.ts` sudah diputuskan (§10/§11 kini "belum konfirmasi"): dikunci penuh + SHA ditambah, ATAU eksplisit dinyatakan tak-beku | keputusan manusia + git |
+| 7 | Kebersihan rilis | Tag anotasi bernomor dibuat setelah 1–6 hijau; cabang merged dibersihkan; item poles yang tak masuk tag terdaftar sebagai v-next | `git tag -n`, `git branch -r` |
+
+**Anti-fabrikasi (§4.4):** Kriteria 3 mengukur *nol pelanggaran*, tidak pernah menuntut "minimal N verified". Kuota jumlah = tekanan memalsukan status. Entri `verified` tetap BEKU (§10).
+
+**Bukan blocker rilis (v-next):** font Google render-blocking → non-blocking · opsi warna hijau heading · npm audit 2 vuln transitif `docx` (risiko rendah) · tes jaringan lambat HP.
+
+**Prosedur tag:** hanya manusia yang memutuskan tag. CC tak pernah membuat tag tanpa 7 kriteria hijau + "ya" eksplisit manusia.
