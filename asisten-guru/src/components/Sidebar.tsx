@@ -121,10 +121,10 @@ export function Sidebar({
   return (
     <nav
       aria-label="Navigasi"
-      className="flex flex-col gap-5 rounded-2xl border border-white/10 bg-on-fill p-4"
+      className="flex flex-col gap-5 rounded-2xl border border-white/10 bg-surface-deep p-4"
     >
       <div>
-        <h2 className="mb-2 px-2 text-xs font-semibold uppercase tracking-wider text-emerald-deep/60">
+        <h2 className="mb-2 px-2 text-xs font-semibold uppercase tracking-wider text-label">
           Pustaka & Data
         </h2>
         <ul className="flex flex-col gap-1">
@@ -169,7 +169,7 @@ export function Sidebar({
 
       {categories.map((category) => (
         <div key={category}>
-          <h2 className="mb-2 px-2 text-xs font-semibold uppercase tracking-wider text-emerald-deep/60">
+          <h2 className="mb-2 px-2 text-xs font-semibold uppercase tracking-wider text-label">
             {category}
           </h2>
           <ul className="flex flex-col gap-1">

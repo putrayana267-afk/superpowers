@@ -184,7 +184,7 @@ function PokokField({
             />
           </div>
 
-          <p className="mt-1 text-xs text-emerald-deep/60">
+          <p className="mt-1 text-xs text-label">
             Topik otomatis dari kurikulum — atau pilih “Ketik manual”.
           </p>
         </>

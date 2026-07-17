@@ -236,7 +236,7 @@ export function Perpustakaan() {
       <div className="relative">
         <MagnifyingGlass
           aria-hidden
-          className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-emerald-deep/60"
+          className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-label"
         />
         <input
           type="search"
@@ -273,7 +273,7 @@ export function Perpustakaan() {
                   <h2 className="font-display text-lg font-bold text-emerald-deep">
                     {section.title}
                   </h2>
-                  <p className="text-xs uppercase tracking-wider text-emerald-deep/60">
+                  <p className="text-xs uppercase tracking-wider text-label">
                     {section.subtitle}
                   </p>
                 </div>
@@ -335,7 +335,7 @@ export function Perpustakaan() {
                   <div className="flex flex-col gap-3">
                     {kitab.map((r) => (
                       <div key={r.rumpun}>
-                        <p className="mb-1.5 text-xs font-semibold uppercase tracking-wider text-emerald-deep/60">
+                        <p className="mb-1.5 text-xs font-semibold uppercase tracking-wider text-label">
                           {r.rumpun}
                         </p>
                         <div className="flex flex-wrap gap-1.5">

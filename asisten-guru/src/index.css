@@ -45,7 +45,13 @@
     --c-teal-text: 52 231 224; /* = --c-teal */
     --c-chip-text: 116 227 171; /* #74E3AB */
 
+    /* poles terang slice-4: permukaan/ikon/label bertema */
+    --c-surface-deep: 4 20 12; /* #04140C — panel nav (== nilai bg lama, identik) */
+    --c-brand-icon: 76 232 150; /* #4CE896 — ikon aksen brand (== hex lama) */
+
     /* alpha menyatu — dipakai apa adanya */
+    --c-sheet: rgba(10, 34, 24, 0.55); /* panel sheet/dropdown (== rgba lama) */
+    --c-label: rgba(142, 255, 202, 0.6); /* label section — render == text-emerald-deep/60 lama */
     --c-line: rgba(255, 255, 255, 0.08);
     --c-glass: rgba(255, 255, 255, 0.045);
     --c-side: rgba(255, 255, 255, 0.028);
@@ -77,6 +83,12 @@
     --c-violet-text: 94 78 192; /* #5E4EC0 → 5.75 */
     --c-gold-text: 138 100 16; /* #8A6410 → 4.89 */
     --c-gold-deep-text: 107 74 0; /* #6B4A00 → 7.34 */
+
+    /* poles terang slice-4 */
+    --c-surface-deep: 248 250 249; /* #F8FAF9 — panel nav ikut terang (ref side .62); brand-text 5.14, ink/70 6.59 */
+    --c-brand-icon: 11 122 75; /* #0B7A4B — 5.28 di sheet ringan, 4.34 kasus terburuk (grafis, ambang 3) */
+    --c-sheet: rgba(255, 255, 255, 0.72); /* glass terang (ref desain .72) */
+    --c-label: #52705f; /* SOLID muted — 4.98/5.10/5.47 di F2F5F3/F6F7F9/putih */
 
     --c-line: rgba(13, 32, 22, 0.12);
     --c-glass: rgba(255, 255, 255, 0.72);

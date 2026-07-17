@@ -36,7 +36,7 @@ export function ActivityBars({ history }: { history: HistoryEntry[] }) {
 
   return (
     <div>
-      <h2 className="mb-3 px-1 text-xs font-semibold uppercase tracking-wider text-emerald-deep/60">
+      <h2 className="mb-3 px-1 text-xs font-semibold uppercase tracking-wider text-label">
         Aktivitas
       </h2>
       <div className="rounded-2xl border border-white/10 bg-emerald-soft/60 p-5">

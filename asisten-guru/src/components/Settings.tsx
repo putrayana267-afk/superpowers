@@ -569,7 +569,7 @@ export function Settings() {
               })
             ))}
           {!hasilKecamatan && muatKec !== 'memuat' && (
-            <h3 className="px-2 pb-1 pt-2 text-xs font-semibold uppercase tracking-wider text-emerald-deep/60">
+            <h3 className="px-2 pb-1 pt-2 text-xs font-semibold uppercase tracking-wider text-label">
               Populer
             </h3>
           )}
@@ -585,7 +585,7 @@ export function Settings() {
             if (daftar.length === 0) return null;
             return (
               <div key={zona}>
-                <h3 className="px-2 pb-1 pt-2 text-xs font-semibold uppercase tracking-wider text-emerald-deep/60">
+                <h3 className="px-2 pb-1 pt-2 text-xs font-semibold uppercase tracking-wider text-label">
                   {zona}
                 </h3>
                 {daftar.map((k) => {
