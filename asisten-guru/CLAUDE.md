@@ -368,7 +368,7 @@ Data di device guru = **suci**. Guru kehilangan modul ajar / bank soal = insiden
 
 **Sumber kebenaran warna & font = KODE:** `tailwind.config.ts` (token), `src/index.css` (latar), `index.html` (font). **Baca dulu sebelum menyentuh warna.** File ini beda dari kode → kode menang, lapor.
 
-**Tema: "Akhid Noir"** — gelap tunggal, hijau. (BUKAN Forest/Olive/Lime/Mint.)
+**Tema: "Akhid Noir"** — dua tema (gelap default + terang), hijau. (BUKAN Forest/Olive/Lime/Mint.)
 
 | Token | Hex | Peran | Teks di atasnya |
 |---|---|---|---|
@@ -449,7 +449,7 @@ Contoh nyata:
 | # | Kriteria | Hijau berarti | Cara cek |
 |---|---|---|---|
 | 1 | Integritas beku | 9 file beku pada baseline SHA yang disepakati; nol edit siluman | `git ls-tree -r origin/main`; tiap merge `tree(main)==tree(^2)` |
-| 2 | Invarian hantu | `#1F4B2C`=0 di index.css; `#4CE896` ada (4, case-insensitive); baris 1 root `CLAUDE.md` = `@asisten-guru/CLAUDE.md` | `git show origin/main:<file>` + grep |
+| 2 | Invarian hantu | `#1F4B2C`=0 di index.css (palet asing absen); brand `#4CE896` hadir (minimal 1 pemakaian, case-insensitive), tanpa patok jumlah; baris 1 root `CLAUDE.md` = `@asisten-guru/CLAUDE.md` | `git show origin/main:<file>` + grep |
 | 3 | Data kurikulum bersih | NOL entri `status:"verified"` yang melanggar §4.4 (sumber kosong / topik non-atomik §4.7 / belum dicek manusia). TANPA kuota jumlah verified | grep entri verified + spot-check manusia |
 | 4 | Build & deploy produksi | Vercel produksi = tip main, status READY, webhook sehat | Vercel (projectId `superpowers`, teamId `akhid`) / preview termuat manusia |
 | 5 | Gerbang fungsional HP | generate dokumen, suggest/auto-fill, ekspor `.docx` terbukti JALAN di HP guru via screenshot manusia. Build hijau TIDAK cukup (§9) | screenshot dari manusia |
