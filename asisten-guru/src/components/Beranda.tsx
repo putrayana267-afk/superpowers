@@ -36,21 +36,21 @@ const HUE: Record<'emerald' | 'teal' | 'gold' | 'violet', Accent> = {
     wash: 'radial-gradient(180px at 0% 0%, rgba(76,232,150,.12), transparent 70%)',
   },
   teal: {
-    text: 'text-teal',
+    text: 'text-teal-text',
     chip: 'bg-teal/[0.18]',
     ring: 'border-teal/25',
     bar: 'bg-teal/70',
     wash: 'radial-gradient(180px at 0% 0%, rgba(52,231,224,.12), transparent 70%)',
   },
   gold: {
-    text: 'text-gold',
+    text: 'text-gold-text',
     chip: 'bg-gold/[0.18]',
     ring: 'border-gold/25',
     bar: 'bg-gold/70',
     wash: 'radial-gradient(180px at 0% 0%, rgba(255,194,77,.12), transparent 70%)',
   },
   violet: {
-    text: 'text-violet',
+    text: 'text-violet-text',
     chip: 'bg-violet/[0.18]',
     ring: 'border-violet/25',
     bar: 'bg-violet/70',
@@ -356,7 +356,7 @@ function Terbaru({
                         {entry.toolTitle}
                       </h3>
                       {entry.favorite && (
-                        <Star className="h-4 w-4 flex-shrink-0 fill-gold text-gold" />
+                        <Star className="h-4 w-4 flex-shrink-0 fill-gold text-gold-text" />
                       )}
                     </div>
                     <p className="mt-0.5 text-xs text-ink/50">

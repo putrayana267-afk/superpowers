@@ -152,8 +152,8 @@ export function HistoryDrawer({
                           className={cn(
                             'flex h-8 w-8 items-center justify-center rounded-lg transition-colors',
                             entry.favorite
-                              ? 'text-gold-deep hover:bg-gold/15'
-                              : 'text-ink/40 hover:bg-white/10 hover:text-gold-deep',
+                              ? 'text-gold-deep-text hover:bg-gold/15'
+                              : 'text-ink/40 hover:bg-white/10 hover:text-gold-deep-text',
                           )}
                         >
                           <Star

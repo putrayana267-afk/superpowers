@@ -292,7 +292,7 @@ export function Perpustakaan() {
                             {link.name}
                           </p>
                           {link.needsAccount && (
-                            <span className="inline-flex items-center gap-1 rounded-full border border-gold/40 bg-gold/10 px-2 py-0.5 text-[10px] font-semibold text-gold-deep">
+                            <span className="inline-flex items-center gap-1 rounded-full border border-gold/40 bg-gold/10 px-2 py-0.5 text-[10px] font-semibold text-gold-deep-text">
                               <Lock className="h-3 w-3" />
                               perlu akun
                             </span>

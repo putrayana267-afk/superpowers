@@ -75,7 +75,7 @@ export function FieldSuggest({
         disabled={loading || disabled}
         title={disabled ? disabledHint : undefined}
         className={cn(
-          'inline-flex items-center gap-1.5 rounded-lg border border-gold/40 bg-gold/10 px-2.5 py-1 text-xs font-semibold text-gold-deep transition',
+          'inline-flex items-center gap-1.5 rounded-lg border border-gold/40 bg-gold/10 px-2.5 py-1 text-xs font-semibold text-gold-deep-text transition',
           'hover:bg-gold/20 focus-visible:outline-2 focus-visible:outline-emerald-deep',
           'disabled:cursor-not-allowed disabled:opacity-50',
         )}

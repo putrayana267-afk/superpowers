@@ -39,7 +39,7 @@ function Banner({ issues }: { issues: ValidationIssue[] }) {
       className={
         merah
           ? 'mb-3 rounded-xl border border-red-400/50 bg-red-500/10 px-3 py-2 text-xs leading-relaxed text-red-200'
-          : 'mb-3 rounded-xl border border-gold/40 bg-gold/10 px-3 py-2 text-xs leading-relaxed text-gold'
+          : 'mb-3 rounded-xl border border-gold/40 bg-gold/10 px-3 py-2 text-xs leading-relaxed text-gold-text'
       }
     >
       <p className="font-semibold">
@@ -63,7 +63,7 @@ function Banner({ issues }: { issues: ValidationIssue[] }) {
 /** Disclaimer "Draft AI" — WAJIB tampil (SPEC §6). */
 function DraftBadge() {
   return (
-    <div className="mb-4 flex items-start gap-2 rounded-xl border border-gold/40 bg-gold/10 px-3 py-2 text-xs leading-relaxed text-gold backdrop-blur">
+    <div className="mb-4 flex items-start gap-2 rounded-xl border border-gold/40 bg-gold/10 px-3 py-2 text-xs leading-relaxed text-gold-text backdrop-blur">
       <span aria-hidden className="mt-px">
         ⚠️
       </span>

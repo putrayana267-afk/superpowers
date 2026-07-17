@@ -524,7 +524,7 @@ export function Settings() {
             </p>
           )}
           {modeCari && muatKec === 'gagal' && (
-            <p className="px-2 py-2 text-xs text-gold">
+            <p className="px-2 py-2 text-xs text-gold-text">
               Daftar kecamatan gagal dimuat — pakai daftar populer di bawah.
             </p>
           )}
