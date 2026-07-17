@@ -317,7 +317,7 @@ Verifikasi tiap sesi: `git ls-tree <ref> asisten-guru/<path>` — **percaya git,
 
 Juga tidak boleh disentuh tanpa izin: `.github/workflows/**` (pagar CI) · `.gitignore` (pagar rahasia) · file ini `CLAUDE.md` (aturan main) · entri `verified` di `kurikulum.ts` (data suci).
 
-**Keyword map** `src/features/tools/routeKeywords.ts` — diperlakukan **terkunci** per §11, TAPI **belum** masuk baseline SHA 4-file resmi di atas → **konfirmasi ke manusia** apakah dikunci penuh (dan tambahkan SHA-nya bila ya).
+**Keyword map** `src/features/tools/routeKeywords.ts` — **DIKUNCI PENUH** (keputusan manusia 2026-07-17, §18-6), blob baseline `6280ae48`. Offline murni (§11); ubah HANYA via fase khusus + izin eksplisit per-kejadian + re-baseline SHA. Blob beda tanpa izin = BERHENTI dan lapor.
 
 **Prosedur minta izin buka file beku:** sebut file → alasan → rencana diff ringkas → tunggu "ya" eksplisit. **Diam ≠ ya.**
 
@@ -333,7 +333,7 @@ Juga tidak boleh disentuh tanpa izin: `.github/workflows/**` (pagar CI) · `.git
 
 **Aturan:**
 1. `routeKeywords.ts` tetap **offline murni**. Dilarang "meng-upgrade" jalur ini jadi memanggil API. Alasan: BYOK — setiap call memakan kuota guru.
-2. **Keyword map = data yang diperlakukan terkunci** (aturan collision & tiebreaker final). Ubah hanya lewat fase khusus + persetujuan, dengan tabel sebelum/sesudah. (Status beku resmi: lihat §10 — masih perlu konfirmasi.)
+2. **Keyword map = data yang diperlakukan terkunci** (aturan collision & tiebreaker final). Ubah hanya lewat fase khusus + persetujuan, dengan tabel sebelum/sesudah. (Status beku resmi: §10 — DIKUNCI PENUH, blob `6280ae48`, sejak 2026-07-17.)
 3. Setiap perubahan router wajib tabel kasus uji: `input guru → tool yang diharapkan → hasil aktual` — minimal 10 kasus, termasuk kasus ambigu.
 4. **Test otomatis dilarang memakai key Gemini asli.** Pakai mock. Jangan pernah menaruh key di kode test.
 5. Panggilan Gemini (suggest/generate) gagal (offline / key invalid) → **fallback jelas** ke input/pemilihan tool manual. Jangan gagal diam-diam.
@@ -453,7 +453,7 @@ Contoh nyata:
 | 3 | Data kurikulum bersih | NOL entri `status:"verified"` yang melanggar §4.4 (sumber kosong / topik non-atomik §4.7 / belum dicek manusia). TANPA kuota jumlah verified | grep entri verified + spot-check manusia |
 | 4 | Build & deploy produksi | Vercel produksi = tip main, status READY, webhook sehat | Vercel (projectId `superpowers`, teamId `akhid`) / preview termuat manusia |
 | 5 | Gerbang fungsional HP | generate dokumen, suggest/auto-fill, ekspor `.docx` terbukti JALAN di HP guru via screenshot manusia. Build hijau TIDAK cukup (§9) | screenshot dari manusia |
-| 6 | Router terkonfirmasi | Status beku `routeKeywords.ts` sudah diputuskan (§10/§11 kini "belum konfirmasi"): dikunci penuh + SHA ditambah, ATAU eksplisit dinyatakan tak-beku | keputusan manusia + git |
+| 6 | Router terkonfirmasi | Status beku `routeKeywords.ts` sudah diputuskan (§10/§11 sejak 2026-07-17: dikunci penuh): dikunci penuh + SHA ditambah, ATAU eksplisit dinyatakan tak-beku | keputusan manusia + git |
 | 7 | Kebersihan rilis | Tag anotasi bernomor dibuat setelah 1–6 hijau; cabang merged dibersihkan; item poles yang tak masuk tag terdaftar sebagai v-next | `git tag -n`, `git branch -r` |
 
 **Anti-fabrikasi (§4.4):** Kriteria 3 mengukur *nol pelanggaran*, tidak pernah menuntut "minimal N verified". Kuota jumlah = tekanan memalsukan status. Entri `verified` tetap BEKU (§10).
