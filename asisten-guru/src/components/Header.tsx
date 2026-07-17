@@ -60,7 +60,7 @@ export function Header({
               className="h-9 w-9 flex-shrink-0 rounded-full object-cover"
             />
           ) : (
-            <span className="grid h-9 w-9 flex-shrink-0 place-items-center rounded-full bg-gradient-to-br from-[#4CE896] to-violet font-grotesk text-sm font-bold text-[#04140C]">
+            <span className="grid h-9 w-9 flex-shrink-0 place-items-center rounded-full bg-gradient-to-br from-brand to-violet font-grotesk text-sm font-bold text-on-fill">
               {inisialDari(profil.nama)}
             </span>
           )}
@@ -81,7 +81,7 @@ export function Header({
             {/* Teks GELAP di atas fill emas: aturan keras §14. text-ink di sini
                 cuma 1.54:1 (gagal WCAG); #04140C = 11.77:1. */}
             {historyCount > 0 && (
-              <span className="ml-1 inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-gold px-1.5 text-xs font-bold text-[#04140C]">
+              <span className="ml-1 inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-gold px-1.5 text-xs font-bold text-on-fill">
                 {historyCount}
               </span>
             )}
