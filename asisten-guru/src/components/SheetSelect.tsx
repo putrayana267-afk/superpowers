@@ -190,13 +190,13 @@ export function SheetSelect({
   // Kelas visual "terpilih" (tint aksen, garis kiri, centang) — DIBAGI opsi &
   // manual. Sorotan mengikuti `pending` (kandidat), bukan lagi `value`.
   const rowSelected =
-    'border border-[rgba(76,232,150,0.28)] bg-[rgba(76,232,150,0.10)] font-semibold text-[#EAFFF4]';
+    'border border-[rgba(76,232,150,0.28)] bg-[rgba(76,232,150,0.10)] font-semibold text-ink';
   const rowIdle =
-    'border border-transparent text-[#EAFFF4]/90 hover:bg-white/[0.06] active:bg-white/[0.10]';
+    'border border-transparent text-ink/90 hover:bg-white/[0.06] active:bg-white/[0.10]';
   const accentLine = (
     <span
       aria-hidden
-      className="absolute left-1.5 top-1/2 h-6 w-[3px] -translate-y-1/2 rounded-full bg-[#4CE896]"
+      className="absolute left-1.5 top-1/2 h-6 w-[3px] -translate-y-1/2 rounded-full bg-brand"
     />
   );
 
@@ -285,8 +285,8 @@ export function SheetSelect({
         className={cn(
           'flex w-full items-center justify-center gap-2 rounded-xl px-4 py-3 text-base font-semibold transition-opacity',
           pending !== null
-            ? 'border border-transparent bg-[#4CE896] text-[#04140C] hover:opacity-90 active:opacity-80'
-            : 'cursor-not-allowed border border-white/[0.12] bg-transparent text-[#EAFFF4]/40',
+            ? 'border border-transparent bg-brand text-on-fill hover:opacity-90 active:opacity-80'
+            : 'cursor-not-allowed border border-white/[0.12] bg-transparent text-ink/40',
         )}
       >
         <Check className="h-5 w-5" />
@@ -412,7 +412,7 @@ export function SheetSelect({
                   }
                 >
                   <div className="sticky top-0 z-10 -mx-3 -mt-3 mb-2 border-b border-white/10 px-4 pb-3 pt-4">
-                    <p className="text-base font-semibold text-[#EAFFF4] sm:text-lg">
+                    <p className="text-base font-semibold text-ink sm:text-lg">
                       {label}
                     </p>
                   </div>

@@ -359,7 +359,7 @@ export function Settings() {
               className="h-16 w-16 rounded-full border border-white/10 object-cover"
             />
           ) : (
-            <span className="grid h-16 w-16 place-items-center rounded-full bg-gradient-to-br from-[#4CE896] to-violet font-grotesk text-xl font-bold text-[#04140C]">
+            <span className="grid h-16 w-16 place-items-center rounded-full bg-gradient-to-br from-brand to-violet font-grotesk text-xl font-bold text-on-fill">
               {inisialDari(nama || DEFAULT_PROFIL.nama)}
             </span>
           )}
@@ -479,7 +479,7 @@ export function Settings() {
           className={cn(
             'rounded-full px-3 py-1.5 text-xs font-semibold transition-colors',
             pilihan.mode === 'auto'
-              ? 'bg-brand text-[#04140C]'
+              ? 'bg-brand text-on-fill'
               : 'bg-white/5 text-emerald-deep hover:bg-white/10',
           )}
         >

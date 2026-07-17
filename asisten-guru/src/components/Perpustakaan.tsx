@@ -245,9 +245,9 @@ export function Perpustakaan() {
           placeholder="Cari sumber atau nama kitab…"
           aria-label="Cari sumber atau kitab"
           className={cn(
-            'w-full rounded-xl border border-white/10 bg-[#022b22]/70 py-2.5 pl-10 pr-3.5 text-sm text-[#EAFFF4]',
-            'placeholder:text-[#EAFFF4]/40 shadow-sm backdrop-blur transition',
-            'focus:border-emerald-primary focus:bg-[#022b22] focus:outline-none focus:ring-2 focus:ring-emerald-primary/30',
+            'w-full rounded-xl border border-white/10 bg-emerald-soft/70 py-2.5 pl-10 pr-3.5 text-sm text-ink',
+            'placeholder:text-ink/40 shadow-sm backdrop-blur transition',
+            'focus:border-emerald-primary focus:bg-emerald-soft focus:outline-none focus:ring-2 focus:ring-emerald-primary/30',
           )}
         />
       </div>
@@ -306,7 +306,7 @@ export function Perpustakaan() {
                         <a
                           href={link.url}
                           {...EXTERNAL}
-                          className="inline-flex items-center gap-1.5 rounded-lg bg-brand px-3 py-1.5 text-xs font-semibold text-[#04140C] transition hover:bg-brand-hover"
+                          className="inline-flex items-center gap-1.5 rounded-lg bg-brand px-3 py-1.5 text-xs font-semibold text-on-fill transition hover:bg-brand-hover"
                         >
                           Buka
                           <ArrowSquareOut className="h-3.5 w-3.5" />

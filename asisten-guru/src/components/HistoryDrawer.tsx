@@ -198,7 +198,7 @@ function FilterTab({
       className={cn(
         'rounded-full px-3 py-1.5 text-xs font-semibold transition-colors',
         active
-          ? 'bg-brand text-[#04140C]'
+          ? 'bg-brand text-on-fill'
           : 'bg-white/5 text-emerald-deep hover:bg-white/10',
       )}
     >

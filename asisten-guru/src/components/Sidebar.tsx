@@ -68,7 +68,7 @@ function NavEntry({
         className={cn(
           'flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg transition-colors',
           active
-            ? 'bg-brand text-[#04140C]'
+            ? 'bg-brand text-on-fill'
             : 'bg-emerald-soft text-emerald-deep group-hover:bg-emerald-deep/10',
         )}
       >
@@ -121,7 +121,7 @@ export function Sidebar({
   return (
     <nav
       aria-label="Navigasi"
-      className="flex flex-col gap-5 rounded-2xl border border-white/10 bg-[#04140C] p-4"
+      className="flex flex-col gap-5 rounded-2xl border border-white/10 bg-on-fill p-4"
     >
       <div>
         <h2 className="mb-2 px-2 text-xs font-semibold uppercase tracking-wider text-emerald-deep/60">
@@ -200,7 +200,7 @@ export function Sidebar({
             className="h-10 w-10 flex-shrink-0 rounded-full object-cover"
           />
         ) : (
-          <span className="grid h-10 w-10 flex-shrink-0 place-items-center rounded-full bg-gradient-to-br from-[#4CE896] to-violet font-grotesk text-sm font-bold text-[#04140C]">
+          <span className="grid h-10 w-10 flex-shrink-0 place-items-center rounded-full bg-gradient-to-br from-brand to-violet font-grotesk text-sm font-bold text-on-fill">
             {inisialDari(profil.nama)}
           </span>
         )}

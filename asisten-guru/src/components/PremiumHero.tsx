@@ -88,7 +88,7 @@ export function PremiumHero({ onEnter }: PremiumHeroProps) {
   const inisial = inisialDari(profil.nama);
 
   return (
-    <div className="relative min-h-[100dvh] w-full overflow-hidden bg-[#101c13]">
+    <div className="relative min-h-[100dvh] w-full overflow-hidden bg-base">
       <div aria-hidden className="hero-bg absolute inset-0" style={{ zIndex: 0 }}>
         <video
           className="absolute inset-0 h-full w-full object-cover"
@@ -122,7 +122,7 @@ export function PremiumHero({ onEnter }: PremiumHeroProps) {
         style={{ zIndex: 10 }}
       >
         <div className="hero-top flex justify-end">
-          <div className="flex items-center gap-4 rounded-2xl border border-white/10 bg-[#101c13]/55 px-5 py-3 backdrop-blur-md">
+          <div className="flex items-center gap-4 rounded-2xl border border-white/10 bg-base/55 px-5 py-3 backdrop-blur-md">
             <div className="text-center">
               <div className="font-grotesk text-3xl font-bold leading-none tabular-nums text-white">
                 {tanggal}
@@ -134,7 +134,7 @@ export function PremiumHero({ onEnter }: PremiumHeroProps) {
             <div className="h-10 w-px bg-white/15" />
             <div>
               <div className="flex items-center gap-2 text-sm font-semibold text-white">
-                <span className="inline-block h-2 w-2 rounded-full bg-[#4CE896]" />
+                <span className="inline-block h-2 w-2 rounded-full bg-brand" />
                 {label ? `${hari} · ${label}` : hari}
               </div>
               <div className="font-grotesk mt-0.5 text-2xl font-bold tabular-nums text-emerald-deep">
@@ -145,7 +145,7 @@ export function PremiumHero({ onEnter }: PremiumHeroProps) {
         </div>
 
         <div className="flex flex-1 flex-col items-center justify-center text-center">
-          <div className="hero-chip flex items-center gap-3 rounded-full border border-white/10 bg-[#101c13]/55 py-2 pl-2 pr-5 backdrop-blur-md">
+          <div className="hero-chip flex items-center gap-3 rounded-full border border-white/10 bg-base/55 py-2 pl-2 pr-5 backdrop-blur-md">
             {foto ? (
               <img
                 src={foto}
@@ -153,7 +153,7 @@ export function PremiumHero({ onEnter }: PremiumHeroProps) {
                 className="h-9 w-9 rounded-full object-cover"
               />
             ) : (
-              <span className="grid h-9 w-9 place-items-center rounded-full bg-gradient-to-br from-[#4CE896] to-violet font-grotesk text-sm font-bold text-[#04140c]">
+              <span className="grid h-9 w-9 place-items-center rounded-full bg-gradient-to-br from-brand to-violet font-grotesk text-sm font-bold text-on-fill">
                 {inisial}
               </span>
             )}
@@ -167,7 +167,7 @@ export function PremiumHero({ onEnter }: PremiumHeroProps) {
             </span>
           </div>
 
-          <h1 className="hero-title mt-6 bg-gradient-to-r from-[#4CE896] via-[#8EFFCA] to-[#EAFFF4] bg-clip-text font-grotesk text-[clamp(2.1rem,9vw,3.6rem)] font-bold uppercase leading-[1.08] tracking-tight text-transparent">
+          <h1 className="hero-title mt-6 bg-gradient-to-r from-brand via-emerald-deep to-ink bg-clip-text font-grotesk text-[clamp(2.1rem,9vw,3.6rem)] font-bold uppercase leading-[1.08] tracking-tight text-transparent">
             {sapaan}
           </h1>
           <p className="hero-sub mt-4 max-w-md text-base leading-relaxed text-white/75">
@@ -178,7 +178,7 @@ export function PremiumHero({ onEnter }: PremiumHeroProps) {
           <button
             type="button"
             onClick={onEnter}
-            className="hero-cta mt-9 flex w-full max-w-md items-center justify-center gap-2 rounded-2xl border border-[#4CE896]/45 bg-[#101c13]/60 px-6 py-4 text-lg font-semibold text-emerald-deep backdrop-blur-md transition-transform active:scale-[0.98]"
+            className="hero-cta mt-9 flex w-full max-w-md items-center justify-center gap-2 rounded-2xl border border-brand/45 bg-base/60 px-6 py-4 text-lg font-semibold text-emerald-deep backdrop-blur-md transition-transform active:scale-[0.98]"
             style={{
               boxShadow:
                 '0 0 30px -12px rgba(76,232,150,.55), inset 0 0 22px -14px rgba(76,232,150,.5)',
