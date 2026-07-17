@@ -21,6 +21,8 @@
     /* permukaan & teks */
     --c-bg: 16 28 19; /* #101c13 */
     --c-surface: 2 43 34; /* #022b22 */
+    --c-surface-2: 23 40 29; /* #17281d — surface sekunder (kartu/input) */
+    --c-hairline: 86 149 120; /* #569578 — garis tepi tipis (dipakai /25) */
     --c-ink: 234 255 244; /* #EAFFF4 */
     --c-ink-2: 164 198 182; /* #A4C6B6 */
 
@@ -50,6 +52,8 @@
 
     --c-bg: 246 247 249; /* #F6F7F9 — bukan putih murni */
     --c-surface: 255 255 255; /* #FFFFFF */
+    --c-surface-2: 242 245 243; /* #F2F5F3 — abu-hijau muda; cukup terang agar brand-text di kartu+wash tetap >=4.5 */
+    --c-hairline: 74 99 87; /* #4A6357 — garis netral gelap; di /25 tetap terlihat di putih */
     --c-ink: 13 32 24; /* #0D2018 — bukan hitam murni */
     --c-ink-2: 60 79 69; /* #3C4F45 */
 

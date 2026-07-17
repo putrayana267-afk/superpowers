@@ -24,6 +24,8 @@ export default {
         },
         ink: 'rgb(var(--c-ink) / <alpha-value>)',
         'ink-2': 'rgb(var(--c-ink-2) / <alpha-value>)',
+        'surface-2': 'rgb(var(--c-surface-2) / <alpha-value>)',
+        hairline: 'rgb(var(--c-hairline) / <alpha-value>)',
         // Teks di ATAS fill terang (aturan keras §14). Menggantikan hex
         // hardcode #04140C saat komponen dimigrasi (fase berikutnya).
         'on-fill': 'rgb(var(--c-on-fill) / <alpha-value>)',

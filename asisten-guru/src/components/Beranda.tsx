@@ -128,7 +128,7 @@ function Banner({
       : 'Semua bahan ajarmu dalam satu ruang kerja yang tenang.';
 
   return (
-    <section className="relative overflow-hidden rounded-3xl border border-[#569578]/25 bg-[#022b22] p-6 sm:p-8">
+    <section className="relative overflow-hidden rounded-3xl border border-hairline/25 bg-emerald-soft p-6 sm:p-8">
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0"
@@ -145,7 +145,7 @@ function Banner({
         <button
           type="button"
           onClick={onStartCreate}
-          className="mt-6 inline-flex items-center gap-1.5 rounded-full bg-brand px-5 py-2.5 text-sm font-semibold text-[#04140C] transition hover:bg-brand-hover active:bg-brand-active"
+          className="mt-6 inline-flex items-center gap-1.5 rounded-full bg-brand px-5 py-2.5 text-sm font-semibold text-on-fill transition hover:bg-brand-hover active:bg-brand-active"
         >
           <Plus className="h-4 w-4" />
           Buat dokumen
@@ -179,7 +179,7 @@ function KotakKebutuhan({
   };
 
   return (
-    <div className="relative overflow-hidden rounded-2xl border border-[#569578]/25 bg-[#022b22]/60 p-5">
+    <div className="relative overflow-hidden rounded-2xl border border-hairline/25 bg-emerald-soft/60 p-5">
       <div
         aria-hidden
         className={
@@ -215,7 +215,7 @@ function KotakKebutuhan({
           onFocus={() => setFokus(true)}
           onBlur={() => setFokus(false)}
           placeholder="mis. bikin soal ulangan, atau modul ajar…"
-          className="w-full resize-none rounded-input border border-[#569578]/25 bg-[#17281d] p-3 text-sm text-ink placeholder:text-ink/55 focus:border-emerald-primary/40 focus:outline-none"
+          className="w-full resize-none rounded-input border border-hairline/25 bg-surface-2 p-3 text-sm text-ink placeholder:text-ink/55 focus:border-emerald-primary/40 focus:outline-none"
         />
         <div className="mt-3 flex justify-end">
           <button
@@ -256,7 +256,7 @@ function AksiCepat({ onSelectTool }: { onSelectTool: (id: string) => void }) {
               key={tool.id}
               type="button"
               onClick={() => onSelectTool(tool.id)}
-              className={`relative min-w-[168px] snap-start overflow-hidden rounded-2xl border bg-[#17281d] p-5 text-left transition-opacity hover:opacity-90 active:opacity-80 ${accent.ring}`}
+              className={`relative min-w-[168px] snap-start overflow-hidden rounded-2xl border bg-surface-2 p-5 text-left transition-opacity hover:opacity-90 active:opacity-80 ${accent.ring}`}
             >
               <span
                 aria-hidden
@@ -306,7 +306,7 @@ function Statistik({
           {breakdown.map(({ id, label, count: n }) => (
             <span
               key={id}
-              className="inline-flex items-center gap-1.5 rounded-full border border-[#569578]/25 bg-[#022b22]/60 px-3 py-1.5"
+              className="inline-flex items-center gap-1.5 rounded-full border border-hairline/25 bg-emerald-soft/60 px-3 py-1.5"
             >
               <span className="font-grotesk text-sm font-bold tabular-nums text-emerald-deep">
                 {n}
@@ -347,7 +347,7 @@ function Terbaru({
             >
               <GlassCard className="h-full" animate={false}>
                 <div className="flex items-start gap-3">
-                  <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl bg-[#022b22] text-emerald-deep">
+                  <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl bg-emerald-soft text-emerald-deep">
                     <Ikon className="h-5 w-5" />
                   </span>
                   <div className="min-w-0 flex-1">
@@ -389,7 +389,7 @@ function CaraKerja() {
       </h2>
       <div className="flex flex-col gap-3">
         {langkah.map(({ n, judul, teks }) => (
-          <div key={n} className="flex items-start gap-3 rounded-2xl border border-[#569578]/25 bg-[#022b22]/60 p-4">
+          <div key={n} className="flex items-start gap-3 rounded-2xl border border-hairline/25 bg-emerald-soft/60 p-4">
             <span className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border border-emerald-primary/40 font-grotesk text-sm font-bold text-emerald-primary">
               {n}
             </span>
@@ -442,7 +442,7 @@ export function Beranda({
 
       {count === 0 ? (
         <>
-          <div className="rounded-2xl border border-[#569578]/25 bg-[#022b22]/60 px-5 py-4 text-sm text-ink/60">
+          <div className="rounded-2xl border border-hairline/25 bg-emerald-soft/60 px-5 py-4 text-sm text-ink/60">
             Belum ada dokumen — yang Anda buat akan muncul di sini agar mudah
             dibuka kembali.
           </div>
