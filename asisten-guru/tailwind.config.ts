@@ -31,6 +31,12 @@ export default {
         'on-fill': 'rgb(var(--c-on-fill) / <alpha-value>)',
         violet: 'rgb(var(--c-violet) / <alpha-value>)',
         teal: 'rgb(var(--c-teal) / <alpha-value>)',
+        // Teks aksen (role-split spt brand): dark == fill (piksel identik),
+        // light dipergelap. Fill (bg-/border-/fill-) tetap pakai token polos.
+        'teal-text': 'rgb(var(--c-teal-text) / <alpha-value>)',
+        'violet-text': 'rgb(var(--c-violet-text) / <alpha-value>)',
+        'gold-text': 'rgb(var(--c-gold-text) / <alpha-value>)',
+        'gold-deep-text': 'rgb(var(--c-gold-deep-text) / <alpha-value>)',
         'chip-text': 'rgb(var(--c-chip-text) / <alpha-value>)',
         brand: {
           DEFAULT: 'rgb(var(--c-brand-fill) / <alpha-value>)',

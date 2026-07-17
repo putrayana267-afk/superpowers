@@ -232,7 +232,7 @@ export function ResultPanel({
             ) : (
               <>
                 {isBankSoal && result.trim().length > 0 && (
-                  <div className="mb-3 flex items-start gap-2 rounded-xl border border-violet/40 bg-violet/10 px-3 py-2 text-xs leading-relaxed text-violet backdrop-blur">
+                  <div className="mb-3 flex items-start gap-2 rounded-xl border border-violet/40 bg-violet/10 px-3 py-2 text-xs leading-relaxed text-violet-text backdrop-blur">
                     <span aria-hidden className="mt-px">
                       🗂️
                     </span>
@@ -242,7 +242,7 @@ export function ResultPanel({
                     </p>
                   </div>
                 )}
-                <div className="mb-3 flex items-start gap-2 rounded-xl border border-gold/40 bg-gold/10 px-3 py-2 text-xs leading-relaxed text-gold backdrop-blur">
+                <div className="mb-3 flex items-start gap-2 rounded-xl border border-gold/40 bg-gold/10 px-3 py-2 text-xs leading-relaxed text-gold-text backdrop-blur">
                   <span aria-hidden className="mt-px">
                     ⚠️
                   </span>

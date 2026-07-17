@@ -31,11 +31,18 @@
     --c-brand-text: 142 255 202; /* #8EFFCA */
     --c-on-fill: 4 20 12; /* #04140C */
 
-    /* aksen */
+    /* aksen — role-split spt brand: --c-{aksen} = FILL (bg/border/tint, tetap
+       terang di dua tema); --c-{aksen}-text = TEKS. Di gelap keduanya sengaja
+       bernilai SAMA (piksel identik dgn sebelum split); di terang hanya -text
+       yang dipergelap. */
     --c-gold: 255 194 77; /* #FFC24D */
     --c-gold-deep: 240 165 42; /* #F0A52A */
     --c-violet: 155 140 255; /* #9B8CFF */
     --c-teal: 52 231 224; /* #34E7E0 */
+    --c-gold-text: 255 194 77; /* = --c-gold */
+    --c-gold-deep-text: 240 165 42; /* = --c-gold-deep */
+    --c-violet-text: 155 140 255; /* = --c-violet */
+    --c-teal-text: 52 231 224; /* = --c-teal */
     --c-chip-text: 116 227 171; /* #74E3AB */
 
     /* alpha menyatu — dipakai apa adanya */
@@ -54,12 +61,22 @@
     --c-surface: 255 255 255; /* #FFFFFF */
     --c-surface-2: 242 245 243; /* #F2F5F3 — abu-hijau muda; cukup terang agar brand-text di kartu+wash tetap >=4.5 */
     --c-hairline: 74 99 87; /* #4A6357 — garis netral gelap; di /25 tetap terlihat di putih */
-    --c-ink: 13 32 24; /* #0D2018 — bukan hitam murni */
+    /* Cukup gelap agar text-ink/60 (teks sekunder) >=4.5 di surface terburuk
+       #F2F5F3 (4.61:1) — sengaja BUKAN near-black. Placeholder text-ink/55 =
+       EXEMPT (3.93:1; menggelapkannya menuntut luminance sekelas hitam). */
+    --c-ink: 10 25 18; /* #0A1912 */
     --c-ink-2: 60 79 69; /* #3C4F45 */
 
     /* Hijau terang GAGAL sbg teks di latar terang (#4CE896/#F6F7F9 = 1.47:1).
        Karena itu brand-text dipergelap; brand-fill sengaja TIDAK diubah. */
     --c-brand-text: 11 122 75; /* #0B7A4B → 5.02:1 di atas #F6F7F9 */
+
+    /* Aksen-TEKS versi terang (fill TIDAK di-override — tetap terang, jadi
+       badge/tint sewarna tetap hidup). Semua >=4.5 di surface terburuk #F2F5F3. */
+    --c-teal-text: 10 110 105; /* #0A6E69 → 5.55 */
+    --c-violet-text: 94 78 192; /* #5E4EC0 → 5.75 */
+    --c-gold-text: 138 100 16; /* #8A6410 → 4.89 */
+    --c-gold-deep-text: 107 74 0; /* #6B4A00 → 7.34 */
 
     --c-line: rgba(13, 32, 22, 0.12);
     --c-glass: rgba(255, 255, 255, 0.72);
