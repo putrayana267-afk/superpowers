@@ -11,12 +11,15 @@ import {
   User,
   Camera,
   Trash,
+  MoonStars,
 } from '@phosphor-icons/react';
 import { Capacitor } from '@capacitor/core';
 import { GlassCard } from './GlassCard';
 import { Button } from './Button';
+import { Toggle } from './Toggle';
 import { useToast } from './Toast';
 import { getSetting, setSetting } from '../lib/db';
+import { loadTheme, setTheme, type Theme } from '../lib/theme';
 import {
   DEFAULT_PROFIL,
   loadProfil,
@@ -48,6 +51,15 @@ export function Settings() {
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+
+  // Tema: sumber kebenarannya DOM (sudah dipasang skrip inline sebelum paint).
+  // State ini hanya cermin untuk UI — inisialisasi lazy agar tak ada kedip.
+  const [tema, setTemaState] = useState<Theme>(() => loadTheme());
+  const gantiTema = (gelap: boolean) => {
+    const next: Theme = gelap ? 'dark' : 'light';
+    setTheme(next);
+    setTemaState(next);
+  };
 
   // Profil identitas — persist via lib/profil (kunci 'profil' + 'profil_foto').
   const [nama, setNama] = useState('');
@@ -192,6 +204,35 @@ export function Settings() {
 
   return (
     <div className="flex flex-col gap-6">
+      <GlassCard animate>
+        <div className="mb-4 flex items-center gap-3">
+          <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-soft text-emerald-deep gold-edge">
+            <MoonStars className="h-5 w-5" />
+          </span>
+          <div>
+            <h2 className="font-display text-lg font-bold text-emerald-deep">
+              Tampilan
+            </h2>
+            <p className="text-xs text-ink/60">
+              Pilihan disimpan di perangkat dan langsung dipakai saat app dibuka
+              lagi.
+            </p>
+          </div>
+        </div>
+
+        <Toggle
+          id="tema-gelap"
+          checked={tema === 'dark'}
+          onChange={gantiTema}
+          label="Mode gelap"
+          hint={
+            tema === 'dark'
+              ? 'Aktif — tampilan gelap (bawaan).'
+              : 'Nonaktif — tampilan terang.'
+          }
+        />
+      </GlassCard>
+
       <GlassCard gold animate>
         <div className="mb-4 flex items-center gap-3">
           <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-soft text-emerald-deep gold-edge">
