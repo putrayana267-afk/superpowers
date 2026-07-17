@@ -3,8 +3,65 @@
 @tailwind utilities;
 
 @layer base {
+  /* ── Token tema (role-split) ────────────────────────────────────────────
+     :root = GELAP (default, identitas Akhid Noir). Tema terang hanya
+     meng-override permukaan + teks; token fill brand sengaja diwarisi supaya
+     identitas hijau tetap sama di dua tema.
+
+     Warna solid ditulis sebagai KANAL RGB dipisah spasi (bukan hex) supaya
+     Tailwind bisa `rgb(var(--x) / <alpha-value>)` — itulah yang membuat class
+     ber-alpha yang sudah dipakai (text-ink/70, bg-emerald-deep/10, …) tetap
+     jalan. Token yang alpha-nya sudah menyatu ditulis sebagai rgba() utuh.
+
+     Peran: *-fill = latar; *-text = teks di atas latar; on-fill = teks di ATAS
+     fill terang (aturan keras §14: fill terang → teks GELAP). */
   :root {
     color-scheme: dark;
+
+    /* permukaan & teks */
+    --c-bg: 16 28 19; /* #101c13 */
+    --c-surface: 2 43 34; /* #022b22 */
+    --c-ink: 234 255 244; /* #EAFFF4 */
+    --c-ink-2: 164 198 182; /* #A4C6B6 */
+
+    /* identitas brand — fill sama di dua tema */
+    --c-brand-fill: 76 232 150; /* #4CE896 */
+    --c-brand-text: 142 255 202; /* #8EFFCA */
+    --c-on-fill: 4 20 12; /* #04140C */
+
+    /* aksen */
+    --c-gold: 255 194 77; /* #FFC24D */
+    --c-gold-deep: 240 165 42; /* #F0A52A */
+    --c-violet: 155 140 255; /* #9B8CFF */
+    --c-teal: 52 231 224; /* #34E7E0 */
+    --c-chip-text: 116 227 171; /* #74E3AB */
+
+    /* alpha menyatu — dipakai apa adanya */
+    --c-line: rgba(255, 255, 255, 0.08);
+    --c-glass: rgba(255, 255, 255, 0.045);
+    --c-side: rgba(255, 255, 255, 0.028);
+    --c-track: rgba(255, 255, 255, 0.05);
+    --c-track-2: rgba(255, 255, 255, 0.03);
+    --c-chip: rgba(76, 232, 150, 0.14);
+  }
+
+  [data-theme='light'] {
+    color-scheme: light;
+
+    --c-bg: 246 247 249; /* #F6F7F9 — bukan putih murni */
+    --c-surface: 255 255 255; /* #FFFFFF */
+    --c-ink: 13 32 24; /* #0D2018 — bukan hitam murni */
+    --c-ink-2: 60 79 69; /* #3C4F45 */
+
+    /* Hijau terang GAGAL sbg teks di latar terang (#4CE896/#F6F7F9 = 1.47:1).
+       Karena itu brand-text dipergelap; brand-fill sengaja TIDAK diubah. */
+    --c-brand-text: 11 122 75; /* #0B7A4B → 5.02:1 di atas #F6F7F9 */
+
+    --c-line: rgba(13, 32, 22, 0.12);
+    --c-glass: rgba(255, 255, 255, 0.72);
+    --c-side: rgba(255, 255, 255, 0.62);
+    --c-track: rgba(13, 32, 22, 0.05);
+    --c-track-2: rgba(13, 32, 22, 0.035);
   }
 
   html,
@@ -17,12 +74,23 @@
     @apply font-body text-ink antialiased;
     margin: 0;
     overflow-x: hidden;
-    background-color: #101c13;
+    /* Nilai gelap identik dgn sebelumnya (#101c13) — lewat token agar tema
+       terang bisa menimpanya tanpa menyentuh komponen. */
+    background-color: rgb(var(--c-bg));
     background-image:
       radial-gradient(1200px 600px at 100% -10%, rgba(76, 232, 150, 0.1), transparent 60%),
       radial-gradient(900px 500px at -10% 10%, rgba(52, 231, 224, 0.08), transparent 55%),
       linear-gradient(160deg, #142218 0%, #0b1610 100%);
     background-attachment: fixed;
+  }
+
+  /* Glow brand dipertahankan (identitas) tapi dasarnya terang. Tanpa ini,
+     tema terang mewarisi gradient gelap → teks #0D2018 tak terbaca. */
+  [data-theme='light'] body {
+    background-image:
+      radial-gradient(1200px 600px at 100% -10%, rgba(76, 232, 150, 0.1), transparent 60%),
+      radial-gradient(900px 500px at -10% 10%, rgba(52, 231, 224, 0.08), transparent 55%),
+      linear-gradient(160deg, #ffffff 0%, #eef2ee 100%);
   }
 
   h1,

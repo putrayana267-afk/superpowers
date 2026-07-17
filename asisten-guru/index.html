@@ -10,6 +10,21 @@
       content="Asisten mengajar berbasis AI untuk guru di Indonesia — siapkan modul ajar, soal, LKPD, dan lainnya sesuai Kurikulum Merdeka."
     />
     <title>Asisten Mengajar untuk Guru</title>
+    <!-- Tema dipasang SEBELUM paint. Sengaja inline & sinkron: kalau menunggu
+         React, pengguna melihat kedip gelap→terang tiap reload. Gelap = tanpa
+         atribut (:root sudah gelap). Kunci harus sama dgn THEME_KEY di
+         src/lib/theme.ts. -->
+    <script>
+      (function () {
+        try {
+          if (localStorage.getItem('akhid-theme') === 'light') {
+            document.documentElement.dataset.theme = 'light';
+          }
+        } catch (e) {
+          /* storage diblokir → pakai default (gelap) */
+        }
+      })();
+    </script>
     <!-- Konsol mobile (eruda) untuk debug: dimuat ASINKRON agar tidak memblokir
          boot. Tag <script> sinkron sebelumnya bisa menahan seluruh boot menunggu
          timeout CDN di jaringan HP lambat/putus. Kini app boot dulu; eruda

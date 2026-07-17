@@ -6,28 +6,45 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Palet noir (tema gelap tunggal, hard-swap). ink dibalik jadi TERANG
-        // (dipakai sbg teks); emerald.soft dibalik jadi surface GELAP.
+        // Token menunjuk CSS var (didefinisikan di src/index.css). Nilai GELAP
+        // identik dengan sebelumnya, jadi tampilan dark tidak berubah — yang
+        // didapat adalah kemampuan re-tema lewat [data-theme].
+        //
+        // `rgb(var(--x) / <alpha-value>)` WAJIB agar class ber-alpha yang sudah
+        // dipakai luas (text-ink/70, bg-emerald-deep/10, border-gold/60) tetap
+        // jalan. Karena itu var-nya disimpan sebagai kanal RGB, bukan hex.
         emerald: {
-          primary: '#4CE896',
-          deep: '#8EFFCA',
-          soft: '#022b22',
+          primary: 'rgb(var(--c-brand-fill) / <alpha-value>)',
+          deep: 'rgb(var(--c-brand-text) / <alpha-value>)',
+          soft: 'rgb(var(--c-surface) / <alpha-value>)',
         },
         gold: {
-          DEFAULT: '#FFC24D',
-          deep: '#F0A52A',
+          DEFAULT: 'rgb(var(--c-gold) / <alpha-value>)',
+          deep: 'rgb(var(--c-gold-deep) / <alpha-value>)',
         },
-        ink: '#EAFFF4',
-        // Aksen ekstra noir — dipakai fase komponen berikutnya.
-        violet: '#9B8CFF',
-        teal: '#34E7E0',
-        // Token brand (fill CTA) — noir: hijau terang; hover/active lebih dalam
-        // (pola "pressed-darker" dipertahankan).
+        ink: 'rgb(var(--c-ink) / <alpha-value>)',
+        'ink-2': 'rgb(var(--c-ink-2) / <alpha-value>)',
+        // Teks di ATAS fill terang (aturan keras §14). Menggantikan hex
+        // hardcode #04140C saat komponen dimigrasi (fase berikutnya).
+        'on-fill': 'rgb(var(--c-on-fill) / <alpha-value>)',
+        violet: 'rgb(var(--c-violet) / <alpha-value>)',
+        teal: 'rgb(var(--c-teal) / <alpha-value>)',
+        'chip-text': 'rgb(var(--c-chip-text) / <alpha-value>)',
         brand: {
-          DEFAULT: '#4CE896',
+          DEFAULT: 'rgb(var(--c-brand-fill) / <alpha-value>)',
+          // hover/active = state tekan CTA; desain belum memberi padanan
+          // terang → dibiarkan statis sampai fase migrasi komponen.
           hover: '#34C98C',
           active: '#0BBF68',
         },
+        // Token permukaan/garis: alpha sudah menyatu di dalam var, jadi TIDAK
+        // memakai <alpha-value>.
+        line: 'var(--c-line)',
+        glass: 'var(--c-glass)',
+        side: 'var(--c-side)',
+        track: 'var(--c-track)',
+        'track-2': 'var(--c-track-2)',
+        chip: 'var(--c-chip)',
       },
       fontFamily: {
         display: ['"Cormorant Garamond"', 'system-ui', 'sans-serif'],
