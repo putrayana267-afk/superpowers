@@ -19,7 +19,12 @@ import { Button } from './Button';
 import { Toggle } from './Toggle';
 import { useToast } from './Toast';
 import { getSetting, setSetting } from '../lib/db';
-import { loadTheme, setTheme, type Theme } from '../lib/theme';
+import {
+  loadTheme,
+  setTheme,
+  TEMA_TERANG_AKTIF,
+  type Theme,
+} from '../lib/theme';
 import {
   DEFAULT_PROFIL,
   loadProfil,
@@ -204,34 +209,39 @@ export function Settings() {
 
   return (
     <div className="flex flex-col gap-6">
-      <GlassCard animate>
-        <div className="mb-4 flex items-center gap-3">
-          <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-soft text-emerald-deep gold-edge">
-            <MoonStars className="h-5 w-5" />
-          </span>
-          <div>
-            <h2 className="font-display text-lg font-bold text-emerald-deep">
-              Tampilan
-            </h2>
-            <p className="text-xs text-ink/60">
-              Pilihan disimpan di perangkat dan langsung dipakai saat app dibuka
-              lagi.
-            </p>
+      {/* Disembunyikan sampai komponen selesai dimigrasi ke token (sebagian
+          masih hex hardcode → tema terang belum rapi). Kode sengaja DIPERTAHANKAN;
+          buka kembali cukup dgn TEMA_TERANG_AKTIF = true di lib/theme.ts. */}
+      {TEMA_TERANG_AKTIF && (
+        <GlassCard animate>
+          <div className="mb-4 flex items-center gap-3">
+            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-soft text-emerald-deep gold-edge">
+              <MoonStars className="h-5 w-5" />
+            </span>
+            <div>
+              <h2 className="font-display text-lg font-bold text-emerald-deep">
+                Tampilan
+              </h2>
+              <p className="text-xs text-ink/60">
+                Pilihan disimpan di perangkat dan langsung dipakai saat app
+                dibuka lagi.
+              </p>
+            </div>
           </div>
-        </div>
 
-        <Toggle
-          id="tema-gelap"
-          checked={tema === 'dark'}
-          onChange={gantiTema}
-          label="Mode gelap"
-          hint={
-            tema === 'dark'
-              ? 'Aktif — tampilan gelap (bawaan).'
-              : 'Nonaktif — tampilan terang.'
-          }
-        />
-      </GlassCard>
+          <Toggle
+            id="tema-gelap"
+            checked={tema === 'dark'}
+            onChange={gantiTema}
+            label="Mode gelap"
+            hint={
+              tema === 'dark'
+                ? 'Aktif — tampilan gelap (bawaan).'
+                : 'Nonaktif — tampilan terang.'
+            }
+          />
+        </GlassCard>
+      )}
 
       <GlassCard gold animate>
         <div className="mb-4 flex items-center gap-3">

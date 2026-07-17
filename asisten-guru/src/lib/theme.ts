@@ -12,6 +12,16 @@
 
 export type Theme = 'dark' | 'light';
 
+/**
+ * Gerbang fitur tema terang. `false` = tema terang DISEMBUNYIKAN dari pengguna
+ * (kartu "Tampilan" tak dirender, loadTheme selalu gelap).
+ *
+ * Sengaja disembunyikan sampai komponen selesai dimigrasi ke token: sebagian
+ * komponen masih memakai hex hardcode, jadi tema terang belum rapi. Token +
+ * plumbing di bawah tetap utuh — buka kembali cukup dengan mengubah ke `true`.
+ */
+export const TEMA_TERANG_AKTIF = false;
+
 /** Dipakai juga oleh skrip inline di index.html — ubah keduanya bila diganti. */
 export const THEME_KEY = 'akhid-theme';
 
@@ -22,6 +32,9 @@ const isTheme = (v: unknown): v is Theme => v === 'dark' || v === 'light';
 
 /** Pilihan tersimpan; DEFAULT_THEME bila belum ada atau storage tak bisa dibaca. */
 export function loadTheme(): Theme {
+  // Fitur ditutup → abaikan apa pun yang tersimpan, termasuk 'light' yang
+  // terlanjur dipilih sebelum gerbang ini dipasang.
+  if (!TEMA_TERANG_AKTIF) return DEFAULT_THEME;
   try {
     const stored = localStorage.getItem(THEME_KEY);
     return isTheme(stored) ? stored : DEFAULT_THEME;
