@@ -194,7 +194,7 @@ function KotakKebutuhan({
         }}
       />
       <div className="relative">
-        <h2 className="mb-3 px-1 text-xs font-semibold uppercase tracking-wider text-emerald-deep/60">
+        <h2 className="mb-3 px-1 text-xs font-semibold uppercase tracking-wider text-label">
           Ceritakan kebutuhanmu
         </h2>
         <textarea
@@ -244,7 +244,7 @@ function KotakKebutuhan({
 function AksiCepat({ onSelectTool }: { onSelectTool: (id: string) => void }) {
   return (
     <div>
-      <h2 className="mb-3 px-1 text-xs font-semibold uppercase tracking-wider text-emerald-deep/60">
+      <h2 className="mb-3 px-1 text-xs font-semibold uppercase tracking-wider text-label">
         Aksi cepat
       </h2>
       <div className="flex snap-x gap-3 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
@@ -292,7 +292,7 @@ function Statistik({
 }) {
   return (
     <div>
-      <h2 className="mb-3 px-1 text-xs font-semibold uppercase tracking-wider text-emerald-deep/60">
+      <h2 className="mb-3 px-1 text-xs font-semibold uppercase tracking-wider text-label">
         Statistik
       </h2>
       <div className="flex flex-wrap items-end gap-x-8 gap-y-4">
@@ -330,7 +330,7 @@ function Terbaru({
 }) {
   return (
     <div>
-      <h2 className="mb-3 px-1 text-xs font-semibold uppercase tracking-wider text-emerald-deep/60">
+      <h2 className="mb-3 px-1 text-xs font-semibold uppercase tracking-wider text-label">
         Terbaru
       </h2>
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -356,7 +356,7 @@ function Terbaru({
                         {entry.toolTitle}
                       </h3>
                       {entry.favorite && (
-                        <Star className="h-4 w-4 flex-shrink-0 fill-gold text-gold-text" />
+                        <Star className="h-4 w-4 flex-shrink-0 fill-gold-text text-gold-text" />
                       )}
                     </div>
                     <p className="mt-0.5 text-xs text-ink/50">
@@ -384,7 +384,7 @@ function CaraKerja() {
   ];
   return (
     <div>
-      <h2 className="mb-3 px-1 text-xs font-semibold uppercase tracking-wider text-emerald-deep/60">
+      <h2 className="mb-3 px-1 text-xs font-semibold uppercase tracking-wider text-label">
         Cara kerja
       </h2>
       <div className="flex flex-col gap-3">

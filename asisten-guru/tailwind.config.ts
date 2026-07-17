@@ -27,6 +27,8 @@ export default {
         // Latar dasar app (--c-bg) — utk bekas bg-[#101c13] dkk.
         base: 'rgb(var(--c-bg) / <alpha-value>)',
         'surface-2': 'rgb(var(--c-surface-2) / <alpha-value>)',
+        'surface-deep': 'rgb(var(--c-surface-deep) / <alpha-value>)',
+        'brand-icon': 'rgb(var(--c-brand-icon) / <alpha-value>)',
         hairline: 'rgb(var(--c-hairline) / <alpha-value>)',
         // Teks di ATAS fill terang (aturan keras §14). Menggantikan hex
         // hardcode #04140C saat komponen dimigrasi (fase berikutnya).
@@ -50,6 +52,8 @@ export default {
         // Token permukaan/garis: alpha sudah menyatu di dalam var, jadi TIDAK
         // memakai <alpha-value>.
         line: 'var(--c-line)',
+        sheet: 'var(--c-sheet)',
+        label: 'var(--c-label)',
         glass: 'var(--c-glass)',
         side: 'var(--c-side)',
         track: 'var(--c-track)',

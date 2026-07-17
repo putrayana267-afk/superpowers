@@ -212,7 +212,7 @@ export function SheetSelect({
         {groups.map((group) => (
           <div key={group.label} className="space-y-1.5">
             {groups.length > 1 && (
-              <p className="px-4 pb-1 pt-2 text-xs font-semibold uppercase tracking-wider text-emerald-deep/60">
+              <p className="px-4 pb-1 pt-2 text-xs font-semibold uppercase tracking-wider text-label">
                 {group.label}
               </p>
             )}
@@ -236,7 +236,7 @@ export function SheetSelect({
                   {selected && accentLine}
                   <span className={textClass}>{labelPrefix + item}</span>
                   {selected && (
-                    <Check className="h-5 w-5 shrink-0 text-[#4CE896]" />
+                    <Check className="h-5 w-5 shrink-0 text-brand-icon" />
                   )}
                 </button>
               );
@@ -260,7 +260,7 @@ export function SheetSelect({
               {manualSelected && accentLine}
               <span className={textClass}>Lainnya (ketik manual)</span>
               {manualSelected && (
-                <Check className="h-5 w-5 shrink-0 text-[#4CE896]" />
+                <Check className="h-5 w-5 shrink-0 text-brand-icon" />
               )}
             </button>
           </>
@@ -364,7 +364,7 @@ export function SheetSelect({
                   transformOrigin:
                     coords.placement === 'bottom' ? 'top' : 'bottom',
                 }}
-                className="z-[111] overflow-y-auto rounded-[28px] border border-white/15 bg-[rgba(10,34,24,0.55)] p-2 backdrop-blur-lg backdrop-saturate-[1.6] shadow-[0_28px_80px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.12)]"
+                className="z-[111] overflow-y-auto rounded-[28px] border border-white/15 bg-sheet p-2 backdrop-blur-lg backdrop-saturate-[1.6] shadow-[0_28px_80px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.12)]"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
@@ -400,7 +400,7 @@ export function SheetSelect({
                   onKeyDown={(e) => {
                     if (e.key === 'Escape') close();
                   }}
-                  className="fixed left-1/2 top-1/2 z-[111] max-h-[75vh] w-[92vw] overflow-y-auto rounded-[28px] border border-white/15 bg-[rgba(10,34,24,0.55)] p-3 backdrop-blur-lg backdrop-saturate-[1.6] shadow-[0_28px_80px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.12)] sm:w-[480px] md:w-[560px]"
+                  className="fixed left-1/2 top-1/2 z-[111] max-h-[75vh] w-[92vw] overflow-y-auto rounded-[28px] border border-white/15 bg-sheet p-3 backdrop-blur-lg backdrop-saturate-[1.6] shadow-[0_28px_80px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.12)] sm:w-[480px] md:w-[560px]"
                   style={{ transformOrigin: 'center' }}
                   initial={{ x: '-50%', y: '-50%', opacity: 0, scale: 0.96 }}
                   animate={{ x: '-50%', y: '-50%', opacity: 1, scale: 1 }}
