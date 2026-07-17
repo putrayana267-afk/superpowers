@@ -78,8 +78,10 @@ export function Header({
             aria-label="Buka riwayat"
           >
             <span className="hidden sm:inline">Riwayat</span>
+            {/* Teks GELAP di atas fill emas: aturan keras §14. text-ink di sini
+                cuma 1.54:1 (gagal WCAG); #04140C = 11.77:1. */}
             {historyCount > 0 && (
-              <span className="ml-1 inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-gold px-1.5 text-xs font-bold text-ink">
+              <span className="ml-1 inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-gold px-1.5 text-xs font-bold text-[#04140C]">
                 {historyCount}
               </span>
             )}

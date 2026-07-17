@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useId } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { SquaresFour, Books, Archive, Sparkle } from '@phosphor-icons/react';
 import type { Icon } from '@phosphor-icons/react';
@@ -25,18 +25,26 @@ interface SidebarProps {
   onOpenHero?: () => void;
 }
 
+/**
+ * Satu entri navigasi — dipakai untuk item pustaka MAUPUN item alat, agar gaya
+ * & pil aktif hanya didefinisikan sekali.
+ *
+ * `pillId` sengaja diterima dari induk (bukan dihitung di sini): dua <Sidebar>
+ * (desktop + drawer) bisa ter-mount bersamaan, jadi layoutId wajib unik per
+ * instans. `undefined` = pil tidak beranimasi (reduced-motion).
+ */
 function NavEntry({
   active,
   onClick,
   icon: Icon,
   label,
-  reduce,
+  pillId,
 }: {
   active: boolean;
   onClick: () => void;
   icon: Icon;
   label: string;
-  reduce: boolean | null;
+  pillId: string | undefined;
 }) {
   return (
     <button
@@ -52,7 +60,7 @@ function NavEntry({
     >
       {active && (
         <motion.span
-          layoutId={reduce ? undefined : 'sidebar-active'}
+          layoutId={pillId}
           className="absolute left-0 top-1/2 h-6 w-1 -translate-y-1/2 rounded-r-full bg-gold"
         />
       )}
@@ -85,6 +93,13 @@ export function Sidebar({
 }: SidebarProps) {
   const reduce = useReducedMotion();
   const categories = getCategories();
+
+  // Pil aktif dianimasikan lewat shared layout framer-motion. Sidebar dirender
+  // dua kali (aside desktop + drawer HP) dan keduanya ter-mount bersamaan —
+  // aside cuma disembunyikan CSS. layoutId yang sama di dua instans membuat pil
+  // "terbang" antar-instans, jadi id di-scope per instans lewat useId().
+  const instanceId = useId();
+  const pillId = reduce ? undefined : `sidebar-active-${instanceId}`;
 
   // Profil identitas tersimpan (async) untuk kartu bawah. Default aman saat
   // loading → tak ada "flash kosong".
@@ -119,7 +134,7 @@ export function Sidebar({
               onClick={onSelectBeranda}
               icon={SquaresFour}
               label="Beranda"
-              reduce={reduce}
+              pillId={pillId}
             />
           </li>
           <li>
@@ -128,7 +143,7 @@ export function Sidebar({
               onClick={onSelectLibrary}
               icon={Books}
               label="Perpustakaan"
-              reduce={reduce}
+              pillId={pillId}
             />
           </li>
           <li>
@@ -137,7 +152,7 @@ export function Sidebar({
               onClick={onSelectSaved}
               icon={Archive}
               label="Tersimpan"
-              reduce={reduce}
+              pillId={pillId}
             />
           </li>
           <li>
@@ -146,7 +161,7 @@ export function Sidebar({
               onClick={() => onOpenHero?.()}
               icon={Sparkle}
               label="Layar Sambutan"
-              reduce={reduce}
+              pillId={pillId}
             />
           </li>
         </ul>
@@ -159,40 +174,17 @@ export function Sidebar({
           </h2>
           <ul className="flex flex-col gap-1">
             {TOOLS.filter((t) => t.category === category).map((tool) => {
-              const Icon = tool.icon;
               const active =
                 !libraryActive && !savedActive && !berandaActive && tool.id === activeId;
               return (
                 <li key={tool.id}>
-                  <button
-                    type="button"
+                  <NavEntry
+                    active={active}
                     onClick={() => onSelect(tool.id)}
-                    aria-current={active ? 'page' : undefined}
-                    className={cn(
-                      'group relative flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm transition-colors',
-                      active
-                        ? 'bg-white/5 font-semibold text-emerald-deep shadow-glass'
-                        : 'text-ink/70 hover:bg-white/10 hover:text-emerald-deep',
-                    )}
-                  >
-                    {active && (
-                      <motion.span
-                        layoutId={reduce ? undefined : 'sidebar-active'}
-                        className="absolute left-0 top-1/2 h-6 w-1 -translate-y-1/2 rounded-r-full bg-gold"
-                      />
-                    )}
-                    <span
-                      className={cn(
-                        'flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg transition-colors',
-                        active
-                          ? 'bg-brand text-[#04140C]'
-                          : 'bg-emerald-soft text-emerald-deep group-hover:bg-emerald-deep/10',
-                      )}
-                    >
-                      <Icon className="h-4 w-4" />
-                    </span>
-                    <span className="truncate">{tool.title}</span>
-                  </button>
+                    icon={tool.icon}
+                    label={tool.title}
+                    pillId={pillId}
+                  />
                 </li>
               );
             })}
