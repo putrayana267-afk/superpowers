@@ -13,7 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Verifikasi 6 file frozen (blob SHA di tree HEAD)
+      - name: Verifikasi blob file frozen (tree HEAD)
         run: |
           fail=0
 
@@ -32,18 +32,57 @@ jobs:
             fi
           }
 
+          # Pin = file beku/terkunci per asisten-guru/CLAUDE.md §10 (living doc menang).
+          # - kurikulum.ts TIDAK dipin: bergerak by design (gerbang §4.x + §18 kriteria 3).
+          # - index.css TIDAK dipin: bertema, berubah via gerbang §10 -> dijaga step invarian.
+          # - generate.ts & routeKeywords: "blob beda tanpa izin = BERHENTI" -> dipin;
+          #   saat izin §10 diberikan, update pin di PR yang SAMA.
           check d56da0b49135ae9cc841c3c7b14ee553de01f168 CLAUDE.md
-          check 5241c419eed542c5b69177f1318a9799ada1b278 asisten-guru/CLAUDE.md
+          check 4f04048f4a2f7fb40fbb27863832c616b7a81380 asisten-guru/CLAUDE.md
+          check cd15d619a483110220ba7ab40fba8d940d7e26e4 asisten-guru/api/generate.ts
           check 5d100892ffb839ce1f5a641aaba3a0b3a5ca7804 asisten-guru/api/suggest.ts
           check b41100ccefe34f4563d47b1daa642e0333213dd2 asisten-guru/src/data/struktur.ts
-          check caff740bfc6c9c1d160f777048a2aae909e0e3e3 asisten-guru/src/data/kurikulum.ts
-          check b769e47b765c646c461d1f69f70ba35c1a6b198b asisten-guru/src/index.css
+          check 6280ae48eb2d4cbb7e8c514a426350094212143e asisten-guru/src/features/tools/routeKeywords.ts
 
           if [ "$fail" -ne 0 ]; then
             echo ""
-            echo "STOP: file frozen berubah. Jika DISENGAJA/unfreeze,"
+            echo "STOP: file frozen berubah. Jika DISENGAJA (izin §10 / unfreeze),"
             echo "update SHA yang sesuai di .github/workflows/frozen-guard.yml pada PR yang SAMA."
             exit 1
           fi
 
-          echo "Semua 6 file frozen utuh."
+          echo "Semua file frozen utuh."
+
+      - name: Invarian §18-2 (hantu, brand, include)
+        run: |
+          fail=0
+
+          ghost="$(grep -ci '1F4B2C' asisten-guru/src/index.css || true)"
+          if [ "$ghost" != "0" ]; then
+            echo "INVARIAN GAGAL: #1F4B2C muncul ${ghost:-?} kali di index.css (palet asing harus 0)."
+            fail=1
+          else
+            echo "OK: #1F4B2C = 0 di index.css"
+          fi
+
+          brand="$(grep -ci '4CE896' asisten-guru/src/index.css || true)"
+          if [ "${brand:-0}" = "0" ]; then
+            echo "INVARIAN GAGAL: brand #4CE896 tidak ditemukan di index.css."
+            fail=1
+          else
+            echo "OK: brand #4CE896 hadir ($brand kemunculan)"
+          fi
+
+          line1="$(head -n 1 CLAUDE.md)"
+          if [ "$line1" != "@asisten-guru/CLAUDE.md" ]; then
+            echo "INVARIAN GAGAL: baris 1 root CLAUDE.md = '$line1' (harus '@asisten-guru/CLAUDE.md')."
+            fail=1
+          else
+            echo "OK: baris 1 root CLAUDE.md = include asisten-guru"
+          fi
+
+          if [ "$fail" -ne 0 ]; then
+            exit 1
+          fi
+
+          echo "Semua invarian §18-2 hijau."
