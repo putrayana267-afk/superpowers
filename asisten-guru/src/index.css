@@ -65,6 +65,7 @@
     --c-glass-line: rgba(142, 255, 202, 0.14); /* == border .glass lama */
     --c-glass-line-strong: rgba(142, 255, 202, 0.2); /* == border .glass-strong lama */
     --c-control-line: rgba(255, 255, 255, 0.1); /* == border-white/10 lama (controlStyles) */
+    --c-toggle-track: rgba(255, 255, 255, 0.15); /* == bg-white/15 lama (Toggle mati) */
   }
 
   [data-theme='light'] {
@@ -109,6 +110,7 @@
     --c-glass-line: rgba(13, 32, 22, 0.12); /* == --c-line terang */
     --c-glass-line-strong: rgba(13, 32, 22, 0.18); /* rasio kuat/dasar ~1.5 spt gelap (.2/.14) */
     --c-control-line: rgba(13, 32, 22, 0.18); /* garis input lebih tegas dari hairline .12 */
+    --c-toggle-track: rgba(13, 32, 22, 0.28); /* ref .22 dipertegas agar knob putih jelas */
   }
 
   html,

@@ -144,9 +144,22 @@ export function SheetSelect({
         160,
         Math.min(avail, Math.round(window.innerHeight * 0.6)),
       );
+      // Lebar panel tak lagi persis selebar field yang sempit (nama mapel
+      // terlipat 4 baris): min ~360px, ikut lebar trigger bila lebih lebar,
+      // max ~440px, dan tak melebihi viewport. `left` digeser seperlunya agar
+      // panel tetap nempel field tanpa terpotong tepi layar.
+      const width = Math.min(
+        Math.max(r.width, 360),
+        440,
+        window.innerWidth - margin * 2,
+      );
+      const left = Math.max(
+        margin,
+        Math.min(r.left, window.innerWidth - width - margin),
+      );
       setCoords({
-        left: r.left,
-        width: r.width,
+        left,
+        width,
         maxHeight,
         placement: below ? 'bottom' : 'top',
         ...(below
@@ -364,7 +377,7 @@ export function SheetSelect({
                   transformOrigin:
                     coords.placement === 'bottom' ? 'top' : 'bottom',
                 }}
-                className="z-[111] overflow-y-auto rounded-[28px] border border-white/15 bg-sheet p-2 backdrop-blur-lg backdrop-saturate-[1.6] shadow-[0_28px_80px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.12)]"
+                className="z-[111] overflow-y-auto rounded-2xl border border-white/15 bg-sheet p-2 backdrop-blur-lg backdrop-saturate-[1.6] shadow-[0_28px_80px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.12)]"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
@@ -375,7 +388,10 @@ export function SheetSelect({
                 }
               >
                 {renderOptions(true)}
-                {renderFooter('-mx-2 -mb-2')}
+                {/* Footer diberi latar (bg-sheet + blur) khusus desktop agar item
+                    yang lewat di belakangnya tak tembus; tetap sticky in-flow =
+                    item terakhir selalu bisa discroll penuh di atasnya. */}
+                {renderFooter('-mx-2 -mb-2 rounded-b-2xl bg-sheet backdrop-blur-lg')}
               </motion.div>
             ) : (
               // MOBILE — modal tengah + grow-in scale + scrim.
