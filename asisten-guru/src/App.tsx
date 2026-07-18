@@ -485,7 +485,7 @@ export default function App({ onOpenShowcase }: AppProps) {
               </span>
               <div className="leading-tight">
                 <p className="font-display text-base font-extrabold text-[#8EFFCA]">
-                  Asisten Mengajar
+                  ClassMind
                 </p>
                 <p className="text-xs text-[#EAFFF4]/50">
                   Bantuan AI untuk guru Indonesia
