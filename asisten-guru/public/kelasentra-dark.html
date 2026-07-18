@@ -1,0 +1,1735 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark-emerald" data-version="v3">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="KELASENTRA — pusat cerdas untuk mengelola kelas, memahami siswa, dan meningkatkan pembelajaran." />
+  <title>KELASENTRA — Dark Emerald V3</title>
+
+  <!--
+    ================================================================
+    KELASENTRA AUTH EXPERIENCE V3 — CLAUDE REPLICATION MAP
+    ================================================================
+    Struktur yang perlu dipertahankan saat diadaptasi oleh Claude AI:
+    1. .page-shell          = panggung penuh + mesh/aurora background
+    2. .auth-shell          = kartu autentikasi dua kolom
+    3. .form-pane           = area formulir login dan daftar
+    4. .brand-panel         = panel promosi yang bergeser kanan ↔ kiri
+    5. .is-signup           = satu-satunya state utama untuk animasi mode
+    6. :root CSS variables  = seluruh token warna, radius, shadow, durasi
+    7. JavaScript           = toggle state, password visibility, validasi demo
+
+    File ini mandiri: HTML + CSS + JavaScript dalam satu file.
+    Tidak menggunakan framework, library, font eksternal, atau aset jaringan.
+    ================================================================
+  -->
+
+  <style>
+    /* ============================================================
+       01. DESIGN TOKENS — ubah bagian ini untuk rebranding cepat
+       ============================================================ */
+    :root {
+      color-scheme: dark;
+      --font-sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", sans-serif;
+
+      --page-bg: #020907;
+      --page-bg-secondary: #071710;
+      --card-bg: rgba(5, 18, 13, .88);
+      --surface: rgba(255, 255, 255, .045);
+      --surface-hover: rgba(255, 255, 255, .068);
+      --input-bg: rgba(255, 255, 255, .036);
+      --text: #effff7;
+      --text-soft: #d2eadf;
+      --muted: #8fa99c;
+      --border: rgba(167, 243, 208, .13);
+      --border-strong: rgba(110, 231, 183, .34);
+      --primary: #34d399;
+      --primary-strong: #6ee7b7;
+      --primary-soft: rgba(52, 211, 153, .13);
+      --accent: #a7f3d0;
+      --danger: #ef4444;
+      --success: #10b981;
+
+      --panel-text: #f2fff8;
+      --panel-muted: rgba(236, 253, 245, .74);
+      --panel-border: rgba(167, 243, 208, .25);
+      --panel-gradient: linear-gradient(135deg, #012e22 0%, #065f46 44%, #10b981 100%);
+      --button-gradient: linear-gradient(135deg, #047857 0%, #10b981 55%, #34d399 100%);
+      --logo-gradient: linear-gradient(145deg, #065f46 0%, #10b981 58%, #6ee7b7 100%);
+      --glow-1: rgba(16, 185, 129, .19);
+      --glow-2: rgba(52, 211, 153, .12);
+      --glow-3: rgba(6, 95, 70, .20);
+      --grid-line: rgba(167, 243, 208, .035);
+
+      --shadow-page: 0 40px 120px rgba(0, 0, 0, .54), 0 12px 40px rgba(0, 0, 0, .28);
+      --shadow-panel: 0 28px 80px rgba(0, 0, 0, .34), inset 0 1px 0 rgba(255, 255, 255, .16);
+      --shadow-button: 0 13px 32px rgba(16, 185, 129, .23);
+      --focus-ring: 0 0 0 4px rgba(52, 211, 153, .12);
+
+      --radius-card: 30px;
+      --radius-panel: 24px;
+      --radius-field: 14px;
+      --radius-button: 14px;
+      --duration: 760ms;
+      --ease: cubic-bezier(.22, 1, .36, 1);
+    }
+
+    /* ============================================================
+       02. RESET & BASE
+       ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html { min-width: 320px; background: var(--page-bg); }
+
+    body {
+      min-height: 100svh;
+      margin: 0;
+      font-family: var(--font-sans);
+      color: var(--text);
+      background:
+        radial-gradient(circle at 12% 18%, var(--glow-1), transparent 31%),
+        radial-gradient(circle at 89% 14%, var(--glow-2), transparent 28%),
+        radial-gradient(circle at 58% 92%, var(--glow-3), transparent 36%),
+        linear-gradient(145deg, var(--page-bg) 0%, var(--page-bg-secondary) 100%);
+      overflow-x: hidden;
+    }
+
+    button, input { font: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    button { border: 0; }
+    a { color: inherit; }
+
+    ::selection {
+      color: #022c22;
+      background: var(--accent);
+    }
+
+    /* ============================================================
+       03. AMBIENT BACKGROUND
+       ============================================================ */
+    .page-shell {
+      position: relative;
+      isolation: isolate;
+      min-height: 100svh;
+      display: grid;
+      place-items: center;
+      padding: clamp(32px, 5vw, 56px) clamp(20px, 4vw, 56px) clamp(48px, 6vw, 76px);
+      overflow: hidden;
+    }
+
+    .page-shell::before {
+      content: "";
+      position: absolute;
+      z-index: -3;
+      inset: 0;
+      background-image:
+        linear-gradient(var(--grid-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+      background-size: 52px 52px;
+      mask-image: radial-gradient(circle at center, #000 18%, transparent 76%);
+      opacity: .72;
+    }
+
+    .aurora {
+      position: absolute;
+      z-index: -2;
+      width: min(48vw, 640px);
+      aspect-ratio: 1;
+      border-radius: 50%;
+      filter: blur(22px);
+      opacity: .20;
+      pointer-events: none;
+      animation: drift 14s ease-in-out infinite alternate;
+    }
+
+    .aurora--one {
+      top: -22%;
+      left: -10%;
+      background: radial-gradient(circle, var(--primary), transparent 68%);
+    }
+
+    .aurora--two {
+      right: -15%;
+      bottom: -29%;
+      background: radial-gradient(circle, var(--accent), transparent 66%);
+      animation-delay: -6s;
+    }
+
+    .floating-dot {
+      position: absolute;
+      z-index: -1;
+      width: 7px;
+      aspect-ratio: 1;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 26px var(--accent);
+      opacity: .58;
+      pointer-events: none;
+      animation: float-dot 8s ease-in-out infinite;
+    }
+
+    .floating-dot:nth-of-type(1) { left: 9%; top: 74%; }
+    .floating-dot:nth-of-type(2) { right: 12%; top: 22%; animation-delay: -2.4s; }
+    .floating-dot:nth-of-type(3) { right: 28%; bottom: 11%; animation-delay: -4.7s; }
+
+    @keyframes drift {
+      to { transform: translate3d(8%, 10%, 0) scale(1.12); }
+    }
+
+    @keyframes float-dot {
+      50% { transform: translateY(-22px) scale(1.35); opacity: .9; }
+    }
+
+
+    /* ============================================================
+       05. MAIN AUTH CARD
+       ============================================================ */
+    .auth-shell {
+      position: relative;
+      width: min(1060px, 100%);
+      min-height: 620px;
+      margin-block: clamp(8px, 1.4vw, 18px);
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+      background: var(--card-bg);
+      box-shadow: var(--shadow-page);
+      backdrop-filter: blur(26px) saturate(125%);
+      overflow: hidden;
+    }
+
+    .auth-shell::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 8;
+      border-radius: inherit;
+      pointer-events: none;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.07);
+    }
+
+    .form-pane {
+      position: relative;
+      z-index: 1;
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      padding: clamp(38px, 5vw, 66px);
+    }
+
+    .form-pane--signup {
+      grid-column: 2;
+    }
+
+    .form-content {
+      width: 100%;
+      max-width: 390px;
+      margin-inline: auto;
+      opacity: .58;
+      transform: translateY(12px) scale(.985);
+      transition:
+        opacity calc(var(--duration) * .62) var(--ease),
+        transform calc(var(--duration) * .62) var(--ease),
+        filter calc(var(--duration) * .62) var(--ease);
+      filter: blur(1px);
+      pointer-events: none;
+    }
+
+    .form-pane--login .form-content {
+      opacity: 1;
+      transform: none;
+      filter: none;
+      pointer-events: auto;
+    }
+
+    .auth-shell.is-signup .form-pane--login .form-content {
+      opacity: .58;
+      transform: translateY(12px) scale(.985);
+      filter: blur(1px);
+      pointer-events: none;
+    }
+
+    .auth-shell.is-signup .form-pane--signup .form-content {
+      opacity: 1;
+      transform: none;
+      filter: none;
+      pointer-events: auto;
+    }
+
+    .brand-lockup {
+      display: inline-flex;
+      align-items: center;
+      gap: 11px;
+      margin-bottom: 34px;
+      text-decoration: none;
+    }
+
+    .brand-mark {
+      position: relative;
+      width: 42px;
+      aspect-ratio: 1;
+      display: grid;
+      place-items: center;
+      border-radius: 13px;
+      color: white;
+      background: var(--logo-gradient);
+      box-shadow: 0 9px 26px rgba(16,185,129,.28);
+      overflow: hidden;
+    }
+
+    .brand-mark::after {
+      content: "";
+      position: absolute;
+      width: 26px;
+      height: 10px;
+      top: -2px;
+      right: -7px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.35);
+      transform: rotate(28deg);
+      filter: blur(2px);
+    }
+
+    .brand-mark svg { width: 24px; height: 24px; }
+
+    .brand-name {
+      display: block;
+      font-size: 16px;
+      font-weight: 900;
+      letter-spacing: .08em;
+    }
+
+    .brand-tagline {
+      display: block;
+      margin-top: 2px;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 650;
+    }
+
+    .eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0 0 11px;
+      color: var(--primary);
+      font-size: 11px;
+      font-weight: 850;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 22px;
+      height: 2px;
+      border-radius: 99px;
+      background: currentColor;
+    }
+
+    h1 {
+      max-width: 12ch;
+      margin: 0;
+      color: var(--text);
+      font-size: clamp(34px, 4vw, 48px);
+      line-height: 1.02;
+      letter-spacing: -.047em;
+    }
+
+    .lead {
+      max-width: 42ch;
+      margin: 15px 0 29px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.72;
+    }
+
+    /* ============================================================
+       06. FORM CONTROLS
+       ============================================================ */
+    .auth-form { display: grid; gap: 15px; }
+
+    .field { position: relative; }
+
+    .field__icon {
+      position: absolute;
+      z-index: 2;
+      top: 50%;
+      left: 15px;
+      width: 19px;
+      height: 19px;
+      transform: translateY(-50%);
+      color: var(--muted);
+      pointer-events: none;
+      transition: color 180ms ease;
+    }
+
+    .field input {
+      width: 100%;
+      min-height: 56px;
+      padding: 20px 46px 8px 45px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-field);
+      outline: 0;
+      color: var(--text);
+      background: var(--input-bg);
+      transition:
+        border-color 180ms ease,
+        background 180ms ease,
+        box-shadow 180ms ease,
+        transform 180ms ease;
+    }
+
+    .field label {
+      position: absolute;
+      z-index: 2;
+      top: 18px;
+      left: 45px;
+      color: var(--muted);
+      font-size: 13px;
+      pointer-events: none;
+      transform-origin: left top;
+      transition: transform 180ms ease, color 180ms ease, top 180ms ease;
+    }
+
+    .field input:focus,
+    .field input:not(:placeholder-shown) {
+      border-color: var(--primary);
+      background: var(--surface-hover);
+      box-shadow: var(--focus-ring);
+    }
+
+    .field input:focus + label,
+    .field input:not(:placeholder-shown) + label {
+      top: 8px;
+      color: var(--primary);
+      transform: scale(.78);
+    }
+
+    .field:focus-within .field__icon { color: var(--primary); }
+
+    .field input[aria-invalid="true"] {
+      border-color: var(--danger);
+      box-shadow: 0 0 0 4px rgba(239,68,68,.12);
+    }
+
+    .password-toggle {
+      position: absolute;
+      z-index: 3;
+      top: 50%;
+      right: 9px;
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      border-radius: 11px;
+      color: var(--muted);
+      background: transparent;
+      transform: translateY(-50%);
+      cursor: pointer;
+      transition: color 180ms ease, background 180ms ease;
+    }
+
+    .password-toggle:hover {
+      color: var(--primary);
+      background: var(--primary-soft);
+    }
+
+    .password-toggle svg { width: 18px; height: 18px; }
+
+    .form-options {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-top: 1px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .check {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .check input {
+      width: 17px;
+      height: 17px;
+      margin: 0;
+      accent-color: var(--primary);
+    }
+
+    .text-link {
+      color: var(--primary);
+      font-weight: 780;
+      text-decoration: none;
+    }
+
+    .text-link:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+    .primary-button {
+      position: relative;
+      min-height: 54px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      margin-top: 4px;
+      padding-inline: 22px;
+      border-radius: var(--radius-button);
+      color: white;
+      background: var(--button-gradient);
+      box-shadow: var(--shadow-button);
+      font-weight: 850;
+      cursor: pointer;
+      overflow: hidden;
+      transition: transform 180ms ease, box-shadow 180ms ease, filter 180ms ease;
+    }
+
+    .primary-button::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(115deg, transparent 20%, rgba(255,255,255,.28) 45%, transparent 70%);
+      transform: translateX(-130%);
+      transition: transform 600ms ease;
+    }
+
+    .primary-button:hover {
+      transform: translateY(-2px);
+      filter: saturate(1.08);
+      box-shadow: 0 17px 38px rgba(16, 185, 129, .31);
+    }
+
+    .primary-button:hover::before { transform: translateX(130%); }
+    .primary-button:active { transform: translateY(0) scale(.99); }
+    .primary-button svg { width: 18px; height: 18px; }
+
+    .primary-button.is-loading { pointer-events: none; }
+    .primary-button.is-loading .button-label { opacity: .72; }
+    .primary-button.is-loading svg { animation: spin .8s linear infinite; }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .divider {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 12px;
+      margin: 3px 0 0;
+      color: var(--muted);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+
+    .divider::before, .divider::after {
+      content: "";
+      height: 1px;
+      background: var(--border);
+    }
+
+    .social-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .social-button {
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      color: var(--text-soft);
+      background: var(--surface);
+      font-size: 11px;
+      font-weight: 760;
+      cursor: pointer;
+      transition: border-color 180ms ease, transform 180ms ease, background 180ms ease;
+    }
+
+    .social-button:hover {
+      border-color: var(--border-strong);
+      background: var(--surface-hover);
+      transform: translateY(-1px);
+    }
+
+    .social-button svg { width: 17px; height: 17px; }
+
+    .password-meter {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 5px;
+      margin-top: -7px;
+    }
+
+    .password-meter span {
+      height: 3px;
+      border-radius: 99px;
+      background: var(--border);
+      transition: background 220ms ease, transform 220ms ease;
+    }
+
+    .password-meter[data-level="1"] span:nth-child(-n+1) { background: #ef4444; }
+    .password-meter[data-level="2"] span:nth-child(-n+2) { background: #f59e0b; }
+    .password-meter[data-level="3"] span:nth-child(-n+3) { background: #84cc16; }
+    .password-meter[data-level="4"] span:nth-child(-n+4) { background: var(--success); }
+
+    .password-hint {
+      margin: -7px 0 0;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.4;
+    }
+
+    /* ============================================================
+       07. SLIDING BRAND PANEL — inti animasi referensi video
+       ============================================================ */
+    .brand-panel {
+      position: absolute;
+      z-index: 5;
+      inset: 10px 10px 10px 50%;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--panel-border);
+      border-radius: var(--radius-panel);
+      color: var(--panel-text);
+      background: var(--panel-gradient);
+      box-shadow: var(--shadow-panel);
+      overflow: hidden;
+      transform: translateX(0);
+      transition: transform var(--duration) var(--ease);
+      will-change: transform;
+    }
+
+    .auth-shell.is-signup .brand-panel { transform: translateX(calc(-100% - 10px)); }
+
+    .brand-panel::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 19% 21%, rgba(255,255,255,.24), transparent 19%),
+        radial-gradient(circle at 82% 78%, rgba(255,255,255,.18), transparent 24%),
+        linear-gradient(120deg, transparent 0 43%, rgba(255,255,255,.08) 50%, transparent 57% 100%);
+      pointer-events: none;
+    }
+
+    .brand-panel::after {
+      content: "";
+      position: absolute;
+      width: 78%;
+      aspect-ratio: 1;
+      border: 1px solid rgba(255,255,255,.14);
+      border-radius: 50%;
+      transform: rotate(-18deg);
+      box-shadow:
+        0 0 0 44px rgba(255,255,255,.035),
+        0 0 0 92px rgba(255,255,255,.025);
+      animation: orbital 16s linear infinite;
+      pointer-events: none;
+    }
+
+    @keyframes orbital { to { transform: rotate(342deg); } }
+
+    .panel-orbit-dot {
+      position: absolute;
+      z-index: 1;
+      width: 10px;
+      aspect-ratio: 1;
+      border: 2px solid rgba(255,255,255,.64);
+      border-radius: 50%;
+      background: rgba(255,255,255,.18);
+      box-shadow: 0 0 22px rgba(255,255,255,.38);
+    }
+
+    .panel-orbit-dot--one { top: 18%; left: 18%; }
+    .panel-orbit-dot--two { right: 17%; bottom: 20%; width: 7px; }
+
+    .panel-copy {
+      position: absolute;
+      z-index: 3;
+      width: min(360px, calc(100% - 64px));
+      text-align: center;
+      transition:
+        opacity calc(var(--duration) * .48) ease,
+        transform calc(var(--duration) * .62) var(--ease),
+        visibility 0s linear calc(var(--duration) * .48);
+    }
+
+    .panel-copy--new {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(0) scale(1);
+      transition-delay: calc(var(--duration) * .34), calc(var(--duration) * .18), 0s;
+    }
+
+    .panel-copy--member {
+      opacity: 0;
+      visibility: hidden;
+      transform: translateX(28px) scale(.97);
+    }
+
+    .auth-shell.is-signup .panel-copy--new {
+      opacity: 0;
+      visibility: hidden;
+      transform: translateX(-28px) scale(.97);
+      transition-delay: 0s, 0s, calc(var(--duration) * .48);
+    }
+
+    .auth-shell.is-signup .panel-copy--member {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(0) scale(1);
+      transition-delay: calc(var(--duration) * .34), calc(var(--duration) * .18), 0s;
+    }
+
+    .panel-visual {
+      position: relative;
+      width: 136px;
+      aspect-ratio: 1;
+      display: grid;
+      place-items: center;
+      margin: 0 auto 28px;
+    }
+
+    .panel-visual__glass {
+      position: absolute;
+      inset: 15px;
+      border: 1px solid rgba(255,255,255,.24);
+      border-radius: 34px;
+      background: rgba(255,255,255,.13);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.24),
+        0 22px 50px rgba(0,0,0,.12);
+      backdrop-filter: blur(14px);
+      transform: rotate(-8deg);
+    }
+
+    .panel-visual__glass::after {
+      content: "";
+      position: absolute;
+      inset: 12px;
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 24px;
+    }
+
+    .panel-visual__icon {
+      position: relative;
+      z-index: 2;
+      width: 58px;
+      height: 58px;
+      color: currentColor;
+      filter: drop-shadow(0 12px 18px rgba(0,0,0,.15));
+    }
+
+    .mini-badge {
+      position: absolute;
+      z-index: 3;
+      display: grid;
+      place-items: center;
+      width: 33px;
+      aspect-ratio: 1;
+      border: 1px solid rgba(255,255,255,.25);
+      border-radius: 11px;
+      color: var(--panel-text);
+      background: rgba(255,255,255,.17);
+      box-shadow: 0 8px 24px rgba(0,0,0,.12);
+      backdrop-filter: blur(12px);
+      animation: badge-float 4.5s ease-in-out infinite;
+    }
+
+    .mini-badge svg { width: 17px; height: 17px; }
+    .mini-badge--one { top: 2px; right: 4px; }
+    .mini-badge--two { bottom: 8px; left: 1px; animation-delay: -2s; }
+
+    @keyframes badge-float {
+      50% { transform: translateY(-7px) rotate(3deg); }
+    }
+
+    .panel-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      margin-bottom: 10px;
+      color: var(--panel-muted);
+      font-size: 11px;
+      font-weight: 850;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+    }
+
+    .panel-kicker::before {
+      content: "";
+      width: 6px;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: currentColor;
+      box-shadow: 0 0 16px currentColor;
+    }
+
+    .panel-copy h2 {
+      max-width: 12ch;
+      margin: 0 auto;
+      font-size: clamp(34px, 4vw, 50px);
+      line-height: .98;
+      letter-spacing: -.052em;
+    }
+
+    .panel-copy p {
+      max-width: 35ch;
+      margin: 17px auto 25px;
+      color: var(--panel-muted);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .panel-button {
+      min-height: 48px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      padding: 0 21px;
+      border: 1px solid rgba(255,255,255,.34);
+      border-radius: 13px;
+      color: var(--panel-text);
+      background: rgba(255,255,255,.12);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.2);
+      backdrop-filter: blur(12px);
+      font-weight: 820;
+      cursor: pointer;
+      transition: transform 180ms ease, background 180ms ease;
+    }
+
+    .panel-button:hover {
+      transform: translateY(-2px);
+      background: rgba(255,255,255,.2);
+    }
+
+    .panel-button svg { width: 17px; height: 17px; }
+
+    .panel-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-top: 31px;
+    }
+
+    .panel-stat {
+      padding: 11px 8px;
+      border: 1px solid rgba(255,255,255,.14);
+      border-radius: 13px;
+      background: rgba(255,255,255,.07);
+    }
+
+    .panel-stat strong {
+      display: block;
+      font-size: 15px;
+      letter-spacing: -.02em;
+    }
+
+    .panel-stat span {
+      display: block;
+      margin-top: 3px;
+      color: var(--panel-muted);
+      font-size: 9px;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+
+    /* ============================================================
+       08. TOAST & MOBILE MODE SWITCH
+       ============================================================ */
+    .toast {
+      position: fixed;
+      z-index: 20;
+      right: 22px;
+      bottom: 22px;
+      width: min(360px, calc(100% - 44px));
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      color: var(--text);
+      background: var(--card-bg);
+      box-shadow: var(--shadow-page);
+      backdrop-filter: blur(18px);
+      opacity: 0;
+      transform: translateY(18px) scale(.97);
+      visibility: hidden;
+      transition: opacity 260ms ease, transform 260ms var(--ease), visibility 0s linear 260ms;
+    }
+
+    .toast.is-visible {
+      opacity: 1;
+      transform: none;
+      visibility: visible;
+      transition-delay: 0s;
+    }
+
+    .toast__icon {
+      flex: 0 0 auto;
+      width: 36px;
+      aspect-ratio: 1;
+      display: grid;
+      place-items: center;
+      border-radius: 11px;
+      color: var(--primary-strong);
+      background: var(--primary-soft);
+    }
+
+    .toast__icon svg { width: 19px; height: 19px; }
+    .toast strong { display: block; font-size: 13px; }
+    .toast p { margin: 4px 0 0; color: var(--muted); font-size: 12px; line-height: 1.45; }
+
+    .mobile-switch {
+      display: none;
+      grid-template-columns: 1fr 1fr;
+      gap: 5px;
+      margin-bottom: 24px;
+      padding: 5px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--surface);
+    }
+
+    .mobile-switch button {
+      min-height: 40px;
+      border-radius: 10px;
+      color: var(--muted);
+      background: transparent;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: color 180ms ease, background 180ms ease, box-shadow 180ms ease;
+    }
+
+    .mobile-switch button.is-active {
+      color: white;
+      background: var(--button-gradient);
+      box-shadow: var(--shadow-button);
+    }
+
+    /* ============================================================
+       09. RESPONSIVE
+       ============================================================ */
+    @media (max-width: 850px) {
+      .page-shell { padding: 22px 16px 34px; align-items: start; }
+
+      .auth-shell {
+        min-height: auto;
+        display: flex;
+        flex-direction: column;
+        border-radius: 24px;
+        overflow: visible;
+      }
+
+      .brand-panel {
+        position: relative;
+        inset: auto;
+        order: -1;
+        width: calc(100% - 16px);
+        min-height: 330px;
+        margin: 8px;
+        border-radius: 19px;
+        transform: none !important;
+      }
+
+      .brand-panel::after { width: 57%; }
+
+      .panel-copy {
+        width: min(470px, calc(100% - 40px));
+      }
+
+      .panel-copy--new { display: block; }
+      .panel-copy--member { display: none; }
+      .auth-shell.is-signup .panel-copy--new { display: none; }
+      .auth-shell.is-signup .panel-copy--member { display: block; }
+
+      .panel-visual {
+        width: 92px;
+        margin-bottom: 17px;
+      }
+
+      .panel-visual__icon { width: 40px; height: 40px; }
+      .mini-badge { width: 26px; border-radius: 8px; }
+      .mini-badge svg { width: 13px; height: 13px; }
+
+      .panel-copy h2 { font-size: clamp(29px, 8vw, 39px); }
+      .panel-copy p { margin: 12px auto 17px; font-size: 12px; }
+      .panel-stats { display: none; }
+      .panel-button { min-height: 43px; }
+
+      .form-pane {
+        display: none;
+        width: 100%;
+        padding: 30px clamp(20px, 6vw, 42px) 39px;
+      }
+
+      .form-pane--login { display: flex; }
+      .auth-shell.is-signup .form-pane--login { display: none; }
+      .auth-shell.is-signup .form-pane--signup { display: flex; }
+
+      .form-content {
+        max-width: 500px;
+        opacity: 1 !important;
+        transform: none !important;
+        filter: none !important;
+        pointer-events: auto !important;
+      }
+
+      .mobile-switch { display: grid; }
+      .brand-lockup { margin-bottom: 25px; }
+      h1 { max-width: 14ch; font-size: clamp(32px, 9vw, 43px); }
+    }
+
+    @media (max-width: 500px) {
+      .auth-shell { border-radius: 20px; }
+      .brand-panel { min-height: 300px; }
+      .panel-visual { width: 76px; }
+      .panel-copy { width: calc(100% - 28px); }
+      .panel-copy p { max-width: 31ch; }
+      .form-pane { padding-inline: 18px; }
+      .social-grid { grid-template-columns: 1fr; }
+      .social-button { min-height: 46px; }
+      .form-options { align-items: flex-start; }
+      .brand-tagline { max-width: 220px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .001ms !important;
+      }
+    }
+
+
+    /* ============================================================
+       V3 — REFINED PROPORTIONS, PREMIUM DEPTH, VIEWPORT FIT
+       ============================================================ */
+    :root {
+
+      --v3-card-edge: rgba(167, 243, 208, .16);
+      --v3-card-fill: linear-gradient(135deg, rgba(7, 25, 18, .96), rgba(2, 14, 10, .94));
+      --v3-panel-gradient:
+        radial-gradient(circle at 18% 16%, rgba(167, 243, 208, .23), transparent 27%),
+        radial-gradient(circle at 82% 86%, rgba(52, 211, 153, .25), transparent 31%),
+        linear-gradient(145deg, #01241a 0%, #064e3b 38%, #0b7c59 69%, #20c997 100%);
+      --v3-hairline: rgba(255, 255, 255, .075);
+      --v3-field-fill: rgba(255, 255, 255, .038);
+      --v3-panel-shine: rgba(255, 255, 255, .17);
+      --v3-card-radius: 28px;
+      --v3-panel-radius: 23px;
+      --v3-compact-ease: cubic-bezier(.2, .82, .22, 1);
+    }
+
+    body {
+      background-attachment: fixed;
+    }
+
+    .page-shell {
+      padding: 22px clamp(18px, 3.4vw, 48px);
+    }
+
+    .page-shell::after {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      inset: 13% 8%;
+      border-radius: 50%;
+      background: radial-gradient(circle, var(--glow-2), transparent 68%);
+      filter: blur(70px);
+      opacity: .44;
+      pointer-events: none;
+    }
+
+    .auth-shell {
+      width: min(1110px, 100%);
+      height: auto;
+      min-height: clamp(620px, calc(100svh - 72px), 680px);
+      margin: 0;
+      border-color: var(--v3-card-edge);
+      border-radius: var(--v3-card-radius);
+      background: var(--v3-card-fill);
+      box-shadow:
+        0 36px 110px rgba(0, 0, 0, .19),
+        0 12px 36px rgba(2, 44, 31, .12),
+        inset 0 1px 0 rgba(255, 255, 255, .08);
+      backdrop-filter: blur(30px) saturate(132%);
+      isolation: isolate;
+    }
+
+    .auth-shell::before {
+      content: "";
+      position: absolute;
+      z-index: 9;
+      top: 0;
+      left: 7%;
+      right: 7%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--v3-panel-shine), transparent);
+      pointer-events: none;
+    }
+
+    .auth-shell::after {
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, .08),
+        inset 0 -1px 0 var(--v3-hairline);
+    }
+
+    .form-pane {
+      padding: clamp(30px, 3.8vw, 48px);
+      overflow: visible;
+      overscroll-behavior: auto;
+    }
+
+    .form-content {
+      max-width: 400px;
+    }
+
+    .brand-lockup {
+      margin-bottom: 25px;
+    }
+
+    .brand-mark {
+      width: 44px;
+      border-radius: 14px;
+      box-shadow:
+        0 11px 28px rgba(16, 185, 129, .23),
+        inset 0 1px 0 rgba(255, 255, 255, .28);
+    }
+
+    .brand-name { font-size: 15px; }
+    .brand-tagline { font-size: 10.5px; }
+
+    .eyebrow {
+      margin-bottom: 9px;
+      letter-spacing: .145em;
+    }
+
+    h1 {
+      font-size: clamp(35px, 3.7vw, 47px);
+      line-height: 1;
+      text-wrap: balance;
+    }
+
+    .lead {
+      margin: 13px 0 23px;
+      font-size: 13.5px;
+      line-height: 1.66;
+    }
+
+    .auth-form { gap: 12px; }
+
+    .field input {
+      min-height: 54px;
+      border-color: var(--v3-hairline);
+      background: var(--v3-field-fill);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .035);
+    }
+
+    .field input:hover {
+      border-color: var(--border-strong);
+    }
+
+    .form-options { margin-block: 1px 2px; }
+
+    .primary-button {
+      min-height: 54px;
+      position: relative;
+      overflow: hidden;
+      border-radius: 14px;
+      box-shadow:
+        0 14px 30px rgba(16, 185, 129, .20),
+        inset 0 1px 0 rgba(255, 255, 255, .20);
+    }
+
+    .divider { margin-block: 15px 13px; }
+    .social-button { min-height: 45px; }
+    .form-footer { margin-top: 15px; }
+
+    .brand-panel {
+      inset: 12px 12px 12px calc(50% + 6px);
+      border-radius: var(--v3-panel-radius);
+      background: var(--v3-panel-gradient);
+      box-shadow:
+        0 30px 68px rgba(0, 0, 0, .18),
+        inset 0 1px 0 var(--v3-panel-shine),
+        inset 0 -1px 0 rgba(0, 0, 0, .05);
+      transition:
+        transform 780ms var(--v3-compact-ease),
+        border-radius 780ms var(--v3-compact-ease);
+    }
+
+    .auth-shell.is-signup .brand-panel {
+      transform: translateX(calc(-100% - 12px));
+    }
+
+    .brand-panel::before {
+      background:
+        radial-gradient(circle at 15% 18%, rgba(255,255,255,.25), transparent 20%),
+        radial-gradient(circle at 86% 80%, rgba(255,255,255,.17), transparent 27%),
+        linear-gradient(118deg, transparent 0 39%, rgba(255,255,255,.09) 47%, transparent 56% 100%);
+    }
+
+    .brand-panel::after {
+      width: 72%;
+      border-color: rgba(255,255,255,.15);
+      box-shadow:
+        0 0 0 40px rgba(255,255,255,.032),
+        0 0 0 82px rgba(255,255,255,.022),
+        0 0 0 124px rgba(255,255,255,.012);
+      animation-duration: 21s;
+    }
+
+    .panel-copy {
+      width: min(382px, calc(100% - 58px));
+    }
+
+    .panel-visual {
+      width: 116px;
+      margin-bottom: 20px;
+    }
+
+    .panel-visual__glass {
+      inset: 13px;
+      border-radius: 30px;
+      transform: rotate(-7deg);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.28),
+        0 24px 52px rgba(0,0,0,.13);
+    }
+
+    .panel-visual__icon {
+      width: 51px;
+      height: 51px;
+    }
+
+    .mini-badge { width: 31px; }
+    .panel-kicker { margin-bottom: 9px; }
+
+    .panel-copy h2 {
+      font-size: clamp(35px, 3.8vw, 49px);
+      line-height: .96;
+      text-wrap: balance;
+    }
+
+    .panel-copy p {
+      margin: 14px auto 20px;
+      font-size: 13px;
+      line-height: 1.62;
+    }
+
+    .panel-button {
+      min-height: 46px;
+      border-radius: 14px;
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.22),
+        0 12px 30px rgba(0,0,0,.08);
+    }
+
+    .panel-stats {
+      gap: 7px;
+      margin-top: 24px;
+    }
+
+    .panel-stat {
+      padding: 10px 7px;
+      border-radius: 12px;
+      backdrop-filter: blur(10px);
+    }
+
+    .panel-stat strong { font-size: 14px; }
+    .panel-stat span { font-size: 8px; }
+
+    .floating-dot {
+      opacity: .42;
+      animation-duration: 10s;
+    }
+
+    @media (max-width: 850px) {
+      .page-shell {
+        padding: 18px 14px 32px;
+      }
+
+      .auth-shell {
+        height: auto;
+        min-height: auto;
+        border-radius: 24px;
+      }
+
+      .form-pane {
+        overflow: visible;
+        padding: 28px clamp(19px, 5.5vw, 40px) 36px;
+      }
+
+      .brand-panel {
+        inset: auto;
+        width: calc(100% - 16px);
+        min-height: 318px;
+        margin: 8px;
+      }
+
+      .panel-visual {
+        width: 82px;
+        margin-bottom: 14px;
+      }
+
+      .panel-copy p { margin-bottom: 16px; }
+      .brand-lockup { margin-bottom: 23px; }
+    }
+
+    @media (max-width: 500px) {
+      .page-shell { padding-inline: 10px; }
+      .auth-shell { border-radius: 21px; }
+      .brand-panel { min-height: 292px; border-radius: 17px; }
+      .form-pane { padding-inline: 17px; }
+      .lead { font-size: 13px; }
+    }
+    /* ============================================================
+       12. V3.6 — COMPOSITOR-ONLY SOFT BRAKING SLIDE
+       Karakter gerakan V3.5 dipertahankan, tetapi fase akhir dibuat
+       melambat secara progresif. Hanya transform yang dianimasikan
+       agar browser dapat menjalankannya melalui compositor.
+       ============================================================ */
+    :root {
+      --slide-duration: 840ms;
+      --slide-ease: cubic-bezier(.22, .86, .30, 1);
+    }
+
+    @media (min-width: 851px) {
+      .auth-shell {
+        isolation: isolate;
+      }
+
+      .brand-panel {
+        inset: 0 0 0 50%;
+        border: 0;
+        /* Sudut luar dipotong oleh overflow kartu induk. Dengan begitu
+           border-radius tidak perlu dianimasikan dan tidak memicu repaint. */
+        border-radius: 0;
+        transform: translate3d(0, 0, 0);
+        transition-property: transform;
+        transition-duration: var(--slide-duration);
+        transition-timing-function: var(--slide-ease);
+        backface-visibility: hidden;
+        transform-style: preserve-3d;
+        will-change: transform;
+      }
+
+      .auth-shell.is-signup .brand-panel {
+        transform: translate3d(-100%, 0, 0);
+        border-radius: 0;
+      }
+
+      .brand-panel::before,
+      .brand-panel::after,
+      .panel-copy {
+        backface-visibility: hidden;
+      }
+
+      .panel-copy {
+        will-change: transform, opacity;
+        transition:
+          opacity calc(var(--duration) * .48) ease,
+          transform calc(var(--duration) * .62) var(--ease),
+          visibility 0s linear calc(var(--duration) * .48);
+      }
+
+      .panel-copy--new {
+        transition-delay:
+          calc(var(--duration) * .34),
+          calc(var(--duration) * .18),
+          0s;
+      }
+
+      .panel-copy--member {
+        transition-delay: 0s, 0s, calc(var(--duration) * .48);
+      }
+
+      .auth-shell.is-signup .panel-copy--new {
+        transition-delay: 0s, 0s, calc(var(--duration) * .48);
+      }
+
+      .auth-shell.is-signup .panel-copy--member {
+        transition-delay:
+          calc(var(--duration) * .34),
+          calc(var(--duration) * .18),
+          0s;
+      }
+    }
+
+  </style>
+</head>
+<body>
+  <main class="page-shell">
+    <div class="aurora aurora--one" aria-hidden="true"></div>
+    <div class="aurora aurora--two" aria-hidden="true"></div>
+    <span class="floating-dot" aria-hidden="true"></span>
+    <span class="floating-dot" aria-hidden="true"></span>
+    <span class="floating-dot" aria-hidden="true"></span>
+
+    <section class="auth-shell" id="authShell" aria-label="Masuk atau membuat akun KELASENTRA">
+      <!-- LOGIN FORM -->
+      <div class="form-pane form-pane--login">
+        <div class="form-content">
+          <nav class="mobile-switch" aria-label="Pilih mode autentikasi">
+            <button class="is-active" type="button" data-mobile-mode="login">Masuk</button>
+            <button type="button" data-mobile-mode="signup">Daftar</button>
+          </nav>
+
+          <a class="brand-lockup" href="#" aria-label="KELASENTRA beranda">
+            <span class="brand-mark" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 5.8c2.7-.8 5.3-.4 8 1.2v11c-2.7-1.6-5.3-2-8-1.2V5.8Z"/>
+                <path d="M20 5.8c-2.7-.8-5.3-.4-8 1.2v11c2.7-1.6 5.3-2 8-1.2V5.8Z"/>
+                <path d="M8 10h1.5M14.5 10H16M8 13h1.5M14.5 13H16"/>
+              </svg>
+            </span>
+            <span>
+              <span class="brand-name">KELASENTRA</span>
+              <span class="brand-tagline">Satu pusat untuk setiap kelas.</span>
+            </span>
+          </a>
+
+          <p class="eyebrow">Portal pembelajaran</p>
+          <h1>Selamat datang kembali.</h1>
+          <p class="lead">Lanjutkan mengelola kelas, memahami perkembangan siswa, dan menyelesaikan pekerjaan mengajar dari satu ruang kerja.</p>
+
+          <form class="auth-form" id="loginForm" novalidate>
+            <div class="field">
+              <svg class="field__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 6.5h16v11H4z"/><path d="m4 7 8 6 8-6"/></svg>
+              <input id="loginEmail" name="email" type="email" autocomplete="email" placeholder=" " required />
+              <label for="loginEmail">Email sekolah</label>
+            </div>
+
+            <div class="field">
+              <svg class="field__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+              <input id="loginPassword" name="password" type="password" autocomplete="current-password" placeholder=" " minlength="6" required />
+              <label for="loginPassword">Kata sandi</label>
+              <button class="password-toggle" type="button" data-password-toggle="loginPassword" aria-label="Tampilkan kata sandi">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"/><circle cx="12" cy="12" r="2.7"/></svg>
+              </button>
+            </div>
+
+            <div class="form-options">
+              <label class="check"><input type="checkbox" name="remember" /> Ingat saya</label>
+              <a class="text-link" href="#" data-demo-link>Lupa kata sandi?</a>
+            </div>
+
+            <button class="primary-button" type="submit">
+              <span class="button-label">Masuk ke KELASENTRA</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </button>
+
+            <div class="divider">atau lanjutkan dengan</div>
+
+            <div class="social-grid" aria-label="Pilihan masuk sosial">
+              <button class="social-button" type="button" data-provider="Google">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M21.6 12.2c0-.7-.1-1.4-.2-2H12v3.8h5.4a4.6 4.6 0 0 1-2 3v2.5h3.2c1.9-1.8 3-4.3 3-7.3Z"/><path fill="#34A853" d="M12 22c2.7 0 5-.9 6.6-2.4L15.4 17c-.9.6-2 1-3.4 1-2.6 0-4.8-1.8-5.6-4.1H3.1v2.6A10 10 0 0 0 12 22Z"/><path fill="#FBBC05" d="M6.4 13.9a6 6 0 0 1 0-3.8V7.5H3.1a10 10 0 0 0 0 9l3.3-2.6Z"/><path fill="#EA4335" d="M12 6c1.5 0 2.8.5 3.8 1.5l2.9-2.8A9.7 9.7 0 0 0 3.1 7.5l3.3 2.6C7.2 7.8 9.4 6 12 6Z"/></svg>
+                Google
+              </button>
+              <button class="social-button" type="button" data-provider="Microsoft">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#F25022" d="M3 3h8.5v8.5H3z"/><path fill="#7FBA00" d="M12.5 3H21v8.5h-8.5z"/><path fill="#00A4EF" d="M3 12.5h8.5V21H3z"/><path fill="#FFB900" d="M12.5 12.5H21V21h-8.5z"/></svg>
+                Microsoft
+              </button>
+              <button class="social-button" type="button" data-provider="SSO">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 20h16M6 20V9l6-4 6 4v11M9 12h6M9 15h6"/></svg>
+                SSO
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- SIGNUP FORM -->
+      <div class="form-pane form-pane--signup">
+        <div class="form-content">
+          <nav class="mobile-switch" aria-label="Pilih mode autentikasi">
+            <button type="button" data-mobile-mode="login">Masuk</button>
+            <button class="is-active" type="button" data-mobile-mode="signup">Daftar</button>
+          </nav>
+
+          <a class="brand-lockup" href="#" aria-label="KELASENTRA beranda">
+            <span class="brand-mark" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 5.8c2.7-.8 5.3-.4 8 1.2v11c-2.7-1.6-5.3-2-8-1.2V5.8Z"/>
+                <path d="M20 5.8c-2.7-.8-5.3-.4-8 1.2v11c2.7-1.6 5.3-2 8-1.2V5.8Z"/>
+                <path d="M8 10h1.5M14.5 10H16M8 13h1.5M14.5 13H16"/>
+              </svg>
+            </span>
+            <span>
+              <span class="brand-name">KELASENTRA</span>
+              <span class="brand-tagline">Satu pusat untuk setiap kelas.</span>
+            </span>
+          </a>
+
+          <p class="eyebrow">Mulai ruang kerja</p>
+          <h1>Buat akun sekolahmu.</h1>
+          <p class="lead">Siapkan pusat pembelajaran digital untuk guru, siswa, asesmen, materi, dan analitik dalam beberapa langkah.</p>
+
+          <form class="auth-form" id="signupForm" novalidate>
+            <div class="field">
+              <svg class="field__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c.7-4 3-6 7-6s6.3 2 7 6"/></svg>
+              <input id="signupName" name="name" type="text" autocomplete="name" placeholder=" " minlength="3" required />
+              <label for="signupName">Nama lengkap</label>
+            </div>
+
+            <div class="field">
+              <svg class="field__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 6.5h16v11H4z"/><path d="m4 7 8 6 8-6"/></svg>
+              <input id="signupEmail" name="email" type="email" autocomplete="email" placeholder=" " required />
+              <label for="signupEmail">Email sekolah</label>
+            </div>
+
+            <div class="field">
+              <svg class="field__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+              <input id="signupPassword" name="password" type="password" autocomplete="new-password" placeholder=" " minlength="8" required />
+              <label for="signupPassword">Buat kata sandi</label>
+              <button class="password-toggle" type="button" data-password-toggle="signupPassword" aria-label="Tampilkan kata sandi">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"/><circle cx="12" cy="12" r="2.7"/></svg>
+              </button>
+            </div>
+
+            <div class="password-meter" id="passwordMeter" data-level="0" aria-label="Kekuatan kata sandi">
+              <span></span><span></span><span></span><span></span>
+            </div>
+            <p class="password-hint" id="passwordHint">Gunakan minimal 8 karakter, huruf besar, angka, dan simbol.</p>
+
+            <label class="check"><input id="terms" type="checkbox" required /> Saya menyetujui <a class="text-link" href="#" data-demo-link>Ketentuan</a> dan <a class="text-link" href="#" data-demo-link>Privasi</a>.</label>
+
+            <button class="primary-button" type="submit">
+              <span class="button-label">Buat akun KELASENTRA</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <!-- MOVING PANEL -->
+      <aside class="brand-panel" aria-live="polite">
+        <span class="panel-orbit-dot panel-orbit-dot--one" aria-hidden="true"></span>
+        <span class="panel-orbit-dot panel-orbit-dot--two" aria-hidden="true"></span>
+
+        <div class="panel-copy panel-copy--new">
+          <div class="panel-visual" aria-hidden="true">
+            <div class="panel-visual__glass"></div>
+            <svg class="panel-visual__icon" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 18c8-3 14-2 20 2v30c-6-4-12-5-20-2V18Z"/><path d="M52 18c-8-3-14-2-20 2v30c6-4 12-5 20-2V18Z"/><path d="M20 28h6M38 28h6M20 35h6M38 35h6"/></svg>
+            <span class="mini-badge mini-badge--one"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></span>
+            <span class="mini-badge mini-badge--two"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 4 4L19 6"/></svg></span>
+          </div>
+          <span class="panel-kicker">Ekosistem pendidikan</span>
+          <h2>Baru di KELASENTRA?</h2>
+          <p>Buka ruang kerja yang menyatukan kelas, materi, asesmen, komunikasi, dan wawasan perkembangan siswa.</p>
+          <button class="panel-button" type="button" data-switch-mode="signup">
+            Buat akun gratis
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
+          <div class="panel-stats" aria-label="Ringkasan manfaat KELASENTRA">
+            <div class="panel-stat"><strong>1 pusat</strong><span>semua kelas</span></div>
+            <div class="panel-stat"><strong>24/7</strong><span>akses belajar</span></div>
+            <div class="panel-stat"><strong>Real-time</strong><span>wawasan siswa</span></div>
+          </div>
+        </div>
+
+        <div class="panel-copy panel-copy--member">
+          <div class="panel-visual" aria-hidden="true">
+            <div class="panel-visual__glass"></div>
+            <svg class="panel-visual__icon" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="32" cy="23" r="10"/><path d="M14 52c2-12 8-18 18-18s16 6 18 18"/><path d="m46 16 4 4 8-9"/></svg>
+            <span class="mini-badge mini-badge--one"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 4 4L19 6"/></svg></span>
+            <span class="mini-badge mini-badge--two"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 12h8M12 8v8"/></svg></span>
+          </div>
+          <span class="panel-kicker">Sudah menjadi bagian kami</span>
+          <h2>Sudah punya akun?</h2>
+          <p>Kembali ke dashboard dan lanjutkan pekerjaan kelasmu tanpa kehilangan progres.</p>
+          <button class="panel-button" type="button" data-switch-mode="login">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
+            Kembali masuk
+          </button>
+          <div class="panel-stats" aria-label="Fitur utama KELASENTRA">
+            <div class="panel-stat"><strong>AI</strong><span>asisten guru</span></div>
+            <div class="panel-stat"><strong>LMS</strong><span>kelas terpadu</span></div>
+            <div class="panel-stat"><strong>Insight</strong><span>data bermakna</span></div>
+          </div>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite">
+    <span class="toast__icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 4 4L19 6"/></svg>
+    </span>
+    <div><strong id="toastTitle">Berhasil</strong><p id="toastMessage">Aksi demo telah dijalankan.</p></div>
+  </div>
+
+  <script>
+    /* ============================================================
+       10. INTERACTION CONTROLLER
+       State utama hanya: authShell.classList.toggle('is-signup')
+       ============================================================ */
+    (() => {
+      'use strict';
+
+      const shell = document.getElementById('authShell');
+      const toast = document.getElementById('toast');
+      const toastTitle = document.getElementById('toastTitle');
+      const toastMessage = document.getElementById('toastMessage');
+      const passwordMeter = document.getElementById('passwordMeter');
+      const passwordHint = document.getElementById('passwordHint');
+      const signupPassword = document.getElementById('signupPassword');
+      let toastTimer;
+
+      function setMode(mode) {
+        const isSignup = mode === 'signup';
+        const modeAlreadyActive = shell.classList.contains('is-signup') === isSignup;
+        if (modeAlreadyActive) return;
+
+        shell.classList.toggle('is-signup', isSignup);
+
+        document.querySelectorAll('[data-mobile-mode]').forEach((button) => {
+          const active = button.dataset.mobileMode === mode;
+          button.classList.toggle('is-active', active);
+          button.setAttribute('aria-pressed', String(active));
+        });
+
+        window.setTimeout(() => {
+          const target = document.getElementById(isSignup ? 'signupName' : 'loginEmail');
+          if (window.matchMedia('(pointer: fine)').matches) target?.focus({ preventScroll: true });
+        }, 1280);
+      }
+
+      function showToast(title, message) {
+        clearTimeout(toastTimer);
+        toastTitle.textContent = title;
+        toastMessage.textContent = message;
+        toast.classList.add('is-visible');
+        toastTimer = window.setTimeout(() => toast.classList.remove('is-visible'), 3600);
+      }
+
+      function setLoading(button, loading) {
+        button.classList.toggle('is-loading', loading);
+        button.disabled = loading;
+        const label = button.querySelector('.button-label');
+        if (label) {
+          if (!label.dataset.original) label.dataset.original = label.textContent;
+          label.textContent = loading ? 'Memproses...' : label.dataset.original;
+        }
+      }
+
+      function validateForm(form) {
+        let valid = true;
+        form.querySelectorAll('input[required]').forEach((input) => {
+          const inputValid = input.checkValidity();
+          input.setAttribute('aria-invalid', String(!inputValid));
+          valid = valid && inputValid;
+        });
+        return valid;
+      }
+
+      function passwordScore(value) {
+        let score = 0;
+        if (value.length >= 8) score++;
+        if (/[A-Z]/.test(value) && /[a-z]/.test(value)) score++;
+        if (/\d/.test(value)) score++;
+        if (/[^A-Za-z0-9]/.test(value) && value.length >= 10) score++;
+        return score;
+      }
+
+      function updatePasswordMeter() {
+        const score = passwordScore(signupPassword.value);
+        passwordMeter.dataset.level = String(score);
+        const messages = [
+          'Gunakan minimal 8 karakter, huruf besar, angka, dan simbol.',
+          'Masih lemah — tambahkan variasi karakter.',
+          'Cukup — tambahkan angka atau simbol.',
+          'Kuat — hampir memenuhi seluruh rekomendasi.',
+          'Sangat kuat — kombinasi kata sandi baik.'
+        ];
+        passwordHint.textContent = messages[score];
+      }
+
+      document.querySelectorAll('[data-switch-mode]').forEach((button) => {
+        button.addEventListener('click', () => setMode(button.dataset.switchMode));
+      });
+
+      document.querySelectorAll('[data-mobile-mode]').forEach((button) => {
+        button.addEventListener('click', () => setMode(button.dataset.mobileMode));
+      });
+
+      document.querySelectorAll('[data-password-toggle]').forEach((button) => {
+        button.addEventListener('click', () => {
+          const input = document.getElementById(button.dataset.passwordToggle);
+          const reveal = input.type === 'password';
+          input.type = reveal ? 'text' : 'password';
+          button.setAttribute('aria-label', reveal ? 'Sembunyikan kata sandi' : 'Tampilkan kata sandi');
+        });
+      });
+
+      document.querySelectorAll('.field input').forEach((input) => {
+        input.addEventListener('input', () => input.removeAttribute('aria-invalid'));
+      });
+
+      signupPassword.addEventListener('input', updatePasswordMeter);
+
+      document.getElementById('loginForm').addEventListener('submit', (event) => {
+        event.preventDefault();
+        const form = event.currentTarget;
+        if (!validateForm(form)) {
+          showToast('Data belum lengkap', 'Periksa email dan kata sandi sebelum melanjutkan.');
+          return;
+        }
+        const button = form.querySelector('.primary-button');
+        setLoading(button, true);
+        window.setTimeout(() => {
+          setLoading(button, false);
+          showToast('Login demo berhasil', 'Hubungkan formulir ini ke API autentikasi proyekmu.');
+        }, 950);
+      });
+
+      document.getElementById('signupForm').addEventListener('submit', (event) => {
+        event.preventDefault();
+        const form = event.currentTarget;
+        const score = passwordScore(signupPassword.value);
+        if (!validateForm(form) || score < 2) {
+          showToast('Akun belum dapat dibuat', 'Lengkapi data dan gunakan kata sandi yang lebih kuat.');
+          return;
+        }
+        const button = form.querySelector('.primary-button');
+        setLoading(button, true);
+        window.setTimeout(() => {
+          setLoading(button, false);
+          showToast('Akun demo siap', 'Frontend selesai. Langkah berikutnya adalah integrasi database dan verifikasi email.');
+        }, 1100);
+      });
+
+      document.querySelectorAll('[data-provider]').forEach((button) => {
+        button.addEventListener('click', () => showToast(`${button.dataset.provider} dipilih`, 'Tambahkan OAuth provider pada backend autentikasi.'));
+      });
+
+      document.querySelectorAll('[data-demo-link]').forEach((link) => {
+        link.addEventListener('click', (event) => {
+          event.preventDefault();
+          showToast('Tautan demonstrasi', 'Tambahkan halaman tujuan sesuai arsitektur aplikasi KELASENTRA.');
+        });
+      });
+
+      document.querySelectorAll('.brand-lockup').forEach((link) => {
+        link.addEventListener('click', (event) => event.preventDefault());
+      });
+    })();
+  </script>
+</body>
+</html>
