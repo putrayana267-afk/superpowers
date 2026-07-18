@@ -478,15 +478,16 @@ export default function App({ onOpenShowcase }: AppProps) {
         {/* Sidebar desktop */}
         <aside className="hidden w-64 flex-shrink-0 lg:block">
           <div className="sticky top-24">
+            {/* Kartu brand = pulau gelap permanen di DUA tema (acuan Jill) — hex sengaja, jangan ditokenkan. */}
             <div className="mb-5 flex items-center gap-2.5 rounded-2xl border border-white/10 bg-[#04140C] p-3">
-              <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-emerald-soft text-emerald-deep gold-edge">
+              <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-[#022b22] text-[#8EFFCA] gold-edge">
                 <GraduationCap className="h-5 w-5" />
               </span>
               <div className="leading-tight">
-                <p className="font-display text-base font-extrabold text-emerald-deep">
+                <p className="font-display text-base font-extrabold text-[#8EFFCA]">
                   Asisten Mengajar
                 </p>
-                <p className="text-xs text-ink/50">
+                <p className="text-xs text-[#EAFFF4]/50">
                   Bantuan AI untuk guru Indonesia
                 </p>
               </div>

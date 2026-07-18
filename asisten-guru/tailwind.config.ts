@@ -59,6 +59,7 @@ export default {
         track: 'var(--c-track)',
         'track-2': 'var(--c-track-2)',
         chip: 'var(--c-chip)',
+        'control-line': 'var(--c-control-line)',
       },
       fontFamily: {
         display: ['"Cormorant Garamond"', 'system-ui', 'sans-serif'],

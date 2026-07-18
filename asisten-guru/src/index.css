@@ -58,6 +58,13 @@
     --c-track: rgba(255, 255, 255, 0.05);
     --c-track-2: rgba(255, 255, 255, 0.03);
     --c-chip: rgba(76, 232, 150, 0.14);
+
+    /* fix terang slice-6: kartu kaca & garis kontrol bertema (== nilai lama) */
+    --c-glass-card: rgba(2, 43, 34, 0.6); /* == bg .glass lama */
+    --c-glass-card-strong: rgba(2, 43, 34, 0.75); /* == bg .glass-strong lama */
+    --c-glass-line: rgba(142, 255, 202, 0.14); /* == border .glass lama */
+    --c-glass-line-strong: rgba(142, 255, 202, 0.2); /* == border .glass-strong lama */
+    --c-control-line: rgba(255, 255, 255, 0.1); /* == border-white/10 lama (controlStyles) */
   }
 
   [data-theme='light'] {
@@ -95,6 +102,13 @@
     --c-side: rgba(255, 255, 255, 0.62);
     --c-track: rgba(13, 32, 22, 0.05);
     --c-track-2: rgba(13, 32, 22, 0.035);
+
+    /* fix terang slice-6 */
+    --c-glass-card: rgba(255, 255, 255, 0.72); /* ref desain .72 (== --c-sheet terang) */
+    --c-glass-card-strong: rgba(255, 255, 255, 0.85); /* panel kuat lebih pekat (ref ~.85) */
+    --c-glass-line: rgba(13, 32, 22, 0.12); /* == --c-line terang */
+    --c-glass-line-strong: rgba(13, 32, 22, 0.18); /* rasio kuat/dasar ~1.5 spt gelap (.2/.14) */
+    --c-control-line: rgba(13, 32, 22, 0.18); /* garis input lebih tegas dari hairline .12 */
   }
 
   html,
@@ -142,13 +156,18 @@
 }
 
 @layer components {
-  /* Kartu frosted glass dasar. */
+  /* Kartu frosted glass dasar. Latar & garis via token (tema terang menimpa);
+     radius/shadow/blur TETAP. Nilai gelap token == rgba lama, identik. */
   .glass {
-    @apply rounded-2xl border border-[rgba(142,255,202,0.14)] bg-[rgba(2,43,34,0.6)] shadow-glass backdrop-blur-xl;
+    @apply rounded-2xl border shadow-glass backdrop-blur-xl;
+    background-color: var(--c-glass-card);
+    border-color: var(--c-glass-line);
   }
 
   .glass-strong {
-    @apply rounded-2xl border border-[rgba(142,255,202,0.2)] bg-[rgba(2,43,34,0.75)] shadow-glass-lg backdrop-blur-2xl;
+    @apply rounded-2xl border shadow-glass-lg backdrop-blur-2xl;
+    background-color: var(--c-glass-card-strong);
+    border-color: var(--c-glass-line-strong);
   }
 
   /* Garis tepi emas tipis untuk elemen kunci. */
