@@ -90,18 +90,22 @@ const DOCX_MIME =
 /** Tipe modul `docx` — hanya untuk anotasi; dimuat via dynamic import saat dipakai. */
 type DocxNS = typeof import('docx');
 
+/** Anak dokumen yang sah untuk section: paragraf ATAU tabel. */
+type DocxFileChild =
+  | InstanceType<DocxNS['Paragraph']>
+  | InstanceType<DocxNS['Table']>;
+
 /**
- * Ubah Markdown ringan menjadi daftar Paragraph docx.
- * Aturan parse dipertahankan sama seperti versi sebelumnya:
- * heading `#{1,6}`, bullet `-`/`*`, `**tebal**`, `*miring*`, sisanya paragraf.
+ * Ubah Markdown ringan menjadi daftar anak dokumen docx.
+ * Aturan parse versi sebelumnya dipertahankan: heading `#{1,6}`, bullet `-`/`*`,
+ * `**tebal**`, `*miring*`, sisanya paragraf. BARU: blok tabel Markdown
+ * (baris-baris `| sel | sel |`; baris pemisah `| --- |` dilewati) menjadi
+ * tabel Word sungguhan — sebelumnya bocor sebagai teks pipa mentah.
  * Semua teks mewarisi Arial 12pt dari style default dokumen; heading dibuat
  * tebal + berukuran lebih besar (tetap Arial), bukan style heading bawaan Word.
  */
-function markdownToDocx(
-  md: string,
-  docx: DocxNS,
-): InstanceType<DocxNS['Paragraph']>[] {
-  const { Paragraph, TextRun } = docx;
+function markdownToDocx(md: string, docx: DocxNS): DocxFileChild[] {
+  const { Paragraph, TextRun, Table, TableRow, TableCell, WidthType } = docx;
 
   // Buang penanda **/* agar tidak muncul mentah di dalam heading.
   const stripMarks = (s: string): string =>
@@ -134,9 +138,98 @@ function markdownToDocx(
     6: 24,
   };
 
-  const paragraphs: InstanceType<DocxNS['Paragraph']>[] = [];
-  for (const raw of md.split('\n')) {
-    const line = raw.trimEnd();
+  // ==== Dukungan TABEL Markdown ====
+
+  // Baris tabel: diawali '|' dan minimal punya 2 pipa (>= 1 sel).
+  const isTableLine = (s: string): boolean => {
+    const t = s.trim();
+    return t.startsWith('|') && t.split('|').length >= 3;
+  };
+
+  // Pecah `| a | b |` menjadi sel-sel ter-trim (segmen kosong pipa tepi dibuang).
+  const splitRow = (s: string): string[] => {
+    const cells = s.trim().split('|');
+    if (cells.length && cells[0].trim() === '') cells.shift();
+    if (cells.length && cells[cells.length - 1].trim() === '') cells.pop();
+    return cells.map((c) => c.trim());
+  };
+
+  // Baris pemisah header: tiap sel hanya berisi `---` / `:---` / `---:` / `:---:`.
+  const isSeparatorRow = (cells: string[]): boolean =>
+    cells.length > 0 && cells.every((c) => /^:?-+:?$/.test(c));
+
+  // Bangun Table docx dari blok baris tabel; null bila tak ada baris data.
+  const buildTable = (block: string[]): InstanceType<DocxNS['Table']> | null => {
+    const parsed = block.map(splitRow).filter((c) => c.length > 0);
+    if (parsed.length === 0) return null;
+    const headerIsFirst = parsed.length > 1 && isSeparatorRow(parsed[1]);
+    const dataRows = parsed.filter((c) => !isSeparatorRow(c));
+    if (dataRows.length === 0) return null;
+    const nCol = Math.max(...dataRows.map((r) => r.length));
+
+    const makeCell = (
+      text: string,
+      bold: boolean,
+    ): InstanceType<DocxNS['TableCell']> =>
+      new TableCell({
+        children: [
+          new Paragraph({
+            children: bold
+              ? [new TextRun({ text: stripMarks(text), bold: true })]
+              : inlineRuns(text),
+          }),
+        ],
+      });
+
+    const tableRows = dataRows.map((cells, rIdx) => {
+      const isHeader = headerIsFirst && rIdx === 0;
+      const padded = [...cells];
+      while (padded.length < nCol) padded.push('');
+      return new TableRow({
+        children: padded.map((c) => makeCell(c, isHeader)),
+      });
+    });
+
+    return new Table({
+      width: { size: 100, type: WidthType.PERCENTAGE },
+      rows: tableRows,
+    });
+  };
+
+  const paragraphs: DocxFileChild[] = [];
+  const lines = md.split('\n');
+  let i = 0;
+  while (i < lines.length) {
+    const line = lines[i].trimEnd();
+
+    // Blok tabel: kumpulkan baris `|...|` berurutan → tabel Word sungguhan.
+    if (isTableLine(line)) {
+      const block: string[] = [];
+      while (i < lines.length && isTableLine(lines[i].trimEnd())) {
+        block.push(lines[i].trimEnd());
+        i++;
+      }
+      const table = buildTable(block);
+      if (table) {
+        paragraphs.push(table);
+        // Paragraf kosong setelah tabel: beri jarak & cegah tabel menempel.
+        paragraphs.push(
+          new Paragraph({
+            children: [new TextRun('')],
+            spacing: { after: 120 },
+          }),
+        );
+      } else {
+        // Blok pipa yang bukan tabel valid → paragraf biasa (perilaku lama).
+        for (const b of block) {
+          paragraphs.push(
+            new Paragraph({ spacing: { after: 120 }, children: inlineRuns(b) }),
+          );
+        }
+      }
+      continue;
+    }
+
     const heading = /^(#{1,6})\s+(.*)$/.exec(line);
     const bullet = /^\s*[-*]\s+(.*)$/.exec(line);
 
@@ -165,6 +258,7 @@ function markdownToDocx(
         new Paragraph({ spacing: { after: 120 }, children: inlineRuns(line) }),
       );
     }
+    i++;
   }
 
   // docx menolak section tanpa anak — jamin minimal satu paragraf kosong.
