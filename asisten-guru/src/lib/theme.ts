@@ -13,14 +13,12 @@
 export type Theme = 'dark' | 'light';
 
 /**
- * Gerbang fitur tema terang. `false` = tema terang DISEMBUNYIKAN dari pengguna
- * (kartu "Tampilan" tak dirender, loadTheme selalu gelap).
- *
- * Sengaja disembunyikan sampai komponen selesai dimigrasi ke token: sebagian
- * komponen masih memakai hex hardcode, jadi tema terang belum rapi. Token +
- * plumbing di bawah tetap utuh — buka kembali cukup dengan mengubah ke `true`.
+ * Gerbang fitur tema terang. Migrasi token terang selesai (slice 1–7) dan lolos
+ * gerbang visual manusia 3 ronde (2026-07-18) — tema terang DIBUKA untuk guru.
+ * Boot tetap DEFAULT_THEME (gelap); terang murni opt-in via kartu "Tampilan".
+ * `false` = sembunyikan kembali kartu Tampilan (tree-shaken) & paksa gelap.
  */
-export const TEMA_TERANG_AKTIF = false;
+export const TEMA_TERANG_AKTIF = true;
 
 /** Dipakai juga oleh skrip inline di index.html — ubah keduanya bila diganti. */
 export const THEME_KEY = 'akhid-theme';
