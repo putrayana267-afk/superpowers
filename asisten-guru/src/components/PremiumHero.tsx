@@ -59,6 +59,22 @@ export function PremiumHero({ onEnter }: PremiumHeroProps) {
     }
     if (!doc) return;
 
+    // Perbaiki tampilan loading: panah (svg) jangan diputar; pakai spinner.
+    // Override sisi-app (suntik style ke iframe) - file desain di disk UTUH.
+    try {
+      if (!doc.getElementById('ksm-loading-fix')) {
+        const st = doc.createElement('style');
+        st.id = 'ksm-loading-fix';
+        st.textContent =
+          '.primary-button.is-loading svg{display:none!important;animation:none!important}' +
+          '.primary-button.is-loading::after{content:"";width:18px;height:18px;border:2px solid rgba(255,255,255,.45);border-top-color:#fff;border-radius:50%;animation:ksm-spin .7s linear infinite;flex:none}' +
+          '@keyframes ksm-spin{to{transform:rotate(360deg)}}';
+        doc.head.appendChild(st);
+      }
+    } catch {
+      // abaikan; tak fatal
+    }
+
     // 1. Longgarkan HANYA input login (DOM runtime; file di disk tetap utuh).
     try {
       const email = doc.getElementById('loginEmail') as HTMLInputElement | null;
