@@ -493,7 +493,7 @@ export default function App({ onOpenShowcase }: AppProps) {
               </div>
             </div>
             <Sidebar
-              activeId={activeId}
+              activeId={view === 'tools' ? activeId : ''}
               onSelect={handleSelectTool}
               berandaActive={view === 'beranda'}
               onSelectBeranda={handleSelectBeranda}
@@ -681,7 +681,7 @@ export default function App({ onOpenShowcase }: AppProps) {
           </div>
           <div className="flex-1 overflow-y-auto p-4">
             <Sidebar
-              activeId={activeId}
+              activeId={view === 'tools' ? activeId : ''}
               onSelect={handleSelectTool}
               berandaActive={view === 'beranda'}
               onSelectBeranda={handleSelectBeranda}
