@@ -337,27 +337,114 @@
   }
 }
 
-/* ===== Hero (PremiumHero) — masuk berurutan halus ===== */
-@keyframes hero-bg-in {
+/* ===== Hero (PremiumHero) — "ClassMind" kartu split =====
+   Island hex (§14, arahan Jill 2026-07-18): palet hero GELAP "Emerald Noir" /
+   TERANG "Fresh Mint" sengaja lokal (bukan token) — panel dekoratif ini punya
+   palet sendiri di dua tema. CTA memakai token brand/on-fill (fill terang →
+   teks gelap). Animasi: transform + opacity SAJA. */
+.hero-root {
+  perspective: 1500px;
+}
+.hero-card {
+  perspective: 1500px; /* panggung 3D utk sapuan panel (pola video referensi) */
+}
+
+/* Panel gradasi — dekorasi CSS murni, tanpa bitmap. */
+.hero-panel {
+  color: #eafff4;
+  background:
+    radial-gradient(520px 320px at 78% 18%, rgba(76, 232, 150, 0.25), transparent 62%),
+    linear-gradient(135deg, #022b22 0%, #065f46 100%);
+}
+[data-theme='light'] .hero-panel {
+  color: #04140c;
+  background: linear-gradient(135deg, #ecfdf5 0%, #a7f3d0 55%, #34d399 100%);
+}
+.hero-tagline {
+  opacity: 0.9;
+}
+
+/* Wordmark "ClassMind" — teks murni; "Mind" di-clip gradient. */
+.hero-word-class { color: #eafff4; }
+[data-theme='light'] .hero-word-class { color: #04140c; }
+.hero-word-mind {
+  background: linear-gradient(90deg, #4ce896, #34e7e0);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+[data-theme='light'] .hero-word-mind {
+  background-image: linear-gradient(90deg, #047857, #0d9488);
+}
+
+/* Ornamen panel: blob radial (lembut tanpa filter blur) + cincin tipis. */
+.hero-blob {
+  position: absolute;
+  border-radius: 9999px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.16), transparent 70%);
+  pointer-events: none;
+}
+[data-theme='light'] .hero-blob {
+  background: radial-gradient(circle, rgba(6, 95, 70, 0.16), transparent 70%);
+}
+.hero-blob-1 { right: -60px; top: -40px; height: 260px; width: 260px; }
+.hero-blob-2 { bottom: -70px; left: -50px; height: 240px; width: 240px; }
+.hero-ring {
+  position: absolute;
+  right: 14%;
+  top: 30%;
+  height: 130px;
+  width: 130px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 9999px;
+  pointer-events: none;
+}
+[data-theme='light'] .hero-ring { border-color: rgba(4, 20, 12, 0.22); }
+
+/* Masuk PC (>= lg): kartu settle halus rotateY -4deg → 0, sekali. */
+@keyframes hero-settle {
+  from { opacity: 0; transform: rotateY(-4deg); }
+  to   { opacity: 1; transform: rotateY(0deg); }
+}
+@media (min-width: 1024px) {
+  .hero-card { animation: hero-settle 600ms cubic-bezier(0.16, 1, 0.3, 1) both; }
+}
+
+/* Masuk HP (< lg): panel fade + isi slide-up. TANPA 3D. */
+@keyframes hero-fade-in {
   from { opacity: 0; }
   to   { opacity: 1; }
 }
-@keyframes hero-rise {
-  from { opacity: 0; transform: translateY(26px); }
-  to   { opacity: 1; transform: translateY(0); }
+@keyframes hero-rise-in {
+  from { opacity: 0; transform: translate3d(0, 24px, 0); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0); }
 }
-@keyframes hero-title-in {
-  from { opacity: 0; transform: translateY(34px) scale(0.98); filter: blur(10px); }
-  to   { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+@media (max-width: 1023.98px) {
+  .hero-panel { animation: hero-fade-in 350ms ease-out both; }
+  .hero-body  { animation: hero-rise-in 380ms cubic-bezier(0.16, 1, 0.3, 1) both; }
 }
-.hero-bg    { animation: hero-bg-in 1.6s ease-out both; }
-.hero-top   { animation: hero-rise 1.3s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both; }
-.hero-chip  { animation: hero-rise 1.3s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both; }
-.hero-title { animation: hero-title-in 1.9s cubic-bezier(0.16, 1, 0.3, 1) 0.8s both; }
-.hero-sub   { animation: hero-rise 1.5s cubic-bezier(0.16, 1, 0.3, 1) 1.35s both; }
-.hero-cta   { animation: hero-rise 1.5s cubic-bezier(0.16, 1, 0.3, 1) 1.7s both; }
+
+/* Keluar PC: panel (lebar 50%) menyapu ke kiri menutup konten — "turn-left".
+   Jalur rotateY 0 / -2.6 / -4.5 / -2.6 / 0 mengikuti pola video referensi. */
+@keyframes hero-turn-left {
+  0%   { transform: translate3d(0, 0, 0) rotateY(0deg); }
+  25%  { transform: translate3d(-25%, 0, 0) rotateY(-2.6deg); }
+  50%  { transform: translate3d(-50%, 0, 0) rotateY(-4.5deg); }
+  75%  { transform: translate3d(-75%, 0, 0) rotateY(-2.6deg); }
+  100% { transform: translate3d(-100%, 0, 0) rotateY(0deg); }
+}
+.hero-panel-leave {
+  animation: hero-turn-left 860ms cubic-bezier(0.65, 0, 0.35, 1) forwards;
+  backface-visibility: hidden;
+  will-change: transform;
+}
+
+/* Kurangi-gerak: statis total (JS juga langsung onEnter tanpa menunggu). */
 @media (prefers-reduced-motion: reduce) {
-  .hero-bg, .hero-top, .hero-chip, .hero-title, .hero-sub, .hero-cta {
+  .hero-card,
+  .hero-panel,
+  .hero-body,
+  .hero-panel-leave {
     animation: none !important;
   }
 }
