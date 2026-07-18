@@ -160,7 +160,7 @@ export function Sidebar({
               active={false}
               onClick={() => onOpenHero?.()}
               icon={Sparkle}
-              label="Layar Sambutan"
+              label="Layar Depan"
               pillId={pillId}
             />
           </li>
