@@ -374,8 +374,9 @@
     .primary:active { transform: scale(.985); }
     .primary svg.arrow { position: absolute; right: 16px; width: 20px; height: 20px; }
     .primary[aria-busy="true"] { cursor: progress; }
+    .primary[aria-busy="true"] svg.arrow { display: none; }
 
-    .spinner { width: 18px; height: 18px; border-radius: 50%; border: 2px solid rgba(255,255,255,.45); border-top-color: rgba(255,255,255,.98); animation: spin .7s linear infinite; }
+    .spinner { display: inline-block; vertical-align: middle; width: 20px; height: 20px; border-radius: 50%; border: 3px solid color-mix(in srgb, currentColor 30%, transparent); border-top-color: currentColor; animation: spin .7s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
 
     .divider {
