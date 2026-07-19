@@ -39,7 +39,7 @@ export function PremiumHero({ onEnter }: PremiumHeroProps) {
   const observerRef = useRef<MutationObserver | null>(null);
   const enteredRef = useRef(false);
   // Tema dibaca sekali saat mount (file HTML terpisah per tema).
-  const srcRef = useRef(`${BASE}kelasentra-${pilihTema()}.html`);
+  const srcRef = useRef(`${BASE}kelasentra-${window.matchMedia?.('(max-width: 768px)').matches ? 'mobile-' : ''}${pilihTema()}.html`);
 
   // Bersihkan observer saat unmount.
   useEffect(() => {
