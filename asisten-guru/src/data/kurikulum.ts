@@ -99,9 +99,9 @@ const BIND_FASE_C_TOPIK: Topik[] = [
   { id: "bindc-tulis-latin", label: "Terampil menulis teks dalam tulisan Latin & tegak bersambung" },
 ];
 
-// Topik Matematika Fase A (Kelas 1 & 2) — 4 elemen CP: Bilangan, Aljabar,
-// Pengukuran, Geometri (Analisis Data & Peluang BELUM ada di Fase A). Diturunkan
-// dari CP (Kepka BSKAP 046/H/KR/2025). Sudah diverifikasi (verified).
+// Topik Matematika Fase A (Kelas 1 & 2) — 5 elemen CP: Bilangan, Aljabar,
+// Pengukuran, Geometri, Analisis Data dan Peluang. Diturunkan
+// dari CP (Kepka BSKAP 046/H/KR/2025).
 const MTK_FASE_A_TOPIK: Topik[] = [
   // A. Bilangan
   { id: "mtk-bil-cacah100", label: "Bilangan cacah sampai 100 (membaca, menulis, nilai tempat)" },
@@ -190,7 +190,7 @@ const MTK_FASE_C_TOPIK: Topik[] = [
 
 // Topik Pendidikan Pancasila Fase A (Kelas 1 & 2) — 4 elemen CP: Pancasila,
 // UUD NRI 1945, Bhinneka Tunggal Ika, NKRI. Diturunkan dari CP (Kepka BSKAP
-// 046/H/KR/2025). Sudah diverifikasi (verified).
+// 046/H/KR/2025).
 const PPKN_FASE_A_TOPIK: Topik[] = [
   // A. Pancasila
   { id: "ppkn-pcs-benderalagu", label: "Bendera negara & lagu kebangsaan Indonesia" },
@@ -647,7 +647,7 @@ export const KURIKULUM: KurikulumEntry[] = [
   // teks — AMAN. JANGAN menambah topik dari kira-kira.
   // =========================================================================
   // -------------------------------------------------------------------------
-  // NASIONAL — SD/MI Bahasa Indonesia, FASE A (Kelas 1 & 2). Status: DRAFT.
+  // NASIONAL — SD/MI Bahasa Indonesia, FASE A (Kelas 1 & 2).
   // Sumber: Kepka BSKAP No. 046/H/KR/2025 — CP Bahasa Indonesia Fase A.
   // (Menggantikan entri [CONTOH] lama untuk slot yang sama.)
   // -------------------------------------------------------------------------
@@ -672,7 +672,7 @@ export const KURIKULUM: KurikulumEntry[] = [
 
   // -------------------------------------------------------------------------
   // NASIONAL — SD/MI Bahasa Indonesia, FASE B (Kelas 3 & 4) & FASE C (Kelas 5 &
-  // 6). Status: DRAFT. Sumber: Kepka BSKAP No. 046/H/KR/2025 — CP (Ruang GTK).
+  // 6). Sumber: Kepka BSKAP No. 046/H/KR/2025 — CP (Ruang GTK).
   // CP-murni (tanpa ATP). 4 elemen: Menyimak, Membaca & Memirsa, Berbicara &
   // Mempresentasikan, Menulis.
   // -------------------------------------------------------------------------
@@ -714,7 +714,7 @@ export const KURIKULUM: KurikulumEntry[] = [
   },
 
   // -------------------------------------------------------------------------
-  // NASIONAL — SD/MI Matematika, FASE A (Kelas 1 & 2). Status: VERIFIED.
+  // NASIONAL — SD/MI Matematika, FASE A (Kelas 1 & 2).
   // Sumber: Kepka BSKAP No. 046/H/KR/2025 — CP Matematika Fase A.
   // 4 elemen: Bilangan, Aljabar, Pengukuran, Geometri.
   // -------------------------------------------------------------------------
@@ -738,7 +738,7 @@ export const KURIKULUM: KurikulumEntry[] = [
   },
 
   // -------------------------------------------------------------------------
-  // NASIONAL — SD/MI Matematika, FASE B (Kelas 3 & 4). Status: VERIFIED.
+  // NASIONAL — SD/MI Matematika, FASE B (Kelas 3 & 4).
   // Sumber: Kepka BSKAP No. 046/H/KR/2025 — CP Matematika Fase B (Ruang GTK).
   // 5 elemen: Bilangan, Aljabar, Pengukuran, Geometri, Analisis Data & Peluang.
   // Satu set topik (MTK_FASE_B_TOPIK) melayani kelas 3 & 4 — pola sama Fase A.
@@ -763,7 +763,7 @@ export const KURIKULUM: KurikulumEntry[] = [
   },
 
   // -------------------------------------------------------------------------
-  // NASIONAL — SD/MI Matematika, FASE C (Kelas 5 & 6). Status: VERIFIED.
+  // NASIONAL — SD/MI Matematika, FASE C (Kelas 5 & 6).
   // Sumber: Kepka BSKAP No. 046/H/KR/2025 — CP Matematika Fase C (Ruang GTK).
   // 5 elemen: Bilangan, Aljabar, Pengukuran, Geometri, Analisis Data & Peluang.
   // Satu set topik (MTK_FASE_C_TOPIK) melayani kelas 5 & 6 — pola sama Fase A/B.
@@ -788,7 +788,7 @@ export const KURIKULUM: KurikulumEntry[] = [
   },
 
   // -------------------------------------------------------------------------
-  // NASIONAL — SD/MI Pendidikan Pancasila, FASE A (Kelas 1 & 2). Status: VERIFIED.
+  // NASIONAL — SD/MI Pendidikan Pancasila, FASE A (Kelas 1 & 2).
   // Sumber: Kepka BSKAP No. 046/H/KR/2025 — CP Pendidikan Pancasila Fase A.
   // 4 elemen: Pancasila, UUD NRI 1945, Bhinneka Tunggal Ika, NKRI.
   // -------------------------------------------------------------------------
@@ -813,7 +813,7 @@ export const KURIKULUM: KurikulumEntry[] = [
 
   // -------------------------------------------------------------------------
   // NASIONAL — SD/MI Pendidikan Pancasila, FASE B (Kelas 3 & 4) & FASE C
-  // (Kelas 5 & 6). Status: VERIFIED. Sumber: Kepka BSKAP No. 046/H/KR/2025.
+  // (Kelas 5 & 6). Sumber: Kepka BSKAP No. 046/H/KR/2025.
   // -------------------------------------------------------------------------
   {
     jenjang: "SD/MI",
@@ -853,7 +853,7 @@ export const KURIKULUM: KurikulumEntry[] = [
   },
 
   // -------------------------------------------------------------------------
-  // NASIONAL — SD/MI PJOK, FASE A (Kelas 1 & 2). Status: VERIFIED.
+  // NASIONAL — SD/MI PJOK, FASE A (Kelas 1 & 2).
   // Sumber: Kepka BSKAP No. 046/H/KR/2025 — CP PJOK Fase A.
   // -------------------------------------------------------------------------
   {
@@ -876,7 +876,7 @@ export const KURIKULUM: KurikulumEntry[] = [
   },
 
   // -------------------------------------------------------------------------
-  // NASIONAL — SD/MI PJOK, FASE B (Kelas 3 & 4) & FASE C (Kelas 5 & 6). DRAFT.
+  // NASIONAL — SD/MI PJOK, FASE B (Kelas 3 & 4) & FASE C (Kelas 5 & 6).
   // Sumber: Kepka BSKAP No. 046/H/KR/2025 — CP PJOK (Ruang GTK).
   // -------------------------------------------------------------------------
   {
@@ -917,7 +917,7 @@ export const KURIKULUM: KurikulumEntry[] = [
   },
 
   // -------------------------------------------------------------------------
-  // NASIONAL — SD/MI IPAS, FASE B (Kelas 3 & 4) & FASE C (Kelas 5 & 6). VERIFIED.
+  // NASIONAL — SD/MI IPAS, FASE B (Kelas 3 & 4) & FASE C (Kelas 5 & 6).
   // Sumber: Kepka BSKAP No. 046/H/KR/2025 — CP IPAS elemen "Pemahaman IPAS".
   // IPAS tidak memiliki Fase A (kelas 1 & 2 tetap fallback teks-bebas).
   // -------------------------------------------------------------------------
@@ -960,7 +960,7 @@ export const KURIKULUM: KurikulumEntry[] = [
 
   // -------------------------------------------------------------------------
   // NASIONAL — SD/MI Bahasa Inggris, FASE B (Kelas 3 & 4) & FASE C (Kelas 5 &
-  // 6). Status: DRAFT. Sumber: Kepka BSKAP No. 046/H/KR/2025 — CP (Ruang GTK).
+  // 6). Sumber: Kepka BSKAP No. 046/H/KR/2025 — CP (Ruang GTK).
   // CP-murni. 3 elemen: Menyimak–Berbicara, Membaca–Memirsa, Menulis–
   // Mempresentasikan. Fase A (kelas 1 & 2) ditunda → fallback teks-bebas.
   // -------------------------------------------------------------------------
@@ -1003,7 +1003,7 @@ export const KURIKULUM: KurikulumEntry[] = [
 
   // -------------------------------------------------------------------------
   // NASIONAL — SD/MI Pendidikan Agama Islam & Budi Pekerti, FASE A (Kelas 1 &
-  // 2). Status: DRAFT. Sumber: Kepka BKPDM No. 020 Tahun 2026 (perubahan atas
+  // 2). Sumber: Kepka BKPDM No. 020 Tahun 2026 (perubahan atas
   // Kepka BSKAP No. 046/H/KR/2025). 5 elemen.
   // -------------------------------------------------------------------------
   {
@@ -1027,7 +1027,7 @@ export const KURIKULUM: KurikulumEntry[] = [
 
   // -------------------------------------------------------------------------
   // NASIONAL — SD/MI Pendidikan Agama Islam & Budi Pekerti, FASE B (Kelas 3 &
-  // 4) & FASE C (Kelas 5 & 6). Status: DRAFT. Sumber: Kepka BKPDM No. 020 Tahun
+  // 4) & FASE C (Kelas 5 & 6). Sumber: Kepka BKPDM No. 020 Tahun
   // 2026 (perubahan atas Kepka BSKAP No. 046/H/KR/2025).
   // -------------------------------------------------------------------------
   {
