@@ -105,21 +105,25 @@ const BIND_FASE_C_TOPIK: Topik[] = [
 const MTK_FASE_A_TOPIK: Topik[] = [
   // A. Bilangan
   { id: "mtk-bil-cacah100", label: "Bilangan cacah sampai 100 (membaca, menulis, nilai tempat)" },
-  { id: "mtk-bil-bandingurut", label: "Membandingkan & mengurutkan bilangan" },
-  { id: "mtk-bil-kompdekomp", label: "Komposisi & dekomposisi bilangan" },
+  { id: "mtk-bil-bandingurut", label: "Membandingkan dan mengurutkan bilangan cacah sampai 100" },
+  { id: "mtk-bil-kompdekomp", label: "Komposisi dan dekomposisi bilangan cacah sampai 100" },
   { id: "mtk-bil-tambahkurang20", label: "Penjumlahan & pengurangan sampai 20 (benda konkret)" },
-  { id: "mtk-bil-pecahan", label: "Pecahan sederhana (setengah & seperempat)" },
+  { id: "mtk-bil-pecahan", label: "Pecahan (setengah & seperempat) sebagai bagian dari keseluruhan melalui pembagian benda/kumpulan benda sama banyak" },
   // B. Aljabar
-  { id: "mtk-alj-pola", label: "Pola bilangan & pola gambar/objek" },
-  { id: "mtk-alj-nilaibelumdiketahui", label: "Mencari nilai yang belum diketahui dalam kalimat matematika" },
+  { id: "mtk-alj-pola", label: "Mengenali, meniru, dan melanjutkan pola bukan bilangan (gambar, warna, dan suara)" },
+  { id: "mtk-alj-simbolsamadengan", label: "Memahami makna simbol \"=\" dalam kalimat penjumlahan & pengurangan sampai 20 (menggunakan gambar)" },
   // C. Pengukuran
-  { id: "mtk-ukur-panjangberat", label: "Mengukur panjang & berat (satuan baku: cm, m, g, kg)" },
-  { id: "mtk-ukur-luasvolume", label: "Mengestimasi luas & volume (satuan tidak baku & baku)" },
+  { id: "mtk-ukur-panjangberat", label: "Membandingkan panjang & berat secara langsung" },
+  { id: "mtk-ukur-durasi", label: "Membandingkan durasi waktu" },
+  { id: "mtk-ukur-panjangtakbaku", label: "Mengukur & mengestimasi panjang dengan satuan tidak baku" },
   // D. Geometri
   { id: "mtk-geo-bangundatar", label: "Mengenal bangun datar (segitiga, segiempat, segibanyak, lingkaran)" },
-  { id: "mtk-geo-bangunruang", label: "Mengenal bangun ruang (balok, kubus)" },
-  { id: "mtk-geo-kompdekomp", label: "Komposisi & dekomposisi bangun datar" },
-  { id: "mtk-geo-posisi", label: "Posisi benda (kanan/kiri/depan/belakang/atas/bawah)" },
+  { id: "mtk-geo-bangunruang", label: "Mengenal bangun ruang (balok, kubus, kerucut, bola)" },
+  { id: "mtk-geo-kompdekomp", label: "Menyusun dan mengurai bangun datar (segitiga, segiempat, dan segibanyak)" },
+  { id: "mtk-geo-posisi", label: "Menentukan posisi benda terhadap benda lain (kanan, kiri, depan, belakang)" },
+  // E. Analisis Data dan Peluang
+  { id: "mtk-dat-organisasi", label: "Mengelompokkan, menyortir, mengurutkan & membandingkan data banyak benda (maks. 4 kategori)" },
+  { id: "mtk-dat-sajian", label: "Menyajikan data banyak benda dengan turus & piktogram (maks. 4 kategori)" },
 ];
 
 // Topik Matematika Fase B (Kelas 3 & 4) — diturunkan PERSIS dari CP (Kepka
@@ -139,14 +143,15 @@ const MTK_FASE_B_TOPIK: Topik[] = [
   { id: "mtkb-bil-desimal", label: "Bilangan desimal persepuluhan & perseratusan (hubungan dengan persen)" },
   // B. Aljabar
   { id: "mtkb-alj-nilaibelumdiketahui", label: "Mengisi nilai yang belum diketahui dalam kalimat matematika (penjumlahan & pengurangan sampai 100)" },
-  { id: "mtkb-alj-pola", label: "Mengidentifikasi, meniru, & mengembangkan pola gambar/objek dan pola bilangan membesar/mengecil (sampai 100)" },
+  { id: "mtkb-alj-pola", label: "Mengidentifikasi, meniru, dan mengembangkan pola gambar/objek sederhana serta pola bilangan membesar dan mengecil yang melibatkan penjumlahan dan pengurangan sampai 100." },
   // C. Pengukuran
   { id: "mtkb-ukur-panjangberat", label: "Mengukur panjang & berat (satuan baku) serta hubungan antar-satuan panjang (cm, m)" },
-  { id: "mtkb-ukur-luasvolume", label: "Mengukur & mengestimasi luas & volume (satuan tidak baku & baku)" },
+  { id: "mtkb-ukur-luasvolume", label: "Mengukur dan mengestimasi luas dan volume menggunakan satuan tidak baku dan satuan baku berupa bilangan cacah" },
   // D. Geometri
   { id: "mtkb-geo-ciribangundatar", label: "Mendeskripsikan ciri bangun datar (segiempat, segitiga, segi banyak)" },
-  { id: "mtkb-geo-kompdekomp", label: "Komposisi & dekomposisi bangun datar (lebih dari satu cara)" },
+  { id: "mtkb-geo-kompdekomp", label: "Menyusun dan mengurai berbagai bangun datar dengan lebih dari satu cara jika memungkinkan" },
   // E. Analisis Data dan Peluang
+  { id: "mtkb-dat-urutbanding", label: "Mengurutkan & membandingkan data (tabel, diagram gambar, piktogram, diagram batang skala satu satuan)" },
   { id: "mtkb-dat-sajianalisis", label: "Menyajikan, menganalisis & menginterpretasi data (tabel, diagram gambar, piktogram, diagram batang skala satu satuan)" },
 ];
 
@@ -168,17 +173,18 @@ const MTK_FASE_C_TOPIK: Topik[] = [
   // B. Aljabar
   { id: "mtkc-alj-nilaibelumdiketahui", label: "Mengisi nilai yang belum diketahui dalam kalimat matematika (+, −, ×, ÷ pada bilangan cacah sampai 1.000)" },
   { id: "mtkc-alj-pola", label: "Mengidentifikasi, meniru, & mengembangkan pola bilangan membesar/mengecil (perkalian & pembagian)" },
-  { id: "mtkc-alj-proporsi", label: "Bernalar proporsional & menyelesaikan masalah proporsi (rasio satuan, perkalian & pembagian)" },
+  { id: "mtkc-alj-proporsi", label: "Bernalar proporsional untuk menyelesaikan masalah sehari-hari dengan rasio satuan serta menggunakan perkalian dan pembagian dalam masalah sehari-hari terkait proporsi" },
   // C. Pengukuran
   { id: "mtkc-ukur-kelilingluas", label: "Menentukan keliling & luas bangun datar (segitiga, segiempat, segi banyak) serta gabungannya" },
   { id: "mtkc-ukur-durasi", label: "Menghitung durasi waktu" },
   { id: "mtkc-ukur-sudut", label: "Mengukur besar sudut" },
   // D. Geometri
-  { id: "mtkc-geo-bangunruang", label: "Mengonstruksi & mengurai bangun ruang (kubus, balok, & gabungannya) serta visualisasi spasial (depan, atas, samping)" },
+  { id: "mtkc-geo-bangunruang", label: "Mengonstruksi dan mengurai bangun ruang (kubus, balok, dan gabungannya) serta mengenali visualisasi spasial (depan, atas, dan samping)" },
   { id: "mtkc-geo-bandingkarakteristik", label: "Membandingkan karakteristik antarbangun datar & antarbangun ruang" },
   { id: "mtkc-geo-lokasipeta", label: "Menentukan lokasi pada peta dengan sistem berpetak" },
   // E. Analisis Data dan Peluang
-  { id: "mtkc-dat-sajianalisis", label: "Menyajikan & menganalisis data banyak benda & data hasil pengukuran (gambar, piktogram, diagram batang, tabel frekuensi)" },
+  { id: "mtkc-dat-urutbanding", label: "Mengurutkan dan membandingkan data banyak benda dan data hasil pengukuran dalam bentuk gambar, piktogram, diagram batang, dan tabel frekuensi." },
+  { id: "mtkc-dat-sajianalisis", label: "Menyajikan dan menganalisis data banyak benda dan data hasil pengukuran dalam bentuk gambar, piktogram, diagram batang, dan tabel frekuensi untuk memperoleh informasi." },
   { id: "mtkc-dat-peluang", label: "Menentukan kejadian berkemungkinan lebih besar dalam percobaan acak" },
 ];
 
