@@ -425,25 +425,23 @@ const PAI_FASE_C_TOPIK: Topik[] = [
   { id: "paic-spi", label: "Memahami kisah Nabi Muhammad saw. periode Madinah dan khulafaurasyidin." },
 ];
 
-// Topik Seni Musik Fase A (Kelas 1 & 2) — diturunkan PERSIS dari Rumusan CP
-// (portal Ruang GTK, guru.kemendikdasmen.go.id, tab "Rumusan CP", Seni Musik Fase A).
-// 5 elemen: Mengalami, Merefleksikan, Berpikir & Bekerja Secara Artistik,
-// Menciptakan, Berdampak. Granularitas: tiap kalimat "Peserta didik…" = 1 topik
-// (sama pola spt B.Indonesia/Pancasila). Nama elemen tercatat di slug id.
-// STATUS: draft — naik 'verified' HANYA setelah render diuji di app + spot-check manusia.
+// Topik Seni Musik Fase A (Kelas 1 & 2) — diturunkan PERSIS dari teks CP pada
+// salinan resmi PDF Kepka BSKAP No. 046/H/KR/2025 (Lampiran II, hlm. 238-239).
+// 5 elemen: Mengalami, Merefleksikan, Berpikir & Bekerja Artistik, Menciptakan,
+// Berdampak. 1 kompetensi CP = 1 topik.
 const SENIMUSIK_FASE_A_TOPIK: Topik[] = [
   // Mengalami (Experiencing)
-  { id: "senimusik-a-mengalami-unsurbunyi", label: "Mengidentifikasi & merespons unsur-unsur bunyi musik (nada & irama), baik dengan anggota tubuh maupun alat musik ritmis & melodis" },
+  { id: "senimusik-a-mengalami-unsur", label: "Mengenali unsur-unsur musik (nada & irama) menggunakan anggota tubuh maupun alat musik" },
   // Merefleksikan (Reflecting)
-  { id: "senimusik-a-merefleksikan-tanggapan", label: "Memberi tanggapan/umpan balik atas praktik bermusik diri sendiri atau orang lain dengan bahasa sehari-hari" },
-  // Berpikir & Bekerja Secara Artistik (Thinking and Working Artistically)
-  { id: "senimusik-a-artistik-imitasi", label: "Mengimitasi pola irama & bunyi dasar ragam alat musik ritmis atau melodis" },
-  { id: "senimusik-a-artistik-identifikasialat", label: "Mengidentifikasi ragam alat musik & bunyi yang dihasilkannya" },
-  { id: "senimusik-a-artistik-mainkanrawat", label: "Mengetahui cara memainkan & membersihkan instrumen musik yang digunakan" },
+  { id: "senimusik-a-merefleksikan-umpanbalik", label: "Melakukan umpan balik mengenai praktik bermain musik diri sendiri atau orang lain menggunakan bahasa sehari-hari" },
+  // Berpikir & Bekerja Artistik (Thinking and Working Artistically)
+  { id: "senimusik-a-artistik-imitasi", label: "Menirukan pola irama & nada menggunakan alat musik ritmis atau melodis" },
+  { id: "senimusik-a-artistik-ragamalat", label: "Mengenali ragam alat musik & bunyi yang dihasilkan" },
+  { id: "senimusik-a-artistik-mainbersih", label: "Mengenali cara memainkan & membersihkan instrumen/alat musik" },
   // Menciptakan (Creating)
-  { id: "senimusik-a-menciptakan-produksibunyi", label: "Memproduksi bunyi & mengimitasi pola irama dengan anggota tubuh atau alat musik ritmis/melodis yang tersedia di lingkungan sekitar" },
+  { id: "senimusik-a-menciptakan-polairama", label: "Membuat pola irama menggunakan anggota tubuh atau alat musik ritmis yang tersedia di lingkungan sekitar" },
   // Berdampak (Impacting)
-  { id: "senimusik-a-berdampak-praktikpositif", label: "Menjalankan praktik bermusik yang memberikan dampak positif bagi dirinya" },
+  { id: "senimusik-a-berdampak-senang", label: "Menunjukkan ekspresi senang dalam kegiatan bermusik" },
 ];
 
 // Topik Seni Rupa Fase A (Kelas 1 & 2) — diturunkan PERSIS dari Rumusan CP
@@ -502,40 +500,41 @@ const SENITEATER_FASE_A_TOPIK: Topik[] = [
   { id: "seniteater-a-berdampak-karya", label: "Menghasilkan karya teater (naskah/lakon) dari minat, pengamatan & pengalaman yang berdampak positif bagi dirinya" },
 ];
 
-// Topik Seni Musik Fase C (Kelas 5 & 6) — derivasi SETIA (makna) dari Rumusan CP.
-// (portal Ruang GTK, guru.kemendikdasmen.go.id, tab "Rumusan CP", Seni Musik Fase C).
-// Verbatim CP disimpan di ringkasan sesi (bukti sumber), BUKAN di label (§4.7).
+// Topik Seni Musik Fase C (Kelas 5 & 6) — diturunkan PERSIS dari teks CP pada
+// salinan resmi PDF Kepka BSKAP No. 046/H/KR/2025 (Lampiran II, hlm. 240-241).
+// 5 elemen; 1 kompetensi CP = 1 topik.
 const SENIMUSIK_FASE_C_TOPIK: Topik[] = [
   // Mengalami (Experiencing)
-  { id: "senimusik-c-mengalami-unsurbunyi", label: "Menggunakan & mengembangkan unsur bunyi musik (nada, irama, melodi)" },
-  { id: "senimusik-c-mengalami-kepekaan", label: "Menunjukkan kepekaan unsur bunyi intrinsik & ekstrinsik sambil memadukan alat musik ritmis & melodis" },
+  { id: "senimusik-c-mengalami-terapkan", label: "Mengenali & menerapkan unsur-unsur musik (nada, irama & melodi) menggunakan alat musik ritmis & melodis" },
+  { id: "senimusik-c-mengalami-kepekaan", label: "Menunjukkan tingkat kepekaan akan unsur-unsur musik dengan alat musik ritmis & melodis" },
   // Merefleksikan (Reflecting)
-  { id: "senimusik-c-merefleksikan-umpanbalik", label: "Memberi umpan balik atas karya & kemampuan bermusik diri/orang lain dengan istilah musik yang tepat" },
-  // Berpikir & Bekerja Secara Artistik (Thinking and Working Artistically)
-  { id: "senimusik-c-artistik-eksplorasinotasi", label: "Mengeksplorasi variasi pola irama, tempo & bunyi dasar alat ritmis/melodis memakai notasi & teknik dasar yang dipelajari" },
-  { id: "senimusik-c-artistik-alternatifbunyi", label: "Menemukan alternatif menghasilkan bunyi musik sederhana lewat anggota tubuh & eksplorasi material di lingkungan sekitar" },
+  { id: "senimusik-c-merefleksikan-umpanbalik", label: "Melakukan umpan balik mengenai karya & kemampuan bermusik diri sendiri atau orang lain menggunakan istilah musik yang tepat" },
+  // Berpikir & Bekerja Artistik (Thinking and Working Artistically)
+  { id: "senimusik-c-artistik-eksplorasi", label: "Mengeksplorasi variasi pola irama, tempo & melodi dengan alat musik ritmis & melodis menggunakan notasi musik & teknik dasar yang telah dipelajari" },
+  { id: "senimusik-c-artistik-alternatif", label: "Menemukan alternatif untuk menghasilkan bunyi musik sederhana melalui eksplorasi material yang tersedia di lingkungan sekitar" },
+  { id: "senimusik-c-artistik-mainrawat", label: "Menerapkan cara memainkan & merawat alat musik dengan teknik yang tepat sesuai spesifikasi bahan alat musik" },
   // Menciptakan (Creating)
-  { id: "senimusik-c-menciptakan-gubahpola", label: "Memproduksi, mengembangkan, atau menggubah pola irama dengan anggota tubuh/alat ritmis & melodis dari lingkungan sekitar &/atau kearifan lokal daerah" },
+  { id: "senimusik-c-menciptakan-kembangkan", label: "Membuat & mengembangkan pola irama menggunakan anggota tubuh atau alat musik ritmis yang tersedia berdasarkan nilai kearifan lokal daerahnya" },
   // Berdampak (Impacting)
-  { id: "senimusik-c-berdampak-praktikpositif", label: "Menjalankan praktik bermusik yang berdampak positif bagi diri & lingkungan sekitar" },
+  { id: "senimusik-c-berdampak-minat", label: "Menunjukkan minat & rasa ingin tahu dalam kegiatan bermusik" },
 ];
 
-// Topik Seni Musik Fase B (Kelas 3 & 4) — derivasi SETIA (makna) dari Rumusan CP.
-// (portal Ruang GTK, guru.kemendikdasmen.go.id, tab "Rumusan CP", Seni Musik Fase B).
-// Verbatim CP disimpan di ringkasan sesi (bukti sumber), BUKAN di label (§4.7).
+// Topik Seni Musik Fase B (Kelas 3 & 4) — diturunkan PERSIS dari teks CP pada
+// salinan resmi PDF Kepka BSKAP No. 046/H/KR/2025 (Lampiran II, hlm. 239-240).
+// 5 elemen; 1 kompetensi CP = 1 topik.
 const SENIMUSIK_FASE_B_TOPIK: Topik[] = [
   // Mengalami (Experiencing)
-  { id: "senimusik-b-mengalami-polabunyi", label: "Mengidentifikasi & mengimitasi pola bunyi, nada, & irama, baik dengan anggota tubuh maupun alat musik ritmis & melodis" },
+  { id: "senimusik-b-mengalami-nadairama", label: "Mengenali nada & pola irama menggunakan anggota tubuh maupun alat musik" },
   // Merefleksikan (Reflecting)
-  { id: "senimusik-b-merefleksikan-istilahmusik", label: "Memberi tanggapan/umpan balik atas praktik bermusik diri sendiri atau orang lain dengan istilah musik yang telah dipelajari" },
-  // Berpikir & Bekerja Secara Artistik (Thinking and Working Artistically)
-  { id: "senimusik-b-artistik-imitasitempo", label: "Mengidentifikasi & mengimitasi pola irama, tempo, & bunyi dasar ragam alat musik ritmis atau melodis" },
-  { id: "senimusik-b-artistik-karakteristikalat", label: "Mengidentifikasi karakteristik ragam alat musik & bunyi yang dihasilkannya" },
-  { id: "senimusik-b-artistik-mainkanrawat", label: "Mengetahui cara memainkan & merawat instrumen musik yang digunakan" },
+  { id: "senimusik-b-merefleksikan-istilah", label: "Melakukan umpan balik mengenai praktik bermusik diri sendiri atau orang lain menggunakan istilah musik" },
+  // Berpikir & Bekerja Artistik (Thinking and Working Artistically)
+  { id: "senimusik-b-artistik-imitasi", label: "Menirukan pola irama & melodi menggunakan alat musik ritmis atau melodis" },
+  { id: "senimusik-b-artistik-karakteristik", label: "Menyebutkan karakteristik ragam alat musik & bunyi yang dihasilkan" },
+  { id: "senimusik-b-artistik-mainrawat", label: "Mengetahui cara memainkan & merawat alat musik" },
   // Menciptakan (Creating)
-  { id: "senimusik-b-menciptakan-kembangpola", label: "Memproduksi, mengimitasi, & mengembangkan pola irama dengan anggota tubuh atau alat musik ritmis & melodis yang tersedia di lingkungan sekitar" },
+  { id: "senimusik-b-menciptakan-buatbunyi", label: "Membuat bunyi menggunakan anggota tubuh atau alat musik ritmis & melodis yang tersedia di lingkungan sekitar" },
   // Berdampak (Impacting)
-  { id: "senimusik-b-berdampak-praktikpositif", label: "Menjalankan praktik bermusik yang memberikan dampak positif bagi dirinya & lingkungan terkecilnya" },
+  { id: "senimusik-b-berdampak-minat", label: "Menunjukkan minat dalam kegiatan bermusik" },
 ];
 
 export const KURIKULUM: KurikulumEntry[] = [
@@ -1060,7 +1059,7 @@ export const KURIKULUM: KurikulumEntry[] = [
     mapel: "Seni Musik",
     kelas: "1",
     status: "draft",
-    sumber: "Portal Ruang GTK (guru.kemendikdasmen.go.id) — Rumusan CP Seni Musik Fase A.",
+    sumber: "CP Seni Musik Fase A — Kepka BSKAP No. 046/H/KR/2025",
     topik: SENIMUSIK_FASE_A_TOPIK,
   },
   {
@@ -1069,7 +1068,7 @@ export const KURIKULUM: KurikulumEntry[] = [
     mapel: "Seni Musik",
     kelas: "2",
     status: "draft",
-    sumber: "Portal Ruang GTK (guru.kemendikdasmen.go.id) — Rumusan CP Seni Musik Fase A.",
+    sumber: "CP Seni Musik Fase A — Kepka BSKAP No. 046/H/KR/2025",
     topik: SENIMUSIK_FASE_A_TOPIK,
   },
 
@@ -1080,7 +1079,7 @@ export const KURIKULUM: KurikulumEntry[] = [
     mapel: "Seni Musik",
     kelas: "3",
     status: "draft",
-    sumber: "Portal Ruang GTK (guru.kemendikdasmen.go.id) — Rumusan CP Seni Musik Fase B.",
+    sumber: "CP Seni Musik Fase B — Kepka BSKAP No. 046/H/KR/2025",
     topik: SENIMUSIK_FASE_B_TOPIK,
   },
   {
@@ -1089,7 +1088,7 @@ export const KURIKULUM: KurikulumEntry[] = [
     mapel: "Seni Musik",
     kelas: "4",
     status: "draft",
-    sumber: "Portal Ruang GTK (guru.kemendikdasmen.go.id) — Rumusan CP Seni Musik Fase B.",
+    sumber: "CP Seni Musik Fase B — Kepka BSKAP No. 046/H/KR/2025",
     topik: SENIMUSIK_FASE_B_TOPIK,
   },
 
@@ -1100,7 +1099,7 @@ export const KURIKULUM: KurikulumEntry[] = [
     mapel: "Seni Musik",
     kelas: "5",
     status: "draft",
-    sumber: "Portal Ruang GTK (guru.kemendikdasmen.go.id) — Rumusan CP Seni Musik Fase C.",
+    sumber: "CP Seni Musik Fase C — Kepka BSKAP No. 046/H/KR/2025",
     topik: SENIMUSIK_FASE_C_TOPIK,
   },
   {
@@ -1109,7 +1108,7 @@ export const KURIKULUM: KurikulumEntry[] = [
     mapel: "Seni Musik",
     kelas: "6",
     status: "draft",
-    sumber: "Portal Ruang GTK (guru.kemendikdasmen.go.id) — Rumusan CP Seni Musik Fase C.",
+    sumber: "CP Seni Musik Fase C — Kepka BSKAP No. 046/H/KR/2025",
     topik: SENIMUSIK_FASE_C_TOPIK,
   },
 
