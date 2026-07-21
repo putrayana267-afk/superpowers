@@ -222,13 +222,13 @@ const PPKN_FASE_C_TOPIK: Topik[] = [
   { id: "ppknc-pcs-kronologi", label: "Memahami kronologi sejarah kelahiran Pancasila" },
   { id: "ppknc-pcs-teladan", label: "Meneladani sikap para perumus Pancasila & menerapkannya di lingkungan masyarakat" },
   { id: "ppknc-pcs-kesatuan", label: "Menghubungkan sila-sila Pancasila sebagai satu kesatuan yang utuh" },
-  { id: "ppknc-pcs-nilaidasar", label: "Menguraikan makna nilai-nilai Pancasila sebagai dasar negara, pandangan hidup, & ideologi bangsa" },
+  { id: "ppknc-pcs-nilaidasar", label: "Menguraikan makna nilai-nilai Pancasila sebagai dasar negara & pandangan hidup bangsa" },
   // B. UUD NRI 1945
-  { id: "ppknc-uud-identifikasi", label: "Menyajikan hasil identifikasi bentuk norma, hak, & kewajiban sebagai anggota keluarga, warga sekolah, & warga negara" },
-  { id: "ppknc-uud-praktik", label: "Mempraktikkan norma, hak, & kewajiban dalam kehidupan sehari-hari" },
+  { id: "ppknc-uud-identifikasi", label: "Mengimplementasikan bentuk-bentuk norma, hak, & kewajiban dalam kedudukannya sebagai warga negara" },
+  { id: "ppknc-uud-pembukaan", label: "Mengenal Pembukaan Undang-Undang Dasar Negara Republik Indonesia Tahun 1945" },
   { id: "ppknc-uud-musyawarah", label: "Melaksanakan musyawarah untuk membuat kesepakatan & aturan bersama serta menerapkannya di keluarga & sekolah" },
   // C. Bhinneka Tunggal Ika
-  { id: "ppknc-bti-keberagaman", label: "Menyajikan hasil identifikasi sikap menghormati, menjaga, & melestarikan keberagaman budaya dalam bingkai Bhinneka Tunggal Ika" },
+  { id: "ppknc-bti-keberagaman", label: "Menyajikan hasil identifikasi sikap menghormati, menjaga, & melestarikan keberagaman budaya sesuai semboyan dalam bingkai Bhinneka Tunggal Ika di lingkungan sekitar" },
   // D. NKRI
   { id: "ppknc-nkri-wilayah", label: "Mengenal wilayah (kabupaten/kota, provinsi) sebagai bagian NKRI" },
   { id: "ppknc-nkri-gotongroyong", label: "Perilaku gotong royong untuk menjaga persatuan sebagai wujud bela negara" },
