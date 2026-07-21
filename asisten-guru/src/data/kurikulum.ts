@@ -330,38 +330,22 @@ const IPAS_FASE_C_TOPIK: Topik[] = [
 // Menulis–Mempresentasikan. Granularitas CP-murni: 1 kompetensi = 1 topik.
 const BING_FASE_B_TOPIK: Topik[] = [
   // A. Menyimak – Berbicara
-  { id: "bingb-sb-interaksi", label: "Berinteraksi dalam bahasa Inggris pada situasi sosial & kelas yang makin luas namun rutin, dengan kalimat berpola sesuai konteks" },
-  { id: "bingb-sb-partisipasi", label: "Mengubah/mengganti sebagian elemen kalimat untuk berpartisipasi dalam rutinitas kelas (menyampaikan perasaan, kebutuhan, meminta pertolongan)" },
-  { id: "bingb-sb-idepokok", label: "Memahami ide pokok informasi lisan dengan bantuan visual & kosakata sederhana" },
-  { id: "bingb-sb-instruksi", label: "Mengikuti rangkaian instruksi sederhana terkait prosedur kelas & aktivitas belajar dengan bantuan visual" },
+  { id: "bingb-sb", label: "Memahami & merespon teks lisan atau teks multimodal sederhana tentang kehidupan sehari-hari (verbal/non-verbal) sesuai konteks" },
   // B. Membaca – Memirsa
-  { id: "bingb-bm-kata", label: "Memahami kata-kata yang sering digunakan sehari-hari dengan bantuan gambar/ilustrasi" },
-  { id: "bingb-bm-teks", label: "Membaca & memberikan respons terhadap teks pendek sederhana & familiar (tulisan/digital, termasuk visual, multimodal, atau interaktif)" },
+  { id: "bingb-bm", label: "Memahami teks tulis pendek sederhana atau teks multimodal tentang kehidupan sehari-hari & meresponsnya (verbal/non-verbal) sesuai konteks" },
   // C. Menulis – Mempresentasikan
-  { id: "bingb-tm-ide", label: "Mengomunikasikan ide & pengalaman melalui gambar & salinan tulisan" },
-  { id: "bingb-tm-teks", label: "Menghasilkan teks deskripsi & prosedur sederhana menggunakan kata/frasa sederhana & gambar (dengan bantuan guru)" },
-  { id: "bingb-tm-kosakata", label: "Menulis kosakata sederhana terkait lingkungan kelas & rumah dengan ejaan ciptaan sendiri" },
+  { id: "bingb-tm", label: "Mengomunikasikan gagasan tentang topik sehari-hari dalam teks tulis pendek atau teks multimodal sesuai konteks" },
 ];
 
 // Topik Bahasa Inggris Fase C (Kelas 5 & 6) — diturunkan PERSIS dari CP 3 elemen
 // (Kepka BSKAP 046/H/KR/2025, Ruang GTK). Granularitas CP-murni: 1 kompetensi = 1 topik.
 const BING_FASE_C_TOPIK: Topik[] = [
   // A. Menyimak – Berbicara
-  { id: "bingc-sb-interaksi", label: "Berinteraksi dengan kalimat berpola tertentu pada situasi sosial & kelas yang makin luas namun rutin" },
-  { id: "bingc-sb-partisipasi", label: "Mengubah/mengganti sebagian elemen kalimat untuk berpartisipasi dalam aktivitas belajar (membuat pertanyaan sederhana, meminta klarifikasi & izin)" },
-  { id: "bingc-sb-strategi", label: "Menggunakan strategi untuk mengidentifikasi informasi inti (meminta pengulangan, berbicara lebih pelan, atau bertanya arti kata)" },
-  { id: "bingc-sb-instruksi", label: "Mengikuti rangkaian instruksi sederhana terkait prosedur kelas & aktivitas belajar" },
+  { id: "bingc-sb", label: "Memahami alur informasi teks secara keseluruhan & merespon teks lisan atau teks multimodal sederhana tentang topik sehari-hari secara lisan dengan kalimat pendek & sederhana sesuai konteks" },
   // B. Membaca – Memirsa
-  { id: "bingc-bm-kata", label: "Memahami kata sehari-hari & kata baru dengan bantuan gambar/ilustrasi serta kalimat dalam konteks yang dipahami" },
-  { id: "bingc-bm-teks", label: "Membaca & memberikan respons terhadap beragam teks pendek sederhana & familiar (tulisan/digital, termasuk visual, multimodal, atau interaktif)" },
-  { id: "bingc-bm-informasi", label: "Menemukan informasi dalam sebuah kalimat & menjelaskan topik teks yang dibaca atau diamati" },
+  { id: "bingc-bm", label: "Memahami alur informasi secara keseluruhan, gagasan utama & informasi rinci dari beragam teks pendek atau teks multimodal tentang topik sehari-hari & meresponnya sesuai konteks" },
   // C. Menulis – Mempresentasikan
-  { id: "bingc-tm-ide", label: "Mengomunikasikan ide & pengalaman melalui salinan tulisan & tulisan sederhana sendiri serta menunjukkan perkembangan pemahaman proses menulis" },
-  { id: "bingc-tm-kaidah", label: "Menunjukkan kesadaran awal bahwa teks bahasa Inggris ditulis dengan kaidah (konvensi) sesuai konteks & tujuannya" },
-  { id: "bingc-tm-teks", label: "Menghasilkan teks deskripsi, cerita, & prosedur sederhana menggunakan kalimat berpola tertentu (dengan bantuan guru)" },
-  { id: "bingc-tm-tandabaca", label: "Menunjukkan kesadaran pentingnya tanda baca dasar & penggunaan huruf kapital" },
-  { id: "bingc-tm-bunyihuruf", label: "Menunjukkan pemahaman hubungan bunyi-huruf & ejaan kata-kata yang umum digunakan" },
-  { id: "bingc-tm-kosakata", label: "Menggunakan kosakata terkait lingkungan kelas & rumah serta strategi dasar menulis (menyalin kata/frasa, menggunakan gambar, bertanya cara menulis kata)" },
+  { id: "bingc-tm", label: "Mengomunikasikan ide & pengalaman melalui berbagai jenis teks tulis sederhana atau teks multimodal tentang topik sehari-hari sesuai konteks" },
 ];
 
 // Topik Pendidikan Agama Islam & Budi Pekerti Fase A (Kelas 1 & 2) — diturunkan
