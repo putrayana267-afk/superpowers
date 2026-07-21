@@ -295,37 +295,37 @@ const PJOK_FASE_C_TOPIK: Topik[] = [
 ];
 
 // Topik IPAS Fase B (Kelas 3 & 4) — diturunkan PERSIS dari CP elemen
-// "Pemahaman IPAS" (Kepka BSKAP 046/H/KR/2025, Ruang GTK). Tiap topik = satu
-// klausa antar-titik-koma di CP. Elemen "Keterampilan proses" sengaja TIDAK
-// dijadikan topik (metode lintas-materi, bukan pokok bahasan).
+// "Pemahaman IPAS" pada salinan resmi PDF Kepka BSKAP No. 046/H/KR/2025
+// (Lampiran II, hlm. 149-151). Tiap topik = satu klausa antar-titik-koma di CP.
+// Elemen "Keterampilan proses" sengaja TIDAK dijadikan topik (metode
+// lintas-materi, bukan pokok bahasan).
 const IPAS_FASE_B_TOPIK: Topik[] = [
   { id: "ipasb-pancaindra", label: "Bentuk & fungsi pancaindra" },
   { id: "ipasb-siklushidup", label: "Siklus hidup makhluk hidup & upaya pelestariannya" },
-  { id: "ipasb-sda-iklim", label: "Pelestarian sumber daya alam sebagai upaya mitigasi perubahan iklim" },
-  { id: "ipasb-wujudzat-energi", label: "Proses perubahan wujud zat & perubahan bentuk energi" },
-  { id: "ipasb-sumberenergi", label: "Sumber & bentuk energi serta perubahan bentuk energi dalam kehidupan sehari-hari" },
-  { id: "ipasb-magnet-gaya", label: "Gejala kemagnetan; jenis gaya & pengaruhnya terhadap arah, gerak, & bentuk benda" },
+  { id: "ipasb-sda-iklim", label: "Solusi masalah pelestarian sumber daya alam sebagai upaya mitigasi perubahan iklim" },
+  { id: "ipasb-wujudzat", label: "Proses perubahan wujud zat" },
+  { id: "ipasb-sumberenergi", label: "Sumber & bentuk energi serta proses perubahan bentuk energi dalam kehidupan sehari-hari" },
+  { id: "ipasb-gaya", label: "Jenis gaya & pengaruhnya terhadap arah, gerak, & bentuk benda" },
   { id: "ipasb-perantugas-sosial", label: "Peran, tugas, & tanggung jawab serta interaksi sosial di sekitar tempat tinggal & sekolah" },
-  { id: "ipasb-letakwilayah", label: "Letak kota/kabupaten & provinsi tempat tinggal melalui peta konvensional/digital" },
-  { id: "ipasb-bentangalam", label: "Ragam bentang alam serta keterkaitannya dengan profesi masyarakat" },
-  { id: "ipasb-budayahayati", label: "Keanekaragaman hayati, keragaman budaya, kearifan lokal, sejarah keluarga & masyarakat, serta upaya pelestariannya" },
-  { id: "ipasb-kebutuhan-uang", label: "Perbedaan kebutuhan & keinginan; nilai mata uang & fungsinya" },
+  { id: "ipasb-letakwilayah", label: "Letak kabupaten/kota & provinsi tempat tinggal melalui peta konvensional/digital" },
+  { id: "ipasb-bentangalam", label: "Ragam bentang alam & keterkaitannya dengan profesi masyarakat, ragam budaya, serta upaya melestarikannya" },
+  { id: "ipasb-sejarahmasyarakat", label: "Sejarah masyarakat di lingkungan tempat tinggal" },
+  { id: "ipasb-uang", label: "Nilai mata uang & fungsinya serta cara mengelola keuangan secara bijak" },
 ];
 
 // Topik IPAS Fase C (Kelas 5 & 6) — diturunkan PERSIS dari CP elemen
-// "Pemahaman IPAS" (Kepka BSKAP 046/H/KR/2025, Ruang GTK). Tiap topik = satu
-// klausa antar-titik-koma di CP.
+// "Pemahaman IPAS" pada salinan resmi PDF Kepka BSKAP No. 046/H/KR/2025
+// (Lampiran II, hlm. 151-153). Tiap topik = satu klausa antar-titik-koma di CP.
 const IPAS_FASE_C_TOPIK: Topik[] = [
   { id: "ipasc-organ", label: "Sistem organ tubuh manusia & cara menjaga kesehatan tubuh" },
   { id: "ipasc-biotik-abiotik", label: "Hubungan komponen biotik & abiotik serta pengaruhnya terhadap ekosistem" },
-  { id: "ipasc-siklusair", label: "Siklus air & kaitannya dengan upaya menjaga ketersediaan air" },
   { id: "ipasc-bunyicahaya", label: "Fenomena gelombang bunyi & cahaya dalam kehidupan sehari-hari" },
-  { id: "ipasc-hematenergi", label: "Penghematan energi & pemanfaatan sumber energi alternatif sebagai upaya mitigasi perubahan iklim" },
+  { id: "ipasc-hematenergi", label: "Penghematan energi & pemanfaatan sumber energi alternatif dari sumber daya di sekitar sebagai upaya mitigasi perubahan iklim" },
   { id: "ipasc-tatasurya", label: "Sistem tata surya serta kaitannya dengan rotasi & revolusi bumi" },
   { id: "ipasc-geografis-id", label: "Letak & kondisi geografis negara Indonesia melalui peta konvensional/digital" },
   { id: "ipasc-pahlawan", label: "Sejarah perjuangan para pahlawan di lingkungan sekitar tempat tinggal" },
-  { id: "ipasc-budaya-kebinekaan", label: "Keragaman budaya nasional dalam konteks kebinekaan & nilai kearifan lokal di wilayahnya" },
-  { id: "ipasc-ekonomi", label: "Kegiatan ekonomi masyarakat & ekonomi kreatif di lingkungan sekitar" },
+  { id: "ipasc-budaya-kebinekaan", label: "Keragaman budaya nasional dalam konteks kebhinekaan berdasarkan nilai kearifan lokal di wilayah tempat tinggal" },
+  { id: "ipasc-ekonomi", label: "Kegiatan ekonomi masyarakat di lingkungan sekitar" },
 ];
 
 // Topik Bahasa Inggris Fase B (Kelas 3 & 4) — diturunkan PERSIS dari CP 3 elemen
