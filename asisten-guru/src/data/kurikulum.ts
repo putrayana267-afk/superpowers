@@ -492,25 +492,58 @@ const SENIRUPA_FASE_C_TOPIK: Topik[] = [
   { id: "senirupa-c-berdampak-minat", label: "Menghasilkan karya seni rupa yang mewakili minatnya" },
 ];
 
-// Topik Seni Tari Fase A (Kelas 1 & 2) — VERBATIM dari Rumusan CP
-// (portal Ruang GTK, guru.kemendikdasmen.go.id, tab "Rumusan CP", Seni Tari Fase A).
-// Label = teks capaian per elemen apa adanya; belum diverifikasi ke PDF primer → draft.
+// Topik Seni Tari Fase A (Kelas 1 & 2) — diturunkan PERSIS dari teks CP pada
+// salinan resmi PDF Kepka BSKAP No. 046/H/KR/2025 (Lampiran II, hlm. 256-257).
+// 5 elemen; 1 kompetensi CP = 1 topik (kalimat ber-"serta" dipecah per kompetensi).
 const SENITARI_FASE_A_TOPIK: Topik[] = [
   // Mengalami (Experiencing)
-  { id: "senitari-a-mengalami-amati", label: "Mengamati bentuk tari sebagai media komunikasi" },
-  { id: "senitari-a-mengalami-gerakruang", label: "Mengeksplorasi unsur gerak & ruang dalam tari" },
-  { id: "senitari-a-mengalami-tenagawaktu", label: "Mengeksplorasi unsur tenaga & waktu dalam tari" },
-  { id: "senitari-a-mengalami-lokomotor", label: "Mengeksplorasi gerak di tempat & gerak berpindah" },
+  { id: "senitari-a-mengalami-bentuktari", label: "Mengenal bentuk tari sebagai media komunikasi" },
+  { id: "senitari-a-mengalami-unsurutama", label: "Mengembangkan kesadaran diri dalam bereksplorasi unsur utama tari meliputi gerak, ruang, tenaga, waktu, gerak di tempat & gerak berpindah" },
   // Merefleksikan (Reflecting)
-  { id: "senitari-a-merefleksikan-nilaiunsur", label: "Mengenal & menilai unsur utama tari" },
-  { id: "senitari-a-merefleksikan-pencapaian", label: "Mengemukakan pencapaian diri secara lisan, tulisan & kinestetik" },
-  // Berpikir & Bekerja Secara Artistik (Thinking and Working Artistically)
-  { id: "senitari-a-artistik-ragamnorma", label: "Meragakan gerak tari sesuai norma dengan percaya diri" },
-  { id: "senitari-a-artistik-ekspresi", label: "Mengekspresikan ide & perasaan kepada penonton" },
+  { id: "senitari-a-merefleksikan-identifikasi", label: "Mengidentifikasi unsur utama tari meliputi gerak, ruang, tenaga, waktu, gerak di tempat & gerak berpindah" },
+  { id: "senitari-a-merefleksikan-pencapaian", label: "Mengemukakan pencapaian diri secara lisan, tulisan, & kinestetik" },
+  // Berpikir & Bekerja Artistik (Thinking and Working Artistically)
+  { id: "senitari-a-artistik-meragakan", label: "Meragakan hasil gerak berdasarkan etika sebagai penampil & penonton dengan keyakinan & percaya diri saat mengekspresikan ide, perasaan kepada penonton atau lingkungan sekitar" },
   // Menciptakan (Creating)
-  { id: "senitari-a-menciptakan-geraksederhana", label: "Membuat gerak sederhana yang memiliki kesatuan gerak dari unsur utama tari" },
+  { id: "senitari-a-menciptakan-kesatuangerak", label: "Mengembangkan unsur utama tari (gerak, ruang, waktu, & tenaga), gerak di tempat, & gerak berpindah untuk membuat gerak sederhana yang memiliki kesatuan gerak yang indah" },
   // Berdampak (Impacting)
-  { id: "senitari-a-berdampak-antusias", label: "Menumbuhkan rasa ingin tahu & antusiasme dalam pembelajaran tari" },
+  { id: "senitari-a-berdampak-antusias", label: "Menerima proses pembelajaran sehingga tumbuh rasa ingin tahu & dapat menunjukkan antusiasme yang berdampak pada kemampuan diri dalam menyelesaikan aktivitas pembelajaran tari" },
+];
+
+// Topik Seni Tari Fase B (Kelas 3 & 4) — diturunkan PERSIS dari teks CP pada
+// salinan resmi PDF Kepka BSKAP No. 046/H/KR/2025 (Lampiran II, hlm. 257).
+// 5 elemen; 1 kompetensi CP = 1 topik (kalimat ber-"serta" dipecah per kompetensi).
+const SENITARI_FASE_B_TOPIK: Topik[] = [
+  // Mengalami (Experiencing)
+  { id: "senitari-b-mengalami-penyajian", label: "Mengamati bentuk penyajian tari berdasarkan latar belakang" },
+  { id: "senitari-b-mengalami-levelarah", label: "Mengeksplorasi unsur utama tari sesuai level gerak & perubahan arah hadap" },
+  // Merefleksikan (Reflecting)
+  { id: "senitari-b-merefleksikan-identifikasi", label: "Mengidentifikasi unsur utama tari sesuai level gerak & perubahan arah hadap" },
+  { id: "senitari-b-merefleksikan-pencapaian", label: "Menilai pencapaian diri saat melakukan aktivitas pembelajaran tari" },
+  // Berpikir & Bekerja Artistik (Thinking and Working Artistically)
+  { id: "senitari-b-artistik-kooperatif", label: "Meragakan hasil tari dengan bekerja secara kooperatif untuk mengembangkan kemampuan bekerja sama & saling menghargai demi tercapainya tujuan bersama" },
+  // Menciptakan (Creating)
+  { id: "senitari-b-menciptakan-kembanggerak", label: "Mengembangkan gerak dengan unsur utama tari, level, & perubahan arah hadap" },
+  // Berdampak (Impacting)
+  { id: "senitari-b-berdampak-usaha", label: "Menerima proses pembelajaran sehingga tumbuh rasa ingin tahu & dapat menunjukkan usaha yang berdampak pada kemampuan diri dalam menyelesaikan aktivitas pembelajaran tari" },
+];
+
+// Topik Seni Tari Fase C (Kelas 5 & 6) — diturunkan PERSIS dari teks CP pada
+// salinan resmi PDF Kepka BSKAP No. 046/H/KR/2025 (Lampiran II, hlm. 258).
+// 5 elemen; 1 kompetensi CP = 1 topik (kalimat ber-"serta" dipecah per kompetensi).
+// Ejaan "menunjukan" (elemen 3.3) mengikuti dokumen 046 apa adanya.
+const SENITARI_FASE_C_TOPIK: Topik[] = [
+  // Mengalami (Experiencing)
+  { id: "senitari-c-mengalami-taritradisi", label: "Mengamati berbagai bentuk tari tradisi yang dapat digunakan untuk mengekspresikan diri melalui unsur pendukung tari" },
+  // Merefleksikan (Reflecting)
+  { id: "senitari-c-merefleksikan-unsurpendukung", label: "Mengidentifikasi unsur pendukung tari dalam tari tradisi" },
+  { id: "senitari-c-merefleksikan-pencapaian", label: "Menghargai hasil pencapaian diri dengan mempertimbangkan pendapat orang lain" },
+  // Berpikir & Bekerja Artistik (Thinking and Working Artistically)
+  { id: "senitari-c-artistik-rangkaiangerak", label: "Meragakan hasil rangkaian gerak tari menggunakan unsur pendukung tari dengan menunjukan kerja sama & berperan aktif dalam kelompok" },
+  // Menciptakan (Creating)
+  { id: "senitari-c-menciptakan-desainkelompok", label: "Merangkai gerak tari yang berpijak pada tradisi/kreasi dengan menerapkan desain kelompok" },
+  // Berdampak (Impacting)
+  { id: "senitari-c-berdampak-menanggapi", label: "Menanggapi kejadian-kejadian di lingkungan sekitar melalui tari yang disajikan kepada penonton atau masyarakat sekitar" },
 ];
 
 // Topik Seni Teater Fase A (Kelas 1 & 2) — diturunkan PERSIS dari teks CP pada
@@ -1235,14 +1268,14 @@ export const KURIKULUM: KurikulumEntry[] = [
     topik: SENIRUPA_FASE_C_TOPIK,
   },
 
-  // ── Seni Tari SD/MI (Fase A) — draft, sumber portal Ruang GTK ──
+  // ── Seni Tari SD/MI (Fase A) — sumber CP Kepka BSKAP No. 046/H/KR/2025 ──
   {
     jenjang: "SD/MI",
     kelompok: "Umum/Nasional (Kemendikbud)",
     mapel: "Seni Tari",
     kelas: "1",
     status: "draft",
-    sumber: "Portal Ruang GTK (guru.kemendikdasmen.go.id) — Rumusan CP Seni Tari Fase A.",
+    sumber: "CP Seni Tari Fase A — Kepka BSKAP No. 046/H/KR/2025",
     topik: SENITARI_FASE_A_TOPIK,
   },
   {
@@ -1251,8 +1284,48 @@ export const KURIKULUM: KurikulumEntry[] = [
     mapel: "Seni Tari",
     kelas: "2",
     status: "draft",
-    sumber: "Portal Ruang GTK (guru.kemendikdasmen.go.id) — Rumusan CP Seni Tari Fase A.",
+    sumber: "CP Seni Tari Fase A — Kepka BSKAP No. 046/H/KR/2025",
     topik: SENITARI_FASE_A_TOPIK,
+  },
+
+  // ── Seni Tari SD/MI (Fase B) — sumber CP Kepka BSKAP No. 046/H/KR/2025 ──
+  {
+    jenjang: "SD/MI",
+    kelompok: "Umum/Nasional (Kemendikbud)",
+    mapel: "Seni Tari",
+    kelas: "3",
+    status: "draft",
+    sumber: "CP Seni Tari Fase B — Kepka BSKAP No. 046/H/KR/2025",
+    topik: SENITARI_FASE_B_TOPIK,
+  },
+  {
+    jenjang: "SD/MI",
+    kelompok: "Umum/Nasional (Kemendikbud)",
+    mapel: "Seni Tari",
+    kelas: "4",
+    status: "draft",
+    sumber: "CP Seni Tari Fase B — Kepka BSKAP No. 046/H/KR/2025",
+    topik: SENITARI_FASE_B_TOPIK,
+  },
+
+  // ── Seni Tari SD/MI (Fase C) — sumber CP Kepka BSKAP No. 046/H/KR/2025 ──
+  {
+    jenjang: "SD/MI",
+    kelompok: "Umum/Nasional (Kemendikbud)",
+    mapel: "Seni Tari",
+    kelas: "5",
+    status: "draft",
+    sumber: "CP Seni Tari Fase C — Kepka BSKAP No. 046/H/KR/2025",
+    topik: SENITARI_FASE_C_TOPIK,
+  },
+  {
+    jenjang: "SD/MI",
+    kelompok: "Umum/Nasional (Kemendikbud)",
+    mapel: "Seni Tari",
+    kelas: "6",
+    status: "draft",
+    sumber: "CP Seni Tari Fase C — Kepka BSKAP No. 046/H/KR/2025",
+    topik: SENITARI_FASE_C_TOPIK,
   },
 
   // ── Seni Teater SD/MI (Fase A) — sumber CP Kepka BSKAP No. 046/H/KR/2025 ──
