@@ -513,23 +513,54 @@ const SENITARI_FASE_A_TOPIK: Topik[] = [
   { id: "senitari-a-berdampak-antusias", label: "Menumbuhkan rasa ingin tahu & antusiasme dalam pembelajaran tari" },
 ];
 
-// Topik Seni Teater Fase A (Kelas 1 & 2) — derivasi SETIA (makna) dari Rumusan CP.
-// (portal Ruang GTK, guru.kemendikdasmen.go.id, tab "Rumusan CP", Seni Teater Fase A).
-// Verbatim CP disimpan di ringkasan sesi (bukti sumber), BUKAN di label (§4.7).
+// Topik Seni Teater Fase A (Kelas 1 & 2) — diturunkan PERSIS dari teks CP pada
+// salinan resmi PDF Kepka BSKAP No. 046/H/KR/2025 (Lampiran II, hlm. 263-264).
+// 5 elemen; 1 kompetensi CP = 1 topik (kalimat ber-"serta" dipecah per kompetensi).
 const SENITEATER_FASE_A_TOPIK: Topik[] = [
   // Mengalami (Experiencing)
-  { id: "seniteater-a-mengalami-amatirespons", label: "Mengamati & merespons gerak tubuh serta suara di sekitar" },
-  { id: "seniteater-a-mengalami-mimesis", label: "Meniru gerak tubuh & suara sebagai media komunikasi emosi, personifikasi identitas diri/orang sekitar & mimesis objek" },
-  { id: "seniteater-a-mengalami-olahtubuhvokal", label: "Olah tubuh & vokal untuk mengenal fungsi gerak tubuh serta melatih ekspresi wajah" },
-  // Merefleksikan (Reflecting)
+  { id: "seniteater-a-mengalami-geraksuara", label: "Mengamati, merespons, & meniru gerak tubuh dan suara sebagai media untuk mengomunikasikan emosi" },
+  // Merefleksikan (Reflection)
   { id: "seniteater-a-merefleksikan-pengalaman", label: "Mengenali pengalaman & emosi selama proses berseni teater" },
   { id: "seniteater-a-merefleksikan-ceritakarya", label: "Menceritakan sebuah karya dengan kosakata sehari-hari" },
-  // Berpikir & Bekerja Secara Artistik (Thinking and Working Artistically)
-  { id: "seniteater-a-artistik-tatapanggung", label: "Mengenal bentuk & fungsi tata artistik panggung dalam pertunjukan" },
-  // Menciptakan (Making/Creating)
-  { id: "seniteater-a-menciptakan-lakon", label: "Menirukan tokoh di sekitar atau rekaan lalu memainkannya sebagai pelakon dalam lakon pertunjukan" },
+  // Berpikir & Bekerja Artistik (Thinking and Working Artistically)
+  { id: "seniteater-a-artistik-properti", label: "Mengenal jenis-jenis properti/alat bantu yang dapat mendukung cerita/permainan peran" },
+  // Menciptakan (Creating)
+  { id: "seniteater-a-menciptakan-peranlakon", label: "Mengeksplorasi beragam peran mengenai tokoh di sekitar atau rekaan & memainkan sebuah lakon pertunjukan" },
   // Berdampak (Impacting)
-  { id: "seniteater-a-berdampak-karya", label: "Menghasilkan karya teater (naskah/lakon) dari minat, pengamatan & pengalaman yang berdampak positif bagi dirinya" },
+  { id: "seniteater-a-berdampak-geraklagu", label: "Memainkan gerak & lagu sesuai arahan dari pendidik" },
+];
+
+// Topik Seni Teater Fase B (Kelas 3 & 4) — diturunkan PERSIS dari teks CP pada
+// salinan resmi PDF Kepka BSKAP No. 046/H/KR/2025 (Lampiran II, hlm. 264-265).
+// 5 elemen; 1 kompetensi CP = 1 topik.
+const SENITEATER_FASE_B_TOPIK: Topik[] = [
+  // Mengalami (Experiencing)
+  { id: "seniteater-b-mengalami-teknikakting", label: "Mengenal teknik dasar akting (pemeranan) melalui proses meniru (mimesis), mengenal gerak tubuh, suara/vokal sesuai tokoh/peran atau perilaku objek sekitar" },
+  // Merefleksikan (Reflection)
+  { id: "seniteater-b-merefleksikan-lingkungan", label: "Mengenali lingkungan sekitarnya & pengalaman dalam bermain teater" },
+  // Bekerja Secara Artistik (Thinking and Working Artistically)
+  { id: "seniteater-b-artistik-properti", label: "Menggunakan properti yang sesuai dengan tokoh yang diperankan" },
+  // Menciptakan (Creating)
+  { id: "seniteater-b-menciptakan-lakon", label: "Mengamati berbagai peran, mengenal tokoh di sekitar, & memainkan sebuah lakon dalam cerita" },
+  // Berdampak (Impacting)
+  { id: "seniteater-b-berdampak-bentuklakon", label: "Mengenal bentuk lakon dalam bermain teater" },
+];
+
+// Topik Seni Teater Fase C (Kelas 5 & 6) — diturunkan PERSIS dari teks CP pada
+// salinan resmi PDF Kepka BSKAP No. 046/H/KR/2025 (Lampiran II, hlm. 265-266).
+// 5 elemen; 1 kompetensi CP = 1 topik (kalimat ", dan melakukan" dipecah per kompetensi).
+const SENITEATER_FASE_C_TOPIK: Topik[] = [
+  // Mengalami (Experiencing)
+  { id: "seniteater-c-mengalami-improvisasi", label: "Melakukan permainan peran berkelompok, seperti improvisasi untuk melatih aksi & reaksi dalam mengelaborasi cerita atau tokoh" },
+  { id: "seniteater-c-mengalami-karakter", label: "Melakukan pengenalan karakter melalui pengamatan kebiasaan tokoh yang diperankan" },
+  // Merefleksikan (Reflection)
+  { id: "seniteater-c-merefleksikan-pendapat", label: "Menceritakan pendapatnya tentang sebuah cerita sederhana (penokohan, perwatakan)" },
+  // Berpikir & Bekerja Artistik (Thinking and Working Artistically)
+  { id: "seniteater-c-artistik-properti", label: "Mengidentifikasi properti sederhana berdasarkan cerita yang akan dimainkan" },
+  // Menciptakan (Creating)
+  { id: "seniteater-c-menciptakan-ragamperan", label: "Mengenal & memainkan ragam peran dari cerita sederhana berdasarkan hasil pengamatan" },
+  // Berdampak (Impacting)
+  { id: "seniteater-c-berdampak-memerankan", label: "Memerankan lakon secara individu maupun berkelompok berdasarkan minat, pengamatan, & pengalaman" },
 ];
 
 // Topik Seni Musik Fase C (Kelas 5 & 6) — diturunkan PERSIS dari teks CP pada
@@ -1224,14 +1255,14 @@ export const KURIKULUM: KurikulumEntry[] = [
     topik: SENITARI_FASE_A_TOPIK,
   },
 
-  // ── Seni Teater SD/MI (Fase A) — draft, sumber portal Ruang GTK ──
+  // ── Seni Teater SD/MI (Fase A) — sumber CP Kepka BSKAP No. 046/H/KR/2025 ──
   {
     jenjang: "SD/MI",
     kelompok: "Umum/Nasional (Kemendikbud)",
     mapel: "Seni Teater",
     kelas: "1",
     status: "draft",
-    sumber: "Portal Ruang GTK (guru.kemendikdasmen.go.id) — Rumusan CP Seni Teater Fase A.",
+    sumber: "CP Seni Teater Fase A — Kepka BSKAP No. 046/H/KR/2025",
     topik: SENITEATER_FASE_A_TOPIK,
   },
   {
@@ -1240,8 +1271,48 @@ export const KURIKULUM: KurikulumEntry[] = [
     mapel: "Seni Teater",
     kelas: "2",
     status: "draft",
-    sumber: "Portal Ruang GTK (guru.kemendikdasmen.go.id) — Rumusan CP Seni Teater Fase A.",
+    sumber: "CP Seni Teater Fase A — Kepka BSKAP No. 046/H/KR/2025",
     topik: SENITEATER_FASE_A_TOPIK,
+  },
+
+  // ── Seni Teater SD/MI (Fase B) — sumber CP Kepka BSKAP No. 046/H/KR/2025 ──
+  {
+    jenjang: "SD/MI",
+    kelompok: "Umum/Nasional (Kemendikbud)",
+    mapel: "Seni Teater",
+    kelas: "3",
+    status: "draft",
+    sumber: "CP Seni Teater Fase B — Kepka BSKAP No. 046/H/KR/2025",
+    topik: SENITEATER_FASE_B_TOPIK,
+  },
+  {
+    jenjang: "SD/MI",
+    kelompok: "Umum/Nasional (Kemendikbud)",
+    mapel: "Seni Teater",
+    kelas: "4",
+    status: "draft",
+    sumber: "CP Seni Teater Fase B — Kepka BSKAP No. 046/H/KR/2025",
+    topik: SENITEATER_FASE_B_TOPIK,
+  },
+
+  // ── Seni Teater SD/MI (Fase C) — sumber CP Kepka BSKAP No. 046/H/KR/2025 ──
+  {
+    jenjang: "SD/MI",
+    kelompok: "Umum/Nasional (Kemendikbud)",
+    mapel: "Seni Teater",
+    kelas: "5",
+    status: "draft",
+    sumber: "CP Seni Teater Fase C — Kepka BSKAP No. 046/H/KR/2025",
+    topik: SENITEATER_FASE_C_TOPIK,
+  },
+  {
+    jenjang: "SD/MI",
+    kelompok: "Umum/Nasional (Kemendikbud)",
+    mapel: "Seni Teater",
+    kelas: "6",
+    status: "draft",
+    sumber: "CP Seni Teater Fase C — Kepka BSKAP No. 046/H/KR/2025",
+    topik: SENITEATER_FASE_C_TOPIK,
   },
 ];
 
