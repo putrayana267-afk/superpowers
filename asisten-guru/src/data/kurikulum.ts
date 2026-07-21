@@ -234,66 +234,64 @@ const PPKN_FASE_C_TOPIK: Topik[] = [
   { id: "ppknc-nkri-gotongroyong", label: "Perilaku gotong royong untuk menjaga persatuan sebagai wujud bela negara" },
 ];
 
-// Topik PJOK Fase A (Kelas 1 & 2) — diturunkan PERSIS dari CP (Kepka BSKAP
-// 046/H/KR/2025, Ruang GTK). 4 elemen: Terampil Bergerak, Belajar Melalui Gerak,
-// Bergaya Hidup Aktif, Memilih Hidup yang Menyehatkan. Semua topik = CP-inti.
+// Topik PJOK Fase A (Kelas 1 & 2) — diturunkan PERSIS dari teks CP pada salinan
+// resmi PDF Kepka BSKAP No. 046/H/KR/2025 (Lampiran II, hlm. 310-311). 4 elemen:
+// Terampil Bergerak, Belajar Melalui Gerak, Bergaya Hidup Aktif, Memilih Hidup
+// yang Menyehatkan. 1 kompetensi CP = 1 topik.
 const PJOK_FASE_A_TOPIK: Topik[] = [
   // A. Terampil Bergerak
-  { id: "pjok-tb-fundamental", label: "Mempraktikkan keterampilan gerak fundamental dalam berbagai situasi gerak" },
-  { id: "pjok-tb-eksplorasigerak", label: "Mengeksplorasi berbagai cara menggerakkan tubuh" },
-  { id: "pjok-tb-manipulasiobjek", label: "Memanipulasi objek dengan bagian tubuh & ruang yang berbeda serta menyimpulkan efektivitasnya" },
+  { id: "pjok-tb-fundamental", label: "Mempraktikkan keterampilan gerak fundamental & menerapkannya dalam berbagai situasi gerak yang berbeda" },
+  { id: "pjok-tb-strategigerak", label: "Mengeksplorasi berbagai strategi gerak" },
+  { id: "pjok-tb-konsepgerak", label: "Mengeksplorasi berbagai konsep gerak serta menyimpulkan efektivitasnya" },
   // B. Belajar Melalui Gerak
-  { id: "pjok-bmg-fairplay", label: "Mentaati & menerapkan peraturan untuk mengembangkan fair play dalam aktivitas jasmani" },
-  { id: "pjok-bmg-kolaborasi", label: "Menerapkan strategi kolaborasi dalam aktivitas jasmani" },
+  { id: "pjok-bmg-fairplay", label: "Menaati peraturan untuk menumbuhkan fair play dalam berbagai aktivitas jasmani" },
+  { id: "pjok-bmg-kolaborasi", label: "Menerapkan strategi kolaborasi ketika berpartisipasi dalam aktivitas jasmani" },
   // C. Bergaya Hidup Aktif
-  { id: "pjok-bha-partisipasi", label: "Berpartisipasi dalam berbagai aktivitas jasmani & mengeksplorasi manfaatnya" },
+  { id: "pjok-bha-partisipasi", label: "Berpartisipasi dalam berbagai aktivitas jasmani & mengidentifikasi manfaatnya" },
   // D. Memilih Hidup yang Menyehatkan
-  { id: "pjok-mhm-gayahidup", label: "Mengenali gaya hidup aktif dan sehat" },
-  { id: "pjok-mhm-gizi", label: "Mengenali manfaat makanan bergizi seimbang & informasi gizi pada produk makanan" },
-  { id: "pjok-mhm-risiko", label: "Mengenali situasi/potensi berisiko terhadap kesehatan & keselamatan serta strategi mencari bantuan kepada orang dewasa terpercaya" },
+  { id: "pjok-mhm-gayahidup", label: "Mengenali gaya hidup aktif & sehat" },
+  { id: "pjok-mhm-gizi", label: "Mengenali manfaat komponen makanan bergizi seimbang" },
+  { id: "pjok-mhm-risiko", label: "Mengenali situasi & potensi berisiko terhadap kesehatan & keselamatan serta strategi mencari bantuan kepada orang dewasa terpercaya" },
 ];
-
-// Topik PJOK Fase B (Kelas 3 & 4) — diturunkan PERSIS dari CP 4 elemen (Kepka
-// BSKAP 046/H/KR/2025, Ruang GTK): Terampil Bergerak, Belajar Melalui Gerak,
-// Bergaya Hidup Aktif, Memilih Hidup yang Menyehatkan. Granularitas seperti Fase A.
+// Topik PJOK Fase B (Kelas 3 & 4) — diturunkan PERSIS dari teks CP pada salinan
+// resmi PDF Kepka BSKAP No. 046/H/KR/2025 (Lampiran II, hlm. 311-312).
+// 4 elemen; 1 kompetensi CP = 1 topik.
 const PJOK_FASE_B_TOPIK: Topik[] = [
   // A. Terampil Bergerak
-  { id: "pjokb-tb-haluskan", label: "Menghaluskan keterampilan gerak fundamental & menerapkannya dalam situasi gerak baru" },
-  { id: "pjokb-tb-strategi", label: "Menerapkan & menyesuaikan strategi gerak untuk mencapai keterampilan gerak" },
-  { id: "pjokb-tb-konsep", label: "Memeragakan konsep gerak dalam rangkaian gerak" },
+  { id: "pjokb-tb-haluskan", label: "Menghaluskan keterampilan gerak fundamental & menerapkannya dalam situasi gerak yang baru" },
+  { id: "pjokb-tb-strategi", label: "Menyesuaikan strategi gerak untuk mendapatkan capaian keterampilan gerak" },
+  { id: "pjokb-tb-konsep", label: "Memperagakan berbagai konsep gerak yang dapat diterapkan dalam rangkaian gerak" },
   // B. Belajar Melalui Gerak
   { id: "pjokb-bmg-masalah", label: "Menerapkan strategi gerak sederhana & memecahkan masalah gerak" },
-  { id: "pjokb-bmg-fairplay", label: "Menyusun bersama & menerapkan peraturan untuk fair play saat berpartisipasi/merancang aktivitas jasmani" },
-  { id: "pjokb-bmg-peran", label: "Mempertunjukkan berbagai peran dengan cara terhormat untuk keberhasilan dalam aktivitas gerak kelompok/tim" },
+  { id: "pjokb-bmg-fairplay", label: "Menerapkan peraturan untuk menumbuhkan fair play dalam berbagai aktivitas jasmani" },
+  { id: "pjokb-bmg-partisipasipositif", label: "Berpartisipasi secara positif dalam kelompok atau tim dalam berbagai aktivitas jasmani" },
   // C. Bergaya Hidup Aktif
-  { id: "pjokb-bha-partisipasi", label: "Berpartisipasi dalam aktivitas jasmani & mengenali faktor yang membuatnya menyenangkan" },
+  { id: "pjokb-bha-partisipasi", label: "Berpartisipasi dalam berbagai aktivitas jasmani & mengenali faktor-faktor yang menyebabkan aktivitas jasmani menyenangkan" },
   // D. Memilih Hidup yang Menyehatkan
-  { id: "pjokb-mhm-risiko", label: "Mengenali risiko kesehatan akibat gaya hidup & aktivitas jasmani untuk pencegahannya" },
-  { id: "pjokb-mhm-gizi", label: "Mengeksplorasi pola makan sehat & bergizi seimbang untuk menunjang aktivitas sehari-hari" },
-  { id: "pjokb-mhm-cedera", label: "Mempraktikkan penanganan cedera ringan sesuai prinsip pertolongan pertama" },
+  { id: "pjokb-mhm-risiko", label: "Mengenali risiko kesehatan akibat gaya hidup & berbagai aktivitas jasmani untuk pencegahannya" },
+  { id: "pjokb-mhm-gizi", label: "Mengidentifikasi pola makan sehat & bergizi seimbang sesuai rekomendasi kesehatan untuk menunjang aktivitas sehari-hari" },
+  { id: "pjokb-mhm-cedera", label: "Mempraktikkan penanganan cedera ringan sesuai pemahaman tentang prinsip pertolongan pertama" },
 ];
-
-// Topik PJOK Fase C (Kelas 5 & 6) — diturunkan PERSIS dari CP 4 elemen (Kepka
-// BSKAP 046/H/KR/2025, Ruang GTK). Granularitas per-kompetensi seperti Fase A.
+// Topik PJOK Fase C (Kelas 5 & 6) — diturunkan PERSIS dari teks CP pada salinan
+// resmi PDF Kepka BSKAP No. 046/H/KR/2025 (Lampiran II, hlm. 312-313).
+// 4 elemen; 1 kompetensi CP = 1 topik.
 const PJOK_FASE_C_TOPIK: Topik[] = [
   // A. Terampil Bergerak
-  { id: "pjokc-tb-modifikasi", label: "Menyesuaikan & memodifikasi keterampilan gerak melintasi berbagai situasi gerak" },
-  { id: "pjokc-tb-transfer", label: "Mentransfer strategi gerak yang sudah dikuasai ke berbagai situasi gerak berbeda" },
-  { id: "pjokc-tb-investigasi", label: "Menginvestigasi berbagai konsep gerak untuk meningkatkan capaian keterampilan gerak" },
+  { id: "pjokc-tb-sesuaikan", label: "Menyesuaikan keterampilan gerak melintasi berbagai situasi gerak" },
+  { id: "pjokc-tb-transfer", label: "Mentransfer strategi gerak yang sudah dikuasai ke dalam berbagai situasi gerak yang berbeda" },
+  { id: "pjokc-tb-investigasi", label: "Menginvestigasi berbagai konsep gerak yang dapat diterapkan untuk meningkatkan capaian keterampilan gerak" },
   // B. Belajar Melalui Gerak
-  { id: "pjokc-bmg-efektivitas", label: "Memprediksi & menguji efektivitas penerapan strategi gerak dalam berbagai situasi gerak" },
-  { id: "pjokc-bmg-peraturan", label: "Merancang & menguji peraturan alternatif & modifikasi permainan untuk fair play & partisipasi inklusif" },
-  { id: "pjokc-bmg-kontribusi", label: "Berpartisipasi positif dalam kelompok/tim: kontribusi, mendorong orang lain, & menegosiasikan peran & tanggung jawab" },
+  { id: "pjokc-bmg-efektivitas", label: "Menguji efektivitas penerapan strategi gerak dalam berbagai situasi gerak" },
+  { id: "pjokc-bmg-peraturan", label: "Merancang peraturan alternatif & modifikasi permainan untuk mendukung fair play & partisipasi inklusif" },
+  { id: "pjokc-bmg-peran", label: "Menjalankan berbagai peran untuk mencapai keberhasilan kelompok atau tim dalam berbagai aktivitas jasmani" },
   // C. Bergaya Hidup Aktif
-  { id: "pjokc-bha-pengaruh", label: "Berpartisipasi dalam aktivitas jasmani untuk menggambarkan pengaruh aktivitas jasmani teratur terhadap kesehatan" },
-  { id: "pjokc-bha-luarruang", label: "Berpartisipasi dalam aktivitas jasmani di luar ruang/lingkungan alam & menggambarkan faktor yang mempengaruhi partisipasi" },
-  { id: "pjokc-bha-sedenter", label: "Mengeksplorasi rekomendasi aktivitas jasmani & pencegahan perilaku sedenter serta strategi pencapaiannya" },
+  { id: "pjokc-bha-pengaruh", label: "Berpartisipasi dalam aktivitas jasmani & menjelaskan pengaruh aktivitas jasmani yang teratur terhadap kesehatan" },
+  { id: "pjokc-bha-sedenter", label: "Mengidentifikasi rekomendasi aktivitas jasmani serta pencegahan perilaku sedenter" },
   // D. Memilih Hidup yang Menyehatkan
-  { id: "pjokc-mhm-risiko", label: "Mengidentifikasi risiko kesehatan akibat gaya hidup & pencegahan melalui aktivitas jasmani (rekomendasi otoritas kesehatan)" },
-  { id: "pjokc-mhm-gizi", label: "Memilih makanan sehat untuk menunjang aktivitas jasmani berdasarkan informasi kandungan gizi" },
-  { id: "pjokc-mhm-cedera", label: "Mempraktikkan penanganan cedera sedang sesuai prinsip pertolongan pertama" },
+  { id: "pjokc-mhm-risiko", label: "Mengidentifikasi & menghubungkan antara gaya hidup, risiko kesehatan, & aktivitas pencegahannya sesuai rekomendasi otoritas kesehatan" },
+  { id: "pjokc-mhm-gizi", label: "Menjelaskan pola makan sehat untuk menunjang aktivitas jasmani berdasarkan informasi kandungan gizi pada makanan" },
+  { id: "pjokc-mhm-cedera", label: "Mempraktikkan penanganan cedera sedang sesuai pemahaman tentang prinsip pertolongan pertama" },
 ];
-
 // Topik IPAS Fase B (Kelas 3 & 4) — diturunkan PERSIS dari CP elemen
 // "Pemahaman IPAS" pada salinan resmi PDF Kepka BSKAP No. 046/H/KR/2025
 // (Lampiran II, hlm. 149-151). Tiap topik = satu klausa antar-titik-koma di CP.
