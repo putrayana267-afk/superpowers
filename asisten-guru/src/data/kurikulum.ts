@@ -185,12 +185,12 @@ const PPKN_FASE_A_TOPIK: Topik[] = [
   { id: "ppkn-pcs-garuda", label: "Lambang negara Garuda Pancasila" },
   { id: "ppkn-pcs-simbolsila", label: "Simbol & bunyi sila-sila Pancasila" },
   { id: "ppkn-pcs-nilaikeluarga", label: "Menerapkan nilai Pancasila di lingkungan keluarga" },
-  { id: "ppkn-pcs-perumus", label: "Mengenal para perumus Pancasila" },
   // B. UUD NRI 1945
   { id: "ppkn-uud-aturankeluarga", label: "Mengenal aturan di lingkungan keluarga" },
   { id: "ppkn-uud-patuhcerita", label: "Mematuhi & menceritakan aturan keluarga" },
   // C. Bhinneka Tunggal Ika
-  { id: "ppkn-bti-identitas", label: "Menghargai identitas diri (jenis kelamin, hobi, bahasa, agama)" },
+  { id: "ppkn-bti-semboyan", label: "Mengenal semboyan Bhinneka Tunggal Ika" },
+  { id: "ppkn-bti-identitas", label: "Mengidentifikasi & menghargai identitas diri (jenis kelamin, hobi, bahasa, agama & kepercayaan)" },
   // D. NKRI
   { id: "ppkn-nkri-rumahsekolah", label: "Lingkungan rumah & sekolah sebagai bagian NKRI" },
   { id: "ppkn-nkri-kerjasama", label: "Bekerja sama menjaga lingkungan dalam keberagaman" },
