@@ -444,20 +444,52 @@ const SENIMUSIK_FASE_A_TOPIK: Topik[] = [
   { id: "senimusik-a-berdampak-senang", label: "Menunjukkan ekspresi senang dalam kegiatan bermusik" },
 ];
 
-// Topik Seni Rupa Fase A (Kelas 1 & 2) — diturunkan PERSIS dari Rumusan CP
-// (portal Ruang GTK, guru.kemendikdasmen.go.id, tab "Rumusan CP", Seni Rupa Fase A).
+// Topik Seni Rupa Fase A (Kelas 1 & 2) — diturunkan PERSIS dari teks CP pada
+// salinan resmi PDF Kepka BSKAP No. 046/H/KR/2025 (Lampiran II, hlm. 246-247).
+// 5 elemen; 1 kompetensi CP = 1 topik.
 const SENIRUPA_FASE_A_TOPIK: Topik[] = [
   // Mengalami (Experiencing)
-  { id: "senirupa-a-mengalami-unsurrupa", label: "Memahami unsur rupa di lingkungan sekitar & menyimpulkan hasil pemahaman atas dua unsur rupa" },
+  { id: "senirupa-a-mengalami-unsur", label: "Mengenali & menyebutkan unsur-unsur rupa dalam benda-benda di sekitar/karya seni rupa" },
   // Merefleksikan (Reflecting)
-  { id: "senirupa-a-merefleksikan-menilai", label: "Menilai karya & penciptaan karya seni rupa menggunakan kosakata sehari-hari" },
-  // Berpikir & Bekerja Secara Artistik (Thinking and Working Artistically)
-  { id: "senirupa-a-artistik-pengalamanvisual", label: "Menggunakan pengalaman visual sebagai sumber gagasan dalam berkarya" },
-  { id: "senirupa-a-artistik-eksplorasialatbahan", label: "Mengeksplorasi alat & bahan dasar yang tersedia di lingkungan sekitar" },
+  { id: "senirupa-a-merefleksikan-apresiasi", label: "Merefleksikan & mengapresiasi karya diri sendiri" },
+  // Berpikir & Bekerja Artistik (Thinking and Working Artistically)
+  { id: "senirupa-a-artistik-alatbahan", label: "Mengenali & menguji coba alat dan/atau bahan yang dimiliki" },
   // Menciptakan (Making/Creating)
-  { id: "senirupa-a-menciptakan-karyapengamatan", label: "Membuat karya seni rupa dari hasil pengamatan lingkungan, menggunakan unsur garis, bentuk, dan/atau warna" },
+  { id: "senirupa-a-menciptakan-pengamatan", label: "Membuat karya seni rupa berdasarkan pengalaman & hasil pengamatan terhadap lingkungan sekitar" },
   // Berdampak (Impacting)
-  { id: "senirupa-a-berdampak-responspositif", label: "Memberi respons terhadap kejadian sehari-hari & keadaan lingkungan sekitar melalui karya seni rupa yang berdampak positif bagi dirinya" },
+  { id: "senirupa-a-berdampak-perasaan", label: "Menghasilkan karya seni rupa yang berdampak pada perasaan dirinya" },
+];
+
+// Topik Seni Rupa Fase B (Kelas 3 & 4) — diturunkan PERSIS dari teks CP pada
+// salinan resmi PDF Kepka BSKAP No. 046/H/KR/2025 (Lampiran II, hlm. 247).
+// 5 elemen; 1 kompetensi CP = 1 topik.
+const SENIRUPA_FASE_B_TOPIK: Topik[] = [
+  // Mengalami (Experiencing)
+  { id: "senirupa-b-mengalami-unsurprinsip", label: "Mengidentifikasi unsur rupa & prinsip desain dalam benda-benda di sekitar/karya seni rupa" },
+  // Merefleksikan (Reflecting)
+  { id: "senirupa-b-merefleksikan-apresiasi", label: "Merefleksikan & mengapresiasi karya diri sendiri & teman sekelas menggunakan kosa kata seni rupa yang sesuai" },
+  // Berpikir & Bekerja Artistik (Thinking and Working Artistically)
+  { id: "senirupa-b-artistik-prosedur", label: "Mengenali & menguji coba alat dan/atau bahan yang dimiliki serta prosedur penggunaannya" },
+  // Menciptakan (Making/Creating)
+  { id: "senirupa-b-menciptakan-pengamatan", label: "Membuat karya seni rupa berdasarkan pengalaman & hasil pengamatan terhadap lingkungan sekitar" },
+  // Berdampak (Impacting)
+  { id: "senirupa-b-berdampak-harapan", label: "Menghasilkan karya seni rupa yang berdampak pada perasaan atau mewakili harapannya" },
+];
+
+// Topik Seni Rupa Fase C (Kelas 5 & 6) — diturunkan PERSIS dari teks CP pada
+// salinan resmi PDF Kepka BSKAP No. 046/H/KR/2025 (Lampiran II, hlm. 247-248).
+// 5 elemen; 1 kompetensi CP = 1 topik.
+const SENIRUPA_FASE_C_TOPIK: Topik[] = [
+  // Mengalami (Experiencing)
+  { id: "senirupa-c-mengalami-jelaskan", label: "Menjelaskan unsur rupa & prinsip desain dalam benda-benda di sekitar/karya seni rupa" },
+  // Merefleksikan (Reflecting)
+  { id: "senirupa-c-merefleksikan-apresiasi", label: "Merefleksikan & mengapresiasi karya diri sendiri & teman sekelas menggunakan kosa kata seni rupa yang sesuai" },
+  // Berpikir & Bekerja Artistik (Thinking and Working Artistically)
+  { id: "senirupa-c-artistik-variasiteknik", label: "Mengenali & menguji coba variasi teknik penggunaan alat dan/atau bahan" },
+  // Menciptakan (Making/Creating)
+  { id: "senirupa-c-menciptakan-imajinasi", label: "Membuat karya seni rupa berdasarkan pengalaman dan/atau hasil pengamatan terhadap lingkungan sekitar melalui pengembangan imajinasi" },
+  // Berdampak (Impacting)
+  { id: "senirupa-c-berdampak-minat", label: "Menghasilkan karya seni rupa yang mewakili minatnya" },
 ];
 
 // Topik Seni Tari Fase A (Kelas 1 & 2) — VERBATIM dari Rumusan CP
@@ -1112,14 +1144,14 @@ export const KURIKULUM: KurikulumEntry[] = [
     topik: SENIMUSIK_FASE_C_TOPIK,
   },
 
-  // ── Seni Rupa SD/MI (Fase A) — draft, sumber portal Ruang GTK ──
+  // ── Seni Rupa SD/MI (Fase A) — sumber CP Kepka BSKAP No. 046/H/KR/2025 ──
   {
     jenjang: "SD/MI",
     kelompok: "Umum/Nasional (Kemendikbud)",
     mapel: "Seni Rupa",
     kelas: "1",
     status: "draft",
-    sumber: "Portal Ruang GTK (guru.kemendikdasmen.go.id) — Rumusan CP Seni Rupa Fase A. Berlaku via Kepka BSKAP No. 046/H/KR/2025 (perubahan atas 032/H/KR/2024); Seni Rupa tidak terdampak Kepka BKPDM No. 020 Tahun 2026.",
+    sumber: "CP Seni Rupa Fase A — Kepka BSKAP No. 046/H/KR/2025",
     topik: SENIRUPA_FASE_A_TOPIK,
   },
   {
@@ -1128,8 +1160,48 @@ export const KURIKULUM: KurikulumEntry[] = [
     mapel: "Seni Rupa",
     kelas: "2",
     status: "draft",
-    sumber: "Portal Ruang GTK (guru.kemendikdasmen.go.id) — Rumusan CP Seni Rupa Fase A. Berlaku via Kepka BSKAP No. 046/H/KR/2025 (perubahan atas 032/H/KR/2024); Seni Rupa tidak terdampak Kepka BKPDM No. 020 Tahun 2026.",
+    sumber: "CP Seni Rupa Fase A — Kepka BSKAP No. 046/H/KR/2025",
     topik: SENIRUPA_FASE_A_TOPIK,
+  },
+
+  // ── Seni Rupa SD/MI (Fase B) — sumber CP Kepka BSKAP No. 046/H/KR/2025 ──
+  {
+    jenjang: "SD/MI",
+    kelompok: "Umum/Nasional (Kemendikbud)",
+    mapel: "Seni Rupa",
+    kelas: "3",
+    status: "draft",
+    sumber: "CP Seni Rupa Fase B — Kepka BSKAP No. 046/H/KR/2025",
+    topik: SENIRUPA_FASE_B_TOPIK,
+  },
+  {
+    jenjang: "SD/MI",
+    kelompok: "Umum/Nasional (Kemendikbud)",
+    mapel: "Seni Rupa",
+    kelas: "4",
+    status: "draft",
+    sumber: "CP Seni Rupa Fase B — Kepka BSKAP No. 046/H/KR/2025",
+    topik: SENIRUPA_FASE_B_TOPIK,
+  },
+
+  // ── Seni Rupa SD/MI (Fase C) — sumber CP Kepka BSKAP No. 046/H/KR/2025 ──
+  {
+    jenjang: "SD/MI",
+    kelompok: "Umum/Nasional (Kemendikbud)",
+    mapel: "Seni Rupa",
+    kelas: "5",
+    status: "draft",
+    sumber: "CP Seni Rupa Fase C — Kepka BSKAP No. 046/H/KR/2025",
+    topik: SENIRUPA_FASE_C_TOPIK,
+  },
+  {
+    jenjang: "SD/MI",
+    kelompok: "Umum/Nasional (Kemendikbud)",
+    mapel: "Seni Rupa",
+    kelas: "6",
+    status: "draft",
+    sumber: "CP Seni Rupa Fase C — Kepka BSKAP No. 046/H/KR/2025",
+    topik: SENIRUPA_FASE_C_TOPIK,
   },
 
   // ── Seni Tari SD/MI (Fase A) — draft, sumber portal Ruang GTK ──
