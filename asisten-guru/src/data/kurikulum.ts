@@ -49,54 +49,42 @@ const BIND_FASE_A_TOPIK: Topik[] = [
   { id: "bind-b-eksposisi", label: "Teks eksposisi" },
 ];
 
-// Topik Bahasa Indonesia Fase B (Kelas 3 & 4) — diturunkan PERSIS dari CP 4 elemen
-// (Kepka BSKAP 046/H/KR/2025, Ruang GTK): Menyimak, Membaca & Memirsa, Berbicara &
-// Mempresentasikan, Menulis. Granularitas CP-murni: 1 kompetensi CP = 1 topik.
+// Topik Bahasa Indonesia Fase B (Kelas 3 & 4) — diturunkan PERSIS dari teks CP
+// 4 elemen pada salinan resmi PDF Kepka BSKAP No. 046/H/KR/2025 (Lampiran II,
+// hlm. 95): Menyimak; Membaca dan Memirsa; Berbicara dan Mempresentasikan;
+// Menulis. Granularitas CP-murni: 1 kompetensi CP = 1 topik.
 const BIND_FASE_B_TOPIK: Topik[] = [
   // A. Menyimak
-  { id: "bindb-simak-idepokok", label: "Memahami ide pokok pesan lisan, media audio, teks aural, & instruksi lisan tentang hal menarik di lingkungan sekitar" },
-  { id: "bindb-simak-narasi", label: "Memahami & memaknai teks narasi yang dibacakan atau dari media audio" },
+  { id: "bindb-simak-idepokok", label: "Memahami ide pokok informasi dari teks nonsastra berbentuk teks aural (dibacakan dan/atau didengarkan)" },
+  { id: "bindb-simak-sastra", label: "Memahami isi teks sastra berbentuk teks aural" },
   // B. Membaca dan Memirsa
-  { id: "bindb-baca-katabaru", label: "Membaca kata-kata baru dengan pola kombinasi huruf yang dikenali dengan fasih" },
-  { id: "bindb-baca-kosakata", label: "Memaknai kosakata baru & serapan bahasa daerah dari teks/tayangan tentang hal menarik di lingkungan sekitar" },
-  { id: "bindb-baca-pesan", label: "Memahami pesan & informasi tentang kehidupan sehari-hari, teks narasi, & puisi anak (cetak/elektronik)" },
-  { id: "bindb-baca-idepokok", label: "Memahami ide pokok & ide pendukung pada teks informatif & teks narasi" },
+  { id: "bindb-baca-katabaru", label: "Membaca kata-kata baru dengan fasih dari bacaan dan/atau tayangan yang dipirsa" },
+  { id: "bindb-baca-idepokok", label: "Memahami ide pokok, ide pendukung, pesan, & informasi dalam teks sastra & nonsastra berbentuk cetak dan/atau elektronik" },
   // C. Berbicara dan Mempresentasikan
-  { id: "bindb-bicara-santun", label: "Berbicara dengan pilihan kata & gestur santun, volume & intonasi tepat sesuai konteks" },
-  { id: "bindb-bicara-diskusi", label: "Terlibat aktif dalam percakapan & diskusi sesuai tata cara" },
-  { id: "bindb-bicara-ceritakembali", label: "Menceritakan kembali informasi dari teks narasi tentang hal menarik di lingkungan sekitar" },
+  { id: "bindb-bicara-pendapat", label: "Menyajikan pendapat dengan pilihan kata & sikap tubuh/gestur yang sesuai, menggunakan volume & intonasi yang tepat sesuai konteks" },
+  { id: "bindb-bicara-diskusi", label: "Menanggapi diskusi sesuai tata cara" },
+  { id: "bindb-bicara-ceritakembali", label: "Menceritakan kembali isi dan/atau informasi dari berbagai tipe teks yang dibaca, dipirsa, atau didengar" },
   // D. Menulis
-  { id: "bindb-tulis-teks", label: "Menulis berbagai teks sederhana dengan rangkaian kalimat beragam tentang hal menarik di lingkungan sekitar" },
-  { id: "bindb-tulis-kaidah", label: "Menggunakan kaidah kebahasaan sederhana & kosakata baru bermakna denotatif untuk menulis teks sesuai konteks" },
-  { id: "bindb-tulis-latin", label: "Terampil menulis kalimat dalam tulisan Latin & tegak bersambung" },
+  { id: "bindb-tulis-teks", label: "Menulis berbagai tipe teks sederhana dengan rangkaian kalimat yang beragam" },
+  { id: "bindb-tulis-kaidah", label: "Menggunakan kaidah kebahasaan & kosakata baru bermakna denotatif untuk menulis teks sesuai konteks" },
 ];
 
-// Topik Bahasa Indonesia Fase C (Kelas 5 & 6) — diturunkan PERSIS dari CP 4 elemen
-// (Kepka BSKAP 046/H/KR/2025, Ruang GTK). Granularitas CP-murni: 1 kompetensi = 1
-// topik. CP mengulang 2 kompetensi verbatim antara Berbicara & Menulis (kosakata
-// denotatif/konotatif/kiasan; perasaan-imajinasi karya sastra) → dipertahankan setia.
+// Topik Bahasa Indonesia Fase C (Kelas 5 & 6) — diturunkan PERSIS dari teks CP
+// 4 elemen pada salinan resmi PDF Kepka BSKAP No. 046/H/KR/2025 (Lampiran II,
+// hlm. 96). Granularitas CP-murni: 1 kompetensi CP = 1 topik.
 const BIND_FASE_C_TOPIK: Topik[] = [
   // A. Menyimak
-  { id: "bindc-simak-analisis", label: "Menganalisis informasi: ciri objek, urutan proses kejadian, & nilai dari berbagai tipe teks nonfiksi & fiksi (lisan, teks aural, audio)" },
+  { id: "bindc-simak-nonsastra", label: "Menganalisis informasi dari teks nonsastra berbentuk teks aural (dibacakan dan/atau didengarkan)" },
+  { id: "bindc-simak-sastra", label: "Menganalisis isi teks sastra berbentuk teks aural" },
   // B. Membaca dan Memirsa
-  { id: "bindc-baca-fasih", label: "Membaca kata-kata dengan berbagai pola kombinasi huruf dengan fasih & indah" },
-  { id: "bindc-baca-kosakata", label: "Memahami informasi & kosakata baru bermakna denotatif, konotatif, & kiasan untuk mengidentifikasi objek, fenomena, & karakter" },
-  { id: "bindc-baca-analisis", label: "Menganalisis informasi & nilai dalam teks sastra dari teks visual dan/atau audiovisual" },
-  { id: "bindc-baca-pengamatan", label: "Membaca hasil pengamatan" },
+  { id: "bindc-baca-fasih", label: "Membaca kata-kata dengan berbagai pola kombinasi huruf dengan fasih dari bacaan dan/atau tayangan yang dipirsa" },
+  { id: "bindc-baca-analisis", label: "Menganalisis informasi serta nilai-nilai dalam teks sastra & nonsastra berwujud teks visual dan/atau audiovisual" },
   // C. Berbicara dan Mempresentasikan
-  { id: "bindc-bicara-menghibur", label: "Menyampaikan informasi secara lisan untuk menghibur & meyakinkan mitra tutur sesuai kaidah & konteks" },
-  { id: "bindc-bicara-kosakata", label: "Menggunakan kosakata baru bermakna denotatif, konotatif, & kiasan" },
-  { id: "bindc-bicara-pilihkata", label: "Memilih kata yang tepat sesuai norma sosial budaya" },
-  { id: "bindc-bicara-fasih", label: "Menyampaikan informasi dengan fasih & santun" },
-  { id: "bindc-bicara-sastra", label: "Menyampaikan perasaan berdasarkan fakta & imajinasi secara indah & menarik dalam bentuk karya sastra dengan kosakata kreatif" },
-  { id: "bindc-bicara-presentasi", label: "Mempresentasikan gagasan, hasil pengamatan, & pengalaman secara logis, sistematis, efektif, & kritis; mempresentasikan imajinasi secara kreatif" },
+  { id: "bindc-bicara-presentasi", label: "Mempresentasikan gagasan dari berbagai tipe teks dengan efektif & santun" },
+  { id: "bindc-bicara-sastra", label: "Menyampaikan perasaan berdasarkan fakta & imajinasi (dari diri sendiri & orang lain) secara indah & menarik dalam bentuk teks sastra dengan penggunaan kosakata secara kreatif" },
   // D. Menulis
-  { id: "bindc-tulis-teks", label: "Menulis berbagai teks sederhana berdasarkan gagasan, hasil pengamatan, pengalaman, & imajinasi" },
-  { id: "bindc-tulis-kausalitas", label: "Menuliskan hasil pengamatan yang menjelaskan hubungan kausalitas (sebab-akibat) untuk meyakinkan pembaca" },
-  { id: "bindc-tulis-kaidah", label: "Menggunakan kaidah kebahasaan & kesastraan untuk menulis teks sesuai konteks & norma sosial budaya" },
-  { id: "bindc-tulis-kosakata", label: "Menggunakan kosakata baru bermakna denotatif, konotatif, & kiasan" },
-  { id: "bindc-tulis-sastra", label: "Menyampaikan perasaan berdasarkan fakta & imajinasi secara indah & menarik dalam bentuk karya sastra dengan kosakata kreatif" },
-  { id: "bindc-tulis-latin", label: "Terampil menulis teks dalam tulisan Latin & tegak bersambung" },
+  { id: "bindc-tulis-teks", label: "Menulis berbagai tipe teks sederhana berdasarkan gagasan, hasil pengamatan, pengalaman, dan/atau imajinasi dengan rangkaian kalimat kompleks secara kreatif, menarik, dan/atau indah" },
+  { id: "bindc-tulis-kaidah", label: "Menggunakan kaidah kebahasaan & kosakata baru bermakna denotatif & konotatif" },
 ];
 
 // Topik Matematika Fase A (Kelas 1 & 2) — 5 elemen CP: Bilangan, Aljabar,
