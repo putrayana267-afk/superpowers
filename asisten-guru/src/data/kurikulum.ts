@@ -585,13 +585,13 @@ const SENITEATER_FASE_C_TOPIK: Topik[] = [
 const SENIMUSIK_FASE_C_TOPIK: Topik[] = [
   // Mengalami (Experiencing)
   { id: "senimusik-c-mengalami-terapkan", label: "Mengenali & menerapkan unsur-unsur musik (nada, irama & melodi) menggunakan alat musik ritmis & melodis" },
-  { id: "senimusik-c-mengalami-kepekaan", label: "Menunjukkan tingkat kepekaan akan unsur-unsur musik dengan alat musik ritmis & melodis" },
+  { id: "senimusik-c-mengalami-kepekaan", label: "Menunjukkan tingkat kepekaan akan unsur-unsur musik dengan menggunakan alat musik ritmis & melodis" },
   // Merefleksikan (Reflecting)
   { id: "senimusik-c-merefleksikan-umpanbalik", label: "Melakukan umpan balik mengenai karya & kemampuan bermusik diri sendiri atau orang lain menggunakan istilah musik yang tepat" },
   // Berpikir & Bekerja Artistik (Thinking and Working Artistically)
   { id: "senimusik-c-artistik-eksplorasi", label: "Mengeksplorasi variasi pola irama, tempo & melodi dengan alat musik ritmis & melodis menggunakan notasi musik & teknik dasar yang telah dipelajari" },
   { id: "senimusik-c-artistik-alternatif", label: "Menemukan alternatif untuk menghasilkan bunyi musik sederhana melalui eksplorasi material yang tersedia di lingkungan sekitar" },
-  { id: "senimusik-c-artistik-mainrawat", label: "Menerapkan cara memainkan & merawat alat musik dengan teknik yang tepat sesuai spesifikasi bahan alat musik" },
+  { id: "senimusik-c-artistik-mainrawat", label: "Menerapkan cara memainkan & merawat alat musik dengan teknik yang tepat sesuai dengan spesifikasi bahan alat musik" },
   // Menciptakan (Creating)
   { id: "senimusik-c-menciptakan-kembangkan", label: "Membuat & mengembangkan pola irama menggunakan anggota tubuh atau alat musik ritmis yang tersedia berdasarkan nilai kearifan lokal daerahnya" },
   // Berdampak (Impacting)
@@ -1131,7 +1131,7 @@ export const KURIKULUM: KurikulumEntry[] = [
     topik: PAI_FASE_C_TOPIK,
   },
 
-  // ── Seni Musik SD/MI (Fase A) — draft, sumber portal Ruang GTK ──
+  // ── Seni Musik SD/MI (Fase A) — sumber CP Kepka BSKAP No. 046/H/KR/2025 ──
   {
     jenjang: "SD/MI",
     kelompok: "Umum/Nasional (Kemendikbud)",
@@ -1151,7 +1151,7 @@ export const KURIKULUM: KurikulumEntry[] = [
     topik: SENIMUSIK_FASE_A_TOPIK,
   },
 
-  // ── Seni Musik SD/MI (Fase B) — draft, sumber portal Ruang GTK ──
+  // ── Seni Musik SD/MI (Fase B) — sumber CP Kepka BSKAP No. 046/H/KR/2025 ──
   {
     jenjang: "SD/MI",
     kelompok: "Umum/Nasional (Kemendikbud)",
@@ -1171,7 +1171,7 @@ export const KURIKULUM: KurikulumEntry[] = [
     topik: SENIMUSIK_FASE_B_TOPIK,
   },
 
-  // ── Seni Musik SD/MI (Fase C) — draft, sumber portal Ruang GTK ──
+  // ── Seni Musik SD/MI (Fase C) — sumber CP Kepka BSKAP No. 046/H/KR/2025 ──
   {
     jenjang: "SD/MI",
     kelompok: "Umum/Nasional (Kemendikbud)",
