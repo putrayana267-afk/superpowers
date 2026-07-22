@@ -534,7 +534,7 @@ const SENITARI_FASE_C_TOPIK: Topik[] = [
 // 5 elemen; 1 kompetensi CP = 1 topik (kalimat ber-"serta" dipecah per kompetensi).
 const SENITEATER_FASE_A_TOPIK: Topik[] = [
   // Mengalami (Experiencing)
-  { id: "seniteater-a-mengalami-geraksuara", label: "Mengamati, merespons, & meniru gerak tubuh dan suara sebagai media untuk mengomunikasikan emosi" },
+  { id: "seniteater-a-mengalami-geraksuara", label: "Mengamati, merespons, meniru gerak tubuh dan suara sebagai media untuk mengomunikasikan emosi" },
   // Merefleksikan (Reflection)
   { id: "seniteater-a-merefleksikan-pengalaman", label: "Mengenali pengalaman & emosi selama proses berseni teater" },
   { id: "seniteater-a-merefleksikan-ceritakarya", label: "Menceritakan sebuah karya dengan kosakata sehari-hari" },
