@@ -430,3 +430,91 @@
     animation: none !important;
   }
 }
+
+/* ===== Beranda reskin (dashboard "Akhid Noir") — progressive enhancement =====
+   Entrance = one-shot (boleh jalan di HP; ringan). Ambient loop (aurora drift,
+   sheen, glow-pulse) = HANYA PC: dimatikan di <=640px & prefers-reduced-motion
+   (hemat baterai, target 60fps). Hanya transform/opacity/filter → anti
+   layout-thrash. Palet §14: emerald #4ce896, teal #34e7e0, glow #66ffb0.
+   Menambah keyframe/kelas BARU (prefix brz-) — token/animasi lama tak disentuh. */
+@keyframes brz-rise {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes brz-rise-blur {
+  from { opacity: 0; transform: translateY(24px) scale(0.985); filter: blur(8px); }
+  to   { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+}
+@keyframes brz-aurora-a {
+  0%   { transform: translate3d(0, 0, 0) scale(1); }
+  100% { transform: translate3d(4%, -3%, 0) scale(1.12); }
+}
+@keyframes brz-aurora-b {
+  0%   { transform: translate3d(0, 0, 0) scale(1.06); }
+  100% { transform: translate3d(-5%, 4%, 0) scale(1); }
+}
+@keyframes brz-sheen {
+  0%   { transform: translateX(-130%) skewX(-16deg); opacity: 0; }
+  18%  { opacity: 0.5; }
+  55%  { transform: translateX(260%) skewX(-16deg); opacity: 0; }
+  100% { transform: translateX(260%) skewX(-16deg); opacity: 0; }
+}
+@keyframes brz-glow-pulse {
+  0%, 100% { opacity: 0.45; }
+  50%      { opacity: 0.9; }
+}
+
+.brz-rise      { animation: brz-rise 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.brz-rise-blur { animation: brz-rise-blur 0.85s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.brz-aurora-a  { animation: brz-aurora-a 22s ease-in-out infinite alternate; }
+.brz-aurora-b  { animation: brz-aurora-b 26s ease-in-out infinite alternate; }
+.brz-glow      { animation: brz-glow-pulse 5s ease-in-out infinite; }
+
+/* Sheen sweep — highlight bergerak menyapu panel kunci (PC). */
+.brz-sheen { position: relative; overflow: hidden; }
+.brz-sheen::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -40%;
+  width: 40%;
+  pointer-events: none;
+  background: linear-gradient(100deg, transparent, rgba(102, 255, 176, 0.14), transparent);
+  animation: brz-sheen 7s ease-in-out 1.4s infinite;
+}
+
+/* Neon emerald pada elemen kunci (angka statistik, judul hero) — DARK saja. */
+.brz-neon { text-shadow: 0 0 18px rgba(76, 232, 150, 0.35), 0 0 4px rgba(102, 255, 176, 0.25); }
+[data-theme='light'] .brz-neon { text-shadow: none; }
+
+/* Halo glow di belakang CTA (PC menonjol; HP diredam). */
+.brz-cta-glow { position: relative; isolation: isolate; }
+.brz-cta-glow::before {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  z-index: -1;
+  border-radius: inherit;
+  background: radial-gradient(60% 140% at 50% 50%, rgba(102, 255, 176, 0.55), transparent 70%);
+  filter: blur(10px);
+  opacity: 0.6;
+}
+
+/* PROGRESSIVE ENHANCEMENT — HP (<=640px): ambient loop mati; entrance tetap. */
+@media (max-width: 640px) {
+  .brz-aurora-a,
+  .brz-aurora-b,
+  .brz-glow { animation: none !important; }
+  .brz-sheen::after { animation: none !important; display: none; }
+  .brz-cta-glow::before { opacity: 0.4; }
+}
+/* Reduced-motion — matikan SEMUA brz (pelengkap reset global di atas). */
+@media (prefers-reduced-motion: reduce) {
+  .brz-rise,
+  .brz-rise-blur,
+  .brz-aurora-a,
+  .brz-aurora-b,
+  .brz-glow { animation: none !important; }
+  .brz-sheen::after { animation: none !important; display: none; }
+}
