@@ -1,5 +1,13 @@
-import { useState, type ReactNode } from 'react';
-import { FileText, Star, Plus, ArrowRight } from '@phosphor-icons/react';
+import { useState, type ReactNode, type CSSProperties } from 'react';
+import {
+  FileText,
+  Star,
+  Plus,
+  ArrowRight,
+  ArrowUpRight,
+  FilePlus,
+} from '@phosphor-icons/react';
+import { motion, useReducedMotion, type Variants } from 'framer-motion';
 import type { HistoryEntry } from '../features/tools/types';
 import { TOOLS, getToolById } from '../features/tools/registry';
 import { matchToolByKeyword } from '../features/tools/routeKeywords';
@@ -15,47 +23,21 @@ interface BerandaProps {
 }
 
 /**
- * Tint aksen per alat (LOKAL) — 4 hue token noir. Tiap hue punya: `text` (ikon
- * penuh), `chip` (bg ikon), `ring` (border berwarna lembut), `bar` (garis jejak),
- * `wash` (radial sudut atas-kiri, opacity SANGAT rendah — jaga noir). Pemetaan
- * hue tak berubah: emerald·teal·gold·violet berputar seperti sebelumnya.
+ * Tint aksen per alat (LOKAL) — 4 hue token noir, kini lebih BERANI. Tiap hue
+ * cukup menyimpan kanal `rgb` + kelas warna ikon + kelas border; gradient tile,
+ * glow, dan wash diturunkan dari `rgb` (DRY). Pemetaan hue tak berubah:
+ * emerald·teal·gold·violet berputar seperti sebelumnya.
  */
 interface Accent {
-  text: string;
-  chip: string;
+  rgb: string;
+  icon: string;
   ring: string;
-  bar: string;
-  wash: string;
 }
 const HUE: Record<'emerald' | 'teal' | 'gold' | 'violet', Accent> = {
-  emerald: {
-    text: 'text-emerald-primary',
-    chip: 'bg-emerald-primary/[0.18]',
-    ring: 'border-emerald-primary/25',
-    bar: 'bg-emerald-primary/70',
-    wash: 'radial-gradient(180px at 0% 0%, rgba(76,232,150,.12), transparent 70%)',
-  },
-  teal: {
-    text: 'text-teal-text',
-    chip: 'bg-teal/[0.18]',
-    ring: 'border-teal/25',
-    bar: 'bg-teal/70',
-    wash: 'radial-gradient(180px at 0% 0%, rgba(52,231,224,.12), transparent 70%)',
-  },
-  gold: {
-    text: 'text-gold-text',
-    chip: 'bg-gold/[0.18]',
-    ring: 'border-gold/25',
-    bar: 'bg-gold/70',
-    wash: 'radial-gradient(180px at 0% 0%, rgba(255,194,77,.12), transparent 70%)',
-  },
-  violet: {
-    text: 'text-violet-text',
-    chip: 'bg-violet/[0.18]',
-    ring: 'border-violet/25',
-    bar: 'bg-violet/70',
-    wash: 'radial-gradient(180px at 0% 0%, rgba(155,140,255,.12), transparent 70%)',
-  },
+  emerald: { rgb: '76,232,150', icon: 'text-emerald-primary', ring: 'border-emerald-primary/30' },
+  teal: { rgb: '52,231,224', icon: 'text-teal-text', ring: 'border-teal/30' },
+  gold: { rgb: '255,194,77', icon: 'text-gold-text', ring: 'border-gold/30' },
+  violet: { rgb: '155,140,255', icon: 'text-violet-text', ring: 'border-violet/30' },
 };
 const ACCENT_DEFAULT: Accent = HUE.emerald;
 const ACCENTS: Record<string, Accent> = {
@@ -69,6 +51,19 @@ const ACCENTS: Record<string, Accent> = {
   'ide-kegiatan': HUE.violet,
   'komunikasi-ortu': HUE.emerald,
 };
+/** Gaya tile ikon berbobot: gradien aksen + inner-highlight + glow. */
+function tileStyle(rgb: string): CSSProperties {
+  return {
+    background: `linear-gradient(145deg, rgba(${rgb},0.34), rgba(${rgb},0.07))`,
+    boxShadow: `inset 0 1px 0 rgba(255,255,255,0.16), 0 0 26px -6px rgba(${rgb},0.6)`,
+  };
+}
+/** Wash sudut kartu — kini lebih terlihat (opacity naik, tetap noir). */
+function washStyle(rgb: string): CSSProperties {
+  return {
+    background: `radial-gradient(260px 210px at 22% 0%, rgba(${rgb},0.20), transparent 72%)`,
+  };
+}
 
 /** Tanggal ringkas Indonesia — duplikat lokal; TIDAK menyentuh HistoryDrawer/Tersimpan. */
 function formatDate(ts: number): string {
@@ -119,9 +114,10 @@ function SectionLabel({ children }: { children: ReactNode }) {
 
 /**
  * Hero sapaan — sapaan dari jam zona terpilih (`useZonaWaktu`, API sama seperti
- * hero). Tak ada sumber nama bersama → sapaan saja. Latar: dua blob aurora yang
- * hanyut halus (PC) + sheen sweep, di atas surface emerald-soft. Data IDENTIK:
- * subtext = "{count} dokumen tersimpan" bila ada, kalau kosong kalimat tenang.
+ * hero). Tak ada sumber nama bersama → sapaan saja. Latar: orb emerald denyut +
+ * aurora teal hanyut + grain + sheen (semua PC; adem di HP/reduced-motion), di
+ * atas surface elevasi. Data IDENTIK: subtext = "{count} dokumen tersimpan" bila
+ * ada, kalau kosong kalimat tenang.
  */
 function Hero({
   count,
@@ -138,42 +134,42 @@ function Hero({
       : 'Semua bahan ajarmu dalam satu ruang kerja yang tenang.';
 
   return (
-    <section className="brz-sheen relative overflow-hidden rounded-3xl border border-hairline/20 bg-emerald-soft p-7 sm:p-10">
+    <section className="brz-grain brz-sheen brz-depth relative overflow-hidden rounded-3xl border border-emerald-primary/15 bg-emerald-soft p-7 sm:p-10">
       <div aria-hidden className="pointer-events-none absolute inset-0">
         <div
-          className="brz-aurora-a absolute -left-[12%] -top-[45%] h-[150%] w-[65%] rounded-full"
+          className="brz-orb absolute -top-[35%] right-[2%] h-[135%] w-[50%] rounded-full"
           style={{
             background:
-              'radial-gradient(closest-side, rgba(76,232,150,.30), transparent 70%)',
+              'radial-gradient(closest-side, rgba(76,232,150,0.50), transparent 68%)',
           }}
         />
         <div
-          className="brz-aurora-b absolute -right-[14%] -bottom-[55%] h-[160%] w-[70%] rounded-full"
+          className="brz-aurora-b absolute -bottom-[55%] -left-[14%] h-[160%] w-[68%] rounded-full"
           style={{
             background:
-              'radial-gradient(closest-side, rgba(52,231,224,.22), transparent 72%)',
+              'radial-gradient(closest-side, rgba(52,231,224,0.30), transparent 72%)',
           }}
         />
         <div
           className="absolute inset-0"
           style={{
             background:
-              'linear-gradient(135deg, rgba(76,232,150,.10), transparent 46%)',
+              'linear-gradient(135deg, rgba(76,232,150,0.14), transparent 46%)',
           }}
         />
       </div>
-      <div className="relative">
-        <p className="mb-2 text-xs font-semibold uppercase tracking-[0.22em] text-emerald-primary/80">
+      <div className="relative max-w-xl">
+        <p className="mb-2 text-xs font-semibold uppercase tracking-[0.22em] text-emerald-primary">
           Ruang kerja
         </p>
-        <h1 className="brz-neon font-display text-4xl font-bold leading-[1.03] text-emerald-deep sm:text-6xl">
+        <h1 className="brz-neon font-display text-4xl font-bold leading-[1.02] text-emerald-deep sm:text-6xl">
           {sapaan}
         </h1>
-        <p className="mt-3 max-w-md text-sm text-ink/70 sm:text-base">{subtext}</p>
+        <p className="mt-3 max-w-md text-sm text-ink/75 sm:text-base">{subtext}</p>
         <button
           type="button"
           onClick={onStartCreate}
-          className="brz-cta-glow mt-6 inline-flex min-h-[44px] items-center gap-2 rounded-full bg-brand px-6 text-sm font-semibold text-on-fill transition hover:bg-brand-hover active:bg-brand-active sm:mt-7"
+          className="brz-cta-glow mt-6 inline-flex min-h-[44px] items-center gap-2 rounded-full bg-brand px-6 text-sm font-semibold text-on-fill shadow-lg transition hover:bg-brand-hover active:bg-brand-active sm:mt-7"
         >
           <Plus className="h-4 w-4" weight="bold" />
           Buat dokumen
@@ -207,18 +203,18 @@ function KotakKebutuhan({
   };
 
   return (
-    <div className="relative overflow-hidden rounded-3xl border border-hairline/25 bg-emerald-soft/60 p-5 sm:p-6">
+    <div className="brz-depth relative overflow-hidden rounded-3xl border border-hairline/25 bg-emerald-soft/70 p-5 sm:p-6">
       <div
         aria-hidden
         className={
           'pointer-events-none absolute inset-0 transition-opacity duration-500 ' +
           'motion-reduce:transition-none ' +
-          (fokus ? 'opacity-100' : 'opacity-45')
+          (fokus ? 'opacity-100' : 'opacity-55')
         }
         style={{
           background:
-            'radial-gradient(280px 170px at 16% 0%, rgba(76,232,150,0.30), transparent 70%),' +
-            'radial-gradient(240px 170px at 100% 100%, rgba(52,231,224,0.22), transparent 72%)',
+            'radial-gradient(300px 190px at 14% 0%, rgba(76,232,150,0.34), transparent 70%),' +
+            'radial-gradient(260px 190px at 100% 100%, rgba(52,231,224,0.26), transparent 72%)',
         }}
       />
       <div className="relative">
@@ -247,7 +243,7 @@ function KotakKebutuhan({
           <button
             type="button"
             onClick={coba}
-            className="inline-flex min-h-[44px] items-center gap-1.5 rounded-input border border-emerald-primary/30 bg-emerald-primary/15 px-5 text-sm font-semibold text-emerald-deep transition hover:bg-emerald-primary/25 active:opacity-80"
+            className="inline-flex min-h-[44px] items-center gap-1.5 rounded-input border border-emerald-primary/40 bg-emerald-primary/20 px-5 text-sm font-semibold text-emerald-deep transition hover:bg-emerald-primary/30 active:opacity-80"
           >
             Bantu pilih
             <ArrowRight className="h-4 w-4" weight="bold" />
@@ -267,65 +263,79 @@ function KotakKebutuhan({
   );
 }
 
+/** Kartu alat — ikon berbobot (fill) di tile bergradien+glow, judul, deskripsi.
+ *  Elevasi nyata + hover lift; affordance panah kanan-atas (ganti "bar" lama). */
+function KartuAlat({
+  tool,
+  onSelectTool,
+}: {
+  tool: (typeof TOOLS)[number];
+  onSelectTool: (id: string) => void;
+}) {
+  const accent = ACCENTS[tool.id] ?? ACCENT_DEFAULT;
+  const Ikon = tool.icon;
+  return (
+    <button
+      type="button"
+      onClick={() => onSelectTool(tool.id)}
+      className={`brz-depth brz-depth-hover group relative flex min-h-[44px] flex-col gap-3.5 overflow-hidden rounded-2xl border bg-surface-2 p-4 text-left hover:-translate-y-1 sm:p-5 ${accent.ring}`}
+    >
+      <span
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-80 transition-opacity duration-200 group-hover:opacity-100"
+        style={washStyle(accent.rgb)}
+      />
+      <span className="relative flex items-start justify-between">
+        <span
+          className="flex h-14 w-14 items-center justify-center rounded-2xl"
+          style={tileStyle(accent.rgb)}
+        >
+          <Ikon weight="fill" className={`h-7 w-7 ${accent.icon}`} />
+        </span>
+        <ArrowUpRight
+          weight="bold"
+          className="h-4 w-4 flex-shrink-0 text-ink/30 transition group-hover:text-emerald-primary"
+        />
+      </span>
+      <span className="relative flex flex-col gap-1">
+        <span className="font-display text-sm font-bold leading-tight text-emerald-deep">
+          {tool.title}
+        </span>
+        <span
+          className="text-xs leading-snug text-ink/60"
+          style={{
+            display: '-webkit-box',
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: 'vertical',
+            overflow: 'hidden',
+          }}
+        >
+          {tool.description}
+        </span>
+      </span>
+    </button>
+  );
+}
+
 /**
- * Grid aksi cepat — SEMUA alat registry, urutan asli; klik → pilih alat. Reflow:
- * dari rail geser-horizontal menjadi GRID responsif (HP 2 kolom, ≥sm 3 kolom) →
- * NOL horizontal-scroll di HP. Diperkaya `description` & `category` (keduanya dari
- * registry TOOLS — bukan data baru).
+ * Grid aksi cepat — SEMUA alat registry, urutan asli; klik → pilih alat. Grid
+ * responsif (HP 2 kolom, ≥sm 3 kolom) → NOL horizontal-scroll di HP. Deskripsi
+ * & pemetaan aksen dari registry TOOLS (bukan data baru).
  */
 function AksiCepat({ onSelectTool }: { onSelectTool: (id: string) => void }) {
   return (
     <div>
       <SectionLabel>Aksi cepat</SectionLabel>
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
-        {TOOLS.map((tool) => {
-          const accent = ACCENTS[tool.id] ?? ACCENT_DEFAULT;
-          const Ikon = tool.icon;
-          return (
-            <button
-              key={tool.id}
-              type="button"
-              onClick={() => onSelectTool(tool.id)}
-              className={`group relative flex min-h-[44px] flex-col gap-3 overflow-hidden rounded-2xl border bg-surface-2 p-4 text-left transition duration-200 hover:-translate-y-0.5 hover:shadow-glass active:translate-y-0 sm:p-5 ${accent.ring}`}
-            >
-              <span
-                aria-hidden
-                className="pointer-events-none absolute inset-0 opacity-70 transition-opacity duration-200 group-hover:opacity-100"
-                style={{ background: accent.wash }}
-              />
-              <span className="relative flex items-center justify-between">
-                <span
-                  className={`flex h-12 w-12 items-center justify-center rounded-2xl ${accent.chip}`}
-                >
-                  <Ikon weight="duotone" className={`h-6 w-6 ${accent.text}`} />
-                </span>
-                <span className={`h-[2px] w-8 rounded-full ${accent.bar}`} />
-              </span>
-              <span className="relative flex flex-col gap-1">
-                <span className="font-display text-sm font-bold leading-tight text-emerald-deep">
-                  {tool.title}
-                </span>
-                <span
-                  className="text-xs leading-snug text-ink/60"
-                  style={{
-                    display: '-webkit-box',
-                    WebkitLineClamp: 2,
-                    WebkitBoxOrient: 'vertical',
-                    overflow: 'hidden',
-                  }}
-                >
-                  {tool.description}
-                </span>
-              </span>
-            </button>
-          );
-        })}
+        {TOOLS.map((tool) => (
+          <KartuAlat key={tool.id} tool={tool} onSelectTool={onSelectTool} />
+        ))}
       </div>
     </div>
   );
 }
 
-/** Statistik — total besar (neon, font-grotesk) + chip per jenis; angka tabular. */
+/** Statistik — total besar (neon, font-grotesk) + chip per jenis dgn titik aksen. */
 function Statistik({
   count,
   breakdown,
@@ -336,13 +346,13 @@ function Statistik({
   return (
     <div>
       <SectionLabel>Statistik</SectionLabel>
-      <div className="brz-sheen relative overflow-hidden rounded-3xl border border-hairline/20 bg-emerald-soft p-6 sm:p-7">
+      <div className="brz-grain brz-sheen brz-depth relative overflow-hidden rounded-3xl border border-emerald-primary/15 bg-emerald-soft p-6 sm:p-7">
         <div
           aria-hidden
           className="pointer-events-none absolute inset-0"
           style={{
             background:
-              'radial-gradient(320px 220px at 0% 0%, rgba(76,232,150,.14), transparent 72%)',
+              'radial-gradient(360px 240px at 0% 0%, rgba(76,232,150,0.18), transparent 72%)',
           }}
         />
         <div className="relative flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
@@ -355,17 +365,28 @@ function Statistik({
             </p>
           </div>
           <div className="flex flex-wrap gap-2">
-            {breakdown.map(({ id, label, count: n }) => (
-              <span
-                key={id}
-                className="inline-flex items-center gap-1.5 rounded-full border border-hairline/25 bg-surface-2/70 px-3 py-1.5"
-              >
-                <span className="font-grotesk text-sm font-bold tabular-nums text-emerald-deep">
-                  {n}
+            {breakdown.map(({ id, label, count: n }) => {
+              const accent = ACCENTS[id] ?? ACCENT_DEFAULT;
+              return (
+                <span
+                  key={id}
+                  className="inline-flex items-center gap-2 rounded-full border border-hairline/25 bg-surface-2/80 px-3 py-1.5"
+                >
+                  <span
+                    aria-hidden
+                    className="h-2 w-2 flex-shrink-0 rounded-full"
+                    style={{
+                      background: `rgb(${accent.rgb})`,
+                      boxShadow: `0 0 8px rgba(${accent.rgb},0.7)`,
+                    }}
+                  />
+                  <span className="font-grotesk text-sm font-bold tabular-nums text-emerald-deep">
+                    {n}
+                  </span>
+                  <span className="text-xs text-ink/60">{label}</span>
                 </span>
-                <span className="text-xs text-ink/60">{label}</span>
-              </span>
-            ))}
+              );
+            })}
           </div>
         </div>
       </div>
@@ -373,7 +394,7 @@ function Statistik({
   );
 }
 
-/** Terbaru — 6 dokumen, diperkaya ikon jenis (registry) + tanggal + cuplikan. */
+/** Terbaru — 6 dokumen, ikon jenis (registry) berwarna aksen + tanggal + cuplikan. */
 function Terbaru({
   recent,
   onOpenEntry,
@@ -387,6 +408,7 @@ function Terbaru({
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {recent.map((entry) => {
           const Ikon = getToolById(entry.toolId)?.icon ?? FileText;
+          const accent = ACCENTS[entry.toolId] ?? ACCENT_DEFAULT;
           const preview = snippet(entry.result);
           return (
             <button
@@ -394,12 +416,18 @@ function Terbaru({
               type="button"
               onClick={() => onOpenEntry(entry)}
               aria-label={`Buka ${entry.toolTitle}`}
-              className="group block h-full w-full rounded-2xl text-left transition duration-200 hover:-translate-y-0.5 active:translate-y-0"
+              className="group block h-full w-full rounded-2xl text-left"
             >
-              <GlassCard className="h-full transition-shadow duration-200 group-hover:shadow-glass-lg" animate={false}>
+              <GlassCard
+                className="brz-depth brz-depth-hover h-full group-hover:-translate-y-1"
+                animate={false}
+              >
                 <div className="flex items-start gap-3">
-                  <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl bg-emerald-primary/[0.14] text-emerald-primary">
-                    <Ikon className="h-5 w-5" weight="duotone" />
+                  <span
+                    className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl"
+                    style={tileStyle(accent.rgb)}
+                  >
+                    <Ikon weight="fill" className={`h-5 w-5 ${accent.icon}`} />
                   </span>
                   <div className="min-w-0 flex-1">
                     <div className="flex items-start justify-between gap-2">
@@ -427,6 +455,83 @@ function Terbaru({
   );
 }
 
+/**
+ * Ruang kosong (empty-state) — MENGUNDANG, bukan kotak teks gersang. Ilustrasi
+ * cincin + FilePlus berpendar, kalimat jujur (tak ada data palsu), CTA kuat, lalu
+ * baris "ghost card" (placeholder bergaris putus, jelas-jelas kosong) yang
+ * memberi bayangan hasil nyata. Nol data fiktif.
+ */
+function RuangKosong({ onStartCreate }: { onStartCreate: () => void }) {
+  const ghost = TOOLS.slice(0, 3);
+  return (
+    <div className="brz-grain brz-dotgrid brz-depth relative overflow-hidden rounded-3xl border border-emerald-primary/15 bg-emerald-soft p-8 text-center sm:p-10">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            'radial-gradient(420px 300px at 50% -10%, rgba(76,232,150,0.22), transparent 70%)',
+        }}
+      />
+      <div className="relative flex flex-col items-center">
+        <span className="relative mb-5 flex h-20 w-20 items-center justify-center">
+          <span
+            aria-hidden
+            className="brz-orb absolute inset-0 rounded-full"
+            style={{
+              background:
+                'radial-gradient(closest-side, rgba(76,232,150,0.35), transparent 70%)',
+            }}
+          />
+          <span
+            className="relative flex h-16 w-16 items-center justify-center rounded-2xl"
+            style={tileStyle('76,232,150')}
+          >
+            <FilePlus weight="fill" className="h-8 w-8 text-emerald-primary" />
+          </span>
+        </span>
+        <h2 className="font-display text-2xl font-bold text-emerald-deep sm:text-3xl">
+          Mulai dokumen pertamamu
+        </h2>
+        <p className="mt-2 max-w-sm text-sm text-ink/65">
+          Belum ada dokumen — yang Anda buat akan muncul di sini agar mudah
+          dibuka kembali.
+        </p>
+        <button
+          type="button"
+          onClick={onStartCreate}
+          className="brz-cta-glow mt-6 inline-flex min-h-[44px] items-center gap-2 rounded-full bg-brand px-6 text-sm font-semibold text-on-fill transition hover:bg-brand-hover active:bg-brand-active"
+        >
+          <Plus className="h-4 w-4" weight="bold" />
+          Buat dokumen pertama
+        </button>
+        <div className="mt-8 grid w-full grid-cols-3 gap-3 sm:gap-4">
+          {ghost.map((tool) => {
+            const accent = ACCENTS[tool.id] ?? ACCENT_DEFAULT;
+            const Ikon = tool.icon;
+            return (
+              <div
+                key={tool.id}
+                aria-hidden
+                className="flex flex-col items-center gap-2 rounded-2xl border border-dashed border-hairline/30 bg-surface-2/40 p-3 opacity-70 sm:p-4"
+              >
+                <span
+                  className="flex h-9 w-9 items-center justify-center rounded-xl"
+                  style={tileStyle(accent.rgb)}
+                >
+                  <Ikon weight="fill" className={`h-4 w-4 ${accent.icon}`} />
+                </span>
+                <span className="h-1.5 w-10 rounded-full bg-ink/15" />
+                <span className="h-1.5 w-7 rounded-full bg-ink/10" />
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function CaraKerja() {
   const langkah = [
     { n: '1', judul: 'Pilih alat & isi kurikulum', teks: 'Tentukan jenjang, mapel, dan pokok bahasan dari Capaian Pembelajaran resmi.' },
@@ -440,9 +545,12 @@ function CaraKerja() {
         {langkah.map(({ n, judul, teks }) => (
           <div
             key={n}
-            className="flex items-start gap-3 rounded-2xl border border-hairline/25 bg-emerald-soft/60 p-4 sm:flex-col sm:gap-3"
+            className="brz-depth flex items-start gap-3 rounded-2xl border border-hairline/25 bg-emerald-soft/70 p-4 sm:flex-col sm:gap-3"
           >
-            <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full border border-emerald-primary/40 font-grotesk text-sm font-bold text-emerald-primary">
+            <span
+              className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full border border-emerald-primary/50 font-grotesk text-sm font-bold text-emerald-primary"
+              style={{ boxShadow: '0 0 16px -4px rgba(76,232,150,0.6)' }}
+            >
               {n}
             </span>
             <div>
@@ -456,13 +564,27 @@ function CaraKerja() {
   );
 }
 
+// Varian reveal bertahap (framer-motion). Reduced-motion → tanpa animasi.
+const listV: Variants = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.07, delayChildren: 0.04 } },
+};
+const itemV: Variants = {
+  hidden: { opacity: 0, y: 18 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.55, ease: 'easeOut' },
+  },
+};
+
 /**
  * Beranda — dashboard noir dari dokumen tersimpan (state `history` milik App).
  * Nol data baru: semua turunan dari prop + registry + jam zona. Sapaan tanpa
- * nama (tak ada sumber bersama), aktivitas nyata dari createdAt. Reskin "Akhid
- * Noir": aurora hanyut + sheen + neon (progressive enhancement — di HP &
- * prefers-reduced-motion loop ambient mati, entrance ringan). Kosong → hero +
- * kotak kebutuhan + aksi cepat + tanda kosong tipis + Cara kerja.
+ * nama, aktivitas nyata dari createdAt. Reskin "Akhid Noir" ronde-2: kedalaman
+ * (elevasi + grain), ikon berbobot, aksen berani, aurora/orb TERLIHAT, reveal
+ * bertahap (progressive enhancement — HP & reduced-motion loop/gerak diredam).
+ * Kosong → empty-state MENGUNDANG (ilustrasi + ghost card + CTA) + Cara kerja.
  */
 export function Beranda({
   history,
@@ -470,6 +592,7 @@ export function Beranda({
   onStartCreate,
   onSelectTool,
 }: BerandaProps) {
+  const reduce = useReducedMotion();
   const count = history.length;
   const recent = history.slice(0, 6);
 
@@ -489,43 +612,44 @@ export function Beranda({
   const breakdown = [...byType.values()].sort((a, b) => b.count - a.count);
 
   return (
-    <div className="flex flex-col gap-6 sm:gap-8">
-      <div className="brz-rise-blur">
+    <motion.div
+      className="flex flex-col gap-6 sm:gap-8"
+      variants={listV}
+      initial={reduce ? false : 'hidden'}
+      animate="show"
+    >
+      <motion.div variants={itemV}>
         <Hero count={count} onStartCreate={onStartCreate} />
-      </div>
-      <div className="brz-rise" style={{ animationDelay: '0.08s' }}>
+      </motion.div>
+      <motion.div variants={itemV}>
         <KotakKebutuhan onSelectTool={onSelectTool} />
-      </div>
-      <div className="brz-rise" style={{ animationDelay: '0.16s' }}>
+      </motion.div>
+      <motion.div variants={itemV}>
         <AksiCepat onSelectTool={onSelectTool} />
-      </div>
+      </motion.div>
 
       {count === 0 ? (
         <>
-          <div
-            className="brz-rise rounded-2xl border border-hairline/25 bg-emerald-soft/60 px-5 py-4 text-sm text-ink/60"
-            style={{ animationDelay: '0.24s' }}
-          >
-            Belum ada dokumen — yang Anda buat akan muncul di sini agar mudah
-            dibuka kembali.
-          </div>
-          <div className="brz-rise" style={{ animationDelay: '0.32s' }}>
+          <motion.div variants={itemV}>
+            <RuangKosong onStartCreate={onStartCreate} />
+          </motion.div>
+          <motion.div variants={itemV}>
             <CaraKerja />
-          </div>
+          </motion.div>
         </>
       ) : (
         <>
-          <div className="brz-rise" style={{ animationDelay: '0.24s' }}>
+          <motion.div variants={itemV}>
             <Statistik count={count} breakdown={breakdown} />
-          </div>
-          <div className="brz-rise" style={{ animationDelay: '0.32s' }}>
+          </motion.div>
+          <motion.div variants={itemV}>
             <ActivityBars history={history} />
-          </div>
-          <div className="brz-rise" style={{ animationDelay: '0.40s' }}>
+          </motion.div>
+          <motion.div variants={itemV}>
             <Terbaru recent={recent} onOpenEntry={onOpenEntry} />
-          </div>
+          </motion.div>
         </>
       )}
-    </div>
+    </motion.div>
   );
 }

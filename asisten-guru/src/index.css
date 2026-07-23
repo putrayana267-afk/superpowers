@@ -518,3 +518,71 @@
   .brz-glow { animation: none !important; }
   .brz-sheen::after { animation: none !important; display: none; }
 }
+
+/* ── Kedalaman & tekstur (ronde-2 polish) ───────────────────────────────────
+   Elevasi kartu NYATA: inner-highlight (tepi atas terang), inner-shadow bawah,
+   drop-shadow berlapis → kartu "mengambang" dari latar (bunuh monoton). Tema
+   terang punya bayangan sendiri (lembut). */
+.brz-depth {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.07),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.28),
+    0 2px 6px rgba(0, 0, 0, 0.28),
+    0 20px 46px -24px rgba(0, 0, 0, 0.72);
+}
+[data-theme='light'] .brz-depth {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 1px 2px rgba(13, 32, 22, 0.06),
+    0 18px 42px -26px rgba(13, 32, 22, 0.3);
+}
+/* Hover: elevasi naik + halo emerald tipis (PC terasa; HP transisi tetap ringan). */
+.brz-depth-hover {
+  transition:
+    transform 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.22s ease;
+}
+.brz-depth-hover:hover {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 8px 18px rgba(0, 0, 0, 0.35),
+    0 30px 60px -26px rgba(0, 0, 0, 0.8),
+    0 0 0 1px rgba(76, 232, 150, 0.16);
+}
+[data-theme='light'] .brz-depth-hover:hover {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 10px 26px -12px rgba(13, 32, 22, 0.22),
+    0 0 0 1px rgba(11, 122, 75, 0.22);
+}
+
+/* Grain halus — SVG noise inline (nol aset file), opacity rendah, blend overlay.
+   Menambah tekstur agar permukaan tak terasa flat. */
+.brz-grain::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Dot-grid halus untuk panel besar (empty-state) — kedalaman tanpa berat. */
+.brz-dotgrid {
+  background-image: radial-gradient(rgba(142, 255, 202, 0.06) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+/* Denyut orb fokus di hero (PC saja). */
+@keyframes brz-orb {
+  0%, 100% { transform: scale(1); opacity: 0.85; }
+  50%      { transform: scale(1.08); opacity: 1; }
+}
+.brz-orb { animation: brz-orb 6s ease-in-out infinite; }
+@media (max-width: 640px) {
+  .brz-orb { animation: none !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .brz-orb { animation: none !important; }
+}
