@@ -106,7 +106,7 @@ function jamPadaZona(timeZone: string | undefined): number {
 /** Label seksi — kapital kecil bertema, dipakai konsisten. */
 function SectionLabel({ children }: { children: ReactNode }) {
   return (
-    <h2 className="mb-3 px-1 text-xs font-semibold uppercase tracking-wider text-label">
+    <h2 className="mb-3 px-1 text-xs font-semibold uppercase tracking-wider text-emerald-deep/80">
       {children}
     </h2>
   );
@@ -134,7 +134,7 @@ function Hero({
       : 'Semua bahan ajarmu dalam satu ruang kerja yang tenang.';
 
   return (
-    <section className="brz-grain brz-sheen brz-depth relative overflow-hidden rounded-3xl border border-emerald-primary/15 bg-emerald-soft p-7 sm:p-10">
+    <section className="brz-grain brz-sheen brz-depth relative overflow-hidden rounded-3xl border border-emerald-primary/15 bg-emerald-soft p-5 sm:p-8">
       <div aria-hidden className="pointer-events-none absolute inset-0">
         <div
           className="brz-orb absolute -top-[35%] right-[2%] h-[135%] w-[50%] rounded-full"
@@ -159,17 +159,17 @@ function Hero({
         />
       </div>
       <div className="relative max-w-xl">
-        <p className="mb-2 text-xs font-semibold uppercase tracking-[0.22em] text-emerald-primary">
+        <p className="mb-1.5 text-xs font-semibold uppercase tracking-[0.22em] text-emerald-primary">
           Ruang kerja
         </p>
-        <h1 className="brz-neon font-display text-4xl font-bold leading-[1.02] text-emerald-deep sm:text-6xl">
+        <h1 className="brz-neon font-display text-3xl font-bold leading-[1.04] text-emerald-deep sm:text-5xl lg:text-6xl">
           {sapaan}
         </h1>
-        <p className="mt-3 max-w-md text-sm text-ink/75 sm:text-base">{subtext}</p>
+        <p className="mt-2 max-w-md text-sm text-ink/85 sm:text-base">{subtext}</p>
         <button
           type="button"
           onClick={onStartCreate}
-          className="brz-cta-glow mt-6 inline-flex min-h-[44px] items-center gap-2 rounded-full bg-brand px-6 text-sm font-semibold text-on-fill shadow-lg transition hover:bg-brand-hover active:bg-brand-active sm:mt-7"
+          className="brz-cta-glow mt-5 inline-flex min-h-[44px] items-center gap-2 rounded-full bg-brand px-6 text-sm font-semibold text-on-fill shadow-lg transition hover:bg-brand-hover active:bg-brand-active sm:mt-6"
         >
           <Plus className="h-4 w-4" weight="bold" />
           Buat dokumen
@@ -237,7 +237,7 @@ function KotakKebutuhan({
           onFocus={() => setFokus(true)}
           onBlur={() => setFokus(false)}
           placeholder="mis. bikin soal ulangan, atau modul ajar…"
-          className="w-full resize-none rounded-input border border-hairline/25 bg-surface-2 p-3 text-sm text-ink placeholder:text-ink/55 focus:border-emerald-primary/50 focus:outline-none focus:ring-1 focus:ring-emerald-primary/30"
+          className="w-full resize-none rounded-input border border-hairline/25 bg-surface-2 p-3 text-sm text-ink placeholder:text-ink/60 focus:border-emerald-primary/50 focus:outline-none focus:ring-1 focus:ring-emerald-primary/30"
         />
         <div className="mt-3 flex justify-end">
           <button
@@ -251,7 +251,7 @@ function KotakKebutuhan({
         </div>
         <p
           aria-live="polite"
-          className={`mt-2 text-xs text-ink/70 transition-opacity duration-200 motion-reduce:transition-none ${
+          className={`mt-2 text-xs text-ink/75 transition-opacity duration-200 motion-reduce:transition-none ${
             tanpaHasil ? 'opacity-100' : 'opacity-0'
           }`}
         >
@@ -302,7 +302,7 @@ function KartuAlat({
           {tool.title}
         </span>
         <span
-          className="text-xs leading-snug text-ink/60"
+          className="text-xs leading-snug text-ink/75"
           style={{
             display: '-webkit-box',
             WebkitLineClamp: 2,
@@ -360,7 +360,7 @@ function Statistik({
             <p className="brz-neon font-grotesk text-6xl font-extrabold leading-none tabular-nums text-emerald-deep">
               {count}
             </p>
-            <p className="mt-2 text-xs uppercase tracking-wider text-label">
+            <p className="mt-2 text-xs uppercase tracking-wider text-emerald-deep/80">
               Total dokumen
             </p>
           </div>
@@ -383,7 +383,7 @@ function Statistik({
                   <span className="font-grotesk text-sm font-bold tabular-nums text-emerald-deep">
                     {n}
                   </span>
-                  <span className="text-xs text-ink/60">{label}</span>
+                  <span className="text-xs text-ink/75">{label}</span>
                 </span>
               );
             })}
@@ -438,13 +438,13 @@ function Terbaru({
                         <Star className="h-4 w-4 flex-shrink-0 fill-gold-text text-gold-text" />
                       )}
                     </div>
-                    <p className="mt-0.5 text-xs text-ink/50">
+                    <p className="mt-0.5 text-xs text-ink/65">
                       {formatDate(entry.createdAt)}
                     </p>
                   </div>
                 </div>
                 {preview && (
-                  <p className="mt-2 text-sm text-ink/70">{preview}</p>
+                  <p className="mt-2 text-sm text-ink/80">{preview}</p>
                 )}
               </GlassCard>
             </button>
@@ -493,7 +493,7 @@ function RuangKosong({ onStartCreate }: { onStartCreate: () => void }) {
         <h2 className="font-display text-2xl font-bold text-emerald-deep sm:text-3xl">
           Mulai dokumen pertamamu
         </h2>
-        <p className="mt-2 max-w-sm text-sm text-ink/65">
+        <p className="mt-2 max-w-sm text-sm text-ink/80">
           Belum ada dokumen — yang Anda buat akan muncul di sini agar mudah
           dibuka kembali.
         </p>
@@ -555,7 +555,7 @@ function CaraKerja() {
             </span>
             <div>
               <h3 className="font-display text-sm font-bold text-emerald-deep">{judul}</h3>
-              <p className="mt-0.5 text-xs leading-relaxed text-ink/60">{teks}</p>
+              <p className="mt-0.5 text-xs leading-relaxed text-ink/75">{teks}</p>
             </div>
           </div>
         ))}
