@@ -165,7 +165,7 @@ function Hero({
         <h1 className="brz-neon font-display text-3xl font-bold leading-[1.04] text-emerald-deep sm:text-5xl lg:text-6xl">
           {sapaan}
         </h1>
-        <p className="mt-2 max-w-md text-sm text-ink/85 sm:text-base">{subtext}</p>
+        <p className="mt-2 max-w-md text-sm text-ink/85 sm:text-[1rem]">{subtext}</p>
         <button
           type="button"
           onClick={onStartCreate}
