@@ -27,26 +27,22 @@ export interface KurikulumEntry {
 const norm = (s: string | undefined | null): string =>
   (s ?? "").trim().toLowerCase().replace(/\s+/g, " ");
 
-// Topik DRAFT Bahasa Indonesia Fase A (Kelas 1 & 2) — diturunkan dari TEMA &
-// JENIS TEKS yang tersurat di CP (Kepka BSKAP 046/H/KR/2025). BUKAN daftar bab
-// resmi per kelas → status 'draft' sampai diverifikasi ke ATP/buku teks.
+// CP Bahasa Indonesia Fase A — Kepka BSKAP No. 046/H/KR/2025 (hal. 94–95)
 const BIND_FASE_A_TOPIK: Topik[] = [
-  // A. Tema (konteks wajib di CP)
-  { id: "bind-a-diriku", label: "Diriku (perkenalan diri)" },
-  { id: "bind-a-keluarga", label: "Keluargaku" },
-  { id: "bind-a-kesehatan", label: "Kesehatan & kebersihan diri" },
-  { id: "bind-a-lingkungan", label: "Lingkungan sekitar" },
-  // B. Keterampilan dasar (fondasi literasi)
-  { id: "bind-c-fonemik", label: "Kesadaran fonemik (bunyi huruf)" },
-  { id: "bind-c-membaca", label: "Membaca permulaan (kata-kata sederhana)" },
-  { id: "bind-c-menulis", label: "Menulis permulaan (memegang alat tulis, tulisan tangan)" },
-  // C. Jenis teks sederhana (dari ATP referensi Kemendikdasmen)
-  { id: "bind-b-deskripsi", label: "Teks deskripsi" },
-  { id: "bind-b-rekon", label: "Teks rekon (pengalaman diri)" },
-  { id: "bind-b-narasi", label: "Teks narasi" },
-  { id: "bind-b-puisi", label: "Puisi anak" },
-  { id: "bind-b-prosedur", label: "Teks prosedur" },
-  { id: "bind-b-eksposisi", label: "Teks eksposisi" },
+  // A. Menyimak
+  { id: "binda-simak-informasi", label: "Memahami informasi dari teks nonsastra berbentuk teks aural (teks yang dibacakan dan/atau didengarkan) berupa percakapan yang berkaitan dengan diri, keluarga, dan/atau lingkungan sekitar" },
+  { id: "binda-simak-sastra", label: "Memahami pesan teks sastra berbentuk teks aural" },
+  // B. Membaca dan Memirsa
+  { id: "binda-baca-katasederhana", label: "Membaca kata-kata sederhana dengan fasih dari bacaan dan/atau tayangan yang dipirsa tentang diri, keluarga, kesehatan, dan/atau lingkungan sekitar" },
+  { id: "binda-baca-isi", label: "Memahami isi bacaan dan/atau tayangan yang dipirsa tentang diri, keluarga, kesehatan, dan/atau lingkungan sekitar" },
+  // C. Berbicara dan Mempresentasikan
+  { id: "binda-bicara-percakapan", label: "Merespons dengan bertanya tentang sesuatu, menjawab, dan menanggapi komentar orang lain (teman, pendidik, dan/atau orang dewasa) dengan baik dan santun dalam suatu percakapan tentang diri, keluarga, kesehatan, dan/atau lingkungan sekitar" },
+  { id: "binda-bicara-gagasan", label: "Mengungkapkan perasaan dan gagasan secara lisan dengan atau tanpa bantuan gambar" },
+  { id: "binda-bicara-ceritakembali", label: "Menceritakan kembali isi berbagai tipe teks yang dibaca, dipirsa, atau didengar tentang diri, keluarga, kesehatan, dan/atau lingkungan sekitar" },
+  // D. Menulis
+  { id: "binda-tulis-permulaan", label: "Menulis permulaan dengan benar di atas kertas dan/atau melalui media digital" },
+  { id: "binda-tulis-tulisantangan", label: "Mengembangkan tulisan tangan yang semakin baik" },
+  { id: "binda-tulis-tekssederhana", label: "Menulis berbagai tipe teks sederhana tentang diri, keluarga, dan/atau lingkungan sekitar dengan beberapa kalimat sederhana" },
 ];
 
 // Topik Bahasa Indonesia Fase B (Kelas 3 & 4) — diturunkan PERSIS dari teks CP
@@ -721,7 +717,7 @@ export const KURIKULUM: KurikulumEntry[] = [
     mapel: "Bahasa Indonesia",
     kelas: "1",
     status: "draft",
-    sumber: "CP Bahasa Indonesia Fase A — Kepka BSKAP No. 046/H/KR/2025 (+ referensi ATP Kemendikdasmen)",
+    sumber: "CP Bahasa Indonesia Fase A — Kepka BSKAP No. 046/H/KR/2025",
     topik: BIND_FASE_A_TOPIK,
   },
   {
@@ -730,7 +726,7 @@ export const KURIKULUM: KurikulumEntry[] = [
     mapel: "Bahasa Indonesia",
     kelas: "2",
     status: "draft",
-    sumber: "CP Bahasa Indonesia Fase A — Kepka BSKAP No. 046/H/KR/2025 (+ referensi ATP Kemendikdasmen)",
+    sumber: "CP Bahasa Indonesia Fase A — Kepka BSKAP No. 046/H/KR/2025",
     topik: BIND_FASE_A_TOPIK,
   },
 
