@@ -344,64 +344,72 @@ const BING_FASE_C_TOPIK: Topik[] = [
   { id: "bingc-tm", label: "Mengomunikasikan ide & pengalaman melalui berbagai jenis teks tulis sederhana atau teks multimodal tentang topik sehari-hari sesuai konteks" },
 ];
 
-// Topik Pendidikan Agama Islam & Budi Pekerti Fase A (Kelas 1 & 2) — diturunkan
-// PERSIS dari CP (Kepka BKPDM No. 020 Tahun 2026, perubahan atas Kepka BSKAP
-// 046/H/KR/2025). 5 elemen: Al-Qur'an Hadis, Akidah, Akhlak, Fikih, SPI.
-// PAI Fase A — sumber: portal CP resmi Kemendikdasmen (Ruang GTK,
-// guru.kemendikdasmen.go.id, tab "Rumusan CP"). Regulasi berlaku: Kepka BKPDM
-// No. 020 Tahun 2026. Belum spot-check ke salinan PDF Kepka; nomor halaman
-// lampiran belum tercatat (exception CLAUDE.md, disetujui pemilik repo).
+// CP PAI & Budi Pekerti Fase A — Kepka BKPDM No. 020 Tahun 2026 (hal. 6–7)
 const PAI_FASE_A_TOPIK: Topik[] = [
-  // Al-Qur'an Hadis
-  { id: "paia-quran-hadis", label: "Memahami huruf hijaiah berharakat, huruf hijaiah bersambung, Surah al-Fātiḥah, beberapa surah pendek Al-Qur'an, dan hadis tentang kebersihan." },
-  // Akidah
-  { id: "paia-akidah", label: "Memahami rukun iman, iman kepada Allah Swt., beberapa asmaulhusna, dan iman kepada malaikat." },
-  // Akhlak
-  { id: "paia-akhlak", label: "Memahami akhlak terhadap Allah Swt. dengan menyucikan dan memuji-Nya dan akhlak terhadap diri sendiri." },
-  // Fikih
-  { id: "paia-fikih", label: "Memahami rukun Islam, syahadatain, tata cara bersuci, salat fardu, azan, ikamah, zikir, dan berdoa setelah salat." },
-  // Sejarah Peradaban Islam
-  { id: "paia-spi", label: "Memahami kisah beberapa nabi dan rasul." },
+  // 1.1 Al-Qur'an Hadis
+  { id: "paia-qh-hijaiah-harakat", label: "Membaca dan membedakan huruf hijaiah berharakat" },
+  { id: "paia-qh-hijaiah-sambung", label: "Membaca dan membedakan huruf hijaiah bersambung" },
+  { id: "paia-qh-surah", label: "Menghafal Surah al-Fātiḥah dan beberapa surah pendek Al-Qur'an" },
+  { id: "paia-qh-hadis-kebersihan", label: "Menghafal hadis tentang kebersihan" },
+  // 1.2 Akidah
+  { id: "paia-akidah-rukuniman", label: "Menjelaskan dan meyakini rukun iman" },
+  { id: "paia-akidah-allah", label: "Menjelaskan dan meyakini iman kepada Allah Swt." },
+  { id: "paia-akidah-asmaulhusna", label: "Menjelaskan dan meyakini beberapa asmaulhusna" },
+  { id: "paia-akidah-malaikat", label: "Menjelaskan dan meyakini iman kepada malaikat" },
+  // 1.3 Akhlak
+  { id: "paia-akhlak-allah", label: "Menerapkan akhlak terhadap Allah Swt. dengan menyucikan dan memuji-Nya" },
+  { id: "paia-akhlak-diri", label: "Menerapkan akhlak terhadap diri sendiri" },
+  // 1.4 Fikih
+  { id: "paia-fikih-rukunislam", label: "Menerapkan rukun Islam dan syahadatain" },
+  { id: "paia-fikih-bersuci", label: "Menerapkan tata cara bersuci" },
+  { id: "paia-fikih-salatfardu", label: "Menerapkan salat fardu" },
+  { id: "paia-fikih-zikirdoa", label: "Menerapkan zikir dan berdoa setelah salat" },
+  // 1.5 Sejarah Peradaban Islam
+  { id: "paia-spi-nabirasul", label: "Menceritakan kisah keteladanan beberapa nabi dan rasul" },
 ];
 
-// Topik PAI & Budi Pekerti Fase B (Kelas 3 & 4) — diturunkan PERSIS dari CP (Kepka
-// BKPDM No. 020 Tahun 2026, perubahan atas Kepka BSKAP 046/H/KR/2025). 5 elemen.
-// PAI Fase B — sumber: portal CP resmi Kemendikdasmen (Ruang GTK,
-// guru.kemendikdasmen.go.id, tab "Rumusan CP"). Regulasi berlaku: Kepka BKPDM
-// No. 020 Tahun 2026. Korroborasi: teks portal menyimpang dari CP era-046
-// (terbukti via divergensi ATP guru) -> versi 020/2026. Belum spot-check ke
-// salinan PDF Kepka; nomor halaman lampiran belum tercatat (exception CLAUDE.md).
+// CP PAI & Budi Pekerti Fase B — Kepka BKPDM No. 020 Tahun 2026 (hal. 7)
 const PAI_FASE_B_TOPIK: Topik[] = [
-  // Al-Qur'an Hadis
-  { id: "paib-quran-hadis", label: "Memahami beberapa surah pendek, ayat Al-Qur'an dan hadis tentang kewajiban salat dan menjaga hubungan baik dengan sesama." },
-  // Akidah
-  { id: "paib-akidah", label: "Memahami sifat-sifat Allah Swt., beberapa asmaulhusna, iman kepada kitab-kitab Allah Swt. dan rasul-rasul Allah Swt." },
-  // Akhlak
-  { id: "paib-akhlak", label: "Memahami akhlak terhadap Allah Swt. dengan berbaik sangka kepada-Nya, akhlak terhadap orang tua, keluarga, dan guru." },
-  // Fikih
-  { id: "paib-fikih", label: "Memahami puasa, salat jumat dan salat sunah, balig dan tanggung jawab yang menyertainya (taklīf)." },
-  // Sejarah Peradaban Islam
-  { id: "paib-spi", label: "Memahami kisah Nabi Muhammad saw. sebelum dan sesudah menjadi rasul periode Makkah." },
+  // 2.1 Al-Qur'an Hadis
+  { id: "paib-qh-hijaiah-sambung", label: "Membaca, menulis, dan membedakan huruf hijaiah bersambung" },
+  { id: "paib-qh-surah", label: "Menghafal dan menjelaskan beberapa surah pendek" },
+  { id: "paib-qh-hadis-salat", label: "Menghafal dan menjelaskan hadis tentang kewajiban salat" },
+  { id: "paib-qh-hadis-sesama", label: "Menghafal dan menjelaskan hadis tentang menjaga hubungan baik dengan sesama" },
+  // 2.2 Akidah
+  { id: "paib-akidah-sifatallah", label: "Menjelaskan dan meyakini sifat-sifat Allah Swt." },
+  { id: "paib-akidah-kitab", label: "Menjelaskan dan meyakini iman kepada kitab-kitab Allah Swt." },
+  { id: "paib-akidah-asmaulhusna", label: "Menjelaskan dan meyakini beberapa asmaulhusna" },
+  { id: "paib-akidah-rasul", label: "Menjelaskan dan meyakini iman kepada rasul-rasul Allah Swt." },
+  // 2.3 Akhlak
+  { id: "paib-akhlak-allah", label: "Menerapkan akhlak terhadap Allah Swt. dengan berbaik sangka kepada-Nya" },
+  { id: "paib-akhlak-keluarga-guru", label: "Menerapkan akhlak terhadap orang tua, keluarga, dan guru" },
+  // 2.4 Fikih
+  { id: "paib-fikih-azan-ikamah", label: "Menerapkan azan dan ikamah" },
+  { id: "paib-fikih-salat", label: "Menerapkan salat jumat dan salat sunah" },
+  { id: "paib-fikih-balig", label: "Menjelaskan balig dan tanggung jawab yang menyertainya (taklīf)" },
+  // 2.5 Sejarah Peradaban Islam
+  { id: "paib-spi-makkah", label: "Menceritakan dan menjelaskan kisah Nabi Muhammad saw. sebelum dan sesudah menjadi rasul periode Makkah" },
 ];
 
-// Topik PAI & Budi Pekerti Fase C (Kelas 5 & 6) — diturunkan PERSIS dari CP (Kepka
-// BKPDM No. 020 Tahun 2026, perubahan atas Kepka BSKAP 046/H/KR/2025). 5 elemen.
-// PAI Fase C — sumber: portal CP resmi Kemendikdasmen (Ruang GTK,
-// guru.kemendikdasmen.go.id, tab "Rumusan CP"). Regulasi berlaku: Kepka BKPDM
-// No. 020 Tahun 2026. Korroborasi: teks portal menyimpang dari CP era-046
-// (terbukti via divergensi ATP guru) -> versi 020/2026. Belum spot-check ke
-// salinan PDF Kepka; nomor halaman lampiran belum tercatat (exception CLAUDE.md).
+// CP PAI & Budi Pekerti Fase C — Kepka BKPDM No. 020 Tahun 2026 (hal. 7–8)
 const PAI_FASE_C_TOPIK: Topik[] = [
-  // Al-Qur'an dan Hadis
-  { id: "paic-quran-hadis", label: "Memahami beberapa surah pendek dan ayat Al-Qur'an serta hadis tentang keragaman." },
-  // Akidah
-  { id: "paic-akidah", label: "Memahami beberapa asmaulhusna, iman kepada hari akhir, qadā' dan qadr." },
-  // Akhlak
-  { id: "paic-akhlak", label: "Memahami akhlak terhadap Allah Swt. dengan berdoa dan bertawakal kepada-Nya, akhlak terhadap teman, tetangga, non muslim, hewan, dan tumbuhan." },
-  // Fikih
-  { id: "paic-fikih", label: "Memahami puasa sunah, zakat, infak, sedekah, hadiah, makanan dan minuman yang halal dan haram." },
-  // Sejarah Peradaban Islam
-  { id: "paic-spi", label: "Memahami kisah Nabi Muhammad saw. periode Madinah dan khulafaurasyidin." },
+  // 3.1 Al-Qur'an Hadis
+  { id: "paic-qh-hijaiah-sambung", label: "Membaca, menulis, dan membedakan huruf hijaiah bersambung" },
+  { id: "paic-qh-surah", label: "Menjelaskan beberapa surah pendek" },
+  { id: "paic-qh-hadis-berbuatbaik", label: "Menjelaskan hadis tentang berbuat baik kepada orang tua, guru, dan teman" },
+  // 3.2 Akidah
+  { id: "paic-akidah-asmaulhusna", label: "Menjelaskan dan meyakini beberapa asmaulhusna" },
+  { id: "paic-akidah-hariakhir", label: "Menjelaskan dan meyakini iman kepada hari akhir" },
+  { id: "paic-akidah-qadaqadar", label: "Menjelaskan dan meyakini iman kepada qadā' dan qadar" },
+  // 3.3 Akhlak
+  { id: "paic-akhlak-allah", label: "Menerapkan akhlak terhadap Allah Swt. dengan berdoa dan bertawakal kepada-Nya" },
+  { id: "paic-akhlak-makhluk", label: "Menerapkan akhlak terhadap teman, tetangga, non-muslim, hewan, dan tumbuhan" },
+  // 3.4 Fikih
+  { id: "paic-fikih-puasa", label: "Menerapkan puasa wajib dan sunah" },
+  { id: "paic-fikih-halalharam", label: "Menerapkan makanan minuman yang halal dan haram" },
+  { id: "paic-fikih-ziswaf", label: "Menerapkan zakat, infak, sedekah, dan wakaf" },
+  // 3.5 Sejarah Peradaban Islam
+  { id: "paic-spi-madinah-khulafa", label: "Menceritakan dan menjelaskan kisah Nabi Muhammad saw. periode Madinah dan khulafaurasyidin" },
 ];
 
 // Topik Seni Musik Fase A (Kelas 1 & 2) — diturunkan PERSIS dari teks CP pada
