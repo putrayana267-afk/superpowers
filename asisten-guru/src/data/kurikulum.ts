@@ -717,7 +717,7 @@ export const KURIKULUM: KurikulumEntry[] = [
     mapel: "Bahasa Indonesia",
     kelas: "1",
     status: "draft",
-    sumber: "CP Bahasa Indonesia Fase A — Kepka BSKAP No. 046/H/KR/2025 (+ referensi ATP Kemendikdasmen)",
+    sumber: "CP Bahasa Indonesia Fase A — Kepka BSKAP No. 046/H/KR/2025",
     topik: BIND_FASE_A_TOPIK,
   },
   {
@@ -726,7 +726,7 @@ export const KURIKULUM: KurikulumEntry[] = [
     mapel: "Bahasa Indonesia",
     kelas: "2",
     status: "draft",
-    sumber: "CP Bahasa Indonesia Fase A — Kepka BSKAP No. 046/H/KR/2025 (+ referensi ATP Kemendikdasmen)",
+    sumber: "CP Bahasa Indonesia Fase A — Kepka BSKAP No. 046/H/KR/2025",
     topik: BIND_FASE_A_TOPIK,
   },
 
